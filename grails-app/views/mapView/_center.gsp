@@ -1,0 +1,1 @@
+<div class="centerWrapper clearfix"><es:htmlOutput value="${html}"/></div>

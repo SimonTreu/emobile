@@ -1,0 +1,368 @@
+
+div.olMap {
+
+    border: 0.01px #111111 solid;
+
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 0px 13px 74px 1px #DDDDDD;
+
+    cursor: default;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 0;
+}
+div.olMapViewport {
+    border-radius: 10px 10px 10px 10px;
+    text-align: left;
+}
+div.olLayerDiv {
+    -moz-user-select: none;
+}
+.olLayerGoogleCopyright {
+    bottom: 2px;
+    left: 2px;
+}
+.olLayerGooglePoweredBy {
+    bottom: 15px;
+    left: 2px;
+}
+.olControlAttribution {
+    bottom: 4.5em;
+    display: block;
+    font-size: smaller;
+    position: absolute;
+    right: 3px;
+}
+.olControlScale {
+    bottom: 3em;
+    display: block;
+    font-size: smaller;
+    position: absolute;
+    right: 3px;
+}
+.olControlScaleLine {
+    bottom: 15px;
+    display: block;
+    font-size: xx-small;
+    left: 10px;
+    position: absolute;
+}
+.olControlScaleLineBottom {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #000000 #000000 -moz-use-text-color;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 2px 2px medium;
+    margin-top: -2px;
+    text-align: center;
+}
+.olControlScaleLineTop {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: -moz-use-text-color #000000 #000000;
+    border-image: none;
+    border-right: 2px solid #000000;
+    border-style: none solid solid;
+    border-width: medium 2px 2px;
+    text-align: center;
+}
+.olControlPermalink {
+    bottom: 1.5em;
+    display: block;
+    font-size: smaller;
+    position: absolute;
+    right: 3px;
+}
+div.olControlMousePosition {
+    bottom: 0;
+    display: block;
+    font-family: Arial;
+    font-size: smaller;
+    position: absolute;
+    right: 3px;
+}
+.olControlOverviewMapContainer {
+    bottom: 0;
+    position: absolute;
+    right: 0;
+}
+.olControlOverviewMapElement {
+    background-color: #00008B;
+    padding: 10px 18px 10px 10px;
+}
+.olControlOverviewMapMinimizeButton {
+    bottom: 80px;
+    right: 0;
+}
+.olControlOverviewMapMaximizeButton {
+    bottom: 80px;
+    right: 0;
+}
+.olControlOverviewMapExtentRectangle {
+    background-image: url("http://localhost:8080/emobilesim2/images/i2maps/blank.gif");
+    border: 2px dotted #FF0000;
+    cursor: move;
+    overflow: hidden;
+}
+.olControlOverviewMapRectReplacement {
+    background-image: url("http://localhost:8080/emobilesim2/images/i2maps/overview_replacement.gif");
+    background-position: center center;
+    background-repeat: no-repeat;
+    cursor: move;
+    overflow: hidden;
+}
+.olLayerGeoRSSDescription {
+    float: left;
+    font-size: 1em;
+    overflow: auto;
+    width: 100%;
+}
+.olLayerGeoRSSClose {
+    color: #808080;
+    float: right;
+    font-family: sans-serif;
+    font-size: 1.2em;
+    margin-right: 6px;
+}
+.olLayerGeoRSSTitle {
+    float: left;
+    font-size: 1.2em;
+}
+.olPopupContent {
+    overflow: auto;
+    padding: 5px;
+}
+.olControlNavToolbar {
+    height: 0;
+    width: 0;
+}
+.olControlNavToolbar div {
+    display: block;
+    height: 28px;
+    left: 6px;
+    position: relative;
+    top: 300px;
+    width: 28px;
+}
+.olControlNavigationHistory {
+    background-image: url("img/navigation_history.png");
+    background-repeat: no-repeat;
+    height: 24px;
+    width: 24px;
+}
+.olControlNavigationHistoryPreviousItemActive {
+    background-position: 0 0;
+}
+.olControlNavigationHistoryPreviousItemInactive {
+    background-position: 0 -24px;
+}
+.olControlNavigationHistoryNextItemActive {
+    background-position: -24px 0;
+}
+.olControlNavigationHistoryNextItemInactive {
+    background-position: -24px -24px;
+}
+.olControlNavToolbar .olControlNavigationItemActive {
+    background-image: url("img/panning-hand-on.png");
+    background-repeat: no-repeat;
+}
+.olControlNavToolbar .olControlNavigationItemInactive {
+    background-image: url("img/panning-hand-off.png");
+    background-repeat: no-repeat;
+}
+.olControlNavToolbar .olControlZoomBoxItemActive {
+    background-color: #FFA500;
+    background-image: url("img/drag-rectangle-on.png");
+    background-repeat: no-repeat;
+}
+.olControlNavToolbar .olControlZoomBoxItemInactive {
+    background-image: url("img/drag-rectangle-off.png");
+    background-repeat: no-repeat;
+}
+.olControlEditingToolbar {
+    float: right;
+    height: 30px;
+    right: 0;
+    width: 200px;
+}
+.olControlEditingToolbar div {
+    background-image: url("img/editing_tool_bar.png");
+    background-repeat: no-repeat;
+    float: right;
+    height: 24px;
+    margin: 5px;
+    width: 24px;
+}
+.olControlEditingToolbar .olControlNavigationItemActive {
+    background-position: -103px -23px;
+}
+.olControlEditingToolbar .olControlNavigationItemInactive {
+    background-position: -103px 0;
+}
+.olControlEditingToolbar .olControlDrawFeaturePointItemActive {
+    background-position: -77px -23px;
+}
+.olControlEditingToolbar .olControlDrawFeaturePointItemInactive {
+    background-position: -77px 0;
+}
+.olControlEditingToolbar .olControlDrawFeaturePathItemInactive {
+    background-position: -51px 0;
+}
+.olControlEditingToolbar .olControlDrawFeaturePathItemActive {
+    background-position: -51px -23px;
+}
+.olControlEditingToolbar .olControlDrawFeaturePolygonItemInactive {
+    background-position: -26px 0;
+}
+.olControlEditingToolbar .olControlDrawFeaturePolygonItemActive {
+    background-position: -26px -23px;
+}
+div.olControlSaveFeaturesItemActive {
+    background-image: url("img/save_features_on.png");
+    background-position: 0 1px;
+    background-repeat: no-repeat;
+}
+div.olControlSaveFeaturesItemInactive {
+    background-image: url("img/save_features_off.png");
+    background-position: 0 1px;
+    background-repeat: no-repeat;
+}
+.olHandlerBoxZoomBox {
+    background-color: #FFFFFF;
+    border: 2px solid #FF0000;
+    font-size: 1px;
+    opacity: 0.5;
+    position: absolute;
+}
+.olHandlerBoxSelectFeature {
+    background-color: #FFFFFF;
+    border: 2px solid #0000FF;
+    font-size: 1px;
+    opacity: 0.5;
+    position: absolute;
+}
+.olControlPanPanel {
+    left: 5px;
+    top: 10px;
+}
+.olControlPanPanel div {
+    background-image: url("img/pan-panel.png");
+    cursor: pointer;
+    height: 18px;
+    position: absolute;
+    width: 18px;
+}
+.olControlPanPanel .olControlPanNorthItemInactive {
+    background-position: 0 0;
+    left: 9px;
+    top: 0;
+}
+.olControlPanPanel .olControlPanSouthItemInactive {
+    background-position: 18px 0;
+    left: 9px;
+    top: 36px;
+}
+.olControlPanPanel .olControlPanWestItemInactive {
+    background-position: 0 18px;
+    left: 0;
+    position: absolute;
+    top: 18px;
+}
+.olControlPanPanel .olControlPanEastItemInactive {
+    background-position: 18px 18px;
+    left: 18px;
+    top: 18px;
+}
+.olControlZoomPanel {
+    left: 14px;
+    top: 71px;
+}
+.olControlZoomPanel div {
+    background-image: url("img/zoom-panel.png");
+    cursor: pointer;
+    height: 18px;
+    position: absolute;
+    width: 18px;
+}
+.olControlZoomPanel .olControlZoomInItemInactive {
+    background-position: 0 0;
+    left: 0;
+    top: 0;
+}
+.olControlZoomPanel .olControlZoomToMaxExtentItemInactive {
+    background-position: 0 -18px;
+    left: 0;
+    top: 18px;
+}
+.olControlZoomPanel .olControlZoomOutItemInactive {
+    background-position: 0 18px;
+    left: 0;
+    top: 36px;
+}
+.olPopupCloseBox {
+    background: url("img/close.gif") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    cursor: pointer;
+}
+.olFramedCloudPopupContent {
+    overflow: auto;
+    padding: 5px;
+}
+.olControlNoSelect {
+    -moz-user-select: none;
+}
+.olImageLoadError {
+    background-color: #FFC0CB;
+    opacity: 0.5;
+}
+.olCursorWait {
+    cursor: wait;
+}
+.olDragDown {
+    cursor: move;
+}
+.olDrawBox {
+    cursor: crosshair;
+}
+.olControlDragFeatureOver {
+    cursor: move;
+}
+.olControlDragFeatureActive.olControlDragFeatureOver.olDragDown {
+    cursor: -moz-grabbing;
+}
+.olControlLayerSwitcher {
+    background-color: rgba(0, 0, 0, 0);
+    color: #FFFFFF;
+    font-family: sans-serif;
+    font-size: smaller;
+    font-weight: bold;
+    margin-bottom: 3px;
+    margin-left: 3px;
+    margin-top: 3px;
+    position: absolute;
+    right: 0;
+    top: 25px;
+    width: 20em;
+}
+.olControlLayerSwitcher .layersDiv {
+    background-color: #00008B;
+    height: 100%;
+    padding: 5px 75px 5px 10px;
+    width: 100%;
+}
+.olControlLayerSwitcher .layersDiv .baseLbl, .olControlLayerSwitcher .layersDiv .dataLbl {
+    margin-bottom: 3px;
+    margin-left: 3px;
+    margin-top: 3px;
+}
+.olControlLayerSwitcher .layersDiv .baseLayersDiv, .olControlLayerSwitcher .layersDiv .dataLayersDiv {
+    padding-left: 10px;
+}
+.olControlLayerSwitcher .maximizeDiv, .olControlLayerSwitcher .minimizeDiv {
+    right: 0;
+    top: 5px;
+}

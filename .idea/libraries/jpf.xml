@@ -1,0 +1,33 @@
+<component name="libraryTable">
+  <library name="jpf">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jpf.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/l2fprod-common-sheet.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/l2fprod-common-tasks.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/mysql-connector-java-5.1.26.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-apidb-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-areafilter-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-core-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-dataset-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-extract-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-hstore-jdbc-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-osm-binary-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-pbf-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-pbf2-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-pgsimple-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-pgsnapshot-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-replication-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-replication-http-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-set-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-tagfilter-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-tagtransform-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-testutil-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/osmosis-xml-0.43.1-9-g4210fad-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/RXTXcomm.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/speechd-cvs-20090321.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/hsqldb-1.8.0.10.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

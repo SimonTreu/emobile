@@ -1,0 +1,368 @@
+import com.vividsolutions.jts.geom.Coordinate
+import com.vividsolutions.jts.geom.Point
+import de.dfki.gs.domain.CarType
+import de.dfki.gs.domain.Simulation
+import de.dfki.gs.domain.SimulationRoute
+import de.dfki.gs.domain.Track
+import de.dfki.gs.service.RouteService
+import de.dfki.gs.threadutils.NotifyingBlockingThreadPoolExecutor
+import de.dfki.gs.utils.LatLonPoint
+import org.geotools.graph.path.Path
+import org.geotools.graph.structure.Edge
+import org.geotools.graph.structure.basic.BasicEdge
+import org.geotools.graph.structure.basic.BasicNode
+import org.opengis.feature.simple.SimpleFeature
+
+import java.util.concurrent.Callable
+import java.util.concurrent.TimeUnit
+
+class BootStrap {
+
+    def routeService
+
+
+    def createBigSim( String simName, long howMuchRoutes, RouteService myRS ) {
+
+        def xMin = 13.14248
+        def xMax = 13.60871
+        def xDist = xMax - xMin
+
+        def yMin = 52.40010
+        def yMax = 52.62450
+        def yDist = yMax - yMin
+
+        Simulation sim = new Simulation( name: simName )
+        if ( !sim.save( flush: true ) ) {
+            log.error( "failed to save simulation: ${sim.errors}" )
+        }
+
+        def saved = 0;
+
+
+
+
+        int poolSize = 600;      // the count of currently paralellized threads
+        int queueSize = 1200;    // recommended - twice the size of the poolSize
+        int threadKeepAliveTime = 15;
+        TimeUnit threadKeepAliveTimeUnit = TimeUnit.SECONDS;
+        int maxBlockingTime = 10;
+        TimeUnit maxBlockingTimeUnit = TimeUnit.MILLISECONDS;
+        Callable<Boolean> blockingTimeoutCallback = new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                // log.error("*** Still waiting for task insertion... ***");
+                // nothing to be done here..
+                return true; // keep waiting
+            }
+        };
+
+        NotifyingBlockingThreadPoolExecutor threadPoolExecutorForPoints =
+            new NotifyingBlockingThreadPoolExecutor(poolSize, queueSize,
+                    threadKeepAliveTime, threadKeepAliveTimeUnit,
+                    maxBlockingTime, maxBlockingTimeUnit, blockingTimeoutCallback);
+
+        List<LatLonPoint> allPoints = Collections.synchronizedList( new ArrayList<LatLonPoint>() )
+
+        long counter
+        for ( counter = 0; counter < howMuchRoutes+1; counter++ ) {
+
+            threadPoolExecutorForPoints.execute( new Runnable() {
+
+                @Override
+                void run() {
+
+                    Random r = new Random();
+                    double randomStartX = xMin + ( xDist ) * r.nextDouble();
+                    double randomStartY = yMin + ( yDist ) * r.nextDouble();
+
+                    Coordinate start  = new Coordinate( randomStartX, randomStartY );
+
+                    Coordinate coordinate = myRS.getNearestValidPoint( start )
+
+                    allPoints.add( new LatLonPoint( x: coordinate.x, y: coordinate.y ) )
+
+                    log.error( "collected ${allPoints.size()} points" )
+                }
+
+            }
+            );
+        }
+
+        def done1 = false
+
+        int x = 50
+        while ( !done1 && x > 0 ) {
+
+            x--
+            done1 = threadPoolExecutorForPoints.await( 20, TimeUnit.MILLISECONDS )
+
+        }
+
+        log.error( "added ${counter} valid points" )
+
+
+
+        NotifyingBlockingThreadPoolExecutor threadPoolExecutor =
+            new NotifyingBlockingThreadPoolExecutor(poolSize, queueSize,
+                    threadKeepAliveTime, threadKeepAliveTimeUnit,
+                    maxBlockingTime, maxBlockingTimeUnit, blockingTimeoutCallback);
+
+
+
+        def pairs = allPoints.collate( 2, 1, false );
+
+        List<ArrayList<BasicEdge>> allRoutes = Collections.synchronizedList( new ArrayList<ArrayList<BasicEdge>>() )
+
+        for ( List startTarget : pairs ) {
+
+            threadPoolExecutor.execute( new Runnable() {
+
+                @Override
+                void run() {
+
+                    Coordinate start  = new Coordinate( startTarget.get( 0 ).x, startTarget.get( 0 ).y );
+                    Coordinate target = new Coordinate( startTarget.get( 1 ).x, startTarget.get( 1 ).y );
+
+                    ArrayList<BasicEdge> path1 = myRS.calculatePath( start, target )
+
+                    if ( path1 && path1.size() > 1 ) {
+                        ArrayList<BasicEdge> pathRepaired = myRS.repairEdges( path1 )
+
+                        if ( pathRepaired && pathRepaired.size()  > 1 ) {
+                            allRoutes.add( pathRepaired )
+                            log.error( "added route nr.: ${pathRepaired.size()}" )
+                        }
+
+                    }
+
+
+
+                }
+
+            }
+            );
+        }
+
+        def done = false
+
+        while ( !done ) {
+
+            done = threadPoolExecutor.await( 20, TimeUnit.MILLISECONDS )
+
+        }
+
+        log.error( "all ${allRoutes.size()} routes calculated, now saving" )
+
+        for ( ArrayList<BasicEdge> rr : allRoutes ) {
+
+            ArrayList<List<BasicEdge>> multiTargetRoute1 = new ArrayList<List<BasicEdge>>()
+
+            multiTargetRoute1.add( rr )
+
+            Long id1;
+
+            if ( rr ) {
+
+                    id1 = myRS.persistRoute( multiTargetRoute1, false );
+
+            }
+
+            if ( id1 ) {
+
+                    SimulationRoute simRoute1 = new SimulationRoute(
+                            track: Track.get( id1 ),
+                            carType: CarType.audi.toString(),
+                            initialPersons: 3,
+                            initialEnergy: 477d,
+                            maxEnergy: 500,
+                            energyDrain: 50
+                    )
+                    if ( !simRoute1.save() ) {
+                        log.error( "failed to save simulation route: ${simRoute1.errors}" )
+                    }
+
+                    sim.addToSimulationRoutes( simRoute1 )
+
+            }
+
+
+                if ( !sim.save() ) {
+                    log.error( "failed to save simulation: ${sim.errors}" )
+                } else {
+                    saved++
+                    log.error( "saved ${saved} routes" )
+                }
+
+
+        }
+
+        /*
+        try {
+            boolean done = false;
+            do {
+                done = threadPoolExecutor.await(20, TimeUnit.MILLISECONDS);
+            } while(!done);
+        } catch (InterruptedException e) {
+            log.error(e);
+        }
+        */
+
+        log.error( "done" );
+
+
+
+    }
+
+    def init = { servletContext ->
+
+        log.error( "preloading feature graph into application scope.." )
+        routeService.getFeatureGraph( "osmGraph" )
+
+        log.error( "start bootstrapping and create some routes.." )
+
+        def bigSimName = "BigSim500"
+        def howMuchRoutes = 500
+
+
+        /*
+        if ( !Simulation.findByName( bigSimName )   ) {
+            log.error( "create big sim with ${howMuchRoutes} routes" )
+            createBigSim( bigSimName, howMuchRoutes, routeService )
+        }
+
+        def midSimName = "BigSim50"
+        howMuchRoutes = 50
+
+        if ( !Simulation.findByName( midSimName )   ) {
+            log.error( "create mid sim with ${howMuchRoutes} routes" )
+            createBigSim( midSimName, howMuchRoutes, routeService )
+        }
+
+
+        if ( Simulation.findByName( "Simulation1" ) && Simulation.findByName( "Simulation2" ) ) {
+            log.error( "..already done." )
+        } else {
+
+
+            Simulation sim1 = new Simulation( name: "Simulation1" )
+            if ( !sim1.save( flush: true ) ) {
+                log.error( "failed to save simulation: ${sim1.errors}" )
+            }
+
+            Simulation sim2 = new Simulation( name: "Simulation2" )
+            if ( !sim2.save( flush: true ) ) {
+                log.error( "failed to save simulation: ${sim2.errors}" )
+            }
+
+
+            // some routes, some simulations
+            Coordinate start1  = new Coordinate( 13.274428253175115, 52.46068276562632 );
+            Coordinate target1 = new Coordinate( 13.44814956665116,  52.47197749605584 );
+
+            Coordinate start2  = new Coordinate( 13.3635205078127,   52.52966086599651 );
+            Coordinate target2 = new Coordinate( 13.270651702881338, 52.530078585246734 );
+
+            Coordinate start3  = new Coordinate( 13.45089614868153,  52.542817113867635 );
+            Coordinate target3 = new Coordinate( 13.307215576172183, 52.50657570304971 );
+
+
+            List<BasicEdge> fullPath1 = new ArrayList<BasicEdge>();
+            List<BasicEdge> fullPath2 = new ArrayList<BasicEdge>();
+            List<BasicEdge> fullPath3 = new ArrayList<BasicEdge>();
+
+
+
+            ArrayList<BasicEdge> path1 = routeService.calculatePath( start1, target1 )
+            path1 = routeService.repairEdges( path1 )
+
+            ArrayList<BasicEdge> path2 = routeService.calculatePath( start2, target2 )
+            path2 = routeService.repairEdges( path2 )
+
+            ArrayList<BasicEdge> path3 = routeService.calculatePath( start3, target3 )
+            path3 = routeService.repairEdges( path3 )
+
+            ArrayList<List<BasicEdge>> multiTargetRoute1 = new ArrayList<List<BasicEdge>>()
+            ArrayList<List<BasicEdge>> multiTargetRoute2 = new ArrayList<List<BasicEdge>>()
+            ArrayList<List<BasicEdge>> multiTargetRoute3 = new ArrayList<List<BasicEdge>>()
+
+            multiTargetRoute1.add( path1 )
+            multiTargetRoute2.add( path2 )
+            multiTargetRoute3.add( path3 )
+
+            Long id1;
+            Long id2;
+            Long id3;
+
+            if ( path1 ) {
+                id1 = routeService.persistRoute( multiTargetRoute1 );
+            }
+
+            if ( path2 ) {
+                id2 = routeService.persistRoute( multiTargetRoute2 );
+            }
+
+            if ( path3 ) {
+                id3 = routeService.persistRoute( multiTargetRoute3 );
+            }
+
+            if ( id1 ) {
+                SimulationRoute simRoute1 = new SimulationRoute(
+                        track: Track.get( id1 ),
+                        carType: CarType.audi.toString(),
+                        initialPersons: 3,
+                        initialEnergy: 87d,
+                        maxEnergy: 500,
+                        energyDrain: 50
+                )
+                if ( !simRoute1.save( flush: true ) ) {
+                    log.error( "failed to save simulation route: ${simRoute1.errors}" )
+                }
+
+                sim1.addToSimulationRoutes( simRoute1 )
+            }
+
+            if ( id2 ) {
+                SimulationRoute simRoute2 = new SimulationRoute(
+                        track: Track.get( id2 ),
+                        carType: CarType.bmw.toString(),
+                        initialPersons: 5,
+                        initialEnergy: 89d,
+                        maxEnergy: 500,
+                        energyDrain: 10
+                )
+                if ( !simRoute2.save( flush: true ) ) {
+                    log.error( "failed to save simulation route: ${simRoute2.errors}" )
+                }
+
+                sim1.addToSimulationRoutes( simRoute2 )
+            }
+
+            if ( id3 ) {
+                SimulationRoute simRoute3 = new SimulationRoute(
+                        track: Track.get( id3 ),
+                        carType: CarType.vw.toString(),
+                        initialPersons: 7,
+                        initialEnergy: 15d,
+                        maxEnergy: 500,
+                        energyDrain: 25
+                )
+                if ( !simRoute3.save( flush: true ) ) {
+                    log.error( "failed to save simulation route: ${simRoute3.errors}" )
+                }
+                sim2.addToSimulationRoutes( simRoute3 )
+            }
+
+            if ( !sim1.save( flush: true ) ) {
+                log.error( "failed to save simulation: ${sim1.errors}" )
+            }
+
+            if ( !sim2.save( flush: true ) ) {
+                log.error( "failed to save simulation: ${sim2.errors}" )
+            }
+
+        }
+        */
+    }
+    def destroy = {
+    }
+}

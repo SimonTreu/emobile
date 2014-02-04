@@ -1,0 +1,60 @@
+class UrlMappings {
+
+	static mappings = {
+        "/$controller/$action?/$id?"{
+            constraints {
+                // apply constraints here
+            }
+        }
+
+
+        "/map/googleMaps" {
+            controller = "mapView"
+            action = "googleMaps"
+        }
+
+        "/map/openLayers" {
+            controller = "mapView"
+            action = "openLayers"
+        }
+
+
+        "/map/openLayersWithAction" {
+            controller = "mapView"
+            action = "openLayersWithAction"
+        }
+
+        "/openLayersWithAction" {
+            controller = "mapView"
+            action = "openLayersWithAction"
+        }
+
+        "/showPlaySimulation" {
+            controller = "mapView"
+            action = "showPlaySimulation"
+        }
+
+        "/startSimulation" {
+            controller = "simulation"
+            action = "startSimulation"
+        }
+
+        "/import" {
+            controller = "fileUpload"
+            view = "index"
+        }
+
+        "/simulation" {
+            controller = "simulation"
+            action = "init"
+        }
+
+
+        "/" {
+            controller = "front"
+            action = "init"
+        }
+
+        "500"(view:'/error')
+	}
+}

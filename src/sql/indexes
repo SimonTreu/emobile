@@ -1,0 +1,4 @@
+create index simId USING  BTREE ON simulation_route ( simulation_id  );
+
+
+/* TODO: create index on TrackEdge.simulationId

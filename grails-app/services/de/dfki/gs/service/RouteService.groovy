@@ -1,0 +1,791 @@
+package de.dfki.gs.service
+
+import com.vividsolutions.jts.geom.Coordinate
+import com.vividsolutions.jts.geom.Point
+import de.dfki.gs.domain.CarType
+import de.dfki.gs.domain.GasolineStation
+import de.dfki.gs.domain.GasolineStationType
+import de.dfki.gs.domain.Simulation
+import de.dfki.gs.domain.SimulationRoute
+import de.dfki.gs.domain.Track
+import de.dfki.gs.domain.TrackEdge
+import de.dfki.gs.domain.TrackEdgeType
+import de.dfki.gs.threadutils.CreatePathTask
+import de.dfki.gs.threadutils.NotifyingBlockingThreadPoolExecutor
+import de.dfki.gs.utils.Calculater
+import de.dfki.gs.utils.LatLonPoint
+import grails.plugin.cache.Cacheable
+import grails.util.Environment
+import org.codehaus.groovy.grails.web.context.ServletContextHolder
+import org.geotools.data.DataStore
+import org.geotools.data.DataStoreFinder
+import org.geotools.data.simple.SimpleFeatureCollection
+import org.geotools.data.simple.SimpleFeatureSource
+import org.geotools.feature.FeatureIterator
+import org.geotools.feature.simple.SimpleFeatureImpl
+import org.geotools.graph.build.basic.BasicDirectedGraphGenerator
+import org.geotools.graph.build.feature.FeatureGraphGenerator
+import org.geotools.graph.build.line.DirectedLineStringGraphGenerator
+import org.geotools.graph.build.line.LineStringGraphGenerator
+import org.geotools.graph.path.AStarShortestPathFinder
+import org.geotools.graph.path.Path
+import org.geotools.graph.path.Walk
+import org.geotools.graph.path.WrongPathException
+import org.geotools.graph.structure.Graph
+import org.geotools.graph.structure.basic.BasicEdge
+import org.geotools.graph.traverse.standard.AStarIterator
+import org.opengis.feature.Feature
+import org.geotools.graph.structure.Edge
+import org.springframework.context.ApplicationContext
+
+import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.Callable
+import java.util.concurrent.TimeUnit
+
+class RouteService {
+
+    def grailsApplication
+
+    List<TrackEdge> convertToUnsavedTrackEdges( List<BasicEdge> basicEdges ) {
+
+        List<TrackEdge> trackEdges = new ArrayList<TrackEdge>()
+        for ( BasicEdge basicEdge : basicEdges ) {
+
+            Point from = (Point) basicEdge.nodeA.getObject();
+            Point to = (Point) basicEdge.nodeB.getObject();
+
+            // BasicEdge featureEdge = graph.
+            BasicEdge featureEdge = (BasicEdge) basicEdge.nodeA.getEdge( basicEdge.nodeB )
+
+            SimpleFeatureImpl feature = ( SimpleFeatureImpl ) featureEdge.getObject()
+
+            String featureIdString = feature.getID()
+            int f = featureIdString.lastIndexOf( "." ) + 1
+            int t = featureIdString.length()
+            Long fId = Long.parseLong( featureIdString.substring( f, t ) )
+
+            trackEdges.add(
+                    new TrackEdge(
+                            type: TrackEdgeType.normal,
+                            fromLat: from.getY(),
+                            fromLon: from.getX(),
+                            toLat: to.getY(),
+                            toLon: to.getX(),
+                            cost: (Double) feature.getAttribute( "cost" ),
+                            gisId: fId,
+                            km: (Double) feature.getAttribute( "km" ),
+                            streetName: feature.getAttribute( "osm_name" ),
+                            kmh: (Integer) feature.getAttribute( "kmh" )
+                    )
+            )
+        }
+
+        return trackEdges
+    }
+
+
+    Track persistRoute( SimulationRoute simulationRoute, List<List<BasicEdge>> multiTargetRoute, boolean flush = true ) {
+
+        Track track = new Track( simulationRoute: simulationRoute )
+
+        /*
+        if ( !track.save( flush: true ) ) {
+            log.error( "failed to save track: ${track.errors}" )
+        }
+        */
+
+        // Graph graph = getFeatureGraph()
+
+        int routeIdx = 0;
+
+        for ( List<BasicEdge> edges : multiTargetRoute ) {
+
+            int edgeIdx = 0
+
+            long millis = System.currentTimeMillis()
+
+            for ( BasicEdge edge : edges ) {
+
+                Point from = (Point) edge.nodeA.getObject();
+                Point to = (Point) edge.nodeB.getObject();
+
+                // BasicEdge featureEdge = graph.
+                BasicEdge featureEdge = (BasicEdge) edge.nodeA.getEdge( edge.nodeB )
+
+                SimpleFeatureImpl feature = ( SimpleFeatureImpl ) featureEdge.getObject()
+
+                String featureIdString = feature.getID()
+                int f = featureIdString.lastIndexOf( "." ) + 1
+                int t = featureIdString.length()
+
+                Long fId = Long.parseLong( featureIdString.substring( f, t ) )
+
+                // default is "normal" edge
+                TrackEdgeType edgeType = TrackEdgeType.normal
+                if ( routeIdx == 0 && edgeIdx == 0 ) {
+                    edgeType = TrackEdgeType.start
+                }
+                if ( routeIdx > 0 && edgeIdx == 0 ) {
+                    edgeType = TrackEdgeType.via_target
+                }
+                if ( routeIdx == multiTargetRoute.size() - 1 && edgeIdx == edges.size() - 1 ) {
+                    edgeType = TrackEdgeType.target
+                }
+
+                TrackEdge trackEdge = new TrackEdge(
+                        simulationRouteId: simulationRoute.id,
+                        type: edgeType,
+                        fromLat: from.getY(),
+                        fromLon: from.getX(),
+                        toLat: to.getY(),
+                        toLon: to.getX(),
+                        cost: (Double) feature.getAttribute( "cost" ),
+                        gisId: fId,
+                        km: (Double) feature.getAttribute( "km" ),
+                        streetName: feature.getAttribute( "osm_name" ),
+                        kmh: (Integer) feature.getAttribute( "kmh" ) );
+
+                /*
+                if ( !trackEdge.save( flush: flush ) ) {
+                    log.error( "failed to save a trackEdge: ${trackEdge.errors}" )
+                }
+                */
+
+                track.addToEdges( trackEdge )
+
+                edgeIdx++
+            }
+
+
+
+
+            log.debug( "need ${(System.currentTimeMillis()-millis)} ms to save list of edges for one part of sim Route" )
+
+            routeIdx++
+        }
+
+        if ( !track.save( flush: true ) ) {
+            log.error( "failed to save track: ${track.errors}" )
+        }
+
+        return track
+    }
+
+    /**
+     *
+     * @param graphName
+     * @return
+     */
+    @Cacheable("osmGraphCache")
+    public Graph getFeatureGraph( String graphName ) {
+
+        long millis = System.currentTimeMillis()
+
+        // TODO: find some caching mechanism
+
+        ApplicationContext appContext = grailsApplication.getMainContext()
+        Graph graph = (Graph) appContext.servletContext.getAttribute( "featureGraph" )
+
+        if ( graph ) {
+            log.debug( "..obtaining osm graph took ${(System.currentTimeMillis()-millis)} ms" )
+            return graph
+        }
+
+        DataStore dataStore = null;
+
+        try {
+            Map<String,Object> params = new HashMap<String,Object>();
+
+            if ( Environment.current == 'development' ) {
+
+                params.put( "dbtype", "postgis");
+                params.put( "host", "localhost");
+                params.put( "port", 5432);
+                params.put( "schema", "public");
+                params.put( "database", "gis2");
+                params.put( "user", "postgres");
+                params.put( "passwd", "quirin154");
+
+            } else {
+
+                params.put( "dbtype", "postgis");
+                params.put( "host", "abomasus.de");
+                params.put( "port", 5433 );
+                params.put( "schema", "public");
+                params.put( "database", "gis2");
+                params.put( "user", "postgres");
+                params.put( "passwd", "quirin154");
+
+            }
+
+
+
+
+            dataStore = DataStoreFinder.getDataStore(params);
+
+            //SimpleFeatureSource featureSource = dataStore.getFeatureSource("planet_osm_line");
+            SimpleFeatureSource featureSource = dataStore.getFeatureSource("osm_2po_4pgr");
+
+            SimpleFeatureCollection fCollection = featureSource.getFeatures();
+
+            //create a linear graph generate
+            LineStringGraphGenerator lineStringGen = new LineStringGraphGenerator();
+            FeatureGraphGenerator featureGen = new FeatureGraphGenerator( lineStringGen );
+
+
+
+
+//throw all the features into the graph generator
+            FeatureIterator iter = fCollection.features();
+            try {
+                while(iter.hasNext()){
+                    Feature feature = iter.next();
+                    featureGen.add( feature );
+                }
+            } finally {
+                iter.close();
+            }
+            graph = featureGen.getGraph();
+
+            appContext.servletContext.setAttribute( "featureGraph", graph )
+
+        } catch ( Exception e ) {
+            log.error( "Graph could not be initialized!", e )
+        } finally {
+            dataStore.dispose()
+        }
+
+        log.debug( "..obtaining osm graph took ${(System.currentTimeMillis()-millis)} ms" )
+
+        return graph
+    }
+
+    Coordinate getNearestValidPoint( Coordinate coordinate ) {
+
+        org.geotools.graph.structure.Node nearestNode = null
+
+        Graph graph = getFeatureGraph( "osmGraph" )
+
+        nearestNode = findClosestNode( coordinate, graph )
+
+
+        Point p = (Point) nearestNode.getObject();
+        return new Coordinate( p.getX(), p.getY() );
+    }
+
+
+    GasolineStation saveGasoline( Coordinate coordinate, boolean flush = true ) {
+
+        // lat = y
+        GasolineStation gasolineStation = new GasolineStation( lon: coordinate.x, lat: coordinate.y, type: GasolineStationType.slow.toString() )
+
+        if ( !gasolineStation.save( flush: flush ) ) {
+            log.error( "failed to safe gasoline station: ${gasolineStation.errors}" )
+            return null
+        }
+
+        return gasolineStation
+    }
+
+    public void createRandomStations( Long stationCount, Long simulationId ) {
+
+        Graph graph = getFeatureGraph( "osmGraph" )
+
+        Collection<org.geotools.graph.structure.Node> nodes = (Collection<org.geotools.graph.structure.Node>) graph.getNodes();
+        List<org.geotools.graph.structure.Node> validNodes = new ArrayList<org.geotools.graph.structure.Node>( nodes )
+
+        int sizeValidNodes = validNodes.size()
+
+        Random random = new Random();
+        Simulation simulation = Simulation.get( simulationId );
+
+        for ( int i = 0; i < stationCount; i++ ) {
+
+            int randomIndex = random.nextInt( sizeValidNodes )
+
+            org.geotools.graph.structure.Node stationNode = validNodes.get( randomIndex )
+
+            Point stationPoint =  (Point) stationNode.getObject();
+
+            GasolineStation gas = saveGasoline( new Coordinate( stationPoint.x, stationPoint.y ), false )
+
+            simulation.addToGasolineStations( gas )
+
+        }
+
+        if ( !simulation.save( flush: true ) ) {
+            log.error( "failed to save simulation: ${simulation.errors}" )
+        } else {
+            log.debug( "saved ${simulation.gasolineStations.size()} gasoline stations for simulation ${simulationId}" )
+        }
+
+    }
+
+    public void createRandomRoutes( Long routeCount, Long simulationId ) {
+
+        // randomly pick viaTargets out of this range:
+        int maxViaTargets = 10
+
+        Graph graph = getFeatureGraph( "osmGraph" )
+
+        Collection<org.geotools.graph.structure.Node> nodes = (Collection<org.geotools.graph.structure.Node>) graph.getNodes();
+        List<org.geotools.graph.structure.Node> validNodes = new ArrayList<org.geotools.graph.structure.Node>( nodes )
+
+        int sizeValidNodes = validNodes.size()
+
+        log.debug( "have a set of ${sizeValidNodes} nodes.." )
+
+        List<List<org.geotools.graph.structure.Node>> routeStartTargetsList = new ArrayList<List<org.geotools.graph.structure.Node>>()
+
+        for ( int i = 0; i < routeCount; i++ ) {
+
+            List<org.geotools.graph.structure.Node> startAndTargets = new ArrayList<org.geotools.graph.structure.Node>()
+
+            // pick a number randomly from viaTargetRange
+            Random random = new Random();
+            int viaTargetRoutesCount = 0
+            if ( maxViaTargets > 0 ) {
+                viaTargetRoutesCount = random.nextInt( maxViaTargets )
+            }
+
+            // adding random start Node
+            startAndTargets.add( validNodes.get( random.nextInt( sizeValidNodes ) ) )
+
+            // adding random via Nodes
+            for ( int j = 0; j < viaTargetRoutesCount; j++ ) {
+                startAndTargets.add( validNodes.get( random.nextInt( sizeValidNodes ) ) )
+            }
+
+            // adding random target Node
+            startAndTargets.add( validNodes.get( random.nextInt( sizeValidNodes ) ) )
+
+            // put into list
+            routeStartTargetsList.add( startAndTargets )
+
+            log.debug( "added ${startAndTargets} into list" )
+        }
+
+        // initialized with size of routeStartTargetsList
+        List<List<List<BasicEdge>>> routesToPersist = Collections.synchronizedList( new ArrayList<ArrayList<List<BasicEdge>>>() );
+        // ArrayBlockingQueue<List<List<BasicEdge>>> routesToPersist = new ArrayBlockingQueue<ArrayList<List<BasicEdge>>>( routeStartTargetsList.size() )
+
+
+
+        int poolSize = 128;      // the count of currently paralellized threads
+        int queueSize = 256;    // recommended - twice the size of the poolSize
+        int threadKeepAliveTime = 15;
+        TimeUnit threadKeepAliveTimeUnit = TimeUnit.SECONDS;
+        int maxBlockingTime = 10;
+        TimeUnit maxBlockingTimeUnit = TimeUnit.MILLISECONDS;
+        Callable<Boolean> blockingTimeoutCallback = new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                // log.error("*** Still waiting for task insertion... ***");
+                // nothing to be done here..
+                return true; // keep waiting
+            }
+        };
+
+        NotifyingBlockingThreadPoolExecutor threadPoolExecutorForPoints =
+            new NotifyingBlockingThreadPoolExecutor(poolSize, queueSize,
+                    threadKeepAliveTime, threadKeepAliveTimeUnit,
+                    maxBlockingTime, maxBlockingTimeUnit, blockingTimeoutCallback);
+
+        int cc = 0;
+
+        for ( List<org.geotools.graph.structure.Node> routeStartTargetList : routeStartTargetsList ) {
+
+            log.debug( "start thread no ${++cc}  of ${routeStartTargetsList.size()} " )
+
+
+            def pairs = routeStartTargetList.collate( 2, 1, false );
+
+            threadPoolExecutorForPoints.execute( new Runnable() {
+
+                @Override
+                void run() {
+
+                    List<List<BasicEdge>> multiTargetRoute = new ArrayList<List<BasicEdge>>()
+
+                    // find route from element to element and assign to routesToPersist
+                    // def pairs = routeStartTargetList.collate( 2, 1, false );
+
+                    log.debug( "pairs: ${pairs}" )
+
+                    boolean pathBroken = false
+
+                    for ( List<org.geotools.graph.structure.Node> pairList : pairs ) {
+
+                        Point startPoint =  (Point) pairList.get( 0 ).getObject();
+                        Point targetPoint = (Point) pairList.get( 1 ).getObject();
+
+                        Coordinate currentStart  = new Coordinate( startPoint.x, startPoint.y );
+                        Coordinate currentTarget = new Coordinate( targetPoint.x, targetPoint.y );
+
+                        List<BasicEdge> pathEdges = calculatePath( currentStart, currentTarget );
+
+                        /**
+                         * if this happens, all the routes are worthless
+                         */
+                        if ( pathEdges.size() == 0 ) {
+                            log.error( "path is broken !!" )
+                            pathBroken = true
+                            // return
+                        } else {
+                            // repair all edges' direction
+                            pathEdges = repairEdges( pathEdges )
+
+                            // adding repaired edges to multiTargetRoute
+                            multiTargetRoute.add( pathEdges )
+                        }
+
+                    }
+
+                    if ( !pathBroken ) {
+                        routesToPersist.add( multiTargetRoute )
+                        log.debug( "added a non broken path: ${multiTargetRoute} as path" )
+                    }
+
+                }
+
+            } );
+
+        }
+
+        def done1 = false
+        int doneCount = 0;
+
+        int waiter = 1500000
+        while ( !done1 && waiter >= 0 && doneCount < routeStartTargetsList.size() ) {
+            done1 = threadPoolExecutorForPoints.await( 20, TimeUnit.MILLISECONDS )
+            waiter--
+            if ( waiter%100 == 0 ) {
+                log.error( "waiter: ${waiter} -- finished threads: ${threadPoolExecutorForPoints.runnables.size()} of ${routeStartTargetsList.size()}" )
+            }
+            doneCount = threadPoolExecutorForPoints.runnables.size()
+        }
+
+        log.debug( "added ${routesToPersist.size()} valid routes" )
+
+
+
+        Simulation simulation = Simulation.get( simulationId );
+
+        // now save the routes..
+        int countSavedRoutes = 0;
+        for ( List<List<BasicEdge>> multiTargetRoute : routesToPersist ) {
+
+            SimulationRoute simulationRoute = new SimulationRoute(
+                    simulation: simulation,
+                    carType: CarType.audi.toString(),
+                    initialPersons: 1,
+                    initialEnergy: 400d,
+                    energyDrain: grailsApplication.config.energyConfig.batteryDrain,
+                    maxEnergy: grailsApplication.config.energyConfig.maxEnergy )
+
+            // TODO: neccessary??
+
+            if ( !simulationRoute.save() ) {
+                log.error( "failed to save simulation route: ${simulationRoute.errors}" )
+            } else {
+                log.debug( "saved simulation route with id: ${simulationRoute.id}" )
+            }
+
+
+            long millis = System.currentTimeMillis()
+            Track track = persistRoute( simulationRoute,  multiTargetRoute, false )
+            log.debug( "-- persisiting route took ${(System.currentTimeMillis() - millis)} ms" )
+
+            // TODO: neccessary??
+            simulationRoute.track = track
+            /*
+            if ( !simulationRoute.save() ) {
+                log.error( "failed to save simulation route: ${simulationRoute.errors}" )
+            } else {
+                log.error( "saved simulation route with id: ${simulationRoute.id}" )
+            }
+            */
+
+            log.debug( " --- added simRoute nr ${++countSavedRoutes} / ${routesToPersist.size()} to simulation" )
+
+            simulation.addToSimulationRoutes( simulationRoute )
+
+        }
+
+        if ( !simulation.save() ) {
+            log.error( "failed to save simulation: ${simulation.errors}" )
+        }
+
+    }
+
+
+    List<BasicEdge> calculatePath( Coordinate start, Coordinate target ) {
+
+        Path path = null;
+
+        List<BasicEdge> edges = new ArrayList<BasicEdge>();
+
+        Graph graph = getFeatureGraph( "osmGraph" )
+
+        org.geotools.graph.structure.Node s = findClosestNode( start, graph );
+        org.geotools.graph.structure.Node t = findClosestNode( target, graph );
+
+        AStarIterator.AStarFunctions functions = new AStarIterator.AStarFunctions( t ) {
+
+            /**
+             * should return the real costs for getting from n1 to n2
+             *
+             * @param n1
+             * @param n2
+             * @return
+             */
+            public double cost(AStarIterator.AStarNode n1, AStarIterator.AStarNode n2) {
+
+                // TODO: implement a good cost function which is made for electricity
+
+                Edge edge = n1.getNode().getEdge( n2.node )
+                SimpleFeatureImpl feature = (SimpleFeatureImpl) edge.getObject()
+
+                Double o = (Double) feature.getAttribute( "km" )
+                if ( o && o >= 0 ) {
+
+                } else {
+                    o = 0.001
+                }
+
+                // Double o = (Double) feature.getAttribute( "cost" )
+
+                // now lets weight the "km" with maximum speed, to prefer Stadtautobahn
+                Integer speed = (Integer) feature.getAttribute( "kmh" );
+
+                if ( speed && speed > 0 ) {
+
+                } else {
+                    speed = 30
+                }
+
+
+                Double costs = 1000 * o;
+                if ( speed <= 30 ) {
+                    costs = 6 * o;
+                } else if ( speed > 30 && speed < 80 ) {
+                    costs = 3 * o;
+                } else if ( speed >= 80 ) {
+                    costs = 1 * o;
+                }
+
+                // Double costs = ( Math.pow( 100/speed, 2) ) * o
+
+
+                // the real cost until now + real costs from n1 to n2
+                // return n1.getG() + o;
+                return costs
+            }
+
+            /**
+             * providing haversine distance with multiplied speed as a heuristic
+             *
+             * @param n
+             * @return
+             */
+            public double h( org.geotools.graph.structure.Node n ) {
+
+                Point from = (Point) n.getObject();
+                Point to = (Point) t.getObject();
+
+                // multiplied by 1 because of weighting the distance with speed...
+                // for not overestimating we take 1
+                return 1 * Calculater.haversine( from.x, from.y, to.x, to.y );
+
+                // return getDist( from, to );
+                // return getManhatten( from, to );
+            }
+
+        };
+
+
+        AStarShortestPathFinder pf = new AStarShortestPathFinder( graph, s, t,   functions );
+
+        pf.calculate();
+        pf.finish();
+
+//find some destinations to calculate paths to
+
+        // Node target = QuickStart.findClosest( new Coordinate( 0.1, 0.1 ), graph );
+
+
+
+//calculate the paths
+
+
+        try {
+            path = pf.getPath();
+
+            org.geotools.graph.structure.Node previous = null;
+            org.geotools.graph.structure.Node node = null;
+            if ( path != null ) {
+
+                for ( Iterator ritr = path.riterator(); ritr.hasNext(); ) {
+
+                    node = ( org.geotools.graph.structure.Node ) ritr.next();
+                    if ( previous != null ) {
+                        // adding the edge between them into vector
+                        edges.add( node.getEdge( previous ) )
+
+                    }
+                    previous = node
+
+                }
+
+            }
+        } catch (  Exception e  ) {
+            log.error( "failed to get path from astar algorithm", e )
+        }
+
+
+        return edges;
+    }
+
+    private org.geotools.graph.structure.Node findClosestNode( Coordinate coordinate, Graph graph ) {
+
+        org.geotools.graph.structure.Node closest = null;
+        double minDist = 0.0;
+
+        Collection<org.geotools.graph.structure.Node> nodes = (Collection<org.geotools.graph.structure.Node>) graph.getNodes();
+
+        for ( org.geotools.graph.structure.Node node : nodes ) {
+            Point p = (Point) node.getObject();
+
+            double d = Calculater.haversine( coordinate.x, coordinate.y, p.x, p.y );
+
+            // double d = getDist( coordinate, p );
+
+            if ( d == 0 ) {
+                return node
+            }
+
+            if ( closest == null || d < minDist ) {
+                minDist = d;
+                closest = node;
+            }
+
+        }
+
+        return closest;
+    }
+
+    private static  double getDist( Coordinate coordinate, Point p ) {
+        return getDist( coordinate.x, coordinate.y, p.getX(), p.getY() );
+    }
+
+    private static double getDist( Point from, Point to ) {
+        return getDist( from.getX(), from.getY(), to.getX(), to.getY() );
+    }
+
+
+    private static double getManhatten( Point from, Point to ) {
+
+        return Math.abs( from.y - to.y ) + Math.abs( from.x - to.x )
+
+    }
+
+    /**
+     * implementation of euclidean distance
+     *
+     * @param fromX
+     * @param fromY
+     * @param toX
+     * @param toY
+     * @return
+     */
+    private static double getDist( double fromX, double fromY, double toX, double toY ) {
+        double dx = fromX - toX;
+        double dy = fromY - toY;
+        return Math.sqrt( dx * dx + dy * dy );
+        // return  dx * dx + dy * dy ;
+    }
+
+    List<BasicEdge> repairEdges( List<BasicEdge> pathEdges ) {
+
+        ArrayList<BasicEdge> edgesToPersist = new ArrayList<BasicEdge>()
+        int counter = 0
+        Integer rememberOldB = 0;
+
+        boolean repaired = true
+
+        for ( BasicEdge edge : pathEdges ) {
+
+            if ( counter == 0 ) {
+                // we don't know if this one is correct, just save it
+                edgesToPersist.add( edge )
+            }
+            else if ( counter == 1 ) {
+                // here we have to check, whether (0) and (1) is correct, or one of them is false
+                org.geotools.graph.structure.Node currentNodeA = edge.nodeA;
+                org.geotools.graph.structure.Node currentNodeB = edge.nodeB
+
+                org.geotools.graph.structure.Node zeroNodeA = edgesToPersist.get( 0 ).nodeA
+                org.geotools.graph.structure.Node zeroNodeB = edgesToPersist.get( 0 ).nodeB
+
+                if ( zeroNodeB.ID == currentNodeA.ID ) {
+                    // everything is fine
+
+                    rememberOldB = currentNodeB.ID
+                    edgesToPersist.add( edge )
+
+                } else if ( zeroNodeA.ID == currentNodeA.ID ) {
+                    // turn zero
+                    BasicEdge turnedEdge = edgesToPersist.get( 0 )
+                    edgesToPersist.clear()
+                    edgesToPersist.add( new BasicEdge( turnedEdge.nodeB, turnedEdge.nodeA ) )
+
+                    // current is fine
+                    rememberOldB = currentNodeB.ID
+                    edgesToPersist.add( edge )
+
+                } else if ( zeroNodeA.ID == currentNodeB.ID ) {
+                    // turn zero
+                    BasicEdge turnedEdge = edgesToPersist.get( 0 )
+                    edgesToPersist.clear()
+                    edgesToPersist.add( new BasicEdge( turnedEdge.nodeB, turnedEdge.nodeA ) )
+
+                    // turn current
+                    rememberOldB = currentNodeA.ID
+                    edgesToPersist.add( new BasicEdge( edge.nodeB, edge.nodeA ) )
+
+                } else {
+                    repaired = false
+                }
+
+            } else {
+
+                if ( edge.nodeA.ID == rememberOldB ) {
+                    // everything is fine
+
+                    edgesToPersist.add( edge )
+
+                    rememberOldB = edge.nodeB.ID
+                } else if ( edge.nodeB.ID == rememberOldB ) {
+                    // almost fine, just turn
+
+                    edgesToPersist.add( new BasicEdge( edge.nodeB, edge.nodeA ) );
+
+                    rememberOldB = edge.nodeA.ID
+                } else {
+                    // something is completely wrong with the path!
+                    repaired = false
+                }
+            }
+            counter++
+            //log.error( "osm_id = " +  osmId );
+        }
+
+        if ( !repaired ) {
+            log.debug( "couldn't repair path list" )
+        }
+
+        return edgesToPersist
+    }
+
+
+}

@@ -1,5 +1,6 @@
 import com.vividsolutions.jts.geom.Coordinate
 import com.vividsolutions.jts.geom.Point
+import de.dfki.gs.domain.Car
 import de.dfki.gs.domain.CarType
 import de.dfki.gs.domain.Simulation
 import de.dfki.gs.domain.SimulationRoute
@@ -19,6 +20,48 @@ import java.util.concurrent.TimeUnit
 class BootStrap {
 
     def routeService
+
+
+    def createDefaultCarTypes() {
+
+        if ( Car.findAll().size() < 1 ) {
+
+            // car BMW i3
+            Car bmwI3 = new Car(
+                    name: "BMW i3",
+                    energyConsumption: 2.3,
+                    maxEnergyLoad: 20
+            );
+
+            if ( !bmwI3.validate() && !bmwI3.hasErrors() ) {
+
+                bmwI3.save( flush: true )
+
+            } else {
+                log.error( "failed to save BMW i3: ${bmwI3.errors}" )
+            }
+
+            // car MB Vito E-CELL
+            Car vito = new Car(
+                    name: "MB Vito E-CELL",
+                    energyConsumption: 2.3,
+                    maxEnergyLoad: 20
+            );
+
+            if ( !vito.validate() && !vito.hasErrors() ) {
+
+                vito.save( flush: true )
+
+            } else {
+                log.error( "failed to save VITO : ${vito.errors}" )
+            }
+
+            // a.s.o.
+        }
+
+
+    }
+
 
 
     def createBigSim( String simName, long howMuchRoutes, RouteService myRS ) {
@@ -57,9 +100,9 @@ class BootStrap {
         };
 
         NotifyingBlockingThreadPoolExecutor threadPoolExecutorForPoints =
-            new NotifyingBlockingThreadPoolExecutor(poolSize, queueSize,
-                    threadKeepAliveTime, threadKeepAliveTimeUnit,
-                    maxBlockingTime, maxBlockingTimeUnit, blockingTimeoutCallback);
+                new NotifyingBlockingThreadPoolExecutor(poolSize, queueSize,
+                        threadKeepAliveTime, threadKeepAliveTimeUnit,
+                        maxBlockingTime, maxBlockingTimeUnit, blockingTimeoutCallback);
 
         List<LatLonPoint> allPoints = Collections.synchronizedList( new ArrayList<LatLonPoint>() )
 
@@ -103,9 +146,9 @@ class BootStrap {
 
 
         NotifyingBlockingThreadPoolExecutor threadPoolExecutor =
-            new NotifyingBlockingThreadPoolExecutor(poolSize, queueSize,
-                    threadKeepAliveTime, threadKeepAliveTimeUnit,
-                    maxBlockingTime, maxBlockingTimeUnit, blockingTimeoutCallback);
+                new NotifyingBlockingThreadPoolExecutor(poolSize, queueSize,
+                        threadKeepAliveTime, threadKeepAliveTimeUnit,
+                        maxBlockingTime, maxBlockingTimeUnit, blockingTimeoutCallback);
 
 
 
@@ -163,35 +206,35 @@ class BootStrap {
 
             if ( rr ) {
 
-                    id1 = myRS.persistRoute( multiTargetRoute1, false );
+                id1 = myRS.persistRoute( multiTargetRoute1, false );
 
             }
 
             if ( id1 ) {
 
-                    SimulationRoute simRoute1 = new SimulationRoute(
-                            track: Track.get( id1 ),
-                            carType: CarType.audi.toString(),
-                            initialPersons: 3,
-                            initialEnergy: 477d,
-                            maxEnergy: 500,
-                            energyDrain: 50
-                    )
-                    if ( !simRoute1.save() ) {
-                        log.error( "failed to save simulation route: ${simRoute1.errors}" )
-                    }
+                SimulationRoute simRoute1 = new SimulationRoute(
+                        track: Track.get( id1 ),
+                        carType: CarType.audi.toString(),
+                        initialPersons: 3,
+                        initialEnergy: 477d,
+                        maxEnergy: 500,
+                        energyDrain: 50
+                )
+                if ( !simRoute1.save() ) {
+                    log.error( "failed to save simulation route: ${simRoute1.errors}" )
+                }
 
-                    sim.addToSimulationRoutes( simRoute1 )
+                sim.addToSimulationRoutes( simRoute1 )
 
             }
 
 
-                if ( !sim.save() ) {
-                    log.error( "failed to save simulation: ${sim.errors}" )
-                } else {
-                    saved++
-                    log.error( "saved ${saved} routes" )
-                }
+            if ( !sim.save() ) {
+                log.error( "failed to save simulation: ${sim.errors}" )
+            } else {
+                saved++
+                log.error( "saved ${saved} routes" )
+            }
 
 
         }
@@ -219,6 +262,9 @@ class BootStrap {
         routeService.getFeatureGraph( "osmGraph" )
 
         log.error( "start bootstrapping and create some routes.." )
+
+
+        createDefaultCarTypes();
 
         def bigSimName = "BigSim500"
         def howMuchRoutes = 500

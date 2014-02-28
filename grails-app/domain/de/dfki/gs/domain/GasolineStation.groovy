@@ -13,6 +13,18 @@ class GasolineStation {
 
     Simulation simulation
 
+    /**
+     * indicates how long gasoline station is in use with a car
+     * this field never gets persisted, see transients
+     *
+     */
+    Date usedUntil
+
+    /**
+     * proposed: a schedule for gasoline station, in which the car can reserve a loading time span
+     */
+
+    static transients = [ 'usedUntil' ]
 
     static constraints = {
 

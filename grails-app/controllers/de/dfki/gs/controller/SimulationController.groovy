@@ -229,19 +229,9 @@ class SimulationController {
 
             def m = simulationCollectDataService.collectSimulationModelForRendering( cmd.simulationId, true, true )
 
-            simulationThreadFrameworkService.init( cmd.simulationId, null, sessionId )
+            // simulationThreadFrameworkService.init( cmd.simulationId, null, sessionId )
+            simulationThreadFrameworkService.init2( cmd.simulationId, null, sessionId )
 
-            //asyncSimulationFrameworkService
-            /*
-            asyncSimulationFrameworkService.initScheduler( cmd.simulationId, null )
-                    .onComplete {
-                println "finished initialisation"
-
-            }
-            */
-
-            // simulationFrameworkService.initScheduler( cmd.simulationId, null )
-            // simulationFrameworkService.runSimulation()
 
             render view: 'showPlaySimulation', model: m
 

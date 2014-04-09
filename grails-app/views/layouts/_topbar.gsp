@@ -14,7 +14,11 @@
             </li>
             --%>
             <li>
-                <g:link controller="simulation" action="init">Configure Simulation</g:link>
+                <g:link controller="simulation" action="init">Configure old Simulation</g:link>
+            </li>
+
+            <li>
+                <g:link controller="simulationPreparator" action="index">Configure Simulation</g:link>
             </li>
 
             <li>

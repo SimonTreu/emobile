@@ -3,7 +3,9 @@ package de.dfki.gs.domain
 class SimulationRoute {
 
     Track track;
-    String carType;
+
+    CarType carType
+
     Integer initialPersons;
     Double initialEnergy;
 
@@ -16,13 +18,12 @@ class SimulationRoute {
 
 
     static constraints = {
-        carType( nullable: false, blank: false, inList: CarType.values()*.toString() )
         track( nullable: true )
         initialPersons( nullable: false, min: 1 )
-        initialEnergy( nullable: false, min: 0d )
-        maxEnergy( nullable: false, min: 0d )
+        initialEnergy( nullable: true )
+        maxEnergy( nullable: true )
         simulation( nullable: true )
-        energyDrain( nullable: false, min: 0.1d )
+        energyDrain( nullable: true )
     }
 
     static mapping = {

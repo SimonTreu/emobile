@@ -18,7 +18,8 @@
     <r:layoutResources />
 </head>
 
-<body>
+<body onload="${pageProperty(name:'body.onload')}">
+
 <div id="page">
     <div id="spinner" class="spinner" style="display: none;">
         <img src="${createLinkTo(dir:'images',   file:'spinner.gif')}"

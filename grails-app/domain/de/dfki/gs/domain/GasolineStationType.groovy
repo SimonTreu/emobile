@@ -11,9 +11,6 @@ public enum GasolineStationType {
     AC_11KW,
     AC_22KW,
     AC_43KW,
-    DC_50KW,
-
-    // ONLY FOR COMPATIBILITY
-    slow, middle, fast
+    DC_50KW
 
 }

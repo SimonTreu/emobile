@@ -24,36 +24,95 @@ class BootStrap {
 
     def createDefaultCarTypes() {
 
-        if ( Car.findAll().size() < 1 ) {
+        if ( CarType.count() < 1 ) {
 
             // car BMW i3
-            Car bmwI3 = new Car(
+            CarType bmwI3 = new CarType(
                     name: "BMW i3",
-                    energyConsumption: 2.3,
-                    maxEnergyLoad: 20
+                    energyConsumption: 13.5,
+                    maxEnergyLoad:     18.8
             );
 
-            if ( !bmwI3.validate() && !bmwI3.hasErrors() ) {
 
-                bmwI3.save( flush: true )
-
-            } else {
+            if ( !bmwI3.save( flush: true ) ) {
                 log.error( "failed to save BMW i3: ${bmwI3.errors}" )
             }
 
             // car MB Vito E-CELL
-            Car vito = new Car(
+            CarType vito = new CarType(
                     name: "MB Vito E-CELL",
-                    energyConsumption: 2.3,
-                    maxEnergyLoad: 20
+                    energyConsumption: 25.2,
+                    maxEnergyLoad: 32
             );
 
-            if ( !vito.validate() && !vito.hasErrors() ) {
-
-                vito.save( flush: true )
-
-            } else {
+            if ( !vito.save( flush: true ) ) {
                 log.error( "failed to save VITO : ${vito.errors}" )
+            }
+
+            // mitsubishi
+            CarType mitsubishi = new CarType(
+                    name: "Mitsubishi i-MiEV",
+                    energyConsumption: 13.5,
+                    maxEnergyLoad: 13
+            );
+
+            if ( !mitsubishi.save( flush: true ) ) {
+                log.error( "failed to save mitsubishi : ${mitsubishi.errors}" )
+            }
+
+            // Nissan
+            CarType nissan = new CarType(
+                    name: "Nissan Leaf",
+                    energyConsumption: 17.4,
+                    maxEnergyLoad: 24
+            );
+
+            if ( !nissan.save( flush: true ) ) {
+                log.error( "failed to save nissan : ${nissan.errors}" )
+            }
+
+            // Opel
+            CarType opel = new CarType(
+                    name: "Opel Ampera",
+                    energyConsumption: 10.5,
+                    maxEnergyLoad: 8
+            );
+
+            if ( !opel.save( flush: true ) ) {
+                log.error( "failed to save opel : ${opel.errors}" )
+            }
+
+            // Renault kangoo
+            CarType renault = new CarType(
+                    name: "Renault Kangoo Z.E.",
+                    energyConsumption: 16,
+                    maxEnergyLoad: 22
+            );
+
+            if ( !renault.save( flush: true ) ) {
+                log.error( "failed to save renault : ${renault.errors}" )
+            }
+
+            // renault zoe
+            CarType renaultZoe = new CarType(
+                    name: "Renault ZOE",
+                    energyConsumption: 16,
+                    maxEnergyLoad: 22
+            );
+
+            if ( !renaultZoe.save( flush: true ) ) {
+                log.error( "failed to save renaultZoe : ${renaultZoe.errors}" )
+            }
+
+            // vw
+            CarType vw = new CarType(
+                    name: "VW E-up!",
+                    energyConsumption: 11.7,
+                    maxEnergyLoad: 19
+            );
+
+            if ( !vw.save( flush: true ) ) {
+                log.error( "failed to save vw : ${vw.errors}" )
             }
 
             // a.s.o.

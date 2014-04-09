@@ -6,41 +6,13 @@ package de.dfki.gs.domain
  */
 class Car {
 
-    /**
-     * leaf, or tessla or sth useless
-     */
+    CarType carType
+
     String name
 
-    /**
-     * energy drain for the specific battery
-     */
-    Double energyDrain
-
-    /**
-     * "Ernergie-Verbrauch" in kWh/100km
-     *
-     */
-    Double energyConsumption
-
-    /**
-     * maximum battery size
-     */
-    Double maxEnergyLoad
-
-    /**
-     *
-     */
-    Double currentErnergyLoad
-
-
-    List<GasolineStation> allowedGasolationStations
-
-    static transients = [ 'currentErnergyLoad' ]
-
-
     static constraints = {
-
-
+        name ( nullable: true, blank: true )
 
     }
+
 }

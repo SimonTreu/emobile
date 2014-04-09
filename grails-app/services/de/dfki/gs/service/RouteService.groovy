@@ -274,10 +274,13 @@ class RouteService {
     }
 
 
-    GasolineStation saveGasoline( Coordinate coordinate, boolean flush = true ) {
+    GasolineStation saveGasoline( Coordinate coordinate, String fillingType, boolean flush = true ) {
 
         // lat = y
-        GasolineStation gasolineStation = new GasolineStation( lon: coordinate.x, lat: coordinate.y, type: GasolineStationType.slow.toString() )
+        GasolineStation gasolineStation = new GasolineStation(
+                lon: coordinate.x,
+                lat: coordinate.y,
+                type: fillingType )
 
         if ( !gasolineStation.save( flush: flush ) ) {
             log.error( "failed to safe gasoline station: ${gasolineStation.errors}" )
@@ -287,7 +290,7 @@ class RouteService {
         return gasolineStation
     }
 
-    public void createRandomStations( Long stationCount, Long simulationId ) {
+    public void createRandomStations( Long stationCount, Long simulationId, String fillingType ) {
 
         Graph graph = getFeatureGraph( "osmGraph" )
 
@@ -307,7 +310,7 @@ class RouteService {
 
             Point stationPoint =  (Point) stationNode.getObject();
 
-            GasolineStation gas = saveGasoline( new Coordinate( stationPoint.x, stationPoint.y ), false )
+            GasolineStation gas = saveGasoline( new Coordinate( stationPoint.x, stationPoint.y ), fillingType, false )
 
             simulation.addToGasolineStations( gas )
 
@@ -321,10 +324,10 @@ class RouteService {
 
     }
 
-    public void createRandomRoutes( Long routeCount, Long simulationId ) {
+    public void createRandomRoutes( Long routeCount, Long simulationId, long viaTargets, long carTypeId ) {
 
         // randomly pick viaTargets out of this range:
-        int maxViaTargets = 10
+        // int maxViaTargets = 10
 
         Graph graph = getFeatureGraph( "osmGraph" )
 
@@ -341,18 +344,14 @@ class RouteService {
 
             List<org.geotools.graph.structure.Node> startAndTargets = new ArrayList<org.geotools.graph.structure.Node>()
 
-            // pick a number randomly from viaTargetRange
             Random random = new Random();
-            int viaTargetRoutesCount = 0
-            if ( maxViaTargets > 0 ) {
-                viaTargetRoutesCount = random.nextInt( maxViaTargets )
-            }
+
 
             // adding random start Node
             startAndTargets.add( validNodes.get( random.nextInt( sizeValidNodes ) ) )
 
             // adding random via Nodes
-            for ( int j = 0; j < viaTargetRoutesCount; j++ ) {
+            for ( int j = 0; j < viaTargets; j++ ) {
                 startAndTargets.add( validNodes.get( random.nextInt( sizeValidNodes ) ) )
             }
 
@@ -368,8 +367,6 @@ class RouteService {
         // initialized with size of routeStartTargetsList
         List<List<List<BasicEdge>>> routesToPersist = Collections.synchronizedList( new ArrayList<ArrayList<List<BasicEdge>>>() );
         // ArrayBlockingQueue<List<List<BasicEdge>>> routesToPersist = new ArrayBlockingQueue<ArrayList<List<BasicEdge>>>( routeStartTargetsList.size() )
-
-
 
         int poolSize = 128;      // the count of currently paralellized threads
         int queueSize = 256;    // recommended - twice the size of the poolSize
@@ -396,7 +393,6 @@ class RouteService {
         for ( List<org.geotools.graph.structure.Node> routeStartTargetList : routeStartTargetsList ) {
 
             log.debug( "start thread no ${++cc}  of ${routeStartTargetsList.size()} " )
-
 
             def pairs = routeStartTargetList.collate( 2, 1, false );
 
@@ -473,15 +469,16 @@ class RouteService {
 
         // now save the routes..
         int countSavedRoutes = 0;
+        CarType carType = CarType.get( carTypeId )
         for ( List<List<BasicEdge>> multiTargetRoute : routesToPersist ) {
 
             SimulationRoute simulationRoute = new SimulationRoute(
                     simulation: simulation,
-                    carType: CarType.audi.toString(),
-                    initialPersons: 1,
-                    initialEnergy: 400d,
-                    energyDrain: grailsApplication.config.energyConfig.batteryDrain,
-                    maxEnergy: grailsApplication.config.energyConfig.maxEnergy )
+                    carType: carType,
+                    initialPersons: 1
+            )
+
+
 
             // TODO: neccessary??
 
@@ -516,6 +513,42 @@ class RouteService {
             log.error( "failed to save simulation: ${simulation.errors}" )
         }
 
+    }
+
+    public List<BasicEdge> routeToTarget( double currentLat, double currentLon, double targetLat, double targetLon ) {
+
+        List<BasicEdge> routeToTarget = calculatePath(
+                new Coordinate( currentLon, currentLat ),
+                new Coordinate( targetLon, targetLon )
+        )
+
+        return repairEdges( routeToTarget )
+    }
+
+    public GasolineStation findClosestGasolineStation( double lat, double lon, List<GasolineStation> stations ) {
+
+
+        def distance = 100000000;
+        GasolineStation targetGasolineStation = null
+
+        for ( GasolineStation gasolineStation : stations ) {
+
+            def latToCheck = lat
+            def lonToCheck = lon
+
+            def currentDistance = Math.pow( latToCheck - gasolineStation.lat, 2 ) + Math.pow( lonToCheck - gasolineStation.lon, 2 )
+
+            if ( currentDistance < distance ) {
+
+                // found a closer station
+                distance = currentDistance
+                targetGasolineStation = gasolineStation
+            }
+
+        }
+
+
+        return targetGasolineStation
     }
 
 

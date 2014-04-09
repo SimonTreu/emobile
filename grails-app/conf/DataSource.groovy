@@ -5,17 +5,19 @@ dataSource {
     password = ""
 }
 hibernate {
+    /*
     cache.use_second_level_cache = true
     cache.use_query_cache = true
     cache.region.factory_class = 'net.sf.ehcache.hibernate.EhCacheRegionFactory'
     cache.provider_class='org.hibernate.cache.EhCacheProvider'
+    */
 }
 // environment specific settings
 environments {
     development {
         dataSource {
-            // dbCreate = "update" //"create-drop"
-            dbCreate = "create-drop"
+            dbCreate = "update" //"create-drop"
+            //dbCreate = "create-drop"
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/emobilesim"
             username = "emobilesim"
@@ -28,6 +30,7 @@ environments {
             url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
         }
     }
+
     production {
         /*
         dataSource {

@@ -18,7 +18,7 @@ class Simulation {
     static mapping = {
         simulationRoutes lazy: false
         gasolineStations lazy: false
-        cache usage: 'read-write', include: 'non-lazy'
+        // cache usage: 'read-write', include: 'non-lazy'
     }
 
 }

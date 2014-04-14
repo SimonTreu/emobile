@@ -36,7 +36,8 @@
 <%-- <g:javascript src="firebug.js" /> --%>
 
 <script type="text/javascript" src="http://openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-
+<script type="text/javascript" src="http://ol3js.org/en/master/examples/google-map.js"></script>
+    <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
 
 <g:javascript src="application.js" />
 
@@ -76,8 +77,7 @@
         --%>
 
         <div id="map" style="background-color: #eee; width:90%; height:90%; position: absolute; left:5%; top:5%" class="olMap"></div>
-
-
+        <!--<div id="map" style="background-color: #eee; width:90%; height:90%; position: absolute; left:5%; top:5%" class="map"></div>-->
 
 <script type="text/javascript">
 
@@ -182,6 +182,7 @@
 
 
     var mapnik_layer = new OpenLayers.Layer.OSM.Mapnik( "Mapnik" );
+    var mapgoogle_layer = new OpenLayers.Layer.Google( "Google Streets");
 
     vectors = new OpenLayers.Layer.Vector("Vector Layer", {
         styleMap: new OpenLayers.StyleMap({'default':{
@@ -218,7 +219,7 @@
         }
     });
 
-    map.addLayers( [ mapnik_layer, vectors, routesLayer, markers, simulationLayer ] );
+    map.addLayers( [ mapnik_layer, mapgoogle_layer, vectors, routesLayer, markers, simulationLayer ] );
 
 
     map.addControl(new OpenLayers.Control.MousePosition());

@@ -16,7 +16,8 @@
     <g:javascript src="ol/OpenLayers.js" />
 
     <script type="text/javascript" src="http://openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-
+    <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
+    <script type="text/javascript" src="http://ol3js.org/en/master/examples/google-map.js"></script>
     <script type="text/javascript" >
 
 
@@ -93,12 +94,14 @@
 
 
             var mapnik_layer = new OpenLayers.Layer.OSM.Mapnik( "Mapnik" );
+            var mapgoogle_layer = new OpenLayers.Layer.Google("Google Streets");
             // var tah_layer = new OpenLayers.Layer.OSM.Osmarender( "Tiles@Home" );
 
             markers = new OpenLayers.Layer.Markers( "Markers" );
 
             map.addLayer( markers );
             map.addLayer( mapnik_layer );
+            map.addlayer(mapgoogle_layer);
 
             <%--
             map.addLayers( [ mapnik_layer, markers ] );

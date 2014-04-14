@@ -1,41 +1,38 @@
 package de.dfki.gs.model.elements.results
 
+import de.dfki.gs.domain.CarType
+
 /**
  * Created by glenn on 01.04.14.
  */
 class CarAgentResult {
 
 
-    long estimatedTimeForRouteWithoutCharging
-
-    long totalTimeUsed
-
     double energyConsumed
 
 
+    CarType carType
+
+    String carAgentStatus
+
+    double plannedDistance
+    double realDistance
+
+    int targets
+
+    long timeForPlannedDistance
+    long timeForRealDistance
+    long timeForLoading
+
+    long timeForDetour
+    double energyLoaded
+
+    int fillingStationsVisited
+
+    long simulationId
 
 
-    long getEstimatedTimeForRouteWithoutCharging() {
-        return estimatedTimeForRouteWithoutCharging
-    }
 
-    void setEstimatedTimeForRouteWithoutCharging(long estimatedTimeForRouteWithoutCharging) {
-        this.estimatedTimeForRouteWithoutCharging = estimatedTimeForRouteWithoutCharging
-    }
 
-    long getTotalTimeUsed() {
-        return totalTimeUsed
-    }
 
-    void setTotalTimeUsed(long totalTimeUsed) {
-        this.totalTimeUsed = totalTimeUsed
-    }
-
-    double getEnergyConsumed() {
-        return energyConsumed
-    }
-
-    void setEnergyConsumed(double energyConsumed) {
-        this.energyConsumed = energyConsumed
-    }
 }

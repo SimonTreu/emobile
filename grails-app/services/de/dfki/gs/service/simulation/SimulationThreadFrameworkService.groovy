@@ -10,6 +10,7 @@ import de.dfki.gs.model.elements.CarAgent
 import de.dfki.gs.model.elements.EnergyConsumptionModel
 import de.dfki.gs.model.elements.ModelCar
 import de.dfki.gs.model.elements.RoutingPlan
+import de.dfki.gs.model.elements.results.CarAgentResult
 import de.dfki.gs.simulation.CarStatus
 import de.dfki.gs.simulation.SchedulerStatus
 import de.dfki.gs.simulation.SimulationObject
@@ -26,6 +27,7 @@ class SimulationThreadFrameworkService {
 
 
     def grailsApplication
+    def experimentDataService
 
     boolean initialized = false
 
@@ -93,6 +95,7 @@ class SimulationThreadFrameworkService {
                         modelCar,
                         gasolineStationFillingPortions,
                         gasolineStations,
+                        simulationId,
                         35
                 )
 
@@ -390,26 +393,42 @@ class SimulationThreadFrameworkService {
 
     }
 
-
+    /**
+     * should stop all running tasks and collect all results
+     *
+     * @param simulationId
+     * @param sessionId
+     * @return
+     */
     def stopSimulation2( Long simulationId, String sessionId ) {
 
         Map<Long, CarAgent> threadMap = carAgentsForSession.get( sessionId )
+        List<CarAgentResult> carAgentResults = new ArrayList<CarAgentResult>()
+
+        Long experimentRunResultId = null
 
         if ( threadMap ) {
 
             for (  CarAgent task : threadMap.values()  ) {
+
+                carAgentResults.add( task.getCarAgentResult() )
                 task.cancel()
+
             }
 
             statusForSession.put( sessionId, SchedulerStatus.stop )
 
-            log.debug( "simulation stopped for session: ${sessionId}" )
+            log.debug( "simulation stopped for session: ${sessionId} and try to save results" )
+
+
+            experimentRunResultId = experimentDataService.saveExperimentResult( carAgentResults )
+
 
         } else {
             log.error( "no threads found for session: ${sessionId}" )
         }
 
-
+        return experimentRunResultId
     }
 
 

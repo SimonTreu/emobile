@@ -1,6 +1,7 @@
 package de.dfki.gs.model.elements
 
 import com.vividsolutions.jts.geom.Coordinate
+import de.dfki.gs.domain.CarType
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
 import de.dfki.gs.domain.TrackEdge
@@ -49,10 +50,12 @@ class CarAgent extends Thread {
 
     private CarAgentResult carAgentResult
 
-    private Map<GasolineStationType,Double> gasolineStationFillingAmount
+    private Map<String,Double> gasolineStationFillingAmount
 
     private List<GasolineStation> gasolineStations;
 
+
+    long simulationId
 
     boolean canceled = false
     Long interval
@@ -75,6 +78,13 @@ class CarAgent extends Thread {
     double lastStepKm = 0
 
     double kmToDrive = 0;
+
+    long totalTimeNeeded = 0;
+    long timeForLoading = 0;
+    int fillingStationsVisited = 0;
+    double energyLoaded = 0;
+    double energyConsumed = 0;
+
 
     /**
      *  set the timeStampForNextActionAllowed with calculated value of (km/kmh and other issues like traffic, trafficlight)
@@ -99,18 +109,20 @@ class CarAgent extends Thread {
     public static CarAgent createCarAgent(
                     RoutingPlan routingPlan,
                     ModelCar modelCar,
-                    Map<GasolineStationType,Double> gasolineStationFillingAMount,
+                    Map<String,Double> gasolineStationFillingAMount,
                     List<GasolineStation> gasolineStations,
+                    long simulationId,
                     int defaultKmh ) {
 
         CarAgent carAgent = new CarAgent()
         carAgent.routingPlan = routingPlan;
         carAgent.modelCar = modelCar;
         carAgent.gasolineStationFillingAmount = gasolineStationFillingAMount
-        carAgent.carAgentResult = new CarAgentResult();
+
         carAgent.gasolineStations = gasolineStations
         carAgent.currentEdgeIndex = 0;
         carAgent.DEFAULT_KMH = defaultKmh;
+        carAgent.simulationId = simulationId;
 
         // initials
         carAgent.timeStampForNextActionAllowed = 0;
@@ -118,10 +130,22 @@ class CarAgent extends Thread {
         carAgent.interval = 2;
 
         double sumKm = 0;
+        double secondsPlanned = 0;
         for ( TrackEdge trackEdge : routingPlan.trackEdges ) {
+            // v = s/t <-> t = s / v
+            int v = trackEdge.kmh
+            double s = trackEdge.km
+            secondsPlanned += ( s / v ) * 60 * 60
             sumKm += trackEdge.km
         }
         carAgent.kmToDrive = sumKm;
+
+        carAgent.carAgentResult = new CarAgentResult(
+                carType: modelCar.carType,
+                plannedDistance: sumKm,
+                timeForPlannedDistance: Math.ceil( secondsPlanned ),
+                simulationId: simulationId
+        );
 
         return carAgent;
     }
@@ -192,18 +216,33 @@ class CarAgent extends Thread {
 
                 moveCar( currentTimeStamp )
 
-                double batChargePercentage = ( modelCar.getCurrentEnergy() / modelCar.getMaxEnergy() ) * 100
+                if ( currentEdgeIndex == routingPlan.trackEdges.size() ) {
+                    totalTimeNeeded = currentTimeStamp;
+                    carAgentResult.timeForRealDistance = currentTimeStamp
+                    carStatus = CarStatus.MISSION_ACCOMBLISHED;
 
-                if ( batChargePercentage >= modelCar.getRelativeSearchLimit()
-                        && modelCar.getCurrentEnergy() >= modelCar.getAbsoluteSearchLimit() ) {
-
-                    carStatus = CarStatus.DRIVING_FULL
+                    // log.error( "accomblished... ${carStatus}" )
 
                 } else {
 
-                    carStatus = CarStatus.DRIVING_RUNNING_OUT
+                    double batChargePercentage = ( modelCar.getCurrentEnergy() / modelCar.getMaxEnergy() ) * 100
+
+                    if ( batChargePercentage >= modelCar.getRelativeSearchLimit()
+                            && modelCar.getCurrentEnergy() >= modelCar.getAbsoluteSearchLimit() ) {
+
+                        carStatus = CarStatus.DRIVING_FULL
+
+                    } else {
+
+                        carStatus = CarStatus.DRIVING_RUNNING_OUT
+
+                    }
 
                 }
+
+
+
+
 
                 break;
             case CarStatus.DRIVING_RUNNING_OUT:
@@ -214,24 +253,40 @@ class CarAgent extends Thread {
 
                 moveCar( currentTimeStamp )
 
-                double batChargePercentage = ( modelCar.getCurrentEnergy() / modelCar.getMaxEnergy() ) * 100
+                if ( currentEdgeIndex == routingPlan.trackEdges.size() ) {
+                    totalTimeNeeded = currentTimeStamp;
+                    carAgentResult.timeForRealDistance = currentTimeStamp
+                    carStatus = CarStatus.MISSION_ACCOMBLISHED;
 
-                if ( batChargePercentage >= 0 && gasolineStation && onStation() ) {
+                } else {
 
-                    log.error( "fill with: ${gasolineStationFillingAmount.get( gasolineStation.type )}" )
+                    double batChargePercentage = ( modelCar.getCurrentEnergy() / modelCar.getMaxEnergy() ) * 100
 
-                    energyPortionToFill = gasolineStationFillingAmount.get( gasolineStation.type );
+                    if ( batChargePercentage >= 0 && gasolineStation && onStation() ) {
 
-                    carStatus = CarStatus.WAITING_FILLING
+                        log.error( "fill with: ${ (gasolineStationFillingAmount.get( gasolineStation.type.toString() )) / (60*60)}" )
 
-                } else if ( batChargePercentage < 0 ) {
+                        energyPortionToFill = ( gasolineStationFillingAmount.get( gasolineStation.type.toString() ) ) / ( 60 * 60);
 
-                    carStatus = CarStatus.WAITING_EMPTY
+                        carStatus = CarStatus.WAITING_FILLING
+
+                    } else if ( batChargePercentage < 0 ) {
+
+                        carStatus = CarStatus.WAITING_EMPTY
+
+                        //cancel()
+
+                    }
 
                 }
 
+
+
                 break;
             case CarStatus.WAITING_FILLING:
+
+                energyLoaded += energyPortionToFill;
+                timeForLoading++;
 
                 fillCar( energyPortionToFill )
 
@@ -239,6 +294,7 @@ class CarAgent extends Thread {
 
                     modelCar.setCurrentEnergy( modelCar.getMaxEnergy() );
                     carStatus = CarStatus.DRIVING_FULL
+                    fillingStationsVisited++;
 
                 } else {
 
@@ -251,6 +307,12 @@ class CarAgent extends Thread {
 
                 // holdCar( currentTimeStamp )
 
+                break;
+
+            case CarStatus.MISSION_ACCOMBLISHED:
+
+                // log.error( "mission accomblished.." )
+                cancel();
                 break;
 
         }
@@ -286,13 +348,21 @@ class CarAgent extends Thread {
         )
 
 
+
+        log.error( "currentPos: ${currentEdge.toLat} ${currentEdge.toLon}" )
+        log.error( "energy    : ${gasolineStation.lat} ${gasolineStation.lon}" )
+
+
+
+
         // 3.) try to get a route to the next "via_target" or "target"
         //      and build  track-edges-list
         TrackEdge backEdge = null
 
-        for ( int i = currentEdgeIndex; i < routingPlan.trackEdges.size(); i++ ) {
+        int myIndex
+        for ( myIndex = currentEdgeIndex; myIndex < routingPlan.trackEdges.size(); myIndex++ ) {
 
-            TrackEdge edge = routingPlan.trackEdges.get( i )
+            TrackEdge edge = routingPlan.trackEdges.get( myIndex )
 
             if ( backEdge == null
                     && ( edge.type.equals( TrackEdgeType.via_target.toString() ) || edge.type.equals( TrackEdgeType.target.toString() ) ) ) {
@@ -307,10 +377,31 @@ class CarAgent extends Thread {
                 backEdge.toLon
         )
 
+        double toSubstract = 0;
+        for (  int k = currentEdgeIndex ; k < myIndex; k++ ) {
+            toSubstract += routingPlan.trackEdges.get( k ).km
+        }
+
+
         // 4.) get currentEdge++ and append the track-edgeList (directed to the filling station) into simulationObjec.edges
 
         List<TrackEdge> trackEdgesToStation = routeService.convertToUnsavedTrackEdges( routeToEnergy )
         List<TrackEdge> trackEdgesBack = routeService.convertToUnsavedTrackEdges( routeToTarget )
+
+        double lll = 0;
+        for ( TrackEdge eee : trackEdgesToStation ) {
+            lll += eee.km
+        }
+        log.error( "\tneed ${lll} km to energy" )
+
+        log.error( "back to: ${backEdge.toLat} ${backEdge.toLon}" )
+        lll = 0;
+        for ( TrackEdge be : trackEdgesBack ) {
+           lll += be.km
+        }
+        log.error( "\tneed ${lll} km back to next target" )
+
+
 
         double sumToDriveToGasAndBack = 0;
         for ( TrackEdge trackEdge : trackEdgesToStation ) {
@@ -320,6 +411,8 @@ class CarAgent extends Thread {
             sumToDriveToGasAndBack += trackEdge.km;
         }
         kmToDrive += sumToDriveToGasAndBack;
+
+        kmToDrive = kmToDrive - toSubstract;
 
         log.debug( "found routes in ${System.currentTimeMillis() - millis} ms, try to append to route plan" )
 
@@ -351,6 +444,8 @@ class CarAgent extends Thread {
 
         }
 
+        // TODO: clacluate new kmToDrive from updated track-list
+
         log.debug( "successfully appended routes to routplan in ${System.currentTimeMillis() - millis} ms" )
 
         log.debug( "size now is ${routingPlan.trackEdges.size()}" )
@@ -378,12 +473,13 @@ class CarAgent extends Thread {
                 currentKmh = DEFAULT_KMH
             }
 
-            // TODO: think about! maybe it's too early!
-            kmDriven = kmDriven + currentKm;
 
             double km  = currentEdge.km
 
             currentKm = km
+
+            kmDriven = kmDriven + currentKm;
+
 
             // remember old Timestamp
             lastTimeStamp = timeStampForNextActionAllowed
@@ -402,7 +498,8 @@ class CarAgent extends Thread {
              * in kWh
              * calulate new batlevel!!
              */
-            double energyUsed = modelCar.energyUsage( lastStepKm, currentKmh, 20, 1 )
+            double energyUsed = modelCar.energyUsage( km, currentKmh, 20, 1 )
+            energyConsumed += energyUsed;
 
             modelCar.setCurrentEnergy( modelCar.getCurrentEnergy() - energyUsed )
 
@@ -446,6 +543,14 @@ class CarAgent extends Thread {
     }
 
     public void cancel() {
+
+        carAgentResult.realDistance = kmDriven;
+        carAgentResult.energyLoaded = energyLoaded;
+        carAgentResult.timeForLoading = timeForLoading;
+        carAgentResult.timeForDetour = ( carAgentResult.timeForRealDistance - carAgentResult.timeForPlannedDistance ) - timeForLoading
+        carAgentResult.fillingStationsVisited = fillingStationsVisited;
+        carAgentResult.energyConsumed = energyConsumed;
+        carAgentResult.carAgentStatus = carStatus.toString();
 
         /**
          * first, free scheduler from pause status, to let while condition to be checked

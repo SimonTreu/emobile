@@ -112,4 +112,8 @@ class ModelCar {
     void setCurrentEnergy(double currentEnergy) {
         this.currentEnergy = currentEnergy
     }
+
+    CarType getCarType() {
+        return carType
+    }
 }

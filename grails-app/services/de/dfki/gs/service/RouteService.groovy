@@ -14,7 +14,7 @@ import de.dfki.gs.threadutils.CreatePathTask
 import de.dfki.gs.threadutils.NotifyingBlockingThreadPoolExecutor
 import de.dfki.gs.utils.Calculater
 import de.dfki.gs.utils.LatLonPoint
-import grails.plugin.cache.Cacheable
+//import grails.plugin.cache.Cacheable
 import grails.util.Environment
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 import org.geotools.data.DataStore
@@ -33,6 +33,7 @@ import org.geotools.graph.path.Walk
 import org.geotools.graph.path.WrongPathException
 import org.geotools.graph.structure.Graph
 import org.geotools.graph.structure.basic.BasicEdge
+import org.geotools.graph.structure.basic.BasicNode
 import org.geotools.graph.traverse.standard.AStarIterator
 import org.opengis.feature.Feature
 import org.geotools.graph.structure.Edge
@@ -176,7 +177,7 @@ class RouteService {
      * @param graphName
      * @return
      */
-    @Cacheable("osmGraphCache")
+    //@Cacheable("osmGraphCache")
     public Graph getFeatureGraph( String graphName ) {
 
         long millis = System.currentTimeMillis()
@@ -415,8 +416,8 @@ class RouteService {
                         Point startPoint =  (Point) pairList.get( 0 ).getObject();
                         Point targetPoint = (Point) pairList.get( 1 ).getObject();
 
-                        Coordinate currentStart  = new Coordinate( startPoint.x, startPoint.y );
-                        Coordinate currentTarget = new Coordinate( targetPoint.x, targetPoint.y );
+                        Coordinate currentStart  = new Coordinate( startPoint.y, startPoint.x );
+                        Coordinate currentTarget = new Coordinate( targetPoint.y, targetPoint.x );
 
                         List<BasicEdge> pathEdges = calculatePath( currentStart, currentTarget );
 
@@ -518,8 +519,8 @@ class RouteService {
     public List<BasicEdge> routeToTarget( double currentLat, double currentLon, double targetLat, double targetLon ) {
 
         List<BasicEdge> routeToTarget = calculatePath(
-                new Coordinate( currentLon, currentLat ),
-                new Coordinate( targetLon, targetLon )
+                new Coordinate( currentLat, currentLon ),
+                new Coordinate( targetLat, targetLon )
         )
 
         return repairEdges( routeToTarget )
@@ -559,6 +560,8 @@ class RouteService {
         List<BasicEdge> edges = new ArrayList<BasicEdge>();
 
         Graph graph = getFeatureGraph( "osmGraph" )
+
+        BasicNode bnStart = new BasicNode(  );
 
         org.geotools.graph.structure.Node s = findClosestNode( start, graph );
         org.geotools.graph.structure.Node t = findClosestNode( target, graph );
@@ -689,13 +692,15 @@ class RouteService {
         for ( org.geotools.graph.structure.Node node : nodes ) {
             Point p = (Point) node.getObject();
 
-            double d = Calculater.haversine( coordinate.x, coordinate.y, p.x, p.y );
+            double d = Calculater.haversine( coordinate.y, coordinate.x, p.x, p.y );
 
             // double d = getDist( coordinate, p );
 
+            /*
             if ( d == 0 ) {
                 return node
             }
+            */
 
             if ( closest == null || d < minDist ) {
                 minDist = d;

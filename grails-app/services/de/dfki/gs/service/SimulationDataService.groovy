@@ -73,6 +73,25 @@ class SimulationDataService {
     }
 
 
+    def deleteAllFillingStationsOfSimulation( long simulationId, String fillingType ) {
+
+        Simulation simulation = Simulation.get( simulationId )
+
+        if ( simulation ) {
+
+            List<GasolineStation> gasolineStationsToDelete = GasolineStation.findAllBySimulationAndType( simulation, fillingType );
+
+            for ( GasolineStation gasolineStation : gasolineStationsToDelete ) {
+                simulation.removeFromGasolineStations( gasolineStation )
+            }
+
+            if ( !simulation.save( flush: true ) ) {
+                log.error( "failed to save simulation - ${simulation.errors}" )
+            }
+        }
+
+    }
+
     def collectModelForEditSimulation( long simulationId ) {
 
         def m = [ : ]

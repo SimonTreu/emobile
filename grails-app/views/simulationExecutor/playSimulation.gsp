@@ -5,6 +5,7 @@
   Time: 11:00
 --%>
 
+
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html class="js">
 <head>
@@ -300,14 +301,7 @@
 
 <br/>
 
-<%--
-<g:form id="hua" action="getInfo" >
 
-    <input type="hidden" name="sessionId" value="${sessionId}" />
-
-    <g:submitButton name="Get Info" />
-</g:form>
---%>
 
 <canvas id="experimentContainer" width="1200" height="500"></canvas>
 <canvas id="nameContainer" width="1200" height="50"></canvas>
@@ -319,3 +313,4 @@
 <r:layoutResources></r:layoutResources>
 </body>
 </html>
+

@@ -4,6 +4,7 @@ import de.dfki.gs.controller.commands.AddCarTypeAndRouteCommand
 import de.dfki.gs.controller.commands.AddFillingStationCommand
 import de.dfki.gs.controller.commands.CreateSimulationCommand
 import de.dfki.gs.controller.commands.CreateSimulationOnlyCommand
+import de.dfki.gs.controller.commands.DeleteFillingStationCommand
 import de.dfki.gs.controller.commands.SelectSimulationCommand
 import de.dfki.gs.domain.CarType
 import de.dfki.gs.domain.GasolineStation
@@ -54,6 +55,23 @@ class SimulationPreparatorController {
             redirect( action: 'index' )
         }
 
+    }
+
+    def deleteGasolineStations() {
+
+        DeleteFillingStationCommand cmd = new DeleteFillingStationCommand()
+        bindData( cmd, params )
+
+        if ( cmd.validate() && !cmd.hasErrors() ) {
+
+            simulationDataService.deleteAllFillingStationsOfSimulation( cmd.simulationId, cmd.fillingType )
+
+        }
+
+        def m = simulationDataService.collectModelForEditSimulation( cmd.simulationId )
+        m.cmd = cmd
+
+        render view: 'editSimulation', model: m
     }
 
     def addFillingStationInstances() {

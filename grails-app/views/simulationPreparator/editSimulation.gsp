@@ -5,6 +5,8 @@
   Time: 16:28
 --%>
 
+
+
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -64,6 +66,7 @@
             <tr>
                 <td>Filling Station Type</td>
                 <td>Count</td>
+                <td>Delete All</td>
                 <td>Add Instances</td>
                 <td>Submit</td>
             </tr>
@@ -77,6 +80,9 @@
                     <tr>
                         <td>${message( code: 'de.dfki.gs.domain.gasolinestationtype.' + item.key )} </td>
                         <td>${item.value}</td>
+                        <td>
+                            <g:actionSubmit value="Delete" action="deleteGasolineStations" />
+                        </td>
                         <td><g:textField name="count" style="width: 40px"/></td>
                         <td><g:submitButton name="Submit" /></td>
                     </tr>
@@ -106,3 +112,4 @@
 
 </body>
 </html>
+

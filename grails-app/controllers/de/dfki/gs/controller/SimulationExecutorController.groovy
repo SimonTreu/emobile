@@ -6,11 +6,18 @@ import de.dfki.gs.domain.SimulationRoute
 import de.dfki.gs.simulation.SchedulerStatus
 import de.dfki.gs.utils.ResponseConstants
 import grails.converters.JSON
+import org.codehaus.groovy.grails.core.io.ResourceLocator
 import org.codehaus.groovy.grails.web.util.WebUtils
+import org.springframework.core.io.Resource
 
 class SimulationExecutorController {
 
     def simulationThreadFrameworkService
+    def experimentStatsService
+    def generateStatsPictureService
+    ResourceLocator grailsResourceLocator
+
+
 
     def executeExperiment() {
 
@@ -108,14 +115,20 @@ class SimulationExecutorController {
             log.error( "failed to get simulation by id: ${cmd.simulationId} -- ${cmd.errors}" )
         } else {
 
-            simulationThreadFrameworkService.stopSimulation2( cmd.simulationId, sessionId )
+            Long experimentRunResultId = simulationThreadFrameworkService.stopSimulation2( cmd.simulationId, sessionId )
 
-            redirect( controller: 'simulationPreparator', action: 'index' )
+            def m = experimentStatsService.createStats( experimentRunResultId )
 
-            // redirect( controller: 'simulationExecutor', action: '', params: [ simulationId : cmd.simulationId ] )
+            File timeFile = generateStatsPictureService.createDataChartFileForTime( m );
+            File distanceFile = generateStatsPictureService.createDataChartFileForDistance( m );
 
 
+            redirect( controller: 'stats', action: 'showStats', params: [
+                    timeFileUUID : timeFile.getName(),
+                    distanceFileUUID : distanceFile.getName()
+            ] )
         }
+
     }
 
 

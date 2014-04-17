@@ -17,12 +17,20 @@ class SimulationPreparatorController {
     def simulationCollectDataService
     def simulationDataService
 
+    def routeService
+
     def index() {
+
+        log.error( "params: ${params}" )
 
         def m = [ : ]
         List<Simulation> simulations = Simulation.findAll()
 
         m.simulations = simulations;
+
+        if ( params.viewOnly == "true" ) {
+            m.viewOnly = true
+        }
 
         render view: 'index', model: m
     }
@@ -98,12 +106,14 @@ class SimulationPreparatorController {
         if ( cmd.validate() && !cmd.hasErrors() ) {
             // do the fun stuff
             // TODO: try to do it async?
-            simulationDataService.addNCarAndRoutesToSimulation( cmd.simulationId, cmd.carTypeId, cmd.count, cmd.targets )
+            // simulationDataService.addNCarAndRoutesToSimulation( cmd.simulationId, cmd.carTypeId, cmd.count, cmd.targets )
+            simulationDataService.addNCarAndRoutesWithFixedKmToSimulation( cmd.count, cmd.simulationId, cmd.linearDistance, cmd.carTypeId )
 
         }
 
         def m = simulationDataService.collectModelForEditSimulation( cmd.simulationId )
         m.cmd = cmd
+
 
         render view: 'editSimulation', model: m
 

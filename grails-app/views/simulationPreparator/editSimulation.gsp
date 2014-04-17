@@ -37,8 +37,9 @@
             <tr>
                 <td>Car-Type</td>
                 <td>Count</td>
+                <td>Mean Distance [ km ]</td>
                 <td>Add Instances</td>
-                <td>Targets on the Route</td>
+                <td>Linear Distance [ km ]</td>
                 <td>Submit</td>
             </tr>
 
@@ -51,9 +52,13 @@
 
                     <tr>
                         <td>${item.key.name}</td>
-                        <td>${item.value}</td>
+                        <td>${item.value.count}</td>
+                        <td>${item.value.meanDistance}</td>
+
                         <td><g:textField name="count" style="width: 40px" /></td>
-                        <td><g:textField name="targets" style="width: 40px" /></td>
+                        <td><g:select name="linearDistance" from="[50,100,150,200,250,300,350,400,450,500]" /></td>
+
+                        <%-- <td><g:textField name="linearDistance" style="width: 40px" /></td> --%>
                         <td><g:submitButton name="Submit" /></td>
                     </tr>
                 </g:form>
@@ -95,7 +100,7 @@
 
     </div>
 
-    <div id="player" style="width: 40%; float: right">
+    <div id="player" style="width: 40%; position: fixed; top: 100px; right: -20px">
         Execute Experiment
 
         <g:form action="executeExperiment" controller="simulationExecutor">

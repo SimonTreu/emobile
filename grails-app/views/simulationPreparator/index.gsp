@@ -26,23 +26,27 @@
                 <g:submitButton name="Select" value="Select" ></g:submitButton>
             </g:form>
 
-            <!-- create a new simulation -->
-            <p>Create Simulation</p>
-            <g:form controller="simulationPreparator" action="createSimulation">
-                <p>Simulation name: </p>
-                <g:textField name="simulationName" id="simulationName" value="" />
+            <g:if test="${!viewOnly}" >
 
-                <!-- select cars and count per type -->
+                <!-- create a new simulation -->
+                <p>Create Simulation</p>
+                <g:form controller="simulationPreparator" action="createSimulation">
+                    <p>Simulation name: </p>
+                    <g:textField name="simulationName" id="simulationName" value="" />
+
+                    <!-- select cars and count per type -->
 
 
-                <!-- select route types and how many via targets (from..to) -->
+                    <!-- select route types and how many via targets (from..to) -->
 
 
-                <!-- select filling stations -->
+                    <!-- select filling stations -->
 
-                <g:submitButton name="Submit" value="Create" ></g:submitButton>
+                    <g:submitButton name="Submit" value="Create" ></g:submitButton>
 
-            </g:form>
+                </g:form>
+            </g:if>
+
 
         </div>
 

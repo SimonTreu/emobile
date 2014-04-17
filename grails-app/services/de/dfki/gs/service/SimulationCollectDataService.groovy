@@ -6,6 +6,9 @@ import de.dfki.gs.domain.SimulationRoute
 import de.dfki.gs.domain.Track
 import de.dfki.gs.domain.TrackEdge
 import de.dfki.gs.domain.TrackEdgeType
+import grails.async.Promise
+
+import static grails.async.Promises.waitAll
 
 class SimulationCollectDataService {
 
@@ -54,9 +57,8 @@ class SimulationCollectDataService {
      */
     def collectSimulationModelForRendering( Long simulationId, boolean trackAppended = true, boolean carInfos = false ) {
 
-        def millis = System.currentTimeMillis()
-
         def m = [ : ]
+
 
         Simulation simulation = Simulation.read( simulationId )
 
@@ -86,72 +88,83 @@ class SimulationCollectDataService {
             }
             m.gasolineStations = gasolineStations
 
-            // def persistedRouteSimulation = SimulationRoute.findAllBySimulation( simulation )
             def persistedRouteSimulation = simulation.simulationRoutes
-
-            log.debug( "collect data for ${persistedRouteSimulation.size()} simulation routes" )
-
-            millis = System.currentTimeMillis()
 
             def counter = 0;
 
+            /**
+             * collect all trackEdges:
+             */
+            List<Promise> proms = new ArrayList<Promise>()
 
-            long collectMillis = 0
+            List<Long> ids = simulation.simulationRoutes*.id
+
+            log.error( "ids: ${ids}" )
+
+            ids.each { Long l ->
+                def promise = SimulationRoute.async.task {
+
+                    log.error( "fetching for ${l}" )
+
+                    def tes = TrackEdge.withCriteria {
+                        eq( "simulationRouteId", l)
+                    }
+
+                }
+
+                proms.add( promise )
+            }
+
+            def hua = waitAll( proms )
+            def simRouteMap = [ : ]
+            hua.flatten().each { TrackEdge te ->
+
+                def l = simRouteMap.get( te.simulationRouteId )
+
+                if ( l ) {
+                    l << te
+                } else {
+                    def newL = []
+                    newL << te
+                    simRouteMap.put( te.simulationRouteId, newL )
+                }
+
+            }
+
+
 
             for ( SimulationRoute simulationRoute : persistedRouteSimulation ) {
-
-                collectMillis = System.currentTimeMillis()
 
                 def simRouteModel = [ : ]
 
                 simRouteModel.id = simulationRoute.id
-                simRouteModel.trackId = simulationRoute.track.id
+                simRouteModel.trackId = simulationRoute.id
                 simRouteModel.carType = simulationRoute.carType.toString()
                 simRouteModel.initialEnergy = simulationRoute.initialEnergy
                 simRouteModel.initialPersons = simulationRoute.initialPersons
 
                 if ( carInfos ) {
 
-                    simRouteModel.batteryLevel = Math.round( (simulationRoute.initialEnergy / simulationRoute.maxEnergy) * 100 * 100 ) /100
+
+                    // simRouteModel.batteryLevel = Math.round( (simulationRoute.initialEnergy / simulationRoute.maxEnergy) * 100 * 100 ) /100
+                    simRouteModel.batteryLevel = 100
                     simRouteModel.currentEnergyUsed = 0
                     simRouteModel.currentPrice = 0
 
                 }
 
-                log.debug( "trivia information for simulation route ${simulationRoute.id} took ${(System.currentTimeMillis()-collectMillis)} ms" )
-
-                collectMillis = System.currentTimeMillis()
-
-                List<TrackEdge> trackEdgeList = simulationRoute.track.edges
-                List<TrackEdge> persistedEdgeList = new ArrayList<TrackEdge>()
-
-                if ( trackAppended ) {
-                    log.debug( "collecting track edges from db" )
-                    long coEMillis = System.currentTimeMillis()
-
-                    persistedEdgeList = TrackEdge.findAllBySimulationRouteId( simulationRoute.id )
 
 
-                    // persistedEdgeList = TrackEdge.findAllByIdInList( trackEdgeList*.id )
-
-                    /*
-                    for ( TrackEdge ee : trackEdgeList ) {
-                        persistedEdgeList.add( TrackEdge.read( ee.id ) )
-                    }
-                    */
-
-                    log.debug( "..collecting ${persistedEdgeList.size()} trackEdges took ${(System.currentTimeMillis()-coEMillis)} ms" )
-                }
+                List<TrackEdge> persistedEdgeList = new ArrayList<TrackEdge>( (List<TrackEdge>) simRouteMap.get( simulationRoute.id ) )
 
                 if ( trackAppended ) {
                     simRouteModel.edges = persistedEdgeList
                 }
-                log.debug( "append easy tracks for simulation route ${simulationRoute.id} took ${(System.currentTimeMillis()-collectMillis)} ms" )
+
 
                 def route = [];
                 def vias = [];
 
-                collectMillis = System.currentTimeMillis()
                 if ( trackAppended ) {
 
                     for ( TrackEdge edge : persistedEdgeList ) {
@@ -179,7 +192,7 @@ class SimulationCollectDataService {
                     simRouteModel.vias = vias
                     simRouteModel.route = route
                 }
-                log.debug( "full track infos for simulation route ${simulationRoute.id} took ${(System.currentTimeMillis()-collectMillis)} ms" )
+
 
                 if ( counter%1 == 0 ) {
                     log.debug( "added ${++counter} simulation routes yet.." )
@@ -188,10 +201,6 @@ class SimulationCollectDataService {
                 routes << simRouteModel;
 
             }
-
-
-
-            log.debug( "collection data for simulation routes took ${(System.currentTimeMillis() - millis)} ms" )
 
             m.routes = routes
         }

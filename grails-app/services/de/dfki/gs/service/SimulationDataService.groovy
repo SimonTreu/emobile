@@ -5,6 +5,7 @@ import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
 import de.dfki.gs.domain.Simulation
 import de.dfki.gs.domain.SimulationRoute
+import de.dfki.gs.domain.TrackEdge
 import grails.transaction.Transactional
 
 @Transactional
@@ -13,6 +14,30 @@ class SimulationDataService {
     def routeService
 
 
+
+    def addNCarAndRoutesWithFixedKmToSimulation( long routeCount, Long simulationId, double fixedKm, long carTypeId ) {
+
+        Simulation simulation = Simulation.get( simulationId )
+        CarType carType = CarType.get( carTypeId )
+
+        if ( simulation && carType ) {
+
+            def countBefore = SimulationRoute.countBySimulationAndCarType( simulation, carType );
+            def expected = countBefore + routeCount
+
+            def countAfter = countBefore;
+            while ( countAfter < expected ) {
+
+                // routeService.createRandomRoutes( expected - countAfter, simulationId, targetsCount, carTypeId )
+
+                routeService.createRandomFixedDistanceRoutes( expected - countAfter, simulationId, fixedKm, carTypeId )
+
+                countAfter = SimulationRoute.countBySimulationAndCarType( simulation, carType );
+            }
+
+        }
+
+    }
 
     /**
      * adds count new cars with routes (with targetsCount targets) and carType to simulation with simulationId
@@ -107,8 +132,36 @@ class SimulationDataService {
         def carTypes = CarType.findAll();
         def carTypesCars = [ : ]
         carTypes.each { CarType carType ->
+
             def carsPerCarType = SimulationRoute.countBySimulationAndCarType( simulation, carType )
-            carTypesCars.put( carType, carsPerCarType )
+
+            Double sumOfKm = SimulationRoute.findAllBySimulationAndCarType( simulation, carType ).sum { SimulationRoute route ->
+                route.plannedDistance
+            }
+            /*
+            double kms = 0;
+            List<SimulationRoute> simulationRoutes = SimulationRoute.findAllBySimulationAndCarType( simulation, carType )
+            for ( SimulationRoute simulationRoute : simulationRoutes ) {
+
+                List<TrackEdge> edges = simulationRoute.track.edges
+                for ( TrackEdge edge : edges ) {
+                    kms+=edge.km
+                }
+
+            }
+
+            def meanDistance = kms / carsPerCarType
+            */
+            def pp = [ : ]
+            pp.count = carsPerCarType
+            if ( carsPerCarType != null && carsPerCarType > 0 ) {
+                pp.meanDistance = ( Math.round(  ( sumOfKm / carsPerCarType ) ) )
+            } else {
+                pp.meanDistance = 0
+            }
+
+
+            carTypesCars.put( carType, pp )
         }
 
         m.carTypeCars = carTypesCars

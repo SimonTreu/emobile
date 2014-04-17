@@ -13,7 +13,8 @@ class AddCarTypeAndRouteCommand {
     long simulationId
     long carTypeId
     long count
-    long targets
+    // long targets
+    double linearDistance
 
     static constraints = {
         simulationId ( nullable: false, validator: { val,obj  ->
@@ -30,7 +31,8 @@ class AddCarTypeAndRouteCommand {
 
         count ( nullable: false, blank: false, matches: '\\d+' )
 
-        targets ( nullable: false, blank: false, matches: '\\d+' )
+        // targets ( nullable: false, blank: false, matches: '\\d+' )
+        linearDistance( nullable: false, blank: false, matches: '\\d+' )
     }
 
 }

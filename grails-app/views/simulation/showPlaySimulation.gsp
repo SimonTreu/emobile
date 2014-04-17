@@ -157,7 +157,7 @@
             pointRadius: 2,
             pointerEvents: "visiblePainted",
 // label with \n linebreaks
-            label : "\$\{speed\} km/h\n\$\{kmDriven\} km \n\$\{batteryLevel\} %\n\$\{currentEnergyUsed\} kW\n\$\{currentPrice\} EUR",
+            //label : "\$\{speed\} km/h\n\$\{kmDriven\} km \n\$\{batteryLevel\} %\n\$\{currentEnergyUsed\} kW\n\$\{currentPrice\} EUR",
             fontColor: "${favColor}",
             fontSize: "10px",
             fontFamily: "Courier New, monospace",
@@ -244,7 +244,7 @@
     /**
      * the request interval in ms
      */
-    var interval = 100;
+    var interval = 1000;
 
     simulationId = ${simulationId};
     <g:each var="route" in="${routes}" >

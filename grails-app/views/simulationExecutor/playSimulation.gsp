@@ -91,9 +91,14 @@
             type: "POST",
             success: function( data ) {
 
-                var info = data[ 'info' ]
+                var info = data[ 'info' ];
 
-                drawCarInfos( info )
+                var cars = info[ 'cars' ];
+                var stations = info[ 'stations' ]
+
+                drawCarInfos( cars );
+
+                drawStationInfos( stations );
 
 
                 // $( '#speedInfo').html( speed );
@@ -105,6 +110,60 @@
 
             }
         });
+
+    }
+
+    function drawStationInfos( info ) {
+
+        var canvas = document.getElementById('stationsContainer');
+        var stationCount = info.length;
+
+        var spaceForStation = 1200 / stationCount;
+
+        if ( canvas.getContext ) {
+            var ctx = canvas.getContext('2d');
+            ctx.clearRect ( 0 , 0 , 400 , 500 );
+
+            for ( var dp = 0; dp < stationCount; dp++ ) {
+
+                var station = info[ dp ];
+
+
+                if ( station[ 'status' ] == "IN_USE" ) {
+                    // red
+                    ctx.fillStyle="rgba(255, 0, 0, 1.0)";
+                } else {
+                    ctx.fillStyle="rgba(0,255,0,1.0)";
+                }
+
+                // upperLeft.x, upperLeft.y, width, height
+                ctx.fillRect( dp * spaceForStation, 0, spaceForStation, 40 );
+
+                ctx.stroke();
+
+            }
+
+            for ( var dp = 0; dp < stationCount; dp++ ) {
+
+                ctx.beginPath();
+                ctx.font = "12px sans-serif ";
+                ctx.fillStyle = "black";
+                for (var tx = 0; tx < stationCount; tx++) {
+
+                    var station = info[ tx ];
+
+                    var personalId = station[ 'personalId' ]
+
+                    ctx.fillText( personalId, tx * spaceForStation, 10 );
+
+                }
+                ctx.stroke();
+            }
+
+
+        }
+
+
 
     }
 
@@ -305,6 +364,7 @@
 
 <canvas id="experimentContainer" width="1200" height="500"></canvas>
 <canvas id="nameContainer" width="1200" height="50"></canvas>
+<canvas id="stationsContainer" width="1200" height="40"></canvas>
 
 
 <g:render template="/layouts/footer" />

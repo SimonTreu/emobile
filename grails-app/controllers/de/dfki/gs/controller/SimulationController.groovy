@@ -22,6 +22,9 @@ class SimulationController {
     def simulationCollectDataService
     def simulationThreadFrameworkService
 
+    def experimentStatsService
+    def generateStatsPictureService
+
     def routeService
 
     AsyncSimulationFrameworkService asyncSimulationFrameworkService
@@ -120,7 +123,7 @@ class SimulationController {
 
             } else if ( simulationThreadFrameworkService.getSchedulerStatus( sessionId ) == SchedulerStatus.init ) {
 
-                simulationThreadFrameworkService.runSimulation( sessionId )
+                simulationThreadFrameworkService.runSimulation2( sessionId )
                 log.debug( "started simulation" )
 
                 /*
@@ -151,17 +154,25 @@ class SimulationController {
             log.error( "failed to get simulation by id: ${cmd.simulationId} -- ${cmd.errors}" )
         } else {
 
-            simulationThreadFrameworkService.stopSimulation( cmd.simulationId, sessionId )
+            Long experimentRunResultId = simulationThreadFrameworkService.stopSimulation2( cmd.simulationId, sessionId )
 
-            // def m = simulationCollectDataService.collectSimulationModelForRendering( cmd.simulationId )
+            def m = experimentStatsService.createStats( experimentRunResultId )
 
-            // simulationThreadFrameworkService.init( cmd.simulationId, null )
+            File fillingStationUsageFile = generateStatsPictureService.createDataChartFileForFillingStationUsage( m );
+            File timeFile = generateStatsPictureService.createDataChartFileForTime( m );
+            File distanceFile = generateStatsPictureService.createDataChartFileForDistance( m );
 
-            redirect( controller: 'simulation', action: 'viewSimulation', params: [ simulationId : cmd.simulationId ] )
-            // render view: 'showPlaySimulation', model: m
 
-
+            redirect( controller: 'stats', action: 'showStats', params: [
+                    timeFileUUID : timeFile.getName(),
+                    distanceFileUUID : distanceFile.getName(),
+                    fillingFileUUID : fillingStationUsageFile?.getName(),
+                    carsCount : m.carTypes.get( 0 )?.count,
+                    countTargetReached : m.carTypes.get( 0 )?.countTargetReached,
+                    simulationTime : m.fillingTypes.get( 0 )?.timeLivingList?.get( 0 )
+            ] )
         }
+
     }
 
     def pauseSimulation() {
@@ -294,21 +305,12 @@ class SimulationController {
             json.each{
 
                 long simulationRouteId = it.simulationRouteId
-                def route = simulationThreadFrameworkService.getCarInfos( simulationRouteId, sessionId )
+                def route = simulationThreadFrameworkService.getCarInfos2( simulationRouteId, sessionId )
 
                 String featureId = it.featureId
 
                 route.featureId = featureId
 
-                // LatLonPoint currentPos = simulationFrameworkService.getPositionForSimulationRoute( simulationRouteId )
-                /*
-                if ( currentPos ) {
-                    route.lon = currentPos.y
-                    route.lat = currentPos.x
-                } else {
-                    route.info = "no data"
-                }
-                */
 
                 info << route
             }

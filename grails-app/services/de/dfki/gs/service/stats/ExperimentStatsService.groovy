@@ -58,11 +58,39 @@ class ExperimentStatsService {
 
         def carTypes = []
 
+        def fillingTypes = []
+
         if ( experimentRunResult ) {
+
+
+            def allFillingTypes = [ : ]
+            allFillingTypes.type = "all"
+            allFillingTypes.timeInUseList = experimentRunResult.persistedFillingStationResults*.timeInUse
+            allFillingTypes.timeLivingList = experimentRunResult.persistedFillingStationResults*.timeLiving
+
+            fillingTypes << allFillingTypes
+
+
+
+
 
             m.countTargetReached = experimentRunResult.persistedCarAgentResults.count { PersistedCarAgentResult result ->
                 result.carStatus.equals( CarStatus.MISSION_ACCOMBLISHED.toString() )
             }
+
+            def allTypes = [ : ]
+            allTypes.carType = "all"
+            allTypes.count = experimentRunResult.carTypeCounts.sum { it.countValue }
+            allTypes.countTargetReached = experimentRunResult.persistedCarAgentResults.count {
+                it.carStatus.equals( CarStatus.MISSION_ACCOMBLISHED.toString() )
+            }
+            allTypes.kmDrivenList = experimentRunResult.persistedCarAgentResults*.realDistance
+            allTypes.plannedDistanceList = experimentRunResult.persistedCarAgentResults*.plannedDistance
+            allTypes.realTimeUsedList = experimentRunResult.persistedCarAgentResults*.timeForRealDistance
+            allTypes.plannedTimeUsedList = experimentRunResult.persistedCarAgentResults*.timeForPlannedDistance
+            allTypes.timeForLoadingList = experimentRunResult.persistedCarAgentResults*.timeForLoading
+
+            carTypes << allTypes;
 
             experimentRunResult.carTypeCounts.each { CarTypeCount carTypeCount ->
 
@@ -98,6 +126,8 @@ class ExperimentStatsService {
                 carTypes << carType
             }
             m.carTypes = carTypes
+
+            m.fillingTypes = fillingTypes
 
         }
 

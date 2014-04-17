@@ -8,14 +8,16 @@ import de.dfki.gs.domain.stats.CarTypeCount
 import de.dfki.gs.domain.stats.ExperimentRunResult
 import de.dfki.gs.domain.stats.FillingStationTypeCount
 import de.dfki.gs.domain.stats.PersistedCarAgentResult
+import de.dfki.gs.domain.stats.PersistedFillingStationResult
 import de.dfki.gs.model.elements.results.CarAgentResult
+import de.dfki.gs.model.elements.results.EFillingStationAgentResult
 import grails.transaction.Transactional
 
 @Transactional
 class ExperimentDataService {
 
 
-    public long saveExperimentResult( List<CarAgentResult> carAgentResults ) {
+    public long saveExperimentResult( List<CarAgentResult> carAgentResults, List<EFillingStationAgentResult> fillingAgentResults ) {
 
         Long simulationId;
         int targetCount = 0;
@@ -63,6 +65,27 @@ class ExperimentDataService {
             } else {
 
                 experimentRunResult.addToPersistedCarAgentResults( persistedCarAgentResult );
+
+            }
+
+        }
+
+        for ( EFillingStationAgentResult result : fillingAgentResults ) {
+
+
+            PersistedFillingStationResult persistedFillingStationResult = new PersistedFillingStationResult(
+                    timeInUse: result.timeInUse,
+                    timeLiving: result.simulationTime,
+                    gasolineStationType: result.gasolineStationType
+            )
+
+            if ( !persistedFillingStationResult.save( flush: true ) ) {
+
+                log.error( "failed to save persistedFillingStationResult - ${persistedFillingStationResult.errors}" )
+
+            } else {
+
+                experimentRunResult.addToPersistedFillingStationResults( persistedFillingStationResult )
 
             }
 

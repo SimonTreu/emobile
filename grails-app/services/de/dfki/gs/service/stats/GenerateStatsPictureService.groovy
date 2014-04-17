@@ -18,12 +18,40 @@ import java.awt.Font
 @Transactional
 class GenerateStatsPictureService {
 
+    public File createDataChartFileForFillingStationUsage( m ) {
+
+        final BoxAndWhiskerCategoryDataset dataset = createTimeSampleFillingStationDataset( m );
+
+        final CategoryAxis xAxis = new CategoryAxis("Filling station type");
+        final NumberAxis yAxis = new NumberAxis("time in [ h ]");
+        yAxis.setAutoRangeIncludesZero(false);
+        final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
+        renderer.setFillBox(false);
+        renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
+        final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
+
+        final JFreeChart chart = new JFreeChart(
+                "Time Usage of Filling Stations",
+                new Font("SansSerif", Font.BOLD, 14),
+                plot,
+                true
+        );
+
+
+        final ChartRenderingInfo info = new ChartRenderingInfo( new StandardEntityCollection() );
+        UUID uuid = UUID.randomUUID();
+        final File file = new File( "/tmp/emobile-time-filling-stats-${uuid}.png" );
+        ChartUtilities.saveChartAsPNG( file, chart, 1300, 700, info );
+
+        return file;
+
+    }
 
     public File createDataChartFileForTime( m ) {
         final BoxAndWhiskerCategoryDataset dataset = createTimeSampleDataset( m );
 
         final CategoryAxis xAxis = new CategoryAxis("Car Type");
-        final NumberAxis yAxis = new NumberAxis("Value");
+        final NumberAxis yAxis = new NumberAxis("time in [ h ]");
         yAxis.setAutoRangeIncludesZero(false);
         final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
         renderer.setFillBox(false);
@@ -50,7 +78,7 @@ class GenerateStatsPictureService {
         final BoxAndWhiskerCategoryDataset dataset = createDistanceSampleDataset( m );
 
         final CategoryAxis xAxis = new CategoryAxis("Car Type");
-        final NumberAxis yAxis = new NumberAxis("Value");
+        final NumberAxis yAxis = new NumberAxis("distance in [ km ]");
         yAxis.setAutoRangeIncludesZero(false);
         final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
         renderer.setFillBox(false);
@@ -130,6 +158,25 @@ class GenerateStatsPictureService {
 
     }
 
+    private static BoxAndWhiskerCategoryDataset createTimeSampleFillingStationDataset( m ) {
+
+        final DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
+
+        m.fillingTypes.each { fillingType ->
+
+            List<Long> realTimeUsed = new ArrayList<Long>()
+            fillingType.timeInUseList.each { Long d ->
+                realTimeUsed <<  Math.round( ( d / ( 60 * 60 ) ) )
+            }
+
+            dataset.add( (List) realTimeUsed , "time used" , "All" )
+
+        }
+
+        return dataset;
+
+    }
+
     private static BoxAndWhiskerCategoryDataset createTimeSampleDataset( m ) {
 
         // series per category
@@ -142,9 +189,23 @@ class GenerateStatsPictureService {
 
         m.carTypes.each { carTypeGroup ->
 
-            dataset.add( (List) carTypeGroup.realTimeUsedList , "real time used" , (String) carTypeGroup.carType )
-            dataset.add( (List) carTypeGroup.plannedTimeUsedList , "planned distance driven" , (String) carTypeGroup.carType )
-            dataset.add( (List) carTypeGroup.timeForLoadingList , "time for loading" , (String) carTypeGroup.carType )
+            List<Long> realTimeUsed = new ArrayList<Long>()
+            carTypeGroup.realTimeUsedList.each { Long d ->
+                realTimeUsed <<  Math.round( ( d / ( 60 * 60 ) ) )
+            }
+            List<Long> plannedTimeUsed = new ArrayList<Long>()
+            carTypeGroup.plannedTimeUsedList.each { Long d ->
+                plannedTimeUsed <<  Math.round( ( ( d / ( 60 * 60 ) ) ) )
+            }
+            List<Long> timeForLoading = new ArrayList<Long>()
+            carTypeGroup.timeForLoadingList.each { Long d ->
+                timeForLoading <<  Math.round( ( d / ( 60 * 60 ) ) )
+            }
+
+            // dataset.add( (List) carTypeGroup.realTimeUsedList , "real time used" , (String) carTypeGroup.carType )
+            dataset.add( (List) realTimeUsed , "real time used" , (String) carTypeGroup.carType )
+            dataset.add( (List) plannedTimeUsed , "planned time" , (String) carTypeGroup.carType )
+            dataset.add( (List) timeForLoading , "loading time" , (String) carTypeGroup.carType )
 
         }
 

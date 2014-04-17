@@ -119,13 +119,18 @@ class SimulationExecutorController {
 
             def m = experimentStatsService.createStats( experimentRunResultId )
 
+            File fillingStationUsageFile = generateStatsPictureService.createDataChartFileForFillingStationUsage( m );
             File timeFile = generateStatsPictureService.createDataChartFileForTime( m );
             File distanceFile = generateStatsPictureService.createDataChartFileForDistance( m );
 
 
             redirect( controller: 'stats', action: 'showStats', params: [
                     timeFileUUID : timeFile.getName(),
-                    distanceFileUUID : distanceFile.getName()
+                    distanceFileUUID : distanceFile.getName(),
+                    fillingFileUUID : fillingStationUsageFile?.getName(),
+                    carsCount : m.carTypes.get( 0 )?.count,
+                    countTargetReached : m.carTypes.get( 0 )?.countTargetReached,
+                    simulationTime : m.fillingTypes.get( 0 )?.timeLivingList?.get( 0 )
             ] )
         }
 

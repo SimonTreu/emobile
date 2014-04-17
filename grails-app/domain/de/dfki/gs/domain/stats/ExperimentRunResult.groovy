@@ -13,6 +13,7 @@ class ExperimentRunResult {
 
     List<PersistedCarAgentResult> persistedCarAgentResults
 
+    List<PersistedFillingStationResult> persistedFillingStationResults
 
     /**
      * counts of filling stations
@@ -28,7 +29,8 @@ class ExperimentRunResult {
     static hasMany = [
             fillingStationTypeCounts : FillingStationTypeCount,
             carTypeCounts : CarTypeCount,
-            persistedCarAgentResults : PersistedCarAgentResult
+            persistedCarAgentResults : PersistedCarAgentResult,
+            persistedFillingStationResults : PersistedFillingStationResult
     ]
 
 

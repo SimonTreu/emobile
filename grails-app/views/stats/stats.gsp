@@ -18,6 +18,15 @@
 
 <body>
 
+${countTargetReached} of ${carsCount} reached their targets ( ${percentageReached} % success )
+
+Simulation Time: ${simulationTime} h
+
+<g:if test="${fillingStationFileUUID != null}">
+    <img class="stats" src="${createLink( controller:'stats', action:'showStatsFile', params: [ fileUUID : fillingStationFileUUID ] ) }" />
+</g:if>
+
+
 <g:if test="${timeFileUUID != null}">
     <img class="stats" src="${createLink( controller:'stats', action:'showStatsFile', params: [ fileUUID : timeFileUUID ] ) }" />
 </g:if>

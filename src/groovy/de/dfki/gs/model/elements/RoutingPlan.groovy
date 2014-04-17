@@ -33,7 +33,10 @@ class RoutingPlan {
             plan.endPoint = new LatLonPoint( trackEdges.get( trackEdges.size() - 1 ).toLat, trackEdges.get( trackEdges.size() - 1 ).toLon );
 
             for ( TrackEdge trackEdge : trackEdges ) {
-                fetchedTrackEdges.add( TrackEdge.get( trackEdge.id ) )
+
+                // fetchedTrackEdges.add( TrackEdge.get( trackEdge.id ) )
+                fetchedTrackEdges.add( trackEdge )
+
             }
 
         }

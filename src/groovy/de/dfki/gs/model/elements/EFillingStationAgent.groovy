@@ -1,5 +1,6 @@
 package de.dfki.gs.model.elements
 
+import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
 import de.dfki.gs.model.elements.results.EFillingStationAgentResult
 
@@ -14,26 +15,67 @@ import de.dfki.gs.model.elements.results.EFillingStationAgentResult
  * it also contains the usage result
  *
  */
-class EFillingStationAgent {
+class EFillingStationAgent extends Agent {
 
-    private GasolineStationType gasolineStationType
+    private String gasolineStationType
 
     private EFillingStationAgentResult eFillingStationAgentResult
 
+    private FillingStationStatus fillingStationStatus;
 
+    // in kW per second
+    Double fillingPortion
+
+
+    long timeInUse = 0;
 
 
     private EFillingStationAgent() {}
 
-    public static EFillingStationAgent createFillingStationAgent( GasolineStationType type ) {
+    public static EFillingStationAgent createFillingStationAgent( GasolineStation station ) {
 
         EFillingStationAgent agent = new EFillingStationAgent();
-        agent.eFillingStationAgentResult = new EFillingStationAgentResult();
-        agent.gasolineStationType = type;
+
+        agent.eFillingStationAgentResult = new EFillingStationAgentResult( gasolineStationType: station.type );
+        agent.gasolineStationType = station.type;
+        agent.fillingStationStatus = FillingStationStatus.FREE;
+        agent.fillingPortion = station.fillingPortion
 
         return agent;
     }
 
 
 
+    @Override
+    def step(long currentTime) {
+
+        if ( fillingStationStatus.equals( FillingStationStatus.IN_USE ) ) {
+            timeInUse++;
+        }
+
+    }
+
+    @Override
+    def finish() {
+
+        eFillingStationAgentResult.timeInUse = timeInUse
+        eFillingStationAgentResult.simulationTime = currentTime
+
+    }
+
+    synchronized FillingStationStatus getFillingStationStatus() {
+        return fillingStationStatus
+    }
+
+    void setFillingStationStatus(FillingStationStatus fillingStationStatus) {
+
+        synchronized ( getClass() ) {
+            this.fillingStationStatus = fillingStationStatus
+        }
+
+    }
+
+    EFillingStationAgentResult geteFillingStationAgentResult() {
+        return eFillingStationAgentResult
+    }
 }

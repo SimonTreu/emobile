@@ -64,14 +64,14 @@ grails.project.dependency.resolution = {
 
         runtime 'mysql:mysql-connector-java:5.1.26'
 
-        build "org.geotools:gt-shapefile:8-SNAPSHOT"
-        build "org.geotools:gt-swing:8-SNAPSHOT"
-        build "org.geotools:gt-epsg-hsql:8-SNAPSHOT"
-        build "org.geotools.jdbc:gt-jdbc-postgis:8-SNAPSHOT"
-        build "org.geotools:gt-jdbc:8-SNAPSHOT"
-        build "org.geotools:gt-graph:8-SNAPSHOT"
+        runtime "org.geotools:gt-shapefile:8-SNAPSHOT"
+        runtime "org.geotools:gt-swing:8-SNAPSHOT"
+        runtime "org.geotools:gt-epsg-hsql:8-SNAPSHOT"
+        runtime "org.geotools.jdbc:gt-jdbc-postgis:8-SNAPSHOT"
+        runtime "org.geotools:gt-jdbc:8-SNAPSHOT"
+        runtime "org.geotools:gt-graph:8-SNAPSHOT"
 
-        build( "org.jfree:jfreechart:1.0.17" ) {
+        runtime( "org.jfree:jfreechart:1.0.17" ) {
             excludes "xml-apis", "servlet-api", "junit"
         }
         //compile ""

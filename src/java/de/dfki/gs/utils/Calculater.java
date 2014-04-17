@@ -36,7 +36,11 @@ public class Calculater {
         // berlin: lon: 13, lat: 52
         double hua = Calculater.haversine(  13.2698116 ,52.6051089,  13.273795, 52.5999223);
 
-        System.err.println( hua );
+        // 1, 0, 0.00915836, 52.4792848, 13.6184218, 22079, 0.2747508, 30, 1, Hegelstraße, 52.4773083, 13.6159872, start
+
+        double hua2 = Calculater.haversine( 13.6184218 ,52.4792848 ,13.6159872 , 52.4773083);
+
+        System.err.println( hua2 );
     }
 
 }

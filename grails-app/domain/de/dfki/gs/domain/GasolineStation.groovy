@@ -5,6 +5,9 @@ class GasolineStation {
     String name
     String type
 
+    // filling portion per second!
+    Double fillingPortion
+
     /**
      * Berlin: lat: 52, lon: 13
      */

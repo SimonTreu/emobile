@@ -352,6 +352,11 @@ class RouteService {
 
     public List<List<org.geotools.graph.structure.Node>> createViaNodesWithFixedKm( long routeCount, double fixedKm ) {
 
+        /**
+         * TODO: 1.152 is a correction value to fix the error in haversine
+         */
+        fixedKm = fixedKm * 1.152
+
         List<List<org.geotools.graph.structure.Node>> routeStartTargetsList = new ArrayList<List<org.geotools.graph.structure.Node>>()
         for ( long i = 0; i < routeCount; i++ ) {
 
@@ -376,9 +381,9 @@ class RouteService {
                         ((Point) targetNode.getObject()).y
                 )
 
-                if ( havSums + havNodeRunnerTargetNode > ( fixedKm * 1.1 ) ) {
+                if ( havSums + havNodeRunnerTargetNode > ( fixedKm * 1.01 ) ) {
                     // skip runnerNode, it is to far away
-                } else if ( havSums + havNodeRunnerTargetNode < ( fixedKm * 0.9 ) ) {
+                } else if ( havSums + havNodeRunnerTargetNode < ( fixedKm * 0.99 ) ) {
                     // take it
                     // log.error( "dist -- ${havNodeRunnerTargetNode} from ${((Point) nodeRunner.getObject()).x} : ${((Point) nodeRunner.getObject()).y}  to ${((Point) targetNode.getObject()).x} : ${((Point) targetNode.getObject()).y}" )
 
@@ -407,14 +412,16 @@ class RouteService {
 
     public void createRandomFixedDistanceRoutes( long routeCount, Long simulationId, double fixedKm, long carTypeId ) {
 
+        long millisAll = System.currentTimeMillis()
+
         List<List<org.geotools.graph.structure.Node>> routeStartTargetsList = createViaNodesWithFixedKm( routeCount, fixedKm );
 
         // initialized with size of routeStartTargetsList
         List<List<List<BasicEdge>>> routesToPersist = Collections.synchronizedList( new ArrayList<ArrayList<List<BasicEdge>>>() );
         // ArrayBlockingQueue<List<List<BasicEdge>>> routesToPersist = new ArrayBlockingQueue<ArrayList<List<BasicEdge>>>( routeStartTargetsList.size() )
 
-        int poolSize = 128;      // the count of currently paralellized threads
-        int queueSize = 256;    // recommended - twice the size of the poolSize
+        int poolSize = 32;      // the count of currently paralellized threads
+        int queueSize = 64;    // recommended - twice the size of the poolSize
         int threadKeepAliveTime = 15;
         TimeUnit threadKeepAliveTimeUnit = TimeUnit.SECONDS;
         int maxBlockingTime = 10;

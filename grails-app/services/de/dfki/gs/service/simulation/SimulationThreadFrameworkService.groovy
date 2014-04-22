@@ -16,6 +16,7 @@ import de.dfki.gs.model.elements.RoutingPlan
 import de.dfki.gs.model.elements.results.CarAgentResult
 import de.dfki.gs.model.elements.results.EFillingStationAgentResult
 import de.dfki.gs.service.ExperimentDataService
+import de.dfki.gs.service.FetchTrackEdgeServiceTask
 import de.dfki.gs.simulation.CarStatus
 import de.dfki.gs.simulation.SchedulerStatus
 import de.dfki.gs.simulation.SimulationObject
@@ -26,6 +27,7 @@ import de.dfki.gs.threadutils.ThreadPoolExecutorUtils
 import grails.async.Promise
 import grails.gorm.DetachedCriteria
 import org.hibernate.FetchMode
+import org.hibernate.annotations.Fetch
 
 import javax.persistence.FetchType
 
@@ -114,22 +116,84 @@ class SimulationThreadFrameworkService {
         List<Long> ids = simulation.simulationRoutes*.id
 
         log.error( "ids: ${ids}" )
+        def simRouteMap = [ : ]
 
-        ids.each { Long l ->
-            def promise = SimulationRoute.async.task {
+        /*
+        NotifyingBlockingThreadPoolExecutor executor = ThreadPoolExecutorUtils.createThreadPoolExecutor( 90 );
+        List<FetchTrackEdgeServiceTask> tasks = new ArrayList<FetchTrackEdgeServiceTask>()
+        for ( long id : ids ) {
+            tasks.add( new FetchTrackEdgeServiceTask(
+                    id
+            ) )
+        }
 
-                log.error( "fetching for ${l}" )
+        for ( FetchTrackEdgeServiceTask task : tasks ) {
+            executor.execute( task )
+        }
 
-                def tes = TrackEdge.withCriteria {
-                    eq( "simulationRouteId", l)
+        ThreadPoolExecutorUtils.waiting( executor )
+
+
+        for( Runnable r : executor.getRunnables() ) {
+
+            long simRouteId = ((FetchTrackEdgeServiceTask) r).simulationRouteId
+            List<TrackEdge> trackEdges = ((FetchTrackEdgeServiceTask)r).trackEdgeList
+
+            simRouteMap.put( simRouteId, trackEdges )
+        }
+        */
+
+        // split into portions of 100
+        def idCounter = 0;
+        def toMax = ids.size() - 1;
+        def localTo = idCounter + 99;
+
+        while ( simRouteMap.size() != ids.size() ) {
+
+            if ( localTo > toMax ) {
+                localTo = toMax
+            }
+
+            log.error( "from ${idCounter} to ${localTo}" )
+
+            ids[ idCounter..localTo ].each { Long l ->
+                def promise = SimulationRoute.async.task {
+
+                    log.error( "fetching for ${l}" )
+
+                    def tes = TrackEdge.withCriteria {
+                        eq( "simulationRouteId", l)
+                    }
+
+                }
+
+                proms.add( promise )
+            }
+
+            def hua = waitAll( proms )
+
+            idCounter += 100;
+            localTo = idCounter + 99;
+
+            hua.flatten().each { TrackEdge te ->
+
+                def l = simRouteMap.get( te.simulationRouteId )
+
+                if ( l ) {
+                    l << te
+                } else {
+                    def newL = []
+                    newL << te
+                    simRouteMap.put( te.simulationRouteId, newL )
                 }
 
             }
 
-            proms.add( promise )
         }
 
-        def hua = waitAll( proms )
+
+        /*
+
 
 
 
@@ -140,20 +204,9 @@ class SimulationThreadFrameworkService {
         log.error( "...." )
 
 
-        def simRouteMap = [ : ]
-        hua.flatten().each { TrackEdge te ->
 
-            def l = simRouteMap.get( te.simulationRouteId )
 
-            if ( l ) {
-                l << te
-            } else {
-                def newL = []
-                newL << te
-                simRouteMap.put( te.simulationRouteId, newL )
-            }
-
-        }
+        */
 
         log.error( "filled track map in ${(System.currentTimeMillis()-m1)} ms" )
         m1 = System.currentTimeMillis()

@@ -20,6 +20,8 @@ class SimulationDataService {
         Simulation simulation = Simulation.get( simulationId )
         CarType carType = CarType.get( carTypeId )
 
+        long millis = System.currentTimeMillis()
+
         if ( simulation && carType ) {
 
             def countBefore = SimulationRoute.countBySimulationAndCarType( simulation, carType );
@@ -36,6 +38,8 @@ class SimulationDataService {
             }
 
         }
+
+        log.error( "found ${routeCount} routes in ${(System.currentTimeMillis()-millis)} ms" )
 
     }
 

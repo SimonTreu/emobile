@@ -130,7 +130,8 @@ class SimulationExecutorController {
                     fillingFileUUID : fillingStationUsageFile?.getName(),
                     carsCount : m.carTypes.get( 0 )?.count,
                     countTargetReached : m.carTypes.get( 0 )?.countTargetReached,
-                    simulationTime : m.fillingTypes.get( 0 )?.timeLivingList?.get( 0 )
+                    simulationTime : m.fillingTypes.get( 0 )?.timeLivingList?.get( 0 ),
+                    experimentResultId : experimentRunResultId
             ] )
         }
 

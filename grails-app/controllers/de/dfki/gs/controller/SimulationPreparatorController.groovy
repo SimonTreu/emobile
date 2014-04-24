@@ -6,6 +6,7 @@ import de.dfki.gs.controller.commands.CreateSimulationCommand
 import de.dfki.gs.controller.commands.CreateSimulationOnlyCommand
 import de.dfki.gs.controller.commands.DeleteFillingStationCommand
 import de.dfki.gs.controller.commands.SelectSimulationCommand
+import de.dfki.gs.controller.commands.ShowExperimentResultCommand
 import de.dfki.gs.domain.CarType
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
@@ -16,6 +17,8 @@ class SimulationPreparatorController {
 
     def simulationCollectDataService
     def simulationDataService
+    def experimentStatsService
+    def generateStatsPictureService
 
     def routeService
 
@@ -129,6 +132,10 @@ class SimulationPreparatorController {
 
             def m = simulationDataService.collectModelForEditSimulation( cmd.selectedSimulationId )
 
+            def results = simulationDataService.collectResults( cmd.selectedSimulationId )
+
+            m.results = results
+
             render view: 'editSimulation', model: m
         } else {
             redirect( action: 'index' )
@@ -136,5 +143,40 @@ class SimulationPreparatorController {
 
     }
 
+    def showResult() {
+
+        log.error( "params: ${params}" )
+
+        ShowExperimentResultCommand cmd = new ShowExperimentResultCommand()
+        bindData( cmd, params )
+
+        if ( cmd.validate() && !cmd.hasErrors() ) {
+            // do it
+
+            def m = experimentStatsService.createStats( cmd.resultId )
+
+            File fillingStationUsageFile = generateStatsPictureService.createDataChartFileForFillingStationUsage( m );
+            File timeFile = generateStatsPictureService.createDataChartFileForTime( m );
+            File distanceFile = generateStatsPictureService.createDataChartFileForDistance( m );
+
+
+            redirect( controller: 'stats', action: 'showStats', params: [
+                    timeFileUUID : timeFile.getName(),
+                    distanceFileUUID : distanceFile.getName(),
+                    fillingFileUUID : fillingStationUsageFile?.getName(),
+                    carsCount : m.carTypes.get( 0 )?.count,
+                    countTargetReached : m.carTypes.get( 0 )?.countTargetReached,
+                    simulationTime : m.fillingTypes.get( 0 )?.timeLivingList?.get( 0 ),
+                    experimentResultId : cmd.resultId
+            ] )
+
+
+        } else {
+            log.error( "no result found for ${params.resultId} -- ${cmd.errors}" )
+        }
+
+
+
+    }
 
 }

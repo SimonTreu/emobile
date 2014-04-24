@@ -22,6 +22,49 @@ ${countTargetReached} of ${carsCount} reached their targets ( ${percentageReache
 
 Simulation Time: ${simulationTime} h
 
+<table border="0" style="width: 30%" >
+
+    <tr>
+        <th>Car Type</th>
+        <th>Count</th>
+        <th>Target reached</th>
+    </tr>
+
+    <g:each in="${carTypes}" var="carType">
+
+        <tr>
+            <td>${carType.key}</td>
+            <td>${carType.value.count}</td>
+            <td>${carType.value.targetReached}</td>
+        </tr>
+
+    </g:each>
+
+</table>
+
+<table border="0" style="width: 30%" >
+
+    <tr>
+        <th>Filling Station</th>
+        <th>Count</th>
+        <th>Count Used</th>
+        <th>Time in Use [h]</th>
+    </tr>
+    <g:each in="${fillingStations}" var="fillStation">
+
+        <tr>
+            <td>${message( code: 'de.dfki.gs.domain.gasolinestationtype.' + fillStation.key )}</td>
+            <td>${fillStation.value.count}</td>
+            <td>${fillStation.value.countUsed}</td>
+            <td>${fillStation.value.usage}</td>
+        </tr>
+
+    </g:each>
+
+
+</table>
+
+
 <g:if test="${fillingStationFileUUID != null}">
     <img class="stats" src="${createLink( controller:'stats', action:'showStatsFile', params: [ fileUUID : fillingStationFileUUID ] ) }" />
 </g:if>

@@ -35,12 +35,12 @@
         <table border="0" style="width: 100%" >
 
             <tr>
-                <td>Car-Type</td>
-                <td>Count</td>
-                <td>Mean Distance [ km ]</td>
-                <td>Add Instances</td>
-                <td>Linear Distance [ km ]</td>
-                <td>Submit</td>
+                <th>Car-Type</th>
+                <th>Count</th>
+                <th>Mean Distance [ km ]</th>
+                <th>Add Instances</th>
+                <th>Linear Distance [ km ]</th>
+                <th>Submit</th>
             </tr>
 
             <g:each in="${carTypeCars}" var="item">
@@ -69,11 +69,11 @@
 
         <table border="0" style="width: 100%">
             <tr>
-                <td>Filling Station Type</td>
-                <td>Count</td>
-                <td>Delete All</td>
-                <td>Add Instances</td>
-                <td>Submit</td>
+                <th>Filling Station Type</th>
+                <th>Count</th>
+                <th>Delete All</th>
+                <th>Add Instances</th>
+                <th>Submit</th>
             </tr>
 
             <g:each in="${gasolineStationTypesStations}" var="item">
@@ -109,6 +109,24 @@
             <g:submitButton name="Execute"/>
 
         </g:form>
+
+    </div>
+
+    <div id="resultSelect" style="width: 40%; position: fixed; top: 300px; right: -20px">
+        Select Result
+
+        <g:if test="${results != null && results.size() > 0}">
+
+            <g:form action="showResult" controller="simulationPreparator">
+
+                <g:select name="resultId" from="${results}"/>
+
+                <g:submitButton name="Show"/>
+
+            </g:form>
+
+        </g:if>
+
 
     </div>
 

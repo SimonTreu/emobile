@@ -39,6 +39,7 @@ import org.opengis.feature.Feature
 import org.geotools.graph.structure.Edge
 import org.springframework.context.ApplicationContext
 
+import java.text.DecimalFormat
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.Callable
 import java.util.concurrent.TimeUnit
@@ -278,27 +279,32 @@ class RouteService {
 
         switch ( fillingType ) {
             case GasolineStationType.AC_2_3KW.toString() :
-                fillingPortion = 0.000638;
+                fillingPortion = 2.3 / (60*60);
                 break;
             case GasolineStationType.AC_3_7KW.toString() :
-                fillingPortion = 0.001027;
+                fillingPortion = 3.7 / (60*60);
                 break;
-            case GasolineStationType.AC_11KW.toString() :
-                fillingPortion = 0.00305;
+            case GasolineStationType.AC_7_4KW.toString() :
+                fillingPortion = 4.7 / (60*60);
                 break;
-            case GasolineStationType.AC_22KW.toString() :
-                fillingPortion = 0.0061;
+            case GasolineStationType.AC_11_1KW.toString() :
+                fillingPortion = 11.1 / (60*60);
+                break;
+            case GasolineStationType.AC_22_2KW.toString() :
+                fillingPortion = 22.2 / (60*60);
                 break;
             case GasolineStationType.AC_43KW.toString() :
-                fillingPortion = 0.01194;
+                fillingPortion = 43 / (60*60);
                 break;
-            case GasolineStationType.DC_50KW.toString() :
-                fillingPortion = 0.0138;
+            case GasolineStationType.DC_49_8KW.toString() :
+                fillingPortion = 49.8 / (60*60);
                 break;
             default:
                 fillingPortion = 0.000638;
                 break;
         }
+
+        fillingPortion  = Math.round( fillingPortion  * 1000000 ) / 1000000
 
         // lat = y
         GasolineStation gasolineStation = new GasolineStation(
@@ -410,6 +416,138 @@ class RouteService {
         return routeStartTargetsList;
     }
 
+    public List<BasicEdge> calculatePathFromNodes( org.geotools.graph.structure.Node s, org.geotools.graph.structure.Node t ) {
+
+        Path path = null;
+
+        List<BasicEdge> edges = new ArrayList<BasicEdge>();
+
+        Graph graph = getFeatureGraph( "osmGraph" )
+
+        AStarIterator.AStarFunctions functions = new AStarIterator.AStarFunctions( t ) {
+
+            /**
+             * should return the real costs for getting from n1 to n2
+             *
+             * @param n1
+             * @param n2
+             * @return
+             */
+            public double cost(AStarIterator.AStarNode n1, AStarIterator.AStarNode n2) {
+
+                // TODO: implement a good cost function which is made for electricity
+
+                Edge edge = n1.getNode().getEdge( n2.node )
+                SimpleFeatureImpl feature = (SimpleFeatureImpl) edge.getObject()
+
+                Double o = (Double) feature.getAttribute( "km" )
+                if ( o && o >= 0 ) {
+
+                } else {
+                    o = 0.1
+                }
+
+                // Double o = (Double) feature.getAttribute( "cost" )
+
+                // now lets weight the "km" with maximum speed, to prefer Stadtautobahn
+                Integer speed = (Integer) feature.getAttribute( "kmh" );
+
+                if ( speed && speed > 0 ) {
+
+                } else {
+                    speed = 30
+                }
+
+
+                Double costs = 7 * o;
+                if ( speed <= 30 ) {
+                    costs = 6 * o;
+                } else if ( speed > 30 && speed < 80 ) {
+                    costs = 3 * o;
+                } else if ( speed >= 80 ) {
+                    costs = 1 * o;
+                }
+
+                // Double costs = ( Math.pow( 100/speed, 2) ) * o
+
+
+                // the real cost until now + real costs from n1 to n2
+                // return n1.getG() + o;
+                return costs
+            }
+
+            /**
+             * providing haversine distance with multiplied speed as a heuristic
+             *
+             * @param n
+             * @return
+             */
+            public double h( org.geotools.graph.structure.Node n ) {
+
+                Point from = (Point) n.getObject();
+                Point to = (Point) t.getObject();
+
+                // multiplied by 1 because of weighting the distance with speed...
+                // for not overestimating we take 1
+                double hav = Calculater.haversine( from.x, from.y, to.x, to.y );
+                // log.error( "from ${from.x} : ${from.y}  to: ${to.x} : ${to.y}   -> hav: ${hav}" )
+                /**
+                 * 6:     appr 30 km/h
+                 * 1.152: fix error of hav
+                 */
+                return 6 * hav * 1.152;
+
+                // return getDist( from, to );
+                // return getManhatten( from, to );
+            }
+
+        };
+
+
+        AStarShortestPathFinder pf = new AStarShortestPathFinder( graph, s, t,   functions );
+
+        pf.calculate();
+        pf.finish();
+
+//find some destinations to calculate paths to
+
+        // Node target = QuickStart.findClosest( new Coordinate( 0.1, 0.1 ), graph );
+
+
+
+//calculate the paths
+
+
+        try {
+            path = pf.getPath();
+            //path.riterator().next()
+
+            org.geotools.graph.structure.Node previous = null;
+            org.geotools.graph.structure.Node node = null;
+            if ( path != null ) {
+
+                for ( Iterator ritr = path.riterator(); ritr.hasNext(); ) {
+
+                    node = ( org.geotools.graph.structure.Node ) ritr.next();
+                    if ( previous != null ) {
+                        // adding the edge between them into vector
+                        edges.add( node.getEdge( previous ) )
+
+                    }
+                    previous = node
+
+                }
+
+            }
+        } catch (  Exception e  ) {
+            log.error( "failed to get path from astar algorithm", e )
+        }
+
+
+        return edges;
+
+    }
+
     public void createRandomFixedDistanceRoutes( long routeCount, Long simulationId, double fixedKm, long carTypeId ) {
 
         long millisAll = System.currentTimeMillis()
@@ -455,15 +593,11 @@ class RouteService {
 
                     List<List<BasicEdge>> multiTargetRoute = new ArrayList<List<BasicEdge>>()
 
-                    // find route from element to element and assign to routesToPersist
-                    // def pairs = routeStartTargetList.collate( 2, 1, false );
-
-                    //log.error( "pairs: ${pairs}" )
-
                     boolean pathBroken = false
 
                     for ( List<org.geotools.graph.structure.Node> pairList : pairs ) {
 
+                        /*
                         Point startPoint =  (Point) pairList.get( 0 ).getObject();
                         Point targetPoint = (Point) pairList.get( 1 ).getObject();
 
@@ -471,12 +605,16 @@ class RouteService {
                         Coordinate currentTarget = new Coordinate( targetPoint.y, targetPoint.x );
 
                         List<BasicEdge> pathEdges = calculatePath( currentStart, currentTarget );
+                        */
+
+                        List<BasicEdge> pathEdges = calculatePathFromNodes( pairList.get( 0 ), pairList.get( 1 ) )
 
                         /**
                          * if this happens, all the routes are worthless
                          */
                         if ( pathEdges.size() == 0 ) {
-                            log.error( "path is broken !!" )
+                            // log.error( "path is broken !! from ${currentStart.y} : ${currentStart.x}  to  ${currentTarget.y} : ${currentTarget.x}" )
+                            log.error( "path broken.. from: ${pairList.get( 0 ).toString()}  to: ${pairList.get( 1 ).toString()}" )
                             pathBroken = true
                             // return
                         } else {
@@ -952,6 +1090,7 @@ class RouteService {
 
         try {
             path = pf.getPath();
+            //path.riterator().next()
 
             org.geotools.graph.structure.Node previous = null;
             org.geotools.graph.structure.Node node = null;

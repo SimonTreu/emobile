@@ -6,6 +6,7 @@ import de.dfki.gs.domain.GasolineStationType
 import de.dfki.gs.domain.Simulation
 import de.dfki.gs.domain.SimulationRoute
 import de.dfki.gs.domain.TrackEdge
+import de.dfki.gs.domain.stats.ExperimentRunResult
 import grails.transaction.Transactional
 
 @Transactional
@@ -119,6 +120,17 @@ class SimulationDataService {
             }
         }
 
+    }
+
+    def collectResults( long simulationId ) {
+
+        def resultList = []
+
+        List<ExperimentRunResult> results = ExperimentRunResult.findAllBySimulationId( simulationId )
+
+        results.each { resultList << it.id }
+
+        return resultList
     }
 
     def collectModelForEditSimulation( long simulationId ) {

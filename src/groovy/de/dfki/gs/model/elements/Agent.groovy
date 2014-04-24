@@ -17,6 +17,8 @@ abstract class Agent extends Thread {
 
     boolean canceled = false
 
+    long startTime
+
     long currentTime = 0
 
     Long interval = 2
@@ -35,29 +37,27 @@ abstract class Agent extends Thread {
     @Override
     public void run() {
 
-        // log.error( "started running thread: ${this.id}" )
-
         status = SchedulerStatus.play
 
         while( status != SchedulerStatus.finished && !canceled ) {
 
-            /**
-             * this can pause the thread
-             */
-            /*
-            synchronized ( this ) {
-                while ( status == SchedulerStatus.pause ) {
-                    try {
-                        wait();
-                    } catch (Exception e) {
-                        log.error( "cannot wait status is ${status}", e )
-                    }
-                }
-            }
-            */
-
             // the hard goes here!
-            step( currentTime )
+            if ( currentTime > startTime ) {
+
+                step( currentTime )
+
+            } else if ( currentTime == startTime ) {
+
+                log.error( "now start ${this.id}.." )
+                step( currentTime )
+
+
+            } else {
+
+                // log.error( "${this.id} has to wait: time: ${currentTime}  , but start at: ${startTime}" )
+
+            }
+
 
             currentTime++
 
@@ -67,6 +67,7 @@ abstract class Agent extends Thread {
                  * TODO: check this: time-sync every 300s ( 5min )
                   */
                 if ( !canceled && currentTime%300 == 0 ) {
+
                     barrier.await()
                     // log.error( "pId: ${personalId} - current time: ${this.id} : ${currentTime}" )
                 }

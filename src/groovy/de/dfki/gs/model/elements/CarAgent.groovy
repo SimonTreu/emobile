@@ -1,16 +1,12 @@
 package de.dfki.gs.model.elements
 
-import com.vividsolutions.jts.geom.Coordinate
 import com.vividsolutions.jts.geom.Point
-import de.dfki.gs.domain.CarType
 import de.dfki.gs.domain.GasolineStation
-import de.dfki.gs.domain.GasolineStationType
 import de.dfki.gs.domain.TrackEdge
 import de.dfki.gs.domain.TrackEdgeType
 import de.dfki.gs.model.elements.results.CarAgentResult
 import de.dfki.gs.service.RouteService
 import de.dfki.gs.simulation.CarStatus
-import de.dfki.gs.simulation.SchedulerStatus
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
@@ -56,8 +52,6 @@ class CarAgent extends Agent {
 
     private CarAgentResult carAgentResult
 
-    private Map<String,Double> gasolineStationFillingAmount
-
     private List<GasolineStation> gasolineStations;
 
 
@@ -97,7 +91,7 @@ class CarAgent extends Agent {
      * when the currentTimestamp of scheduler is "meeting" timeStampForNextActionAllowed, the action goes on
      * id initially set by -> simulationObject.startTime
      */
-    long timeStampForNextActionAllowed = 0
+    long timeStampForNextActionAllowed
     long lastTimeStamp
 
     TrackEdge currentEdge
@@ -108,22 +102,20 @@ class CarAgent extends Agent {
      *
      * @param routingPlan
      * @param modelCar
-     * @param gasolineStationFillingAMount
      * @return carAgent
      */
     public static CarAgent createCarAgent(
                     RoutingPlan routingPlan,
                     ModelCar modelCar,
-                    Map<String,Double> gasolineStationFillingAMount,
                     ConcurrentMap<Long, EFillingStationAgent> fillingStationsMap,
                     List<GasolineStation> gasolineStations,
                     long simulationId,
-                    int defaultKmh ) {
+                    int defaultKmh,
+                    long startTime ) {
 
         CarAgent carAgent = new CarAgent()
         carAgent.routingPlan = routingPlan;
         carAgent.modelCar = modelCar;
-        carAgent.gasolineStationFillingAmount = gasolineStationFillingAMount
         carAgent.fillingStationsMap = fillingStationsMap
 
         carAgent.gasolineStations = gasolineStations
@@ -132,8 +124,10 @@ class CarAgent extends Agent {
         carAgent.simulationId = simulationId;
 
         // initials
-        carAgent.timeStampForNextActionAllowed = 0;
+        carAgent.timeStampForNextActionAllowed = startTime;
         carAgent.carStatus = CarStatus.DRIVING_FULL;
+
+        carAgent.startTime = startTime
 
         double sumKm = 0;
         double secondsPlanned = 0;
@@ -164,6 +158,11 @@ class CarAgent extends Agent {
 
     def step( long currentTimeStamp ) {
 
+        if ( startTime > 0 && startTime == currentTime ) {
+            log.error( "${this.id} belated thread: time: ${currentTime}" )
+        }
+
+
         switch ( carStatus ) {
 
             case CarStatus.DRIVING_FULL:
@@ -171,8 +170,8 @@ class CarAgent extends Agent {
                 moveCar( currentTimeStamp )
 
                 if ( currentEdgeIndex == routingPlan.trackEdges.size() ) {
-                    totalTimeNeeded = currentTimeStamp;
-                    carAgentResult.timeForRealDistance = currentTimeStamp
+                    totalTimeNeeded = currentTimeStamp - startTime;
+                    carAgentResult.timeForRealDistance = currentTimeStamp - startTime
                     carStatus = CarStatus.MISSION_ACCOMBLISHED;
 
                     // log.error( "accomblished... ${carStatus}" )
@@ -208,8 +207,8 @@ class CarAgent extends Agent {
                 moveCar( currentTimeStamp )
 
                 if ( currentEdgeIndex == routingPlan.trackEdges.size() ) {
-                    totalTimeNeeded = currentTimeStamp;
-                    carAgentResult.timeForRealDistance = currentTimeStamp
+                    totalTimeNeeded = currentTimeStamp - startTime;
+                    carAgentResult.timeForRealDistance = currentTimeStamp - startTime
                     carStatus = CarStatus.MISSION_ACCOMBLISHED;
 
                 } else {
@@ -220,7 +219,9 @@ class CarAgent extends Agent {
 
                         // log.error( "fill with: ${ (gasolineStationFillingAmount.get( gasolineStation.type.toString() )) / (60*60)}" )
 
-                        energyPortionToFill = ( gasolineStationFillingAmount.get( gasolineStation.type.toString() ) ) / ( 60 * 60);
+                        // energyPortionToFill = ( gasolineStationFillingAmount.get( gasolineStation.type.toString() ) ) / ( 60 * 60);
+                        energyPortionToFill = fillingStationsMap.get( gasolineStation.id )?.fillingPortion
+
 
                         carStatus = CarStatus.WAITING_FILLING
 
@@ -249,7 +250,11 @@ class CarAgent extends Agent {
                 energyLoaded += energyPortionToFill;
                 timeForLoading++;
 
+                /**
+                 * TODO: maybe better to fill in one step and jump over time
+                 */
                 fillCar( energyPortionToFill )
+
 
                 if ( modelCar.getCurrentEnergy() >= modelCar.getMaxEnergy() ) {
 
@@ -445,7 +450,10 @@ class CarAgent extends Agent {
                         }
 
                         // repair type of last trackEdgesBack to via_target
-                        trackEdgesBack.get( trackEdgesBack.size() - 1 ).type = TrackEdgeType.via_target
+                        if ( trackEdgesBack.size() > 0 ) {
+                            trackEdgesBack.get( trackEdgesBack.size() - 1 ).type = TrackEdgeType.via_target
+                        }
+
 
                         // shift in at position currentEdgeIndex+1 both routes tracksToStation and trackBackToRoute
                         routingPlan.trackEdges.addAll( currentEdgeIndex+1, trackEdgesToStation )
@@ -538,6 +546,7 @@ class CarAgent extends Agent {
         }
 
     }
+
 
     private void fillCar( double energyPortion ) {
 

@@ -75,15 +75,6 @@ class SimulationThreadFrameworkService {
 
 
 
-        Map<String, Double> gasolineStationFillingPortions = new HashMap<String, Double>()
-        gasolineStationFillingPortions.put( GasolineStationType.AC_2_3KW.toString(), 2.3 );
-        gasolineStationFillingPortions.put( GasolineStationType.AC_3_7KW.toString(), 3.7 );
-        gasolineStationFillingPortions.put( GasolineStationType.AC_11KW.toString(), 11 );
-        gasolineStationFillingPortions.put( GasolineStationType.AC_22KW.toString(), 22 );
-        gasolineStationFillingPortions.put( GasolineStationType.AC_43KW.toString(), 43 );
-        gasolineStationFillingPortions.put( GasolineStationType.DC_50KW.toString(), 50 );
-
-
         ConcurrentMap<Long, EFillingStationAgent> fillingStationMap = new ConcurrentHashMap<Long, EFillingStationAgent>()
 
         long mmm = System.currentTimeMillis();
@@ -211,6 +202,13 @@ class SimulationThreadFrameworkService {
         log.error( "filled track map in ${(System.currentTimeMillis()-m1)} ms" )
         m1 = System.currentTimeMillis()
 
+
+        /**
+         * distribute all routes to an interval of 0..(60*60*4) -> 4h
+         */
+        long intervalStep =  Math.floor( ( 60 * 60 * 4 ) / simulation.simulationRoutes.size() )
+        long runningStartTime = 0;
+
         for ( SimulationRoute simulationRoute : simulation.simulationRoutes ) {
 
             if ( simulationRoute ) {
@@ -228,15 +226,16 @@ class SimulationThreadFrameworkService {
                 CarAgent carAgent = CarAgent.createCarAgent(
                         routingPlan,
                         modelCar,
-                        gasolineStationFillingPortions,
                         fillingStationMap,
                         gasolineStations,
                         simulationId,
-                        35
+                        35,
+                        runningStartTime
                 )
 
                 threadMap.put( simulationRoute.id, carAgent )
 
+                runningStartTime += intervalStep
             }
 
         }

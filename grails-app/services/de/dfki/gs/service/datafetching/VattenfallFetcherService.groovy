@@ -57,7 +57,7 @@ class VattenfallFetcherService {
                             lat: Double.parseDouble( latitude),
                             lon: Double.parseDouble( longitude ),
                             streetName: javaScriptSlurperVattenfall.'Strasse + Nr'.get(i),
-                            type: GasolineStationType.AC_3_7KW.toString(),
+                            type: GasolineStationType.AC_7_4KW.toString(),
                             fillingPortion: 0.002056
                     )
 

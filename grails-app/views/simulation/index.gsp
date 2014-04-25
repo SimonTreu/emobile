@@ -21,6 +21,8 @@
                 <g:select name="selectedSimulationId" from="${availableSimulations}" optionKey="id" optionValue="name" value="${selectedSimulationId}" ></g:select>
                 <g:submitButton name="Select" value="Select" ></g:submitButton>
             </g:form>
+
+            <%--
             <p>Create Simulation</p>
             <g:form controller="simulation" action="create">
                 <p>Simulation name: </p>
@@ -36,6 +38,7 @@
                 <g:submitButton name="Submit" value="Save" ></g:submitButton>
 
             </g:form>
+            --%>
 
         </div>
         <div class="d2">

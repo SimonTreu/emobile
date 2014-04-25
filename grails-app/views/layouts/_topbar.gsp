@@ -14,7 +14,7 @@
             </li>
             --%>
             <li>
-                <g:link controller="simulation" action="init">Configure old Simulation</g:link>
+                <g:link controller="simulation" action="init">Simulation on Map</g:link>
             </li>
 
             <li>
@@ -22,7 +22,7 @@
             </li>
 
             <li>
-                <g:link controller="fnord" view="index">Play Simulation</g:link>
+                <g:link controller="simulationPreparator" action="index" params="[ viewOnly : 'true' ]" view="index">Start Experiment</g:link>
             </li>
         </ul>
 

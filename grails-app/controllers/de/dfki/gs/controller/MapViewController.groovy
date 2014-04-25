@@ -143,7 +143,7 @@ class MapViewController {
         data.currentZoom = json.currentZoom;
 
         // could be either a gasoline station or a route start point
-        cmd.startPoint = new LatLonPoint( x: json.startPoint.x, y: json.startPoint.y )
+        cmd.startPoint = new LatLonPoint( json.startPoint.x, json.startPoint.y )
 
         // in any case we have a simulation id! if not, it should fail!
         cmd.simulationId = json.simulationId
@@ -156,7 +156,7 @@ class MapViewController {
 
             json.destinationPoints.each {
 
-                destinations << new LatLonPoint( x: it.x, y: it.y )
+                destinations << new LatLonPoint( it.x, it.y )
 
             }
 
@@ -170,7 +170,7 @@ class MapViewController {
             Simulation simulation = Simulation.get( cmd.simulationId )
             SimulationRoute simulationRoute = new SimulationRoute(
                     simulation: simulation,
-                    carType: CarType.audi.toString(),
+                    carType: CarType.get( 1 ),
                     initialPersons: 1,
                     initialEnergy: 400d,
                     energyDrain: grailsApplication.config.energyConfig.batteryDrain,
@@ -245,8 +245,7 @@ class MapViewController {
 
             data.routes << route;
 
-            Track track = routeService.persistRoute( simulationRoute, multiTargetRoute );
-            data.trackId = track.id;
+            simulationRoute = routeService.persistRoute( simulationRoute, multiTargetRoute );
 
             data.showTrackInfoLink = g.createLink( controller: 'mapView', action: 'showTrackInfo', params: [ trackId: data.trackId ] )
 

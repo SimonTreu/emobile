@@ -8,9 +8,10 @@ public enum GasolineStationType {
 
     AC_2_3KW,   // AC with 2.3 kwH
     AC_3_7KW,   // ...
-    AC_11KW,
-    AC_22KW,
+    AC_7_4KW,
+    AC_11_1KW,
+    AC_22_2KW,
     AC_43KW,
-    DC_50KW
+    DC_49_8KW
 
 }

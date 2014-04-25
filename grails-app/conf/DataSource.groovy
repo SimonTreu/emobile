@@ -17,7 +17,7 @@ environments {
     development {
         dataSource {
             dbCreate = "update" //"create-drop"
-            //dbCreate = "create-drop"
+            // dbCreate = "create-drop"
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/emobilesim"
             username = "emobilesim"
@@ -47,15 +47,15 @@ environments {
             username = "root"
             password = "reldb00"
             pooled = true
-            properties {
+            properties = {
                maxActive = 500
-               minEvictableIdleTimeMillis=1800000
-               timeBetweenEvictionRunsMillis=1800000
-               numTestsPerEvictionRun=3
-               testOnBorrow=true
-               testWhileIdle=true
-               testOnReturn=true
-               validationQuery="SELECT 1"
+               minEvictableIdleTimeMillis = 1800000
+               timeBetweenEvictionRunsMillis = 1800000
+               numTestsPerEvictionRun = 3
+               testOnBorrow = true
+               testWhileIdle = true
+               testOnReturn = true
+               validationQuery = "SELECT 1"
             }
         }
 

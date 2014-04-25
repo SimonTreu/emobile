@@ -5,6 +5,9 @@ package de.dfki.gs.model.elements.results
  */
 class EFillingStationAgentResult {
 
+    long timeInUse;
+    long simulationTime;
 
+    String gasolineStationType
 
 }

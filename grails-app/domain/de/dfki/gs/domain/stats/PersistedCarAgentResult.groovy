@@ -1,19 +1,15 @@
-package de.dfki.gs.model.elements.results
+package de.dfki.gs.domain.stats
 
 import de.dfki.gs.domain.CarType
+import de.dfki.gs.simulation.CarStatus
 
-/**
- * Created by glenn on 01.04.14.
- */
-class CarAgentResult {
+class PersistedCarAgentResult {
 
 
     double energyConsumed
 
-
     CarType carType
-
-    String carAgentStatus
+    String carStatus
 
     double plannedDistance
     double realDistance
@@ -24,15 +20,15 @@ class CarAgentResult {
     long timeForRealDistance
     long timeForLoading
 
+
     long timeForDetour
     double energyLoaded
 
     int fillingStationsVisited
 
-    long simulationId
 
 
-
-
-
+    static constraints = {
+        carStatus ( nullable: false, blank: false, inList: CarStatus.values()*.toString() )
+    }
 }

@@ -19,7 +19,7 @@ import java.util.concurrent.locks.ReentrantLock
 class NotifyingBlockingThreadPoolExecutor extends ThreadPoolExecutor {
 
     private List<Runnable> runnables = new ArrayList<Runnable>();
-
+    private int runnablesCount = 0;
     /**
      * Counts the number of current tasks in process
      */
@@ -120,6 +120,7 @@ class NotifyingBlockingThreadPoolExecutor extends ThreadPoolExecutor {
         super.afterExecute(r, t);
 
         runnables.add( r );
+        runnablesCount++;
         // synchronizing on the pool (and actually all its threads)
         // the synchronization is needed to avoid more than one signal if two or more
         // threads decrement almost together and come to the if with 0 tasks together
@@ -173,8 +174,8 @@ class NotifyingBlockingThreadPoolExecutor extends ThreadPoolExecutor {
      * feeding the TreadPool with tasks (calling execute).
      * The safe way to call this method is from the thread that is calling execute
      * and when there is only one such thread.
-     * Note that this method differs from awaitTemination, as it can be called
-     * without shutting down the ThreadPoolExecuter.
+     * Note that this method differs from awaitTermination, as it can be called
+     * without shutting down the ThreadPoolExecutor.
      * @throws InterruptedException when the internal condition throws it.
      */
     public void await() throws InterruptedException {
@@ -185,7 +186,7 @@ class NotifyingBlockingThreadPoolExecutor extends ThreadPoolExecutor {
      * A blocking wait for this ThreadPool to be in idle state or a certain timeout to elapse.
      * Works the same as the await() method, except for adding the timeout condition.
      * @see NotifyingBlockingThreadPoolExecutor#await() for more details.
-     * @return false if the timeout elapsed, true if the synch event we are waiting for had happened.
+     * @return false if the timeout elapsed, true if the sync event we are waiting for had happened.
      * @throws InterruptedException when the internal condition throws it.
      */
     public boolean await(long timeout, TimeUnit timeUnit) throws InterruptedException {
@@ -360,6 +361,16 @@ class NotifyingBlockingThreadPoolExecutor extends ThreadPoolExecutor {
 
     public List<Runnable> getRunnables() {
         return runnables;
+    }
+
+    public int getRunnablesCount() { return runnablesCount; }
+
+    public int getTasksInProcess() {
+        return tasksInProcess.get();
+    }
+
+    public boolean isWorkQueueEmpty() {
+        return this.workQueue.isEmpty()
     }
 }
 

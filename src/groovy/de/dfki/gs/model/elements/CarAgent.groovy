@@ -111,7 +111,8 @@ class CarAgent extends Agent {
                     List<GasolineStation> gasolineStations,
                     long simulationId,
                     int defaultKmh,
-                    long startTime ) {
+                    long startTime,
+                    Double plannedDist ) {
 
         CarAgent carAgent = new CarAgent()
         carAgent.routingPlan = routingPlan;
@@ -129,20 +130,28 @@ class CarAgent extends Agent {
 
         carAgent.startTime = startTime
 
-        double sumKm = 0;
+        Double sumKm = 0;
         double secondsPlanned = 0;
+        Long simRouteId = null
         for ( TrackEdge trackEdge : routingPlan.trackEdges ) {
+
+            if ( simRouteId == null ) {
+                simRouteId = trackEdge.simulationRouteId
+            }
+
             // v = s/t <-> t = s / v
             int v = trackEdge.kmh
-            double s = trackEdge.km
+            Double s = trackEdge.km
             secondsPlanned += ( s / v ) * 60 * 60
-            sumKm += trackEdge.km
+            sumKm = sumKm + trackEdge.km
         }
-        carAgent.kmToDrive = sumKm;
+        carAgent.kmToDrive = plannedDist;
+
+        log.error( "simRoute: ${simRouteId} has ${sumKm} planned km to drive in ${secondsPlanned} sec" )
 
         carAgent.carAgentResult = new CarAgentResult(
                 carType: modelCar.carType,
-                plannedDistance: sumKm,
+                plannedDistance: plannedDist,
                 timeForPlannedDistance: Math.ceil( secondsPlanned ),
                 simulationId: simulationId
         );
@@ -311,7 +320,7 @@ class CarAgent extends Agent {
                 currentEdge.toLat,
                 currentEdge.toLon,
                 gasolineStations,
-                10
+                15
         )
 
         // log.error( "found gasoline stations: ${nearestFillingStations}" )
@@ -328,6 +337,8 @@ class CarAgent extends Agent {
                 if ( fillingAgent.fillingStationStatus.equals( FillingStationStatus.FREE ) ) {
 
                     log.debug( "${personalId} - after ${free} trials: take gasolineStation ${gasoline} - now in use" )
+
+                    log.error( "${personalId} - found station at ${(( modelCar.getCurrentEnergy() / modelCar.getMaxEnergy()) *100 )} %" )
 
                     fillingAgent.fillingStationStatus = FillingStationStatus.IN_USE;
 
@@ -409,14 +420,14 @@ class CarAgent extends Agent {
                     for ( TrackEdge eee : trackEdgesToStation ) {
                         lll += eee.km
                     }
-                    log.error( "${personalId} - need ${lll} km to energy" )
+                    log.debug( "${personalId} - need ${lll} km to energy" )
 
                     // log.error( "back to: ${backEdge.toLat} ${backEdge.toLon}" )
                     lll = 0;
                     for ( TrackEdge be : trackEdgesBack ) {
                         lll += be.km
                     }
-                    log.error( "${personalId} - need ${lll} km back to next target" )
+                    log.debug( "${personalId} - need ${lll} km back to next target" )
 
 
 

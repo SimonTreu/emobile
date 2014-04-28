@@ -75,7 +75,7 @@
 
         active = window.setInterval( function() {
                     showInfoPane();
-                }, 1000 // 1000 ms
+                }, 2000 // 2000 ms
         );
 
     }
@@ -94,12 +94,19 @@
                 var info = data[ 'info' ];
 
                 var cars = info[ 'cars' ];
-                var stations = info[ 'stations' ]
+                var stations = info[ 'stations' ];
+
+                var currentTime = info[ 'currentTime' ];
+
+                var simStatus = info[ 'finished' ];
 
                 drawCarInfos( cars );
 
                 drawStationInfos( stations );
 
+                drawCurrentTime( currentTime );
+
+                recheckStopButton( simStatus );
 
                 // $( '#speedInfo').html( speed );
 
@@ -110,6 +117,30 @@
 
             }
         });
+
+    }
+
+    function recheckStopButton( simStatus ) {
+
+        document.getElementById( 'button_stopp').disabled = (simStatus != "finished");
+
+    }
+
+    function drawCurrentTime( currentTime ) {
+
+        var timeCanvas = document.getElementById( 'timeContainer' );
+
+        if ( timeCanvas.getContext ) {
+
+            var ctx = timeCanvas.getContext( '2d' );
+            ctx.clearRect( 0,0,1200,40 );
+            ctx.font = "16px sans-serif ";
+            ctx.fillStyle = "black";
+            ctx.fillText( currentTime, 590, 30 );
+
+            ctx.stroke();
+        }
+
 
     }
 
@@ -209,7 +240,7 @@
                 var car = info[ dp ];
 
                 // ctx.fillStyle="#112233";
-                ctx.fillStyle="rgba(10, 2, 45, 0.2)"
+                ctx.fillStyle="rgba(10, 2, 45, 0.4)";
 
                 // max height of rect
                 var x = ( car[ 'totalKmToDrive' ] / maxTotalKm ) * 500;
@@ -229,7 +260,8 @@
                 var car = info[ dp ];
 
                 // ctx.fillStyle="#112233";
-                ctx.fillStyle="rgba(10, 2, 45, 0.2)"
+
+                ctx.fillStyle="rgba(57, 255, 20, 0.2)";
 
                 // max height of rect
                 var x = ( car[ 'totalKmToDrive' ] / maxTotalKm ) * 500;
@@ -347,7 +379,7 @@
 </script>
 
 <div>
-    ${routeCount}
+    ${routeCount} Cars are involved
     <button id="button_play_pause" onClick="toggle_button_clicked()"><b>Play</b></button>
     <br/>
     <button
@@ -361,7 +393,7 @@
 <br/>
 
 
-
+<canvas id="timeContainer" width="1200" height="40"></canvas>
 <canvas id="experimentContainer" width="1200" height="500"></canvas>
 <canvas id="nameContainer" width="1200" height="50"></canvas>
 <canvas id="stationsContainer" width="1200" height="40"></canvas>

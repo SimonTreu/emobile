@@ -40,7 +40,8 @@ class SimulationExecutorController {
             m.simulationId = cmd.simulationId
             m.routeCount = SimulationRoute.countBySimulation( simulation )
 
-            simulationThreadFrameworkService.init2( cmd.simulationId, null, sessionId )
+            Double relativeSearchLimit = 60
+            simulationThreadFrameworkService.init2( cmd.simulationId, null, sessionId, relativeSearchLimit )
 
 
             if ( simulationThreadFrameworkService.getSchedulerStatus( sessionId ) == SchedulerStatus.pause ) {
@@ -151,8 +152,12 @@ class SimulationExecutorController {
 
             def info = simulationThreadFrameworkService.collectInfo( sessionId )
 
+            def theTime = simulationThreadFrameworkService.getTime2( sessionId );
+            info.currentTime = theTime
+
             data.info = info
-            data.time = simulationThreadFrameworkService.getTime2( sessionId )
+
+            data.time = theTime
 
             response.status = ResponseConstants.RESPONSE_STATUS_OK
         } else {

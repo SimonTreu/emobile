@@ -241,7 +241,8 @@ class SimulationController {
             def m = simulationCollectDataService.collectSimulationModelForRendering( cmd.simulationId, true, true )
 
             // simulationThreadFrameworkService.init( cmd.simulationId, null, sessionId )
-            simulationThreadFrameworkService.init2( cmd.simulationId, null, sessionId )
+            Double relativeSearchLimit = 60
+            simulationThreadFrameworkService.init2( cmd.simulationId, null, sessionId, relativeSearchLimit )
 
 
             render view: 'showPlaySimulation', model: m

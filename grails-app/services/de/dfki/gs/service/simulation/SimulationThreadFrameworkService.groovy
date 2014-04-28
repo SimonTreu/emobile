@@ -46,6 +46,7 @@ class SimulationThreadFrameworkService {
 
     def grailsApplication
     def experimentDataService
+    def experimentStatsService
 
     boolean initialized = false
 
@@ -62,7 +63,7 @@ class SimulationThreadFrameworkService {
     SchedulerStatus status
 
 
-    def init2( long simulationId, initMap, String sessionId ) throws Exception {
+    def init2( long simulationId, initMap, String sessionId, Double relativeSearchLimit ) throws Exception {
 
         log.debug( "try to init simulation framework with simulation ${simulationId} for session: ${sessionId}" )
 
@@ -107,7 +108,7 @@ class SimulationThreadFrameworkService {
         List<Long> ids = simulation.simulationRoutes*.id
 
         log.error( "ids: ${ids}" )
-        def simRouteMap = [ : ]
+        Map<Long,List<TrackEdge>> simRouteMap = new HashMap<Long,List<TrackEdge>>()
 
         /*
         NotifyingBlockingThreadPoolExecutor executor = ThreadPoolExecutorUtils.createThreadPoolExecutor( 90 );
@@ -135,11 +136,15 @@ class SimulationThreadFrameworkService {
         */
 
         // split into portions of 100
+        def portion = 100;
+
         def idCounter = 0;
         def toMax = ids.size() - 1;
-        def localTo = idCounter + 99;
+        def localTo = idCounter + ( portion - 1 );
 
-        while ( simRouteMap.size() != ids.size() ) {
+        def hua = []
+
+        while ( hua.size() != ids.size() ) {
 
             if ( localTo > toMax ) {
                 localTo = toMax
@@ -161,23 +166,24 @@ class SimulationThreadFrameworkService {
                 proms.add( promise )
             }
 
-            def hua = waitAll( proms )
+            hua = waitAll( proms )
 
-            idCounter += 100;
-            localTo = idCounter + 99;
+            idCounter += portion;
+            localTo = idCounter + ( portion - 1 );
 
-            hua.flatten().each { TrackEdge te ->
+        }
 
-                def l = simRouteMap.get( te.simulationRouteId )
+        hua.flatten().each { TrackEdge te ->
 
-                if ( l ) {
-                    l << te
-                } else {
-                    def newL = []
-                    newL << te
-                    simRouteMap.put( te.simulationRouteId, newL )
-                }
+            // TODO: rethink
+            List<TrackEdge> l = simRouteMap.get( te.simulationRouteId )
 
+            if ( l != null ) {
+                l.add( te )
+            } else {
+                List<TrackEdge> newL = new ArrayList<TrackEdge>()
+                newL.add( te )
+                simRouteMap.put( te.simulationRouteId, newL )
             }
 
         }
@@ -221,7 +227,7 @@ class SimulationThreadFrameworkService {
 
                 CarType carType = simulationRoute.carType
 
-                ModelCar modelCar = ModelCar.createModelCar( new EnergyConsumptionModel(), carType, 5, 20 );
+                ModelCar modelCar = ModelCar.createModelCar( new EnergyConsumptionModel(), carType, 5, relativeSearchLimit );
 
                 CarAgent carAgent = CarAgent.createCarAgent(
                         routingPlan,
@@ -230,7 +236,8 @@ class SimulationThreadFrameworkService {
                         gasolineStations,
                         simulationId,
                         35,
-                        runningStartTime
+                        runningStartTime,
+                        simulationRoute.plannedDistance
                 )
 
                 threadMap.put( simulationRoute.id, carAgent )
@@ -471,6 +478,11 @@ class SimulationThreadFrameworkService {
                 for ( Agent agent : fillingStationsMap.values() ) {
                     agent.cancel();
                 }
+
+                long simExpId = stopSimulation2( 2, sessionId )
+
+                log.error( "saved sim results in experimentResult: ${simExpId}" )
+                // def m = experimentStatsService.createStats( simExpId )
 
             }
         }
@@ -778,16 +790,24 @@ class SimulationThreadFrameworkService {
             def seconds = currentTime as BigInteger
             def secD = ( seconds.remainder( 60g ) ) as BigInteger
             seconds = seconds - secD
+
             def minutes = ( seconds / 60 ) as BigInteger
             def minD = minutes.remainder( 60g )
             minutes = minutes - minD
+
             def hours = ( minutes / 60 ) as BigInteger
             def hoursD = hours.remainder( 60g )
+            hours = hours - hoursD
+
+            def days = ( hours / 24 ) as BigInteger
+            def daysD = days.remainder( 24g )
 
             def secDisplay = secD<10?"0${secD}":secD
             def minDisplay = minD<10?"0${minD}":minD
+            def hoursDisplay = hoursD<10?"0${hoursD}":hoursD
+            def daysDisplay = daysD<10?"0${daysD}":daysD
 
-            def res = "${hoursD}:${minDisplay}:${secDisplay}"
+            def res = "${daysDisplay} days ${hoursDisplay}:${minDisplay}:${secDisplay}"
 
             return res
 
@@ -805,6 +825,11 @@ class SimulationThreadFrameworkService {
         def resultMap = [ : ]
 
         def l = []
+
+
+
+        boolean allCarsFinished = true;
+
 
         // simulationRouteId -> CarAgent
         Map<Long, CarAgent> threadMap = carAgentsForSession.get( sessionId )
@@ -833,6 +858,13 @@ class SimulationThreadFrameworkService {
             m.drivenKm = carAgent.kmDriven;
             m.totalKmToDrive = carAgent.kmToDrive;
 
+
+            if ( carAgent.carStatus.toString().equals( CarStatus.MISSION_ACCOMBLISHED.toString() )||carAgent.carStatus.toString().equals( CarStatus.WAITING_EMPTY.toString() ) ) {
+
+            } else {
+                allCarsFinished = false
+            }
+
             l << m
         }
 
@@ -855,6 +887,12 @@ class SimulationThreadFrameworkService {
 
         resultMap.cars = l;
         resultMap.stations = p;
+
+        String simFinished = "false"
+        if ( allCarsFinished == true ) {
+            simFinished = "finished"
+        }
+        resultMap.finished = simFinished
 
         return resultMap;
     }

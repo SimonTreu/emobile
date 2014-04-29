@@ -261,7 +261,7 @@
 
                 // ctx.fillStyle="#112233";
 
-                ctx.fillStyle="rgba(57, 255, 20, 0.2)";
+                ctx.fillStyle="rgba(255,255,0, 0.99)";
 
                 // max height of rect
                 var x = ( car[ 'totalKmToDrive' ] / maxTotalKm ) * 500;

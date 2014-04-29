@@ -60,4 +60,36 @@ environments {
         }
 
     }
+
+    lnv {
+        /*
+        dataSource {
+            dbCreate = "update"
+            jndiName = "java:comp/env/jdbc/emobileDataSource"
+        }
+        */
+
+
+        dataSource {
+            dbCreate = "update" //"create-drop"
+            driverClassName = "com.mysql.jdbc.Driver"
+            url = "jdbc:mysql://mysql.sb.dfki.de/efahrung"
+            username = "efahrung_admin"
+            password = "f498236e"
+            pooled = true
+            properties = {
+                maxActive = 500
+                minEvictableIdleTimeMillis = 1800000
+                timeBetweenEvictionRunsMillis = 1800000
+                numTestsPerEvictionRun = 3
+                testOnBorrow = true
+                testWhileIdle = true
+                testOnReturn = true
+                validationQuery = "SELECT 1"
+            }
+        }
+
+    }
+
+
 }

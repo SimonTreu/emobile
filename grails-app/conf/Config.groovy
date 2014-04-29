@@ -70,6 +70,12 @@ environments {
         grails.logging.jul.usebridge = false
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
+
+    lnv {
+        grails.logging.jul.usebridge = false
+        // TODO: grails.serverURL = "http://www.changeme.com"
+    }
+
 }
 
 // log4j configuration

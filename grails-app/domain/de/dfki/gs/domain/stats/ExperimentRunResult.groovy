@@ -12,6 +12,8 @@ class ExperimentRunResult {
 
     double relativeSearchLimit
 
+    long simTimeMillis
+
 
     List<PersistedCarAgentResult> persistedCarAgentResults
 

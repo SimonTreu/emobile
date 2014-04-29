@@ -397,6 +397,7 @@ class SimulationThreadFrameworkService {
     def runSimulation2( String sessionId ) {
 
 
+        long startTimestamp = System.currentTimeMillis();
 
         log.error( "starting.." )
 
@@ -457,6 +458,8 @@ class SimulationThreadFrameworkService {
 
         while ( !allRoutesFinished ) {
 
+            // Thread.sleep( 3000 )
+
             for ( CarAgent agent : threadMap.values() ) {
 
                 allRoutesFinished = (
@@ -479,7 +482,9 @@ class SimulationThreadFrameworkService {
                     agent.cancel();
                 }
 
-                long simExpId = stopSimulation2( 2, sessionId )
+                long simTimeMillis = ( System.currentTimeMillis() - startTimestamp )
+
+                long simExpId = stopSimulation2( 2, sessionId, simTimeMillis )
 
                 log.error( "saved sim results in experimentResult: ${simExpId}" )
                 // def m = experimentStatsService.createStats( simExpId )
@@ -666,7 +671,7 @@ class SimulationThreadFrameworkService {
      * @param sessionId
      * @return
      */
-    def stopSimulation2( Long simulationId, String sessionId ) {
+    def stopSimulation2( Long simulationId, String sessionId, long simTimeMillis ) {
 
         Map<Long, CarAgent> threadMap = carAgentsForSession.get( sessionId )
         Map<Long, EFillingStationAgent> fillingStationMap = fillingStationAgentsForSession.get( sessionId )
@@ -720,7 +725,7 @@ class SimulationThreadFrameworkService {
             }
         }
 
-        experimentRunResultId = experimentDataService.saveExperimentResult( carAgentResults, fillingResults, relativeSearchLimit )
+        experimentRunResultId = experimentDataService.saveExperimentResult( carAgentResults, fillingResults, relativeSearchLimit, simTimeMillis )
 
         return experimentRunResultId
     }

@@ -24,6 +24,8 @@ Under ${relativeSearchLimit * 100} % cars were searching for filling stations.
 
 Simulation Time: ${simulationTime} h
 
+Execution Time: ${simTimeMillis} ms or ${simTimeMillis / ( 1000 * 60 * 60 )} hrs
+
 <table border="0" style="width: 30%" >
 
     <tr>

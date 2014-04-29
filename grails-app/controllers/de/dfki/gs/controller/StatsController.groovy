@@ -41,6 +41,7 @@ class StatsController {
             ExperimentRunResult experimentRunResult = ExperimentRunResult.get( experimentResultId )
 
             m.relativeSearchLimit = experimentRunResult.relativeSearchLimit
+            m.simTimeMillis = experimentRunResult.simTimeMillis
 
             m.carAgentsCount = experimentRunResult.persistedCarAgentResults.size()
             m.fillingStationCount = experimentRunResult.persistedFillingStationResults.size()

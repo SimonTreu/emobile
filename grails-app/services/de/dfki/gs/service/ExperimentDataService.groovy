@@ -20,14 +20,16 @@ class ExperimentDataService {
     public long saveExperimentResult(
                     List<CarAgentResult> carAgentResults,
                     List<EFillingStationAgentResult> fillingAgentResults,
-                    Double relativeSearchLimit ) {
+                    Double relativeSearchLimit,
+                    long simTimeMillis ) {
 
         Long simulationId;
         int targetCount = 0;
 
         ExperimentRunResult experimentRunResult = new ExperimentRunResult(
                 targetCount: targetCount,
-                relativeSearchLimit: relativeSearchLimit
+                relativeSearchLimit: relativeSearchLimit,
+                simTimeMillis: simTimeMillis
         )
 
         Map<CarType,Integer> carTypeCountMap = new HashMap<CarType,Integer>()

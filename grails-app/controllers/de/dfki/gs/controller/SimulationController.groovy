@@ -154,7 +154,7 @@ class SimulationController {
             log.error( "failed to get simulation by id: ${cmd.simulationId} -- ${cmd.errors}" )
         } else {
 
-            Long experimentRunResultId = simulationThreadFrameworkService.stopSimulation2( cmd.simulationId, sessionId )
+            Long experimentRunResultId = simulationThreadFrameworkService.stopSimulation2( cmd.simulationId, sessionId, 0 )
 
             def m = experimentStatsService.createStats( experimentRunResultId )
 

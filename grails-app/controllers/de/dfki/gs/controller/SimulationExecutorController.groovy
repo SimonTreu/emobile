@@ -1,6 +1,7 @@
 package de.dfki.gs.controller
 
 import de.dfki.gs.controller.commands.SimulationCommand
+import de.dfki.gs.controller.commands.SimulationExcecutorCommand
 import de.dfki.gs.domain.Simulation
 import de.dfki.gs.domain.SimulationRoute
 import de.dfki.gs.simulation.SchedulerStatus
@@ -27,7 +28,7 @@ class SimulationExecutorController {
 
         m.sessionId = sessionId
 
-        SimulationCommand cmd = new SimulationCommand()
+        SimulationExcecutorCommand cmd = new SimulationExcecutorCommand()
         bindData( cmd, params )
 
         if ( cmd.validate() && !cmd.hasErrors() ) {
@@ -40,7 +41,7 @@ class SimulationExecutorController {
             m.simulationId = cmd.simulationId
             m.routeCount = SimulationRoute.countBySimulation( simulation )
 
-            Double relativeSearchLimit = 60
+            Double relativeSearchLimit = ( cmd.relativeSearchLimit / 100 )
             simulationThreadFrameworkService.init2( cmd.simulationId, null, sessionId, relativeSearchLimit )
 
 

@@ -153,7 +153,8 @@ class CarAgent extends Agent {
                 carType: modelCar.carType,
                 plannedDistance: plannedDist,
                 timeForPlannedDistance: Math.ceil( secondsPlanned ),
-                simulationId: simulationId
+                simulationId: simulationId,
+                relativeSearchLimit: modelCar.relativeSearchLimit
         );
 
         return carAgent;
@@ -189,7 +190,7 @@ class CarAgent extends Agent {
 
                     double batChargePercentage = ( modelCar.getCurrentEnergy() / modelCar.getMaxEnergy() ) * 100
 
-                    if ( batChargePercentage >= modelCar.getRelativeSearchLimit()
+                    if ( batChargePercentage >= ( modelCar.getRelativeSearchLimit() * 100 )
                             && modelCar.getCurrentEnergy() >= modelCar.getAbsoluteSearchLimit() ) {
 
                         carStatus = CarStatus.DRIVING_FULL
@@ -201,10 +202,6 @@ class CarAgent extends Agent {
                     }
 
                 }
-
-
-
-
 
                 break;
             case CarStatus.DRIVING_RUNNING_OUT:
@@ -231,6 +228,12 @@ class CarAgent extends Agent {
                         // energyPortionToFill = ( gasolineStationFillingAmount.get( gasolineStation.type.toString() ) ) / ( 60 * 60);
                         energyPortionToFill = fillingStationsMap.get( gasolineStation.id )?.fillingPortion
 
+                        double neededEnergy = ( modelCar.maxEnergy - modelCar.currentEnergy );
+                        long timeForNeededEnergy = Math.ceil( neededEnergy / energyPortionToFill )
+
+                        timeForLoading += timeForNeededEnergy
+
+                        timeStampForNextActionAllowed = currentTimeStamp + timeForNeededEnergy
 
                         carStatus = CarStatus.WAITING_FILLING
 
@@ -256,12 +259,34 @@ class CarAgent extends Agent {
                 break;
             case CarStatus.WAITING_FILLING:
 
+                // wait for calculated time,
+                if ( currentTimeStamp == timeStampForNextActionAllowed ) {
+
+
+                    energyLoaded += ( modelCar.maxEnergy - modelCar.currentEnergy )
+
+                    modelCar.currentEnergy = modelCar.maxEnergy
+                    timeStampForNextActionAllowed = currentTimeStamp + 1
+
+                    carStatus = CarStatus.DRIVING_FULL
+                    fillingStationsVisited++;
+
+                    // free filling station
+                    EFillingStationAgent fillingAgent = fillingStationsMap.get( gasolineStationIdUsed )
+                    fillingAgent.setFillingStationStatus( FillingStationStatus.FREE )
+
+                    log.error( "${personalId} - gasolineStation: ${gasolineStationIdUsed}  now free again" )
+
+                    gasolineStation = null
+                }
+
+
+
+
+                /*
                 energyLoaded += energyPortionToFill;
                 timeForLoading++;
 
-                /**
-                 * TODO: maybe better to fill in one step and jump over time
-                 */
                 fillCar( energyPortionToFill )
 
 
@@ -283,6 +308,7 @@ class CarAgent extends Agent {
                     carStatus = CarStatus.WAITING_FILLING
 
                 }
+                */
 
                 break;
             case CarStatus.WAITING_EMPTY:
@@ -558,6 +584,17 @@ class CarAgent extends Agent {
 
     }
 
+    private void fillCar2( long currentTimeStamp ) {
+
+
+        if ( currentTimeStamp == timeStampForNextActionAllowed ) {
+
+            modelCar.currentEnergy = modelCar.maxEnergy
+
+        }
+
+
+    }
 
     private void fillCar( double energyPortion ) {
 

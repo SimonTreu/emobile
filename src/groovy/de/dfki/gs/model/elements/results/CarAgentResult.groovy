@@ -31,7 +31,7 @@ class CarAgentResult {
 
     long simulationId
 
-
+    double relativeSearchLimit
 
 
 

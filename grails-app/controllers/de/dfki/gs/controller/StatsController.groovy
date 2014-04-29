@@ -34,9 +34,13 @@ class StatsController {
                     fillingStationFileUUID : fillingStatsPictureName
         ]
 
+        double relativeSearchLimit = 0;
+
         if ( experimentResultId != null ) {
 
             ExperimentRunResult experimentRunResult = ExperimentRunResult.get( experimentResultId )
+
+            m.relativeSearchLimit = experimentRunResult.relativeSearchLimit
 
             m.carAgentsCount = experimentRunResult.persistedCarAgentResults.size()
             m.fillingStationCount = experimentRunResult.persistedFillingStationResults.size()

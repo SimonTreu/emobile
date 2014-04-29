@@ -20,6 +20,8 @@
 
 ${countTargetReached} of ${carsCount} reached their targets ( ${percentageReached} % success )
 
+Under ${relativeSearchLimit * 100} % cars were searching for filling stations.
+
 Simulation Time: ${simulationTime} h
 
 <table border="0" style="width: 30%" >

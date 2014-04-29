@@ -101,11 +101,13 @@
     </div>
 
     <div id="player" style="width: 40%; position: fixed; top: 100px; right: -20px">
-        Execute Experiment
+        Select Relative Search Limit [ % ] and Execute Experiment
 
         <g:form action="executeExperiment" controller="simulationExecutor">
             <input type="hidden" name="simulationId" value="${simulationId}" />
 
+            <g:select name="relativeSearchLimit" value="30" from="[0,10,20,30,40,50,60,70,80,90,100]" />
+            
             <g:submitButton name="Execute"/>
 
         </g:form>

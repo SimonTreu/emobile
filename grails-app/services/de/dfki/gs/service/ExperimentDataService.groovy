@@ -17,13 +17,17 @@ import grails.transaction.Transactional
 class ExperimentDataService {
 
 
-    public long saveExperimentResult( List<CarAgentResult> carAgentResults, List<EFillingStationAgentResult> fillingAgentResults ) {
+    public long saveExperimentResult(
+                    List<CarAgentResult> carAgentResults,
+                    List<EFillingStationAgentResult> fillingAgentResults,
+                    Double relativeSearchLimit ) {
 
         Long simulationId;
         int targetCount = 0;
 
         ExperimentRunResult experimentRunResult = new ExperimentRunResult(
-                targetCount: targetCount
+                targetCount: targetCount,
+                relativeSearchLimit: relativeSearchLimit
         )
 
         Map<CarType,Integer> carTypeCountMap = new HashMap<CarType,Integer>()
@@ -56,6 +60,7 @@ class ExperimentDataService {
                     timeForDetour:          carAgentResult.timeForDetour,
                     energyLoaded:           carAgentResult.energyLoaded,
                     fillingStationsVisited: carAgentResult.fillingStationsVisited
+
             )
 
             if ( !persistedCarAgentResult.save( flush: true ) ) {

@@ -10,6 +10,8 @@ class ExperimentRunResult {
 
     long simulationId
 
+    double relativeSearchLimit
+
 
     List<PersistedCarAgentResult> persistedCarAgentResults
 

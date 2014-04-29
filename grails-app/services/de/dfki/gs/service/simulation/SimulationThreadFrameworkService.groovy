@@ -227,7 +227,7 @@ class SimulationThreadFrameworkService {
 
                 CarType carType = simulationRoute.carType
 
-                ModelCar modelCar = ModelCar.createModelCar( new EnergyConsumptionModel(), carType, 5, relativeSearchLimit );
+                ModelCar modelCar = ModelCar.createModelCar( new EnergyConsumptionModel(), carType, 1, relativeSearchLimit );
 
                 CarAgent carAgent = CarAgent.createCarAgent(
                         routingPlan,
@@ -711,7 +711,16 @@ class SimulationThreadFrameworkService {
             log.error( "no threads found for session: ${sessionId}" )
         }
 
-        experimentRunResultId = experimentDataService.saveExperimentResult( carAgentResults, fillingResults )
+        Double relativeSearchLimit = null
+        for ( CarAgentResult result : carAgentResults ) {
+            if ( relativeSearchLimit == null ) {
+                relativeSearchLimit = result.relativeSearchLimit
+            } else {
+                break;
+            }
+        }
+
+        experimentRunResultId = experimentDataService.saveExperimentResult( carAgentResults, fillingResults, relativeSearchLimit )
 
         return experimentRunResultId
     }

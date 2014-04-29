@@ -17,6 +17,15 @@ class GasolineStation {
     Simulation simulation
 
     /**
+     * collecting real stations via web requests
+     */
+    Long ownerId
+    String ownerName
+
+    String streetName
+    String houseNumber
+
+    /**
      * indicates how long gasoline station is in use with a car
      * this field never gets persisted, see transients
      *

@@ -19,7 +19,7 @@ class GasolineStation {
     /**
      * collecting real stations via web requests
      */
-    Long ownerId
+    String ownerId
     String ownerName
 
     String streetName
@@ -45,5 +45,10 @@ class GasolineStation {
 
         simulation ( nullable: true )
 
+        ownerId( nullable: true )
+        ownerName( nullable: true )
+
+        streetName( nullable: true )
+        houseNumber( nullable: true )
     }
 }

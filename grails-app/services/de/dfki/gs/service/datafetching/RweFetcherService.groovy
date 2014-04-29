@@ -67,7 +67,7 @@ class RweFetcherService {
                                     lon: Double.parseDouble( longitude ),
                                     streetName: street,
                                     houseNumber: house_number,
-                                    type: GasolineStationType.AC_22KW.toString(),
+                                    type: GasolineStationType.AC_22_2KW.toString(),
                                     fillingPortion: 0.006167
                             )
 

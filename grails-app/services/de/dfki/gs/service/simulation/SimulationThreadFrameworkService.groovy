@@ -136,7 +136,7 @@ class SimulationThreadFrameworkService {
         */
 
         // split into portions of 100
-        def portion = 100;
+        def portion = 40;
 
         def idCounter = 0;
         def toMax = ids.size() - 1;

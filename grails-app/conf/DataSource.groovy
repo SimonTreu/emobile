@@ -43,6 +43,7 @@ environments {
         dataSource {
             dbCreate = "update" //"create-drop"
             driverClassName = "com.mysql.jdbc.Driver"
+            dialect = org.hibernate.dialect.MySQLInnoDBDialect
             url = "jdbc:mysql://localhost/emobilesim"
             username = "root"
             password = "reldb00"
@@ -73,6 +74,7 @@ environments {
         dataSource {
             dbCreate = "update" //"create-drop"
             driverClassName = "com.mysql.jdbc.Driver"
+            dialect = org.hibernate.dialect.MySQLInnoDBDialect
             url = "jdbc:mysql://mysql.sb.dfki.de/efahrung"
             username = "efahrung_admin"
             password = "f498236e"

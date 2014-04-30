@@ -610,11 +610,44 @@ a.skip {
     padding: 5px 0;
 }
 #topbar #menu {
+    position:fixed;
     float: right;
     width: 240px;
     text-align: right;
     font-size: 10px;
 }
+
+
+#menu {
+    position:fixed;
+    color: #000000;
+    font: 100% Helvetica,Arial,sans-serif;
+    float: right;
+    width: 100%;
+    text-align: right;
+    -webkit-box-shadow: 0px 2px 5px #327E04;	/* webkit browser*/
+    -moz-box-shadow: 0px 2px 5px #327E04;	/* firefox */
+    box-shadow: 0px 2px 5px #327E04;
+}
+
+#player {
+    position: fixed;
+    /*border: 1px solid rgb(248, 248, 248);*/
+    margin-right: 50px;
+    padding: 10px;
+    width: 25%;
+
+    top: 50px;
+    right: -20px ;
+
+    background-color: #CCCCCC;
+
+    -webkit-box-shadow: 1px 2px 18px #327E04;	/* webkit browser*/
+    -moz-box-shadow: 1px 2px 18px #327E04;	/* firefox */
+    box-shadow: 1px 2px 18px #327E04;
+}
+
+
 
 
 #header {
@@ -662,7 +695,7 @@ body {
     /*
     color: #000;
     */
-    padding: 10px 4px;
+    padding: 26px 4px;
     width: 100%;
     text-align: left;
     height: 95%;
@@ -899,6 +932,9 @@ ul#Navigation a:hover, ul#Navigation span {
     font-size: 80%;
 
     border-top: 1px solid #AAAAAA;
+    -webkit-box-shadow: 0px -2px 5px #327E04;	/* webkit browser*/
+    -moz-box-shadow: 0px -2px 5px #327E04;	/* firefox */
+    box-shadow: 0px -2px 5px #327E04;
 }
 
 body.lightBoxBody{

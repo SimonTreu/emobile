@@ -100,34 +100,45 @@
 
     </div>
 
-    <div id="player" style="width: 40%; position: fixed; top: 100px; right: -20px">
+    <div id="player">
         Select Relative Search Limit [ % ] and Execute Experiment
 
-        <g:form action="executeExperiment" controller="simulationExecutor">
-            <input type="hidden" name="simulationId" value="${simulationId}" />
 
-            <g:select name="relativeSearchLimit" value="30" from="[0,10,20,30,40,50,60,70,80,90,100]" />
-            
-            <g:submitButton name="Execute"/>
+        <table>
 
-        </g:form>
+
+            <g:form action="executeExperiment" controller="simulationExecutor">
+                <input type="hidden" name="simulationId" value="${simulationId}" />
+
+                <tr>
+
+                    <td><g:select name="relativeSearchLimit" value="30" from="[0,10,20,30,40,50,60,70,80,90,100]" /></td>
+
+                    <td><g:submitButton name="Execute"/></td>
+                </tr>
+
+            </g:form>
+
+
+            <g:if test="${results != null && results.size() > 0}">
+
+                <g:form action="showResult" controller="simulationPreparator">
+
+                    <tr>
+                        <td><g:select name="resultId" from="${results}"/></td>
+                        <td><g:submitButton name="Show Result"/></td>
+                    </tr>
+
+                </g:form>
+
+            </g:if>
+
+        </table>
 
     </div>
 
     <div id="resultSelect" style="width: 40%; position: fixed; top: 300px; right: -20px">
-        Select Result
 
-        <g:if test="${results != null && results.size() > 0}">
-
-            <g:form action="showResult" controller="simulationPreparator">
-
-                <g:select name="resultId" from="${results}"/>
-
-                <g:submitButton name="Show"/>
-
-            </g:form>
-
-        </g:if>
 
 
     </div>

@@ -642,9 +642,9 @@ a.skip {
 
     background-color: #CCCCCC;
 
-    -webkit-box-shadow: 1px 2px 18px #327E04;	/* webkit browser*/
-    -moz-box-shadow: 1px 2px 18px #327E04;	/* firefox */
-    box-shadow: 1px 2px 18px #327E04;
+    -webkit-box-shadow: 1px 2px 5px #327E04;	/* webkit browser*/
+    -moz-box-shadow: 1px 2px 5px #327E04;	/* firefox */
+    box-shadow: 1px 2px 5px #327E04;
 }
 
 

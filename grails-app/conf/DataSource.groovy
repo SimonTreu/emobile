@@ -74,7 +74,6 @@ environments {
         dataSource {
             dbCreate = "update" //"create-drop"
             driverClassName = "com.mysql.jdbc.Driver"
-            dialect = org.hibernate.dialect.MySQLInnoDBDialect
             url = "jdbc:mysql://mysql.sb.dfki.de/efahrung"
             username = "efahrung_admin"
             password = "f498236e"

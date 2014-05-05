@@ -128,7 +128,7 @@ class MapViewController {
      */
     def calculateRoute() {
 
-        log.debug( "calculateRoute request: ${request.JSON.data}" )
+        log.error( "calculateRoute request: ${request.JSON.data}" )
 
         StartAndDestinationsCommandObject cmd = new StartAndDestinationsCommandObject();
 
@@ -168,13 +168,17 @@ class MapViewController {
             }
 
             Simulation simulation = Simulation.get( cmd.simulationId )
+
             SimulationRoute simulationRoute = new SimulationRoute(
                     simulation: simulation,
-                    carType: CarType.get( 1 ),
                     initialPersons: 1,
-                    initialEnergy: 400d,
-                    energyDrain: grailsApplication.config.energyConfig.batteryDrain,
-                    maxEnergy: grailsApplication.config.energyConfig.maxEnergy )
+                    carType: CarType.get( 1 )
+            )
+
+            if ( !simulationRoute.save( flush: true ) ) {
+                log.error( "failed to save simulationRoute: ${simulationRoute.errors}" )
+            }
+
             /*
             if ( !simulationRoute.save( flush: true ) ) {
                 log.error( "failed to save simulation route: ${simulationRoute.errors}" )
@@ -185,7 +189,7 @@ class MapViewController {
             }
             */
             simulation.addToSimulationRoutes( simulationRoute )
-            if ( !simulation.save( flush: true ) ) {
+            if ( !simulation.save( flush: false ) ) {
                 log.error( "failed to save simulation: ${simulation.errors}" )
             } else {
 
@@ -209,8 +213,8 @@ class MapViewController {
 
             pairs.each {
 
-                Coordinate currentStart  = new Coordinate( it[0].x, it[0].y );
-                Coordinate currentTarget = new Coordinate( it[1].x, it[1].y );
+                Coordinate currentStart  = new Coordinate( it[0].y, it[0].x );
+                Coordinate currentTarget = new Coordinate( it[1].y, it[1].x );
 
                 List<BasicEdge> pathEdges = routeService.calculatePath( currentStart, currentTarget );
 

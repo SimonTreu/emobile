@@ -15,7 +15,7 @@
 <body>
 
 <div>
-    <p>front</p>
+    <p>Simulation started</p>
     <p>${name}</p>
     <p>${info}</p>
 </div>

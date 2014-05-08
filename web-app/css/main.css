@@ -640,9 +640,7 @@ a.skip {
 
 #header {
     width: 778px;
-    /*
-    background: #FFFFFF url(../images/header_background.gif)  repeat-x;
-    */
+
     height: 70px;
     margin: 0px auto;
 }

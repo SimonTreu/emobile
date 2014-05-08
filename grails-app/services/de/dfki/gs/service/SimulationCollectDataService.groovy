@@ -138,7 +138,7 @@ class SimulationCollectDataService {
                 def simRouteModel = [ : ]
 
                 simRouteModel.id = simulationRoute.id
-                simRouteModel.trackId = simulationRoute.id
+                simRouteModel.simulationRouteId = simulationRoute.id
                 simRouteModel.carType = simulationRoute.carType.toString()
                 simRouteModel.initialEnergy = simulationRoute.initialEnergy
                 simRouteModel.initialPersons = simulationRoute.initialPersons

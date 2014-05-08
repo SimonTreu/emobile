@@ -1,5 +1,6 @@
 package de.dfki.gs.controller.commands
 
+import de.dfki.gs.domain.SimulationRoute
 import de.dfki.gs.domain.Track
 import grails.validation.Validateable
 
@@ -10,12 +11,12 @@ import grails.validation.Validateable
 @Validateable
 class ShowTrackInfoCommand {
 
-    Long trackId
+    Long simulationRouteId
 
     static constraints = {
 
-        trackId( nullable: false, validator: { val, obj ->
-            if ( !Track.get( val ) ) return false
+        simulationRouteId( nullable: false, validator: { val, obj ->
+            if ( !SimulationRoute.get( val ) ) return false
 
             return true;
         })

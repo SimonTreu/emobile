@@ -36,27 +36,11 @@
                     <g:message code="de.dfki.gs.domain.GasolineStation.type" />
                 </td>
                 <td>
-                    <g:select title="Gasoline Type" name="gasolineType" from="${gasolineTypes}" value="${selectedType}" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <g:message code="de.dfki.gs.domain.GasolineStation.name" />
-                </td>
-                <td>
-                    <g:select title="Gasoline Type" name="gasolineType" from="${gasolineTypes}" value="${selectedType}" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <g:message code="de.dfki.gs.domain.GasolineStation.selectSimulation" />
-                </td>
-                <td>
-                    <g:select name="selectedSimulationId"
-                              from="${availableSimulations}"
-                              noSelection="${['null':'Select One...']}"
-                              optionKey="id"
-                              optionValue="name" value="${selectedSimulationId}" />
+                    <g:select title="Gasoline Type"
+                              name="gasolineType"
+                              from="${gasolineTypes}"
+                              value="${selectedType}"
+                    />
                 </td>
             </tr>
 

@@ -143,7 +143,7 @@ class MapViewController {
         data.currentZoom = json.currentZoom;
 
         // could be either a gasoline station or a route start point
-        cmd.startPoint = new LatLonPoint( json.startPoint.x, json.startPoint.y )
+        cmd.startPoint = new LatLonPoint( json.startPoint.y, json.startPoint.x )
 
         // in any case we have a simulation id! if not, it should fail!
         cmd.simulationId = json.simulationId
@@ -156,7 +156,7 @@ class MapViewController {
 
             json.destinationPoints.each {
 
-                destinations << new LatLonPoint( it.x, it.y )
+                destinations << new LatLonPoint( it.y, it.x )
 
             }
 
@@ -167,92 +167,33 @@ class MapViewController {
                 return
             }
 
-            Simulation simulation = Simulation.get( cmd.simulationId )
-
-            SimulationRoute simulationRoute = new SimulationRoute(
-                    simulation: simulation,
-                    initialPersons: 1,
-                    carType: CarType.get( 1 )
-            )
-
-            if ( !simulationRoute.save( flush: true ) ) {
-                log.error( "failed to save simulationRoute: ${simulationRoute.errors}" )
-            }
-
-            /*
-            if ( !simulationRoute.save( flush: true ) ) {
-                log.error( "failed to save simulation route: ${simulationRoute.errors}" )
-            } else {
-
-                log.error( "saved simulationRoute ${simulationRoute.id} for simulation ${simulation.id}" )
-
-            }
-            */
-            simulation.addToSimulationRoutes( simulationRoute )
-            if ( !simulation.save( flush: false ) ) {
-                log.error( "failed to save simulation: ${simulation.errors}" )
-            } else {
-
-                log.debug( "saved simulationRoute ${simulationRoute.id} for simulation ${simulation.id}" )
-
-            }
-
 
             def points = [];
             points << cmd.startPoint;
             cmd.destinationPoints.each { points << it }
+            Long simulationRouteId = routeService.calculatePathFromCoordinates( cmd.simulationId, points )
 
-            def pairs = points.collate( 2, 1, false );
-
-            data.routes = [];
-            data.type = "lineRoute"
-
-            ArrayList<List<BasicEdge>> multiTargetRoute = new ArrayList<List<BasicEdge>>()
-
-            List<BasicEdge> edgesToRender = new ArrayList<BasicEdge>()
-
-            pairs.each {
-
-                Coordinate currentStart  = new Coordinate( it[0].y, it[0].x );
-                Coordinate currentTarget = new Coordinate( it[1].y, it[1].x );
-
-                List<BasicEdge> pathEdges = routeService.calculatePath( currentStart, currentTarget );
-
-                // repair all edges' direction
-                pathEdges = routeService.repairEdges( pathEdges )
-
-                multiTargetRoute.add( pathEdges )
-
-                edgesToRender.addAll( pathEdges )
-
-            }
-
-            Point currentStartPoint
-            Point currentTargetPoint
-
+            SimulationRoute simulationRoute = SimulationRoute.get( simulationRouteId )
             def route = [];
+            data.routes = [];
 
-            for ( BasicEdge edge : edgesToRender ) {
+            simulationRoute.edges.each { TrackEdge edge ->
 
-                currentStartPoint  = (Point) ((BasicNode) edge.nodeA).getObject();
-                currentTargetPoint = (Point) ((BasicNode) edge.nodeB).getObject();
+                edge = TrackEdge.get( edge.id )
 
                 route << [
-                        fromX : currentStartPoint.x,
-                        fromY : currentStartPoint.y,
-                        toX : currentTargetPoint.x,
-                        toY : currentTargetPoint.y
+                        fromX : edge.fromLon,
+                        fromY : edge.fromLat,
+                        toX   : edge.toLon,
+                        toY   : edge.toLat
                 ]
 
             }
 
-
+            data.type = "lineRoute"
             data.routes << route;
 
-            simulationRoute = routeService.persistRoute( simulationRoute, multiTargetRoute );
-
-            data.showTrackInfoLink = g.createLink( controller: 'mapView', action: 'showTrackInfo', params: [ trackId: data.trackId ] )
-
+            data.showTrackInfoLink = g.createLink( controller: 'mapView', action: 'showTrackInfo', params: [ simulationRouteId: simulationRoute.id ] )
 
         } else if ( json.type == "gasolinePoint"  ) {
 
@@ -260,7 +201,7 @@ class MapViewController {
             data.type = "gasolinePoint"
             data.gasolinePoint = [ x: nearestPoint.x, y: nearestPoint.y ]
 
-            GasolineStation gas = routeService.saveGasoline( nearestPoint )
+            GasolineStation gas = routeService.saveGasoline( nearestPoint, GasolineStationType.AC_22_2KW.toString() )
             if ( gas ) {
                 data.gasolineId = gas.id;
             }
@@ -329,9 +270,9 @@ class MapViewController {
         def m = [ : ]
         m.gasolineId = cmd.gasolineId
         m.gasolineTypes = GasolineStationType.values()*.toString()
-        m.availableSimulations = Simulation.findAll()
 
         if ( gasolineStation.simulation ) m.selectedSimulationId = gasolineStation.simulation.id
+
         if ( gasolineStation.type ) m.selectedType = gasolineStation.type
         if ( gasolineStation.name ) m.name = gasolineStation.name
 
@@ -344,50 +285,27 @@ class MapViewController {
         bindData( cmd, params )
 
         if ( !cmd.validate() ) {
-            log.error( "failed to get trackId: ${cmd.errors}" )
+            log.error( "failed to get simulationRouteId: ${cmd.errors}" )
 
         }
 
-        Track track = Track.get( cmd.trackId )
-        SimulationRoute simulationRoute = SimulationRoute.findByTrack( track );
+        SimulationRoute simulationRoute = SimulationRoute.get( cmd.simulationRouteId )
 
         def m = [ : ]
-        m.trackId = cmd.trackId
-        m.carTypes = CarType.values()*.toString()
+        m.simulationRouteId = cmd.simulationRouteId
+        m.carTypes = CarType.findAll()
         m.availableSimulations = Simulation.findAll()
-
-        // to chose the battery pack
-        m.maxEnergies = grailsApplication.config.energyConfig.batteries.values().sort()
-
-
-        def maxEnergy = grailsApplication.config.energyConfig.maxEnergy
 
 
         if ( simulationRoute ) {
-            m.selectedCarType = simulationRoute.carType
-            m.selectedEnergyDrain = simulationRoute.energyDrain
-            m.initialEnergy = simulationRoute.initialEnergy
-            m.initialPersons = simulationRoute.initialPersons
 
-            m.selectedMaxEnergy = simulationRoute.maxEnergy
-            maxEnergy = simulationRoute.maxEnergy
+            m.selectedCarType = simulationRoute.carType
+            m.initialPersons = simulationRoute.initialPersons
 
             Simulation simulation = simulationRoute.simulation
             m.selectedSimulationId = simulation.id
-        } else {
-            m.initialEnergy  = grailsApplication.config.energyConfig.initialEnergy
-            m.initialPersons = grailsApplication.config.energyConfig.initialPersons
 
-            m.selectedEnergyDrain = grailsApplication.config.energyConfig.batteryDrain
-
-            m.selectedMaxEnergy = grailsApplication.config.energyConfig.maxEnergy
         }
-
-        // def energies = ( 0..maxEnergy ).findAll { it%10 == 0 }
-        def energies = ( 0..maxEnergy )
-        m.energies = energies
-
-        m.energyDrains = ( 20..100 )*.div( 2 )
 
         render( view: '_showTrackInfo', model: m )
     }
@@ -504,24 +422,20 @@ class MapViewController {
             log.error( "validating trackinfo failed: ${cmd.errors}" )
         }
 
-        Track track = Track.get( cmd.trackId )
-        SimulationRoute simulationRoute = SimulationRoute.findByTrack( track )
+        SimulationRoute simulationRoute = SimulationRoute.get( cmd.simulationRouteId )
 
         if ( !simulationRoute ) {
 
-            log.error( "there is no simulationRoute for Track: ${track.id}" )
+            log.error( "there is no simulationRoute for id: ${cmd.simulationRouteId}" )
 
             // simulationRoute = new SimulationRoute()
 
         } else {
-            log.debug( "simulationRoute: ${simulationRoute.id} found for track: ${track.id}" )
 
-            simulationRoute.carType = cmd.carType
+            simulationRoute.carType = CarType.get( cmd.carType )
             simulationRoute.initialEnergy = cmd.initialEnergy
             simulationRoute.initialPersons = cmd.initialPersons
-            simulationRoute.track = track
-            simulationRoute.maxEnergy = cmd.selectedMaxEnergy
-            simulationRoute.energyDrain = cmd.selectedEnergyDrain
+
 
             // simulationRoute.maxEnergy = grailsApplication.config.energyConfig.maxEnergy
 
@@ -531,14 +445,6 @@ class MapViewController {
                 log.debug( "simulationRoute: ${simulationRoute.id} saved!" )
             }
 
-            if ( cmd.selectedSimulationId ) {
-                Simulation sim = Simulation.get( cmd.selectedSimulationId )
-                sim.addToSimulationRoutes( simulationRoute )
-
-                if ( !sim.save( flush: true ) ) {
-                    log.error( "failed to save simulation: ${sim.errors}" )
-                }
-            }
 
             response.addHeader( "Content-Type", "application/json" );
             response.status = ResponseConstants.RESPONSE_STATUS_OK

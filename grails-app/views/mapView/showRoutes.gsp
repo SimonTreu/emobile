@@ -511,7 +511,7 @@
                         simulationId: ${simulationId},
                         calculateRouteLink: '${g.createLink( controller: 'mapView', action: 'calculateRoute' )}',
                         showGasolineInfoLink: '${g.createLink( controller: 'mapView', action: 'showGasolineInfo', params: [ gasolineId: gasolineId ] )}',
-                        showTrackInfoLink: '${g.createLink( controller: 'mapView', action: 'showTrackInfo', params: [ trackId: trackId ] )}'
+                        showTrackInfoLink: '${g.createLink( controller: 'mapView', action: 'showTrackInfo', params: [ simulationRouteId: simulationRouteId ] )}'
                     };
                     serialize( data );
                 }
@@ -535,7 +535,7 @@
 
             console.log( ${route.id} );
 
-            routeDat.trackId = ${route.trackId};
+            routeDat.simulationRouteId = ${route.simulationRouteId};
 
             var segments = new Array();
 
@@ -561,7 +561,7 @@
 
             routeDat.route = segments;
 
-            var showTrackInfoLink = '${g.createLink( controller: 'mapView', action: 'showTrackInfo', params: [ trackId: route.trackId ] )}';
+            var showTrackInfoLink = '${g.createLink( controller: 'mapView', action: 'showTrackInfo', params: [ simulationRouteId: route.simulationRouteId ] )}';
             routeDat.showTrackInfoLink = showTrackInfoLink;
             routeDat.routesLayer = routesLayer;
             routeDat.markers = markers;
@@ -595,7 +595,7 @@
             var routeToDelete = new Array();
 
             for ( var k = 0; k < routeFeatSize; k++ ) {
-                if ( routesLayer.features[ k ].trackId == trackId ) {
+                if ( routesLayer.features[ k ].simulationRouteId == id ) {
                     routeToDelete.push( routesLayer.features[ k ] );
                 }
             }
@@ -607,7 +607,7 @@
             var markersToDelete = new Array();
 
             for ( var k = 0; k < markersFeatSize; k++ ) {
-                if ( markers.markers[ k ].trackId == trackId ) {
+                if ( markers.markers[ k ].simulationRouteId == id ) {
                     markersToDelete.push( markers.markers[ k ] );
                 }
             }

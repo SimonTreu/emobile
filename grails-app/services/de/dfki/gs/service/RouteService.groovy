@@ -416,6 +416,78 @@ class RouteService {
         return routeStartTargetsList;
     }
 
+    public Long calculatePathFromCoordinates( Long simulationId, List<LatLonPoint> points ) {
+
+        Graph graph = getFeatureGraph( "osmGraph" )
+
+        Simulation simulation = Simulation.get( simulationId )
+
+        if ( simulation == null ) {
+            return null
+        }
+
+        List<org.geotools.graph.structure.Node> nodes = new ArrayList<org.geotools.graph.structure.Node>()
+        points.each { LatLonPoint latLonPoint ->
+
+            nodes.add( findClosestNode(
+                    new Coordinate( latLonPoint.x, latLonPoint.y ),
+                    graph
+            ) )
+
+        }
+
+        if ( nodes.size() != points.size() ) {
+            return null
+        }
+
+        List<List<BasicEdge>> multiTargetRoute = new ArrayList<List<BasicEdge>>()
+        def pairs = nodes.collate( 2, 1, false );
+
+        pairs.each {
+
+            List<BasicEdge> edges = calculatePathFromNodes( it[0], it[1] )
+            if ( edges.size() < 1 ) {
+                return null
+            }
+
+            multiTargetRoute.add( repairEdges( edges ) )
+
+        }
+
+
+        SimulationRoute simulationRoute = new SimulationRoute(
+                simulation: simulation,
+                carType: CarType.get( 1 ),
+                initialPersons: 1
+        )
+
+
+        if ( !simulationRoute.save() ) {
+            log.error( "failed to save simulation route: ${simulationRoute.errors}" )
+        } else {
+            log.debug( "saved simulation route with id: ${simulationRoute.id}" )
+        }
+
+
+        long millis = System.currentTimeMillis()
+        simulationRoute = persistRoute( simulationRoute,  multiTargetRoute, false )
+
+        double sumEdgesKm = simulationRoute.edges.sum { it.km }
+        log.error( "saved track with ${sumEdgesKm} km" )
+
+        simulationRoute.plannedDistance = sumEdgesKm;
+
+        simulation.addToSimulationRoutes( simulationRoute )
+
+
+        if ( !simulation.save() ) {
+            log.error( "failed to save simulation: ${simulation.errors}" )
+            return null
+        }
+
+        return simulationRoute.id
+    }
+
     public List<BasicEdge> calculatePathFromNodes( org.geotools.graph.structure.Node s, org.geotools.graph.structure.Node t ) {
 
         Path path = null;
@@ -459,13 +531,15 @@ class RouteService {
                 }
 
 
+                // TODO : prefer streets with speed < 60, 80 ( find paper again !)
+
                 Double costs = 7 * o;
                 if ( speed <= 30 ) {
-                    costs = 6 * o;
+                    costs = 1 * o;
                 } else if ( speed > 30 && speed < 80 ) {
                     costs = 3 * o;
                 } else if ( speed >= 80 ) {
-                    costs = 1 * o;
+                    costs = 6 * o;
                 }
 
                 // Double costs = ( Math.pow( 100/speed, 2) ) * o

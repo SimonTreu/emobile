@@ -1,4 +1,7 @@
 
+<r:require module="slider_resources" />
+<r:layoutResources></r:layoutResources>
+
 <div id="dd" class="lightboxmenu">
 
     <nobr>
@@ -15,27 +18,7 @@
 
         </span>
     </nobr>
-    <%--
-    <nobr>
-        <ul id="Navigation" style="margin: 0px">
 
-            <li style="margin: 4px; text-align: center">
-
-                    Edit Simulation Route for TrackId ${trackId}
-
-                    <img src="${g.resource( dir: '/images', file: 'close.png' )}"
-                         id="closeButtonForEdit"
-                         width="30"
-                         height="30"
-                         alt="Close"
-                         onclick="showTrackInfos( 'remove',4 )"
-                         style="" />
-
-            </li>
-
-        </ul>
-    </nobr>
-    --%>
 </div>
 
 <script>
@@ -78,7 +61,7 @@
                   onComplete="saveTrackInfos()" >
 
 
-        <g:hiddenField name="trackId" value="${trackId}" />
+        <g:hiddenField name="simulationRouteId" value="${simulationRouteId}" />
 
 
         <table class="lightboxselectiontable" >
@@ -96,35 +79,44 @@
                     <g:message code="de.dfki.gs.domain.SimulationRoute.carType" />
                 </td>
                 <td>
-                    <g:select title="${message( code: 'de.dfki.gs.domain.carType' )}" name="carType" from="${carTypes}" value="${selectedCarType}" />
+                    <g:select title="${message( code: 'de.dfki.gs.domain.carType' )}"
+                              name="carType"
+                              from="${carTypes}"
+                              value="${selectedCarType.id}"
+                              optionValue="name"
+                              optionKey="id"
+                    />
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <g:message code="de.dfki.gs.domain.SimulationRoute.maxEnergy" />
-                </td>
-                <td>
-                    <g:select id="packSelector"
-                              title="${message( code: 'de.dfki.gs.domain.SimulationRoute.maxEnergy')}"
-                              name="selectedMaxEnergy"
-                              from="${maxEnergies}"
-                              onchange="changeBatteryFill()"
-                              value="${selectedMaxEnergy}" />
-                </td>
-            </tr>
+
+
             <tr>
                 <td>
                     <g:message code="de.dfki.gs.domain.SimulationRoute.initialEnergy" />
                 </td>
-                <td>
+                <td> <%-- slider --%>
+
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#slider").easySlider({
+                                auto: true,
+                                continuous: true,
+                                numeric: true
+                            });
+                        });
+                    </script>
+
+                    <div id="slider"></div>
+
                     <g:select id="eSelector"
                               title="${message( code: 'de.dfki.gs.domain.SimulationRoute.initialEnergy')}"
                               name="initialEnergy"
-                              from="${energies}"
+                              from="${0..100}"
                               value="${initialEnergy}" />
                 </td>
             </tr>
 
+            <%--
             <tr>
                 <td>
                     <g:message code="de.dfki.gs.domain.SimulationRoute.energyDrain" />
@@ -136,19 +128,7 @@
                               value="${selectedEnergyDrain}" />
                 </td>
             </tr>
-
-            <tr>
-                <td>
-                    <g:message code="de.dfki.gs.domain.SimulationRoute.selectSimulation" />
-                </td>
-                <td>
-                    <g:select name="selectedSimulationId"
-                              from="${availableSimulations}"
-                              noSelection="${['null':'Select One...']}"
-                              optionKey="id"
-                              optionValue="name" value="${selectedSimulationId}" />
-                </td>
-            </tr>
+            --%>
 
         </table>
 

@@ -2,6 +2,7 @@ package de.dfki.gs.controller.commands
 
 import de.dfki.gs.domain.CarType
 import de.dfki.gs.domain.Simulation
+import de.dfki.gs.domain.SimulationRoute
 import de.dfki.gs.domain.Track
 import grails.validation.Validateable
 
@@ -12,35 +13,33 @@ import grails.validation.Validateable
 @Validateable
 class SaveTrackInfoCommand {
 
-    Long trackId
-    String carType
+    Long simulationRouteId
+
+    Long carType
     Integer initialPersons
     Double initialEnergy
-    Long selectedSimulationId
-    Double selectedMaxEnergy
-    Double selectedEnergyDrain
+
 
     static constraints = {
 
-        trackId( nullable: false, validator: { val, obj ->
-            if ( !Track.get( val ) ) return false
+        simulationRouteId( nullable: false, validator: { val, obj ->
+            if ( !SimulationRoute.get( val ) ) return false
 
             return true;
         })
 
-        carType( nullable: false, inList: CarType.values()*.toString() )
+        carType( nullable: false, validator: { val,obj ->
+            if ( !CarType.get( val ) ) {
+                return false
+            }
 
-        initialPersons( nullable: false, min: 1 )
-
-        initialEnergy( nullable: false, min: 0d )
-
-        selectedSimulationId( nullable: true, validator: { val,obj ->
-            if ( val && !Simulation.get( val ) ) return 'de.dfki.gs.controller.commands.SaveTrackInfoCommand.not.exist'
+            return true
         } )
 
-        selectedMaxEnergy( nullable: false )
+        initialPersons( nullable: true )
 
-        selectedEnergyDrain( nullable: false )
+        initialEnergy( nullable: true )
+
     }
 
 

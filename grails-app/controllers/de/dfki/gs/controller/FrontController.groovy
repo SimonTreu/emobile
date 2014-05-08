@@ -9,8 +9,8 @@ class FrontController {
     def init() {
 
         def model = [:]
-        model.name = "Hua!"
-        model.info = "voodoo"
+        model.name = ""
+        model.info = ""
 
         render( view: 'index', model: model )
     }

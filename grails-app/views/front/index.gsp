@@ -15,7 +15,8 @@
 <body>
 
 <div>
-    <p>Simulation started</p>
+    <br>
+    <p id="startSimulation">Simulation started</p>
     <p>${name}</p>
     <p>${info}</p>
 </div>

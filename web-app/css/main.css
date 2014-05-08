@@ -38,7 +38,7 @@ html * {
 
 body {
     background: url("http://localhost:8080/emobilesim2/images/i2maps/px.png") repeat scroll 0 0 rgba(0, 0, 0, 0);;
-	background: #ffffff;
+
 	color: #333333;
 	margin: 0 auto;
 	overflow-x: hidden; /* prevents box-shadow causing a horizontal scrollbar in firefox when viewport < 960px wide */
@@ -869,20 +869,11 @@ body {
 
 
 
-
-
-
-
 body, a {
     font: normal 90% Helvetica, Arial, sans-serif;
-
-
-    color: black; background-color: white;
+    color: black;
 
 }
-
-
-
 
 
 ul#Navigation {
@@ -1021,3 +1012,7 @@ body.lightBoxBody{
     overflow: visible;
 }
 
+
+#startSimulation {
+    margin-left: 10px;
+}

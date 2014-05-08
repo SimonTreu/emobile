@@ -14,8 +14,8 @@
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
 <link rel="stylesheet" href="${resource(dir: 'css/i2maps', file: 'jquery-ui-aristo.css')}" type="text/css">
 <link rel="stylesheet" href="${resource(dir: 'css/i2maps', file: 'ui.panel.css')}" type="text/css">
-
-
+ <script type='text/javascript' src="${resource(dir: 'js', file: 'menu_jquery.js')}"></script>
+ <link rel='stylesheet' href="${resource(dir: 'css', file: 'menu.css')}" type='text/css' />
     <%--
     <g:javascript src="jq/jquery-1.9.1.js" />
 
@@ -76,7 +76,7 @@
         <button id="button_stopp" onClick="button_stop()"><b>Stop</b></button>
         --%>
 
-        <div id="map" style="background-color: #eee; width:90%; height:90%; position: absolute; left:5%; top:5%" class="olMap"></div>
+        <div id="map" style="background-color: #eee; width:90%; height:90%; position: absolute; left:5%; top:2% padding-top:1px" class="olMap"></div>
         <!--<div id="map" style="background-color: #eee; width:90%; height:90%; position: absolute; left:5%; top:5%" class="map"></div>-->
 
 <script type="text/javascript">

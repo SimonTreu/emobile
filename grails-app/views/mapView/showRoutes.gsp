@@ -16,7 +16,8 @@
     <g:javascript src="ol/OpenLayers.js" />
 
     <%-- <g:javascript src="firebug.js" /> --%>
-
+    <script type='text/javascript' src="${resource(dir: 'js', file: 'menu_jquery.js')}"></script>
+    <link rel='stylesheet' href="${resource(dir: 'css', file: 'menu.css')}" type='text/css' />
     <script type="text/javascript" src="http://openstreetmap.org/openlayers/OpenStreetMap.js"></script>
     <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
     <script type="text/javascript" src="http://ol3js.org/en/master/examples/google-map.js"></script>
@@ -422,7 +423,7 @@
 
 <div id="content">
 
-    <div id="map" style="background-color: #eee; width:90%; height:90%; position: absolute; left:5%; top:5%" class="olMap"></div>
+    <div id="map" style="background-color: #eee; width:90%; height:90%; position: absolute; left:5%; top:2% padding-top:1px" class="olMap"></div>
 
 
 

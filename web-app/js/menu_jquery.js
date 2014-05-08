@@ -1,8 +1,8 @@
 $( document ).ready(function() {
 $('#cssmenu').prepend('<div id="indicatorContainer"><div id="pIndicator"><div id="cIndicator"></div></div></div>');
-    var activeElement = $('#cssmenu>ul>li:first');
+    var activeElement = $('#menu>ul>li:first');
 
-    $('#cssmenu>ul>li').each(function() {
+    $('#menu>ul>li').each(function() {
         if ($(this).hasClass('active')) {
             activeElement = $(this);
         }
@@ -16,10 +16,10 @@ $('#cssmenu').prepend('<div id="indicatorContainer"><div id="pIndicator"><div id
 		posLeft -= 6;
 	}
 
-	$('#cssmenu #pIndicator').css('left', posLeft);
-	var element, leftPos, indicator = $('#cssmenu pIndicator');
+	$('#menu #pIndicator').css('left', posLeft);
+	var element, leftPos, indicator = $('#menu pIndicator');
 	
-	$("#cssmenu>ul>li").hover(function() {
+	$("#menu>ul>li").hover(function() {
         element = $(this);
         var w = element.width();
         if ($(this).hasClass('has-sub'))
@@ -30,15 +30,15 @@ $('#cssmenu').prepend('<div id="indicatorContainer"><div id="pIndicator"><div id
         	leftPos = element.position().left + w/2 - 6;
         }
 
-        $('#cssmenu #pIndicator').css('left', leftPos);
+        $('#menu #pIndicator').css('left', leftPos);
     }
     , function() {
-    	$('#cssmenu #pIndicator').css('left', posLeft);
+    	$('#menu #pIndicator').css('left', posLeft);
     });
 
 
-	$('#cssmenu>ul>.has-sub>ul').append('<div class="submenuArrow"></div>');
-	$('#cssmenu>ul').children('.has-sub').each(function() {
+	$('#menu>ul>.has-sub>ul').append('<div class="submenuArrow"></div>');
+	$('#menu>ul').children('.has-sub').each(function() {
 		var posLeftArrow = $(this).width();
 		posLeftArrow /= 2;
 		posLeftArrow -= 12;
@@ -46,7 +46,7 @@ $('#cssmenu').prepend('<div id="indicatorContainer"><div id="pIndicator"><div id
 
 	});
 
-	$('#cssmenu>ul').prepend('<li id="menu-button"><a>Menu</a></li>');
+	$('#menu>ul').prepend('<li id="menu-button"><a>Menu</a></li>');
 	$( "#menu-button" ).click(function(){
     		if ($(this).parent().hasClass('open')) {
     			$(this).parent().removeClass('open');

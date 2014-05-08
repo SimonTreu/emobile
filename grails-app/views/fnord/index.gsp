@@ -20,7 +20,7 @@
 
 
     <%--
-    <g:resource file="css/i2maps/styles.css" />
+    <g:resource file="css/i2maps/menu.css" />
     <g:resource file="css/i2maps/ui.panel.css" />
     <g:resource file="css/i2maps/i2maps.css" />
     <g:resource file="css/i2maps/jquery-ui-aristo.css" />
@@ -34,7 +34,7 @@
 <div>
 
     <button id="button_play_pause" onClick="button_clicked()"><b>Play</b></button>
-    <div id="map" style="background-color: #eee; width:90%; height:90%; position: absolute; left:5%; top:5%"></div>
+    <div id="map" style="background-color: #eee; width:90%; height:90%; position: absolute; left:5%; top:2% padding-top:1px"></div>
 
     <div id="info_box" class="panel" style="position: fixed; right:5%; top:30%; height: 200px; width: 200px; margin-left: 5px; opacity: 0.9;">
         <h3>Info</h3>

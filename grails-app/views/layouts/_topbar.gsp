@@ -1,4 +1,4 @@
-<%--<div id="menu">
+<%--div id="menu">
     <nobr>
 
         <ul id="Navigation">
@@ -21,7 +21,7 @@
 </nobr>
 </div>--%>
 
-<div id='cssmenu'>
+<div id='menu'>
 
            <ul>
            <li class='active'><g:link controller="simulation" action="init"><span>Simulation on map</span></g:link></li>
@@ -29,7 +29,7 @@
            <li><g:link controller="simulationPreparator" action="index" params="[ viewOnly : 'true' ]" view="index"><span>Start experiment</span></g:link></li>
            <li class='has-sub last'><a href='#'><span>Statistics</span></a>
             <ul>
-                <li><a href='#'><span>Charging stations</span></a></li>
+                <li><g:link controller="maps" action="map"><span>Charging stations</span></g:link></li>
                 <li><a href='#'><span>Driver profile</span></a></li>
                 <li class='last'><a href='#'><span>OBU Statistics</span></a></li>
             </ul>

@@ -17,7 +17,6 @@
 
     <r:layoutResources/>
     <meta name="layout" content="main" />
-
 </head>
 
 <body onload="drawExperimentContainer( ${routeCount} );">

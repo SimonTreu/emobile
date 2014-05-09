@@ -118,7 +118,6 @@
 
     </script>
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
-
 </head>
 <body onload="init()">
 

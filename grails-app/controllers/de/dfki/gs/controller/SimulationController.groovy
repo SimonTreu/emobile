@@ -230,7 +230,7 @@ class SimulationController {
 
         def sessionId = WebUtils.retrieveGrailsWebRequest().session.id
 
-        SimulationCommand cmd = new SimulationCommand();
+        SimulationCommand cmd = new SimulationCommand()
         bindData( cmd, params )
 
         if ( cmd.simulationId != null && !cmd.validate() ) {
@@ -241,7 +241,7 @@ class SimulationController {
             def m = simulationCollectDataService.collectSimulationModelForRendering( cmd.simulationId, true, true )
 
             // simulationThreadFrameworkService.init( cmd.simulationId, null, sessionId )
-            Double relativeSearchLimit = 60
+            Double relativeSearchLimit = 0.20
             simulationThreadFrameworkService.init2( cmd.simulationId, null, sessionId, relativeSearchLimit )
 
 

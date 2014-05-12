@@ -41,6 +41,15 @@
 
 <g:javascript src="application.js" />
 
+<g:javascript src="ol/OpenLayers.js" />
+
+<%-- <g:javascript src="firebug.js" /> --%>
+
+    <script type="text/javascript" src="http://openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+
+    <g:javascript library="jquery" />
+    <g:javascript src="application.js" />
+
 <r:layoutResources/>
 </head>
 <body>
@@ -76,8 +85,8 @@
         <button id="button_stopp" onClick="button_stop()"><b>Stop</b></button>
         --%>
 
-        <div id="map" style="background-color: #eee; width:90%; height:90%; position: absolute; left:5%; top:2% padding-top:1px" class="olMap"></div>
-        <!--<div id="map" style="background-color: #eee; width:90%; height:90%; position: absolute; left:5%; top:5%" class="map"></div>-->
+        <div id="map" style="background-color: #eee; width:94%; height:94%; position: absolute; left:5%; top:2% padding-top:1px" class="olMap"></div>
+        <%--<div id="map" style="background-color: #eee; width:90%; height:90%; position: absolute; left:5%; top:5%" class="map"></div>--%>
 
 <script type="text/javascript">
 
@@ -296,7 +305,7 @@
         simulationRoutes.push( simulationRoute );
 
 
-        routeDat.trackId = ${route.trackId};
+        routeDat.trackId = ${route.simulationRouteId};
 
         var vias = new Array();
         <g:each var="via" in="${route.vias}">

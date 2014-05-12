@@ -423,7 +423,7 @@
 
 <div id="content">
 
-    <div id="map" style="background-color: #eee; width:90%; height:90%; position: absolute; left:5%; top:2% padding-top:1px" class="olMap"></div>
+    <div id="map" style="background-color: #eee; width:94%; height:94%; position: absolute; left:5%; top:2% padding-top:1px" class="olMap"></div>
 
 
 

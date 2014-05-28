@@ -3,6 +3,7 @@
   height: 44px;
   background: #000000;
   width: auto;
+  z-index:2;
 }
 #menu ul {
   list-style: none;
@@ -17,22 +18,26 @@
   height: 32px;
   width: 100%;
   z-index: 500;
+
 }
 #menu > ul > li {
-  display: block;
-  position: relative;
-  float: left;
-  margin: 0;
-  padding: 0;
+    display: block;
+    position: relative;
+    float: left;
+    margin: 0;
+    padding: 0;
 }
 #menu > ul > #menu-button {
   display: none;
+
 }
 #menu ul li a {
   display: block;
   font-family: Helvetica, sans-serif;
   text-decoration: none;
+
 }
+
 #menu > ul > li > a {
   font-size: 14px;
   font-weight: bold;
@@ -45,6 +50,7 @@
   -o-transition: color 0.25s ease-out;
   transition: color 0.25s ease-out;
 }
+
 #menu > ul > li.has-sub > a {
   padding-right: 32px;
 }
@@ -108,7 +114,7 @@
   -ms-transition: opacity .3s ease, top .25s ease;
   -o-transition: opacity .3s ease, top .25s ease;
   transition: opacity .3s ease, top .25s ease;
-  z-index: 1000;
+  z-index: -1;
 }
 #menu ul ul ul {
   top: 37px;
@@ -139,6 +145,7 @@
   -ms-transition: all .35s ease;
   -o-transition: all .35s ease;
   transition: all .35s ease;
+    z-index: -1;
 }
 #menu ul ul li:hover > a {
   background: #f6f6f6;

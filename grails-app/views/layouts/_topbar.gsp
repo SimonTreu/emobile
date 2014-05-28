@@ -27,9 +27,9 @@
            <li class='active'><g:link controller="simulation" action="init"><span>Simulation on map</span></g:link></li>
            <li><g:link controller="simulationPreparator" action="index"><span>Configure simulation</span></g:link></li>
            <li><g:link controller="simulationPreparator" action="index" params="[ viewOnly : 'true' ]" view="index"><span>Start experiment</span></g:link></li>
-           <li class='has-sub last'><a href='http://www.gpsvisualizer.com/display/data/20140508055237-02050-map.html'><span>Statistics</span></a>
+           <li class='has-sub last'><g:link controller="mapView" action="listUsages"><span>Statistics</span></g:link>
             <ul>
-                <li><a href='http://www.gpsvisualizer.com/display/data/20140508055237-02050-map.html'><span>Charging stations</span></a></li>
+                <li><g:link controller="mapView" action="listUsages"><span>Charging stations</span></g:link></li>
                 <li><a href='#'><span>Driver profile</span></a></li>
                 <li class='last'><a href='#'><span>OBU Statistics</span></a></li>
             </ul>

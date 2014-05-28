@@ -2,6 +2,7 @@ package de.dfki.gs.controller
 
 import com.vividsolutions.jts.geom.Coordinate
 import com.vividsolutions.jts.geom.Point
+import de.dfki.gs.controller.commands.CheckDateCommand
 import de.dfki.gs.controller.commands.SaveGasolineInfoCommand
 import de.dfki.gs.controller.commands.SaveTrackInfoCommand
 import de.dfki.gs.controller.commands.ShowGasolineInfoCommand
@@ -18,6 +19,7 @@ import de.dfki.gs.domain.TrackEdge
 import de.dfki.gs.utils.LatLonPoint
 import de.dfki.gs.utils.ResponseConstants
 import grails.converters.JSON
+import groovy.sql.Sql
 import org.geotools.graph.path.Path
 import org.geotools.graph.structure.Edge
 import org.geotools.graph.structure.basic.BasicEdge
@@ -27,6 +29,7 @@ import org.opengis.feature.simple.SimpleFeature
 class MapViewController {
 
     def routeService
+    def realStationsStatsService
     def simulationCollectDataService
     def grailsApplication
 
@@ -95,11 +98,81 @@ class MapViewController {
 
     }
 
+    def openLayersMapsStatistik() {
+        log.debug( "params openlayers: ${params}" )
+        log.debug( "sessionId: ${request.requestedSessionId}" )
+
+
+        // params.simulationId can be null
+        try {
+            Long simulationId = Long.parseLong( params.simulationId as String )
+
+            SimulationCommand cmd = new SimulationCommand()
+            bindData( cmd, params )
+
+            if ( !cmd.validate() ) {
+                log.error( "failed to get simulation for provided simulationId: ${cmd.simulationId} -- ${cmd.errors}" )
+            }
+
+            def m =  simulationCollectDataService.collectSimulationModelForRendering( simulationId )
+
+            render view: 'showRoutes', model: m
+        } catch ( Exception e ) {
+            log.error( "cannot parse string to long ${params.simulationId}", e  )
+        }
+
+    }
+
     def index() {
+        def gasoline = GasolineStation.list()
+        [gasoline:gasoline]
     }
 
     def completeTask() {
         println "hua"
+    }
+
+    def listUsages() {
+
+        log.error( "params: ${params}" )
+
+        CheckDateCommand cmd = new CheckDateCommand()
+        bindData( cmd, params )
+
+        Date fromDate = new Date()
+        Date toDate = new Date()
+
+        def m = [:]
+
+        if ( cmd.validate() && !cmd.hasErrors() ) {
+            // create Date objects...
+            // fromDate = ...
+            // GregorianCalendar...
+            GregorianCalendar calendar = new GregorianCalendar();
+            calendar.set(Calendar.MINUTE, cmd.fromDate_minute);
+            calendar.set(Calendar.HOUR, cmd.fromDate_hour);
+            calendar.set(Calendar.DAY_OF_MONTH, cmd.fromDate_day);
+            calendar.set(Calendar.MONTH, cmd.fromDate_month - 1);
+            calendar.set(Calendar.YEAR, cmd.fromDate_year);
+
+            fromDate = calendar.getTime()
+
+            calendar.set(Calendar.MINUTE, cmd.toDate_minute);
+            calendar.set(Calendar.HOUR, cmd.toDate_hour);
+            calendar.set(Calendar.DAY_OF_MONTH, cmd.toDate_day);
+            calendar.set(Calendar.MONTH, cmd.toDate_month - 1);
+            calendar.set(Calendar.YEAR, cmd.toDate_year);
+
+            toDate = calendar.getTime()
+
+        } else {
+            log.error( "failed to create dates from params: ${cmd.errors}" )
+        }
+
+        m = realStationsStatsService.getUsages( fromDate, toDate );
+
+
+        render( view: 'openLayersMapsStatistik', model: m )
     }
 
     def showCoords() {
@@ -294,6 +367,7 @@ class MapViewController {
         def m = [ : ]
         m.simulationRouteId = cmd.simulationRouteId
         m.carTypes = CarType.findAll()
+        m.gasolineStations = GasolineStation.findAll()
         m.availableSimulations = Simulation.findAll()
 
 

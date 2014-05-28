@@ -178,7 +178,7 @@
     background-image: url("../../images/i2maps/ui-icons_454545_256x240.png");
 }
 .ui-state-error .ui-icon, .ui-state-error-text .ui-icon {
-    background: url("../../images/i2maps/icon_sprite.png") no-repeat scroll -16px 0 rgba(0, 0, 0, 0) !important;
+    background: url("../../images/i2maps/images/icon_sprite.png") no-repeat scroll -16px 0 rgba(0, 0, 0, 0) !important;
 }
 .ui-state-highlight .ui-icon, .ui-state-error .ui-icon {
     margin-top: -1px;

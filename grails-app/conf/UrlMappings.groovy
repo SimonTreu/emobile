@@ -29,6 +29,16 @@ class UrlMappings {
             action = "openLayersWithAction"
         }
 
+        "/maps/openLayersMapsStatistik" {
+            controller = "mapView"
+            action = "openLayersMapsStatistik"
+        }
+
+        "/openLayersMapsStatistik" {
+            controller = "mapView"
+            action = "openLayersMapsStatistik"
+        }
+
         "/showPlaySimulation" {
             controller = "mapView"
             action = "showPlaySimulation"

@@ -100,7 +100,8 @@ grails.project.dependency.resolution = {
         compile ":cache:1.1.1"
 
         compile ":quartz:1.0.1"
-
+        compile ":calendar:1.2.1"
+        compile ":google-visualization:0.7"
         // compile ':cache-ehcache:1.0.0'
     }
 }

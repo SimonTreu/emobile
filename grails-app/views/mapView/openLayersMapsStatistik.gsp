@@ -1,5 +1,5 @@
 
-<%@ page import="de.dfki.gs.domain.GasolineStation; de.dfki.gs.domain.CarType" contentType="text/html;charset=UTF-8" %>
+<%@ page import="org.jfree.data.time.*; de.dfki.gs.domain.GasolineStation; de.dfki.gs.domain.CarType;  java.util.Date;" contentType="text/html;charset=UTF-8" %>
 
 <html>
 <head>
@@ -18,14 +18,16 @@
             top:5px;
         }
         .calendar {
+            position:absolute;
             z-index:3;
-            right:10px;
-            top:5px;
+            right:200px;
+            top:50px;
         }
         .calendar1 {
+            position:absolute;
             z-index:3;
             right:10px;
-            top:5px;
+            top:50px;
         }
         #fromDate_value{
              z-index:3;
@@ -36,20 +38,20 @@
         #fromDate-trigger{
             z-index:3;
             position:absolute;
-            right:240px;
+            right:245px;
             top:15px;
         }
 
         #toDate_value{
             z-index:3;
             position:absolute;
-            right:70px;
+            right:75px;
             top:10px;
         }
         #toDate-trigger{
             z-index:3;
             position:absolute;
-            right:45px;
+            right:50px;
             top:15px;
         }
         #dateButton {
@@ -94,17 +96,16 @@
 <g:render template="/layouts/topbar"/>
 
 <g:form controller="mapView" action="listUsages">
-    <calendar:datePicker id="fromDate" name="fromDate" showTime="true" dateFormat="%H:%M - %d.%m.%Y" defaultValue="${new Date()}" value="${fromDate_value}"/>
-    <calendar:datePicker id="toDate" name="toDate" showTime="true" dateFormat="%H:%M - %d.%m.%Y" defaultValue="${new Date()}" value="${toDate_value}"/>
+    <calendar:datePicker id="fromDate" name="fromDate" showTime="true" dateFormat="%H:%M - %d.%m.%Y" years="${2014}" singleClick="true" defaultValue="${fromDate}" value="${fromDate_value}"/>
+    <calendar:datePicker id="toDate" name="toDate" showTime="true" dateFormat="%H:%M - %d.%m.%Y" years="${2014}" defaultValue="${toDate}" value="${toDate}"/>
     <g:submitButton name="Go" id="dateButton"></g:submitButton>
 </g:form>
-
 <div id="map" class="olMap" style="z-index:1">
 
 <div id="gmap_div"></div>
 
     <div id="gv_infobox" class="gv_infobox" style="font:11px Arial; border:solid #666666 1px; background:#ffffff; padding:4px; overflow:auto; display:none; float:right; ">
-        <div id="gv_legend_header" style="padding-bottom:2px;"><b>Charge_Time</b></div>
+        <div id="gv_legend_header" style="padding-bottom:2px;"><b>Loading Time in %</b></div>
 <g:each in="${legendGroups}" var="legendGroup">
     <g:if test="${((legendGroup.count > 0) && (legendGroup.name=='0-10') )}" >
         <div class="gv_legend_item"><span style="color: #00FF00;">&#9608; ${legendGroup.name}</span></div>

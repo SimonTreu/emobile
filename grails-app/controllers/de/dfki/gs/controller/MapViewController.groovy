@@ -134,7 +134,7 @@ class MapViewController {
 
     def listUsages() {
 
-        log.error( "params: ${params}" )
+        log.error( "date params: ${params}" )
 
         CheckDateCommand cmd = new CheckDateCommand()
         bindData( cmd, params )
@@ -150,7 +150,7 @@ class MapViewController {
             // GregorianCalendar...
             GregorianCalendar calendar = new GregorianCalendar();
             calendar.set(Calendar.MINUTE, cmd.fromDate_minute);
-            calendar.set(Calendar.HOUR, cmd.fromDate_hour);
+            calendar.set(Calendar.HOUR, cmd.fromDate_hour-12);
             calendar.set(Calendar.DAY_OF_MONTH, cmd.fromDate_day);
             calendar.set(Calendar.MONTH, cmd.fromDate_month - 1);
             calendar.set(Calendar.YEAR, cmd.fromDate_year);
@@ -158,8 +158,8 @@ class MapViewController {
             fromDate = calendar.getTime()
 
             calendar.set(Calendar.MINUTE, cmd.toDate_minute);
-            calendar.set(Calendar.HOUR, cmd.toDate_hour);
-            calendar.set(Calendar.DAY_OF_MONTH, cmd.toDate_day);
+            calendar.set(Calendar.HOUR, cmd.toDate_hour-12);
+            calendar.set(Calendar.DAY_OF_MONTH, cmd.toDate_day );
             calendar.set(Calendar.MONTH, cmd.toDate_month - 1);
             calendar.set(Calendar.YEAR, cmd.toDate_year);
 
@@ -170,7 +170,8 @@ class MapViewController {
         }
 
         m = realStationsStatsService.getUsages( fromDate, toDate );
-
+        m.fromDate = fromDate
+        m.toDate = toDate
 
         render( view: 'openLayersMapsStatistik', model: m )
     }

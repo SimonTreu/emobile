@@ -158,7 +158,7 @@ class MapViewController {
             fromDate = calendar.getTime()
 
             calendar.set(Calendar.MINUTE, cmd.toDate_minute);
-            calendar.set(Calendar.HOUR, cmd.toDate_hour-12);
+            calendar.set(Calendar.HOUR, cmd.toDate_hour);
             calendar.set(Calendar.DAY_OF_MONTH, cmd.toDate_day );
             calendar.set(Calendar.MONTH, cmd.toDate_month - 1);
             calendar.set(Calendar.YEAR, cmd.toDate_year);

@@ -16,7 +16,7 @@
 
 <div>
     <br>
-    <p id="startSimulation">Simulation started</p>
+    <p id="startSimulation">Please, log in to start the simulation</p>
     <p>${name}</p>
     <p>${info}</p>
 </div>

@@ -7531,7 +7531,7 @@ OpenLayers.Map = OpenLayers.Class({Z_INDEX_BASE: {BaseLayer: 100, Overlay: 325, 
     this.tileSize = new OpenLayers.Size(OpenLayers.Map.TILE_WIDTH, OpenLayers.Map.TILE_HEIGHT);
     this.maxExtent = new OpenLayers.Bounds(-180, -90, 180, 90);
     this.paddingForPopups = new OpenLayers.Bounds(15, 15, 15, 15);
-    // this.theme = OpenLayers._getScriptLocation() + 'theme/default/style.css';
+    // this.theme = OpenLayers._getScriptLocation() + 'theme/default/styleOld.css';
     this.theme = 'http://localhost:8080/emobilesim2/css/i2maps/styles.css';
 
     OpenLayers.Util.extend(this, options);

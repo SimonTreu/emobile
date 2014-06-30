@@ -36,7 +36,7 @@
     <button id="button_play_pause" onClick="button_clicked()"><b>Play</b></button>
     <div id="map" style="background-color: #eee; width:94%; height:94%; position: absolute; left:5%; top:2% padding-top:1px"></div>
 
-    <div id="info_box" class="panel" style="position: fixed; right:5%; top:30%; height: 200px; width: 200px; margin-left: 5px; opacity: 0.9;">
+    <div id="info_box" class="panel" style="position: fixed; right:5%; bottom:5%; height: 200px; width: 200px; margin-left: 5px; opacity: 0.9;">
         <h3>Info</h3>
         <div>
             <div id="attributes" style="height: 100px;"></div>

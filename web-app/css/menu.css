@@ -1,7 +1,7 @@
 #menu {
   position: relative;
   height: 44px;
-  background: #000000;
+  background: #585858;
   width: auto;
   z-index:2;
 }
@@ -14,7 +14,7 @@
 #menu > ul {
   position: relative;
   display: block;
-  background: #000000;
+  background: #585858;
   height: 32px;
   width: 100%;
   z-index: 500;

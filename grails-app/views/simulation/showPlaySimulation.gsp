@@ -9,13 +9,14 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-<title></title>
+    <title></title>
 
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
-<link rel="stylesheet" href="${resource(dir: 'css/i2maps', file: 'jquery-ui-aristo.css')}" type="text/css">
-<link rel="stylesheet" href="${resource(dir: 'css/i2maps', file: 'ui.panel.css')}" type="text/css">
- <script type='text/javascript' src="${resource(dir: 'js', file: 'menu_jquery.js')}"></script>
- <link rel='stylesheet' href="${resource(dir: 'css', file: 'menu.css')}" type='text/css' />
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
+    <link rel="stylesheet" href="${resource(dir: 'css/i2maps', file: 'jquery-ui-aristo.css')}" type="text/css">
+    <link rel="stylesheet" href="${resource(dir: 'css/i2maps', file: 'ui.panel.css')}" type="text/css">
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'jquery.sidr.light.css')}" type="text/css">
+    <%--<script type='text/javascript' src="${resource(dir: 'js', file: 'menu_jquery.js')}"></script>--%>
+    <link rel='stylesheet' href="${resource(dir: 'css', file: 'menu.css')}" type='text/css' />
     <%--
     <g:javascript src="jq/jquery-1.9.1.js" />
 
@@ -26,31 +27,52 @@
 
 
 
-<g:javascript library="jquery" />
+    <g:javascript library="jquery" />
 
 
-<g:javascript src="ol/OpenLayers.js" />
-<%-- <g:javascript src="i2maps/ui.panel.min.js" /> --%>
+    <g:javascript src="ol/OpenLayers.js" />
+    <%-- <g:javascript src="i2maps/ui.panel.min.js" /> --%>
 
 
-<%-- <g:javascript src="firebug.js" /> --%>
+    <%-- <g:javascript src="firebug.js" /> --%>
 
-<script type="text/javascript" src="http://openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-<script type="text/javascript" src="http://ol3js.org/en/master/examples/google-map.js"></script>
+    <script type="text/javascript" src="http://openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+    <script type="text/javascript" src="http://ol3js.org/en/master/examples/google-map.js"></script>
     <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
 
-<g:javascript src="application.js" />
+    <g:javascript src="application.js" />
 
-<g:javascript src="ol/OpenLayers.js" />
+    <g:javascript src="ol/OpenLayers.js" />
 
-<%-- <g:javascript src="firebug.js" /> --%>
+    <%-- <g:javascript src="firebug.js" /> --%>
 
     <script type="text/javascript" src="http://openstreetmap.org/openlayers/OpenStreetMap.js"></script>
 
     <g:javascript library="jquery" />
     <g:javascript src="application.js" />
 
-<r:layoutResources/>
+    <r:layoutResources/>
+    <%-- <script src="http://code.jquery.com/jquery-latest.js"></script>--%>
+    <script type='text/javascript' src="${resource(dir: 'js', file: 'jquery.sidr.min.js')}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#simple-menu').sidr({
+                name: 'sidr',
+                source: '#sidr',
+                displace:true,
+                method:'open',
+                body:maps,
+                side: 'right'
+            });
+        });
+    </script>
+    <style>
+        #simple-menu {
+
+            z-index: 5000;
+
+        }
+    </style>
 </head>
 <body>
 
@@ -59,9 +81,11 @@
 
 <div id="content">
 
-    <div>
-
-
+<div>
+<span id="maps" style="position: absolute; right:200px;" >
+    <a id="simple-menu" style="  right:0px;"  href="#sidr"></a>
+</span>
+<span id="sidr" style="display: block; right:0px;">
         <button id="button_play_pause" onClick="toggle_button_clicked()"><b>Play</b></button>
 
         <br/>
@@ -69,24 +93,30 @@
         <button id="button_stopp" type="submit" onclick="location.href='${createLink( controller: 'simulation', action: 'stopSimulation', params: [ simulationId: simulationId ] ) }'"><i class="icon icon-warning-sign"></i>Stop
 
         </button>
+</span>
 
 
-        <%--
-        <g:formRemote name="runsim" action="stopSimulation" on404="alert('not found!')"
-                      url="[  controller: 'simulation', action: 'stopSimulation']" >
+<%--
+<g:formRemote name="runsim" action="stopSimulation" on404="alert('not found!')"
+              url="[  controller: 'simulation', action: 'stopSimulation']" >
 
-            <g:hiddenField name="simulationId" value="${simulationId}" />
-            <button id="button_stopp" type="submit"><i class="icon icon-warning-sign"></i>Stop</button> </p>
+    <g:hiddenField name="simulationId" value="${simulationId}" />
+    <button id="button_stopp" type="submit"><i class="icon icon-warning-sign"></i>Stop</button> </p>
 
-        </g:formRemote>
-        --%>
+</g:formRemote>
+--%>
 
-        <%--
-        <button id="button_stopp" onClick="button_stop()"><b>Stop</b></button>
-        --%>
+<%--
+<button id="button_stopp" onClick="button_stop()"><b>Stop</b></button>
+--%>
 
-        <div id="map" style="background-color: #eee; width:94%; height:94%; position: absolute; left:5%; top:2% padding-top:1px" class="olMap"></div>
-        <%--<div id="map" style="background-color: #eee; width:90%; height:90%; position: absolute; left:5%; top:5%" class="map"></div>--%>
+
+
+<div id="map" style="position: absolute;  width:100%; height:100%; padding-top:1px" class="olMap">
+
+
+</div>
+<%--<div id="map" style="background-color: #eee; width:90%; height:90%; position: absolute; left:5%; top:5%" class="map"></div>--%>
 
 <script type="text/javascript">
 
@@ -258,84 +288,84 @@
     simulationId = ${simulationId};
     <g:each var="route" in="${routes}" >
 
-        var startPoint = new OpenLayers.Geometry.Point(
-                ${route.route[ 0 ].fromY},
-                ${route.route[ 0 ].fromX}
-        );
+    var startPoint = new OpenLayers.Geometry.Point(
+            ${route.route[ 0 ].fromY},
+            ${route.route[ 0 ].fromX}
+    );
 
-        startPoint.transform(
-                new OpenLayers.Projection("EPSG:4326"),
-                new OpenLayers.Projection("EPSG:900913")
-        );
+    startPoint.transform(
+            new OpenLayers.Projection("EPSG:4326"),
+            new OpenLayers.Projection("EPSG:900913")
+    );
 
-        var pointFeature = new OpenLayers.Feature.Vector( startPoint );
-        pointFeature.attributes = {
-            speed: "0",
-            kmDriven: "0",
-            favColor: 'red',
-            align: "cm",
-            batteryLevel: "${route.batteryLevel}",
-            currentEnergyUsed: "${route.currentEnergyUsed}",
-            currentPrice: "${route.currentPrice}"
-        };
+    var pointFeature = new OpenLayers.Feature.Vector( startPoint );
+    pointFeature.attributes = {
+        speed: "0",
+        kmDriven: "0",
+        favColor: 'red',
+        align: "cm",
+        batteryLevel: "${route.batteryLevel}",
+        currentEnergyUsed: "${route.currentEnergyUsed}",
+        currentPrice: "${route.currentPrice}"
+    };
 
-        /*
-        var pointFeature = new OpenLayers.Feature.Vector( startPoint, null, {
-            externalGraphic: "${g.resource( dir: 'images', file: 'car.png' )}",
-            graphicWidth: 32,
-            graphicHeight: 32,
-            fillOpacity: 1,
-            kmDriven: 0,
-            speed: 0
-        } );
-        */
+    /*
+     var pointFeature = new OpenLayers.Feature.Vector( startPoint, null, {
+     externalGraphic: "${g.resource( dir: 'images', file: 'car.png' )}",
+     graphicWidth: 32,
+     graphicHeight: 32,
+     fillOpacity: 1,
+     kmDriven: 0,
+     speed: 0
+     } );
+     */
 
-        pointFeature.carFeatureId = ${route.id};
-        pointFeature.fid = '${route.id}';
+    pointFeature.carFeatureId = ${route.id};
+    pointFeature.fid = '${route.id}';
 
-        simulationLayer.addFeatures( [ pointFeature ] );
+    simulationLayer.addFeatures( [ pointFeature ] );
 
-        var simulationRoute = {
-            featureId: pointFeature.fid,
-            simulationRouteId: ${route.id}
-            // layer: simulationLayer,
-            // carFeature : pointFeature,
-            // infoLink: '${ g.createLink( controller: 'simulation', action: 'getInfo', params: [ simulationRouteId: route.id ] ) }'
-        };
-        simulationRoutes.push( simulationRoute );
+    var simulationRoute = {
+        featureId: pointFeature.fid,
+        simulationRouteId: ${route.id}
+        // layer: simulationLayer,
+        // carFeature : pointFeature,
+        // infoLink: '${ g.createLink( controller: 'simulation', action: 'getInfo', params: [ simulationRouteId: route.id ] ) }'
+    };
+    simulationRoutes.push( simulationRoute );
 
 
-        routeDat.trackId = ${route.simulationRouteId};
+    routeDat.trackId = ${route.simulationRouteId};
 
-        var vias = new Array();
-        <g:each var="via" in="${route.vias}">
+    var vias = new Array();
+    <g:each var="via" in="${route.vias}">
 
-            var vv = new Object();
-            vv.fromX = ${via.fromX};
-            vv.fromY = ${via.fromY};
-            vias.push( vv );
-        </g:each>
+    var vv = new Object();
+    vv.fromX = ${via.fromX};
+    vv.fromY = ${via.fromY};
+    vias.push( vv );
+    </g:each>
 
-        routeDat.vias = vias;
+    routeDat.vias = vias;
 
-        var segments = new Array();
+    var segments = new Array();
 
-            <g:each var="seg" in="${route.route}">
-                var segm = new Object();
-                segm.fromX = ${seg.fromY};
-                segm.fromY = ${seg.fromX};
-                segm.toX = ${seg.toY};
-                segm.toY = ${seg.toX};
-                segments.push( segm );
-            </g:each>
+    <g:each var="seg" in="${route.route}">
+    var segm = new Object();
+    segm.fromX = ${seg.fromY};
+    segm.fromY = ${seg.fromX};
+    segm.toX = ${seg.toY};
+    segm.toY = ${seg.toX};
+    segments.push( segm );
+    </g:each>
 
-        routeDat.route = segments;
+    routeDat.route = segments;
 
-        var showTrackInfoLink = '${g.createLink( controller: 'mapView', action: 'showTrackInfo', params: [ trackId: route.trackId ] )}';
-        routeDat.showTrackInfoLink = showTrackInfoLink;
-        routeDat.routesLayer = routesLayer;
-        routeDat.markers = markers;
-        drawRoute( routeDat );
+    var showTrackInfoLink = '${g.createLink( controller: 'mapView', action: 'showTrackInfo', params: [ trackId: route.trackId ] )}';
+    routeDat.showTrackInfoLink = showTrackInfoLink;
+    routeDat.routesLayer = routesLayer;
+    routeDat.markers = markers;
+    drawRoute( routeDat );
 
     </g:each>
 
@@ -426,33 +456,33 @@
             type: "POST",
             success: function( data ) {
 
-                    var lon = data[ 'lon' ];
-                    var lat = data[ 'lat' ];
-                    var currentPrice = data[ 'currentPrice' ];
-                    var batteryLevel = data[ 'batteryLevel' ];
-                    var currentEnergyUsed = data[ 'currentEnergyUsed' ];
+                var lon = data[ 'lon' ];
+                var lat = data[ 'lat' ];
+                var currentPrice = data[ 'currentPrice' ];
+                var batteryLevel = data[ 'batteryLevel' ];
+                var currentEnergyUsed = data[ 'currentEnergyUsed' ];
 
-                    var speed = data[ 'speed' ];
-                    var kmDriven = data[ 'kmDriven' ];
+                var speed = data[ 'speed' ];
+                var kmDriven = data[ 'kmDriven' ];
 
-                    var street = data[ 'street' ];
+                var street = data[ 'street' ];
 
-                    // put infos into pane
-                    $( '#speedInfo').html( speed );
-                    $( '#kmInfo').html( kmDriven );
-                    $( '#priceInfo' ).html( currentPrice );
-                    $( '#streetInfo' ).html( street );
-                    $( '#fillInfo' ).html( batteryLevel );
+                // put infos into pane
+                $( '#speedInfo').html( speed );
+                $( '#kmInfo').html( kmDriven );
+                $( '#priceInfo' ).html( currentPrice );
+                $( '#streetInfo' ).html( street );
+                $( '#fillInfo' ).html( batteryLevel );
 
-                    var batString = batteryLevel + "%";
-                    $( '#progress-bar' ).css("width", batString );
+                var batString = batteryLevel + "%";
+                $( '#progress-bar' ).css("width", batString );
 
-                    if ( batteryLevel <= 30 ) {
-                        var factor = 1 - ( batteryLevel / 30 );
-                        $( '#progress-bar-red' ).css("opacity", factor );
-                    } else {
-                        $( '#progress-bar-red' ).css("opacity", 0 );
-                    }
+                if ( batteryLevel <= 30 ) {
+                    var factor = 1 - ( batteryLevel / 30 );
+                    $( '#progress-bar-red' ).css("opacity", factor );
+                } else {
+                    $( '#progress-bar-red' ).css("opacity", 0 );
+                }
 
             },
             error: function( data ) {
@@ -645,172 +675,173 @@
     }
 
     /*
-    $(function() {
-        $( "#scale-slider" ).slider({
-            orientation: "vertical",
-            range: "min",
-            min: 0,
-            max: 100,
-            value: 60,
-            slide: function( event, ui ) {
-                $( "#amount" ).val( ui.value );
+     $(function() {
+     $( "#scale-slider" ).slider({
+     orientation: "vertical",
+     range: "min",
+     min: 0,
+     max: 100,
+     value: 60,
+     slide: function( event, ui ) {
+     $( "#amount" ).val( ui.value );
+     }
+     });
+     $( "#amount" ).val( $( "#scale-slider" ).slider( "value" ) );
+
+     });
+     */
+
+    function scale() {
+
+        var scaleValue = $('#scale-slider').val();
+        var scaleString = "time scale 1:" + scaleValue;
+
+        $('#scale-value').text( scaleString );
+
+        jQuery.ajax({
+            url: '${g.createLink( controller: 'simulation', action: 'scaleSimulation' )}',
+            type: "POST",
+            data: JSON.stringify( { data: { scaleValue : scaleValue } } ),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function( data ) {
+
+                console.log( "scaling: " + data )
+
             }
         });
-        $( "#amount" ).val( $( "#scale-slider" ).slider( "value" ) );
 
-    });
-    */
-
-   function scale() {
-
-       var scaleValue = $('#scale-slider').val();
-       var scaleString = "time scale 1:" + scaleValue;
-
-       $('#scale-value').text( scaleString );
-
-       jQuery.ajax({
-           url: '${g.createLink( controller: 'simulation', action: 'scaleSimulation' )}',
-           type: "POST",
-           data: JSON.stringify( { data: { scaleValue : scaleValue } } ),
-           contentType: "application/json; charset=utf-8",
-           dataType: "json",
-           success: function( data ) {
-
-               console.log( "scaling: " + data )
-
-           }
-       });
-
-   }
+    }
 
 
 
 </script>
-        </div>
-    </div>
-
-
-<div class="slide-control-group" >
-    <p id="scale-value" style="font-size: 13px">time scale 1:50</p>
-    <input id="scale-slider" name="r" type="range" min="1" max="500" value="50" onchange="scale()" style="width: 280px"/>
+</div>
 </div>
 
+<div id="box_news" style="position: fixed; right:1%; bottom:80px; height: 300px; width: 280px; margin-left: 5px; opacity: 0.65;">
 
-    <div draggable="true" id="info_box" class="panel ui-helper-reset ui-widget ui-panel ui-draggable"
-         style="position: fixed; right:1%; top:50%; height: 500px; width: 280px; margin-left: 5px; opacity: 0.65;">
+<div class="slide-control-group" style="width: 275px;">
+    <p id="scale-value" style="font-size: 13px">time scale 1:50</p>
+    <input id="scale-slider" name="r" type="range" min="1" max="500" value="50" onchange="scale()" style="width: 270px"/>
+</div>
 
-        <h3 class="ui-helper-reset ui-widget-header ui-panel-header ui-corner-top">
-            <span class="ui-icon-triangle-1-s ui-icon">
-                <span>
+<br/><br/><br/>
+<div draggable="true" id="info_box" class="panel ui-helper-reset ui-widget ui-panel ui-draggable">
 
-                </span>
+    <h3 class="ui-helper-reset ui-widget-header ui-panel-header ui-corner-top">
+        <span class="ui-icon-triangle-1-s ui-icon">
+            <span>
+
             </span>
-            <span class="ui-panel-rightbox">
+        </span>
+        <span class="ui-panel-rightbox">
 
+        </span>
+        <div class="ui-panel-title">
+            <span class="ui-panel-title-text">Info
             </span>
-            <div class="ui-panel-title">
-                <span class="ui-panel-title-text">Info
-                </span>
-            </div>
-        </h3>
+        </div>
+    </h3>
 
-        <div class="ui-helper-reset ui-widget-content ui-panel-content ui-corner-bottom" style="position: absolute;">
-            <div class="ui-panel-content-text">
-                <div style="height: 100%;" id="carInformation">
+    <div class="ui-helper-reset ui-widget-content ui-panel-content ui-corner-bottom" style="position: absolute;">
+        <div class="ui-panel-content-text">
+            <div style="height: 100%;" id="carInformation">
 
-                    <table class="lightboxselectiontable" style="font-size: 13px;" >
+                <table class="lightboxselectiontable" style="font-size: 13px;" >
 
-                        <tr>
-                            <td>
-                                speed
-                            </td>
-                            <td id="speedInfo">
+                    <tr>
+                        <td>
+                            speed
+                        </td>
+                        <td id="speedInfo">
 
-                            </td>
-                            <td>
-                                km/h
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                distance traveled
-                            </td>
-                            <td id="kmInfo">
+                        </td>
+                        <td>
+                            km/h
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            distance traveled
+                        </td>
+                        <td id="kmInfo">
 
-                            </td>
-                            <td>
-                                km
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                costs
-                            </td>
-                            <td id="priceInfo">
+                        </td>
+                        <td>
+                            km
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            costs
+                        </td>
+                        <td id="priceInfo">
 
-                            </td>
-                            <td>
-                                Euro
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                time
-                            </td>
-                            <td id="time">
+                        </td>
+                        <td>
+                            Euro
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            time
+                        </td>
+                        <td id="time">
 
-                            </td>
-                            <td>
-                                hh:mm:ss
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                fill level
-                            </td>
-                            <td id="fillInfo">
+                        </td>
+                        <td>
+                            hh:mm:ss
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            fill level
+                        </td>
+                        <td id="fillInfo">
 
-                            </td>
-                            <td>
-                                %
-                            </td>
-                        </tr>
+                        </td>
+                        <td>
+                            %
+                        </td>
+                    </tr>
 
-                    </table>
+                </table>
 
-                    <table class="lightboxselectiontable" style="font-size: 13px;" >
-                        <tr>
-                            <td id="battery">
-                                <div id="batteryContainer" style="width:230px; height:10px; border:1px solid black;">
-                                    <div id="progress-bar"
-                                        style="width:0%; /*change this width */
-                                                background-color: greenyellow;
-                                                height:10px;">
-                                        <div id="progress-bar-red"
-                                             style="width:100%;
-                                             background-color: red;
-                                             opacity: 0;  /* 1 is red , 0 is green */
-                                             height:10px;">
-                                        </div>
+                <table class="lightboxselectiontable" style="font-size: 13px;" >
+                    <tr>
+                        <td id="battery">
+                            <div id="batteryContainer" style="width:230px; height:10px; border:1px solid black;">
+                                <div id="progress-bar"
+                                     style="width:0%; /*change this width */
+                                     background-color: greenyellow;
+                                     height:10px;">
+                                    <div id="progress-bar-red"
+                                         style="width:100%;
+                                         background-color: red;
+                                         opacity: 0;  /* 1 is red , 0 is green */
+                                         height:10px;">
                                     </div>
                                 </div>
-                            </td>
-                        </tr>
-                    </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
 
-                    <table class="lightboxselectiontable" style="font-size: 13px;" >
-                        <tr>
-                            <td>street</td>
-                            <td id="streetInfo"></td>
-                        </tr>
-                    </table>
+                <table class="lightboxselectiontable" style="font-size: 13px;" >
+                    <tr>
+                        <td>street</td>
+                        <td id="streetInfo"></td>
+                    </tr>
+                </table>
 
 
-                </div>
             </div>
         </div>
     </div>
+</div>
 
+</div>
 
 
 

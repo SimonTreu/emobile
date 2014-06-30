@@ -45,18 +45,18 @@ Show Results  detour-Distance per Planned-Distance :
 
 
 
-    <g:each in="${relativeSearchLimits}" var="relS"  >
+<g:each in="${relativeSearchLimits}" var="relS"  >
 
-        <g:form controller="stats" action="detourPicture">
+    <g:form controller="stats" action="detourPicture">
 
-            <g:hiddenField name="simulationId" value="${simulationId}" />
-            <g:hiddenField name="relativeSearchLimit" value="${relS}" />
+        <g:hiddenField name="simulationId" value="${simulationId}" />
+        <g:hiddenField name="relativeSearchLimit" value="${relS}" />
 
-            <g:submitButton name="${relS}" value="Show for ${relS} %"   />
+        <g:submitButton name="${relS}" value="Show for ${relS} %"   />
 
-        </g:form>
+    </g:form>
 
-    </g:each>
+</g:each>
 
 Show Results  detour-time per Planned-Time :
 

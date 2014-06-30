@@ -464,7 +464,7 @@ class SimulationThreadFrameworkService {
             for ( CarAgent agent : threadMap.values() ) {
 
                 allRoutesFinished = (
-                    agent.getCarStatus().equals( CarStatus.MISSION_ACCOMBLISHED )||agent.getCarStatus().equals( CarStatus.WAITING_EMPTY )
+                        agent.getCarStatus().equals( CarStatus.MISSION_ACCOMBLISHED )||agent.getCarStatus().equals( CarStatus.WAITING_EMPTY )
                 )
 
                 if ( allRoutesFinished == false ) {
@@ -519,7 +519,7 @@ class SimulationThreadFrameworkService {
             log.debug( "simulation started for session: ${sessionId}" )
 
         } else {
-           log.error( "no threads found for session: ${sessionId}" )
+            log.error( "no threads found for session: ${sessionId}" )
         }
 
 

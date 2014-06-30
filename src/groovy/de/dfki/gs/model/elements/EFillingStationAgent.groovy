@@ -39,7 +39,35 @@ class EFillingStationAgent extends Agent {
         agent.eFillingStationAgentResult = new EFillingStationAgentResult( gasolineStationType: station.type );
         agent.gasolineStationType = station.type;
         agent.fillingStationStatus = FillingStationStatus.FREE;
-        agent.fillingPortion = station.fillingPortion
+
+        double fillingPortion = 0.0001
+        // calculate filling Portion
+        switch ( station.type ) {
+            case GasolineStationType.AC_2_3KW.toString() :
+                fillingPortion = 2.3 / ( 60*60 )
+                break;
+            case GasolineStationType.AC_3_7KW.toString() :
+                fillingPortion = 3.7 / ( 60*60 )
+                break;
+            case GasolineStationType.AC_7_4KW.toString() :
+                fillingPortion = 7.4 / ( 60*60 )
+                break;
+            case GasolineStationType.AC_11_1KW.toString() :
+                fillingPortion = 11.1 / ( 60*60 )
+                break;
+            case GasolineStationType.AC_22_2KW.toString() :
+                fillingPortion = 22.2 / ( 60*60 )
+                break;
+            case GasolineStationType.AC_43KW.toString() :
+                fillingPortion = 43 / ( 60*60 )
+                break;
+            case GasolineStationType.DC_49_8KW.toString() :
+                fillingPortion = 49.8 / ( 60*60 )
+                break;
+
+        }
+
+        agent.fillingPortion = fillingPortion
 
         return agent;
     }

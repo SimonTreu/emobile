@@ -12,6 +12,7 @@ import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
 import de.dfki.gs.domain.Simulation
 import de.dfki.gs.domain.SimulationRoute
+import de.dfki.gs.domain.stats.ExperimentRunResult
 
 class SimulationPreparatorController {
 
@@ -151,7 +152,6 @@ class SimulationPreparatorController {
         bindData( cmd, params )
 
         if ( cmd.validate() && !cmd.hasErrors() ) {
-            // do it
 
             def m = experimentStatsService.createStats( cmd.resultId )
 

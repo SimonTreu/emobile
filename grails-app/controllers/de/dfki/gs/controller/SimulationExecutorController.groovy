@@ -117,15 +117,15 @@ class SimulationExecutorController {
             log.error( "failed to get simulation by id: ${cmd.simulationId} -- ${cmd.errors}" )
         } else {
 
-            Long experimentRunResultId = simulationThreadFrameworkService.stopSimulation2( cmd.simulationId, sessionId, 0 )
+            simulationThreadFrameworkService.stopSimulation3( cmd.simulationId, sessionId, 0 )
 
-            def m = experimentStatsService.createStats( experimentRunResultId )
+            //def m = experimentStatsService.createStats( experimentRunResultId )
 
-            File fillingStationUsageFile = generateStatsPictureService.createDataChartFileForFillingStationUsage( m );
-            File timeFile = generateStatsPictureService.createDataChartFileForTime( m );
-            File distanceFile = generateStatsPictureService.createDataChartFileForDistance( m );
+            //File fillingStationUsageFile = generateStatsPictureService.createDataChartFileForFillingStationUsage( m );
+            //File timeFile = generateStatsPictureService.createDataChartFileForTime( m );
+            //File distanceFile = generateStatsPictureService.createDataChartFileForDistance( m );
 
-
+            /*
             redirect( controller: 'stats', action: 'showStats', params: [
                     timeFileUUID : timeFile.getName(),
                     distanceFileUUID : distanceFile.getName(),
@@ -135,7 +135,12 @@ class SimulationExecutorController {
                     simulationTime : m.fillingTypes.get( 0 )?.timeLivingList?.get( 0 ),
                     experimentResultId : experimentRunResultId
             ] )
+            */
+
+
         }
+
+        redirect( controller: 'front', action: 'init' )
 
     }
 

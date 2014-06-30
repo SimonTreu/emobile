@@ -361,7 +361,9 @@ class RouteService {
         /**
          * TODO: 1.152 is a correction value to fix the error in haversine
          */
-        fixedKm = fixedKm * 1.152
+        // fixedKm = fixedKm * 1.152
+        fixedKm = fixedKm * 1.3
+
 
         List<List<org.geotools.graph.structure.Node>> routeStartTargetsList = new ArrayList<List<org.geotools.graph.structure.Node>>()
         for ( long i = 0; i < routeCount; i++ ) {
@@ -535,11 +537,11 @@ class RouteService {
 
                 Double costs = 7 * o;
                 if ( speed <= 30 ) {
-                    costs = 1 * o;
+                    costs = 6 * o;
                 } else if ( speed > 30 && speed < 80 ) {
                     costs = 3 * o;
                 } else if ( speed >= 80 ) {
-                    costs = 6 * o;
+                    costs = 1 * o;
                 }
 
                 // Double costs = ( Math.pow( 100/speed, 2) ) * o
@@ -865,9 +867,9 @@ class RouteService {
         };
 
         NotifyingBlockingThreadPoolExecutor threadPoolExecutorForPoints =
-            new NotifyingBlockingThreadPoolExecutor(poolSize, queueSize,
-                    threadKeepAliveTime, threadKeepAliveTimeUnit,
-                    maxBlockingTime, maxBlockingTimeUnit, blockingTimeoutCallback);
+                new NotifyingBlockingThreadPoolExecutor(poolSize, queueSize,
+                        threadKeepAliveTime, threadKeepAliveTimeUnit,
+                        maxBlockingTime, maxBlockingTimeUnit, blockingTimeoutCallback);
 
         int cc = 0;
 

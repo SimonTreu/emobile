@@ -125,7 +125,13 @@
                 <g:form action="showResult" controller="simulationPreparator">
 
                     <tr>
-                        <td><g:select name="resultId" from="${results}"/></td>
+                        <td>Success Rate - Filling Stations - Behaviour</td>
+                    </tr>
+                    <tr>
+
+                        <td><g:select optionKey="id" name="resultId" from="${results}" optionValue="optionValue"/></td>
+
+
                         <td><g:submitButton name="Show Result"/></td>
                     </tr>
 

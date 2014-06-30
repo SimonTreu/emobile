@@ -7,6 +7,8 @@ import de.dfki.gs.domain.Simulation
 import de.dfki.gs.domain.SimulationRoute
 import de.dfki.gs.domain.TrackEdge
 import de.dfki.gs.domain.stats.ExperimentRunResult
+import de.dfki.gs.domain.stats.PersistedCarAgentResult
+import de.dfki.gs.simulation.CarStatus
 import grails.transaction.Transactional
 
 @Transactional
@@ -128,7 +130,29 @@ class SimulationDataService {
 
         List<ExperimentRunResult> results = ExperimentRunResult.findAllBySimulationId( simulationId )
 
-        results.each { resultList << it.id }
+        results.each { ExperimentRunResult result ->
+
+            def local = [:]
+            local.id = result.id
+
+            local.successRate = Math.round( ( ( result.persistedCarAgentResults.count { PersistedCarAgentResult carAgentResult ->
+
+                carAgentResult.carStatus.equals( CarStatus.MISSION_ACCOMBLISHED.toString() )
+
+            } ) / result.persistedCarAgentResults.size() ) * 100 )
+
+            local.fillingStations = result.persistedFillingStationResults.size()
+
+            local.behaviour = ( Math.round( result.relativeSearchLimit * 100 ) )
+
+            String gasolineType = result.persistedFillingStationResults.get(0)?.gasolineStationType
+
+            local.optionValue = "${ Math.round( local.successRate )}% - ${local.fillingStations} FS ( ${gasolineType} ) - ${local.behaviour}%"
+
+            resultList << local
+        }
+
+        // results.each { resultList << it.id }
 
         return resultList
     }

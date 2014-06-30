@@ -381,6 +381,10 @@
     ${routeCount} Cars are involved
     <button id="button_play_pause" onClick="toggle_button_clicked()"><b>Play</b></button>
     <br/>
+    <g:form name="hua" controller="simulationExecutor" >
+        <g:actionSubmit value="Stop Experiment" action="stopExperiment" />
+    </g:form>
+
     <button
             id="button_stopp"
             type="submit"

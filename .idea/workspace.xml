@@ -2,322 +2,81 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" name="Default" comment="added gasoline stations for searching for energy">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/groovy/de/dfki/gs/model/stats/DistanceClassDetour.groovy" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/groovy/de/dfki/gs/model/stats/SimulationConfiguration.groovy" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/grails-app/services/de/dfki/gs/service/stats/StatsFileService.groovy" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/groovy/de/dfki/gs/utils/TimeCalculator.groovy" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web-app/js/jquery.js" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_miglayout_miglayout_swing_3_7.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_vividsolutions_jts_1_12.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_dbcp_commons_dbcp_1_3.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_pool_commons_pool_1_5_4.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__hsqldb_hsqldb_1_8_0_7.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__it_geosolutions_imageio_ext_imageio_ext_tiff_1_1_7.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__it_geosolutions_imageio_ext_imageio_ext_utilities_1_1_7.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__java3d_vecmath_1_3_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_media_jai_codec_1_1_3.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_media_jai_core_1_1_3.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_media_jai_imageio_1_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__jdom_jdom_1_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__jgridshift_jgridshift_1_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_3_8_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_5_1_26.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jsr_275_jsr_275_1_0_beta_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_geotools_gt_api_8_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_geotools_gt_coverage_8_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_geotools_gt_cql_8_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_geotools_gt_data_8_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_geotools_gt_epsg_hsql_8_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_geotools_gt_graph_8_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_geotools_gt_jdbc_8_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_geotools_gt_main_8_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_geotools_gt_metadata_8_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_geotools_gt_opengis_8_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_geotools_gt_referencing_8_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_geotools_gt_render_8_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_geotools_gt_shapefile_8_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_geotools_gt_swing_8_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_geotools_jdbc_gt_jdbc_postgis_8_SNAPSHOT.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jaitools_jt_utils_1_3_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jaitools_jt_zonalstats_1_3_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__postgresql_postgresql_8_4_701_jdbc3.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__xerces_xercesImpl_2_4_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/unit/de/dfki/gs/DomainTests.groovy" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/unit/de/dfki/gs/domain/SimulationTaskTests.groovy" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/groovy/de/dfki/gs/model/elements/CarAgent.groovy" afterPath="$PROJECT_DIR$/src/groovy/de/dfki/gs/model/elements/CarAgent.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/groovy/de/dfki/gs/model/elements/EFillingStationAgent.groovy" afterPath="$PROJECT_DIR$/src/groovy/de/dfki/gs/model/elements/EFillingStationAgent.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/services/de/dfki/gs/service/stats/ExperimentStatsService.groovy" afterPath="$PROJECT_DIR$/grails-app/services/de/dfki/gs/service/stats/ExperimentStatsService.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/services/de/dfki/gs/service/stats/GenerateStatsPictureService.groovy" afterPath="$PROJECT_DIR$/grails-app/services/de/dfki/gs/service/stats/GenerateStatsPictureService.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/services/de/dfki/gs/service/RouteService.groovy" afterPath="$PROJECT_DIR$/grails-app/services/de/dfki/gs/service/RouteService.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/services/de/dfki/gs/service/SimulationDataService.groovy" afterPath="$PROJECT_DIR$/grails-app/services/de/dfki/gs/service/SimulationDataService.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/controllers/de/dfki/gs/controller/SimulationExecutorController.groovy" afterPath="$PROJECT_DIR$/grails-app/controllers/de/dfki/gs/controller/SimulationExecutorController.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/controllers/de/dfki/gs/controller/SimulationPreparatorController.groovy" afterPath="$PROJECT_DIR$/grails-app/controllers/de/dfki/gs/controller/SimulationPreparatorController.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/services/de/dfki/gs/service/simulation/SimulationThreadFrameworkService.groovy" afterPath="$PROJECT_DIR$/grails-app/services/de/dfki/gs/service/simulation/SimulationThreadFrameworkService.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/controllers/de/dfki/gs/controller/StatsController.groovy" afterPath="$PROJECT_DIR$/grails-app/controllers/de/dfki/gs/controller/StatsController.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/simulationPreparator/editSimulation.gsp" afterPath="$PROJECT_DIR$/grails-app/views/simulationPreparator/editSimulation.gsp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emobilesim2-grailsPlugins.iml" afterPath="$PROJECT_DIR$/emobilesim2-grailsPlugins.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emobilesim2.iml" afterPath="$PROJECT_DIR$/emobilesim2.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/i18n/messages_cs_CZ.properties" afterPath="$PROJECT_DIR$/grails-app/i18n/messages_cs_CZ.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/i18n/messages_fr.properties" afterPath="$PROJECT_DIR$/grails-app/i18n/messages_fr.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/i18n/messages_it.properties" afterPath="$PROJECT_DIR$/grails-app/i18n/messages_it.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/i18n/messages_ja.properties" afterPath="$PROJECT_DIR$/grails-app/i18n/messages_ja.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/i18n/messages_pt_PT.properties" afterPath="$PROJECT_DIR$/grails-app/i18n/messages_pt_PT.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/i18n/messages_ru.properties" afterPath="$PROJECT_DIR$/grails-app/i18n/messages_ru.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/i18n/messages_th.properties" afterPath="$PROJECT_DIR$/grails-app/i18n/messages_th.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/i18n/messages_zh_CN.properties" afterPath="$PROJECT_DIR$/grails-app/i18n/messages_zh_CN.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/simulationExecutor/playSimulation.gsp" afterPath="$PROJECT_DIR$/grails-app/views/simulationExecutor/playSimulation.gsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web-app/css/screen.css" afterPath="$PROJECT_DIR$/web-app/css/screen.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/stats/stats.gsp" afterPath="$PROJECT_DIR$/grails-app/views/stats/stats.gsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="emobile.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$USER_HOME$/.grails/" />
-    <file path="/Dummy.txt" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1391524310027" ignored="false" />
-    <file path="/openLayers.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381165981033" ignored="false" />
-    <file path="/MapViewController.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387195296097" ignored="false" />
-    <file path="$PROJECT_DIR$/../../ts-trunk/travelingsales-code/osmnavigation/src/org/openstreetmap/travelingsalesman/routing/routers/TurnRestrictedAStar.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1380540680075" ignored="false" />
-    <file path="/TurnRestrictedAStar.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381237117494" ignored="false" />
-    <file path="$PROJECT_DIR$/../../ts-trunk/travelingsales-code/libosm/src/org/openstreetmap/osm/data/NodeHelper.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1380533086921" ignored="false" />
-    <file path="/NodeHelper.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1380533080218" ignored="false" />
-    <file path="/fragment.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389113183239" ignored="false" />
-    <file path="$PROJECT_DIR$/../../ts-trunk/travelingsales-code/libosm/src/org/openstreetmap/osm/data/MemoryDataSet.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1380539407938" ignored="false" />
-    <file path="/MemoryDataSet.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1380534714434" ignored="false" />
-    <file path="/a.dummy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389631526945" ignored="false" />
-    <file path="/OsmFileImportService.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1380720064543" ignored="false" />
-    <file path="/Config.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386847087224" ignored="false" />
-    <file path="/MysqlDataSet2.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1380632824832" ignored="false" />
-    <file path="/MysqlDatabaseLoader.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1380614674159" ignored="false" />
-    <file path="/FileUploadController.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1380615320620" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/src/de/dfki/km/semanticsearch/SemanticSearchImpl.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387352790436" ignored="false" />
-    <file path="/SemanticSearchImpl.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387352790436" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/src/de/dfki/km/semanticsearch/test/SimpleSemanticSearchTest.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1380626624380" ignored="false" />
-    <file path="/SimpleSemanticSearchTest.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1380625268935" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/WebContent/WEB-INF/config.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387268392774" ignored="false" />
-    <file path="/PostgresDataSet.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381139852764" ignored="false" />
-    <file path="/IConnection.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381124818107" ignored="false" />
-    <file path="/_topbar.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386086784417" ignored="false" />
-    <file path="/UrlMappings.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1382598109248" ignored="false" />
-    <file path="/openLayersWithAction.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383643277597" ignored="false" />
-    <file path="/RouteService.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389630220647" ignored="false" />
-    <file path="/RoutingCommandObject.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381226932321" ignored="false" />
-    <file path="/MultiTargetDijkstraRouter.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381233061577" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../geotools/tutorial/pom.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381407706517" ignored="false" />
-    <file path="/pom.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381415138563" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../geotools/tutorial/META-INF/application.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381329520857" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../geotools/tutorial/.idea/workspace.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381912014316" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../geotools/tutorial/.idea/misc.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381329733412" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../geotools/tutorial/quickstart/src/org/geotools/tutorial/quickstart/QuickStart.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381329763776" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../geotools/tutorial/.idea/modules.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381329890384" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../geotools/tutorial/src/org/geotools/tutorial/filter/QueryLab.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381337064996" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../geotools/tutorial/src/org/geotools/tutorial/quickstart/QuickStart.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381429768382" ignored="false" />
-    <file path="/QuickStart.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381429689335" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../geotools/tutorial/src/org/geotools/tutorial/quickstart/Hua.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381407811557" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/conf/BuildConfig.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381415161083" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/pom.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381415161083" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/conf/BootStrap.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381415161083" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/conf/UrlMappings.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381416791326" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/application.properties" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381415161083" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/controllers/de/dfki/gs/controller/FileUploadController.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381415427411" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/test/unit/de/dfki/gs/controller/MapViewControllerTests.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381415450650" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/controllers/de/dfki/gs/controller/MapViewController.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381491268240" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/test/unit/de/dfki/gs/controller/SimulationControllerTests.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381415528077" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/controllers/de/dfki/gs/controller/SimulationController.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381415531135" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/views/fileUpload/index.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381416120958" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/views/layouts/_footer.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381416194317" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/views/layouts/_topbar.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381416213759" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/views/mapView/googleMaps.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381416241249" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/views/mapView/index.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381416258419" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/views/mapView/openLayers.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381416278115" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/views/mapView/openLayersWithAction.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381491964128" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/views/simulation/index.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381416323042" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/views/layouts/main.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381417122591" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/services/de/dfki/gs/service/RouteService.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381429089504" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/src/groovy/de/dfki/gs/utils/ResponseCode.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381469868714" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/src/groovy/de/dfki/gs/utils/ResponseConstants.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381469922022" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/grails-app/controllers/de/dfki/gs/controller/commands/StartAndDestinationsCommandObject.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381483460985" ignored="false" />
-    <file path="/StartAndDestinationsCommandObject.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386667063293" ignored="false" />
-    <file path="$PROJECT_DIR$/../../emobilesim2/src/groovy/de/dfki/gs/utils/LatLonPoint.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381483478053" ignored="false" />
-    <file path="/LatLonPoint.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381483477106" ignored="false" />
-    <file path="/CarType.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381731564854" ignored="false" />
-    <file path="/SimulationRoute.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386768681747" ignored="false" />
-    <file path="/TrackEdge.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386785639297" ignored="false" />
-    <file path="/Track.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386768691975" ignored="false" />
-    <file path="/main.css" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386923005666" ignored="false" />
-    <file path="/trackInfo.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381859986976" ignored="false" />
-    <file path="/_trackInfo.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1381860208934" ignored="false" />
-    <file path="/Simulation.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387186078500" ignored="false" />
-    <file path="/index.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386928779819" ignored="false" />
-    <file path="/SimulationController.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387184269516" ignored="false" />
-    <file path="/SimulationCollectDataService.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386828954466" ignored="false" />
-    <file path="/CreateSimulationCommand.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386145267206" ignored="false" />
-    <file path="/messages_de.properties" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387263303915" ignored="false" />
-    <file path="/SelectSimulationCommand.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386762223999" ignored="false" />
-    <file path="/BootStrap.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383816493083" ignored="false" />
-    <file path="/SimulationCommand.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1382021741051" ignored="false" />
-    <file path="/showRoutes.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383644697611" ignored="false" />
-    <file path="/_showTrackInfo.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383637295619" ignored="false" />
-    <file path="/SaveTrackInfoCommand.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383637627119" ignored="false" />
-    <file path="/GasolineStation.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383636110754" ignored="false" />
-    <file path="/GasolineStationType.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1382098514974" ignored="false" />
-    <file path="/EmobileSimTagLib.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383645476587" ignored="false" />
-    <file path="/ShowGasolineInfoCommand.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1382108719397" ignored="false" />
-    <file path="/_showGasolineInfo.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383720781131" ignored="false" />
-    <file path="/application.js" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383644459747" ignored="false" />
-    <file path="/SaveGasolineInfoCommand.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1382116370198" ignored="false" />
-    <file path="/Dummy.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386866728633" ignored="false" />
-    <file path="/i2maps.js" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1382445093191" ignored="false" />
-    <file path="/basic.js" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1382455625454" ignored="false" />
-    <file path="/jquery-ui-aristo.css" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1382424588175" ignored="false" />
-    <file path="/DataSource.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387182198221" ignored="false" />
-    <file path="/i2maps.css" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1382426729137" ignored="false" />
-    <file path="/FnordController.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1382463694501" ignored="false" />
-    <file path="/styles.css" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1382441559813" ignored="false" />
-    <file path="/LoadSimulationRouteCommand.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1382463372328" ignored="false" />
-    <file path="/SimulationFrameworkService.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383660154420" ignored="false" />
-    <file path="/Scheduler.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383662989036" ignored="false" />
-    <file path="/SimulationObject.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383554505274" ignored="false" />
-    <file path="/SimulationTask.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383727355389" ignored="false" />
-    <file path="/resources.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1382537125934" ignored="false" />
-    <file path="/showPlaySimulation.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383668760458" ignored="false" />
-    <file path="/AsyncSimulationFrameworkService.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1382634285095" ignored="false" />
-    <file path="/SchedulerStatus.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1382942709089" ignored="false" />
-    <file path="/Battery.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383156440762" ignored="false" />
-    <file path="/ApplicationResources.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383218967056" ignored="false" />
-    <file path="/ScaleCommand.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383230352246" ignored="false" />
-    <file path="/TrackType.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383295095663" ignored="false" />
-    <file path="/CarStatus.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383547864461" ignored="false" />
-    <file path="/DataHelper.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383729027290" ignored="false" />
-    <file path="$USER_HOME$/dotdotdot/DOT3-Fingerprint/src/main/java/com/dotdotdot/fingerprint/simulation/Simulation.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383730814947" ignored="false" />
-    <file path="/Simulation.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383730811890" ignored="false" />
-    <file path="/SimulationThreadFrameworkService.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389630700119" ignored="false" />
-    <file path="/SimulationThreadTask.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1384157022133" ignored="false" />
-    <file path="/ThreadScheduler.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383748573665" ignored="false" />
-    <file path="$PROJECT_DIR$/../emobilesimgriffon/griffon-app/models/emobilesimgriffon/EmobilesimgriffonModel.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383914393425" ignored="false" />
-    <file path="$PROJECT_DIR$/../emobilesimgriffon/griffon-app/controllers/emobilesimgriffon/EmobilesimgriffonController.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383900144480" ignored="false" />
-    <file path="$PROJECT_DIR$/../emobilesimgriffon/griffon-app/views/emobilesimgriffon/EmobilesimgriffonView.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383914238437" ignored="false" />
-    <file path="/EmobilesimgriffonView.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383900190658" ignored="false" />
-    <file path="$PROJECT_DIR$/../griffon2/Read-Manifest/application.properties" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383914798790" ignored="false" />
-    <file path="$PROJECT_DIR$/../griffon2/Read-Manifest/griffon-app/conf/BuildConfig.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383915098367" ignored="false" />
-    <file path="$USER_HOME$/dotdotdot/DOT3-Backend/grails-app/conf/spring/resources.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1383922811939" ignored="false" />
-    <file path="/EnergyConsumptionModel.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1384157510938" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../untitled/grails-app/services/de.dfki.heja.indexer.service/IndexService.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1385750603275" ignored="false" />
-    <file path="/IndexService.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386915737534" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../untitled/grails-app/conf/DataSource.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1385707442146" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../untitled/grails-app/conf/Config.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1385739863301" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../untitled/sql/indexStatement" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1385646829404" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../untitled/src/java/de/dfki/heja/indexer/utils/concurrent/NotifyingBlockingThreadPoolExecutor.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1385456020529" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../untitled/grails-app/domain/de/dfki/heja/indexer/domain/Statement.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1385647203875" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../untitled/grails-app/views/index/index.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1385720828607" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../untitled/grails-app/controllers/de.dfki.heja.indexer.controller/IndexController.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1385721342030" ignored="false" />
-    <file path="/IndexController.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1385721337293" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../untitled/src/groovy/de/dfki/heja/indexer/utils/jena/StringExtractor.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1385738081605" ignored="false" />
-    <file path="/StringExtractor.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1385738076429" ignored="false" />
-    <file path="/ThreadSaveList.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386161195797" ignored="false" />
-    <file path="/CreatePathTask.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386681808210" ignored="false" />
-    <file path="/indexes" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386773181621" ignored="false" />
-    <file path="/BuildConfig.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386845832413" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/grails-app/services/de.dfki.heja.indexer.service/IndexService.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386915737534" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/src/groovy/de/dfki/heja/indexer/utils/jena/IndexBuilder.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386871652583" ignored="false" />
-    <file path="/IndexBuilder.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386871637304" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/grails-app/conf/Config.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386916871009" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/grails-app/conf/DataSource.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386872366795" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/grails-app/controllers/de.dfki.heja.indexer.controller/IndexController.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386864193800" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/grails-app/views/index/index.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386864475043" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/src/groovy/de/dfki/heja/concurrent/utils/SubIndexTask.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386916835299" ignored="false" />
-    <file path="/SubIndexTask.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386916818078" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/web-app/js/application.js" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386923071530" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/web-app/css/main.css" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386923034501" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/grails-app/views/lookup/index.gsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386928788944" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/grails-app/controllers/de/dfki/heja/indexer/controller/LookupController.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386928868037" ignored="false" />
-    <file path="/LookupController.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386928857809" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/grails-app/conf/BuildConfig.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386923909778" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/web-app/js/utils.js" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386924738275" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/grails-app/services/de.dfki.heja.indexer.service/AutocompleteService.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386927186828" ignored="false" />
-    <file path="/AutocompleteService.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1386927072236" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/grails-app/controllers/de/dfki/heja/search/api/SearchController.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387190249033" ignored="false" />
-    <file path="/SearchController.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387190248670" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/test/unit/de/dfki/heja/search/api/SearchControllerTests.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387190441364" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/test/integration/de/dfki/heja/search/api/SearchControllerSpec.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387190833860" ignored="false" />
-    <file path="/SearchControllerSpec.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387190830091" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/WebContent/index.jsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387298436138" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/WebContent/test.html" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387267356150" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/src/de/dfki/km/semanticsearch/data/access/RemoteSesameRepositoryAccess.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387268463260" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/WebContent/getdata.jsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387282634296" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/WebContent/wiki.jsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387279321331" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/src/de/dfki/km/semanticsearch/spreadingactivation/HybridSearchResult.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387267356150" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/WebContent/js/css.js" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387267370179" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/WebContent/search.jsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389615542796" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/WebContent/WEB-INF/web.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387267685493" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/src/de/dfki/km/semanticsearch/utils/SparqlQueryBuilder.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387267802632" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/src/de/dfki/km/semanticsearch/ontologysearch/SearchMetaData.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387267917955" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/src/de/dfki/km/semanticsearch/rdf/utils/ReificateGnowsisPimo.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387268452484" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/src/de/dfki/km/semanticsearch/utils/SpreadingNode.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387268610353" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/WebContent/js/jquery.autocomplete.js" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387268662284" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/src/de/dfki/km/semanticsearch/data/autocompletion/SessionBasedQueryService.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389088554111" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/WebContent/postResource.jsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387290744470" ignored="false" />
-    <file path="/postResource.jsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387286637268" ignored="false" />
-    <file path="/getdata.jsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387275321612" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/WebContent/js/jquery.fcbkcomplete.js" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387295398831" ignored="false" />
-    <file path="/jquery.fcbkcomplete.js" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387294722046" ignored="false" />
-    <file path="/search.jsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389615008078" ignored="false" />
-    <file path="/wiki.jsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387279320604" ignored="false" />
-    <file path="/index.jsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387297755133" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/WebContent/removeResource.jsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387284850906" ignored="false" />
-    <file path="/removeResource.jsp" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1387284849895" ignored="false" />
-    <file path="/SessionBasedQueryService.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389088554111" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/src/de/dfki/km/semanticsearch/data/autocompletion/CurrentQuery.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389617030063" ignored="false" />
-    <file path="/CurrentQuery.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389617023567" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/src/de/dfki/km/semanticsearch/SemanticSearchLookupImpl.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389629915370" ignored="false" />
-    <file path="/SemanticSearchLookupImpl.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389625609073" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/src/groovy/de/dfki/heja/indexer/utils/jena/IndexLookup.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389088312414" ignored="false" />
-    <file path="/IndexLookup.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389088309056" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../indexerHelena/untitled/src/groovy/de/dfki/heja/indexer/utils/jena/IndexResultObject.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389087548962" ignored="false" />
-    <file path="/IndexResultObject.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389087548962" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/.idea/vcs.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389104546404" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/.idea/copyright/profiles_settings.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389104546404" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/.idea/misc.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389107750775" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/.idea/modules.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389104550260" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/.idea/uiDesigner.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389104546404" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/.idea/workspace.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389632132955" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/.idea/encodings.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389104546404" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/.idea/compiler.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389104550260" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/.idea/scopes/scope_settings.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389104546404" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/src/examplea/ProcessExample.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389599917453" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/.idea/libraries/desmoj_2_4_0_demo_bin_gui.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389112995082" ignored="false" />
-    <file path="/ProcessExample.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389104706153" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/src/examplea/TruckGenerator.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389106182115" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/src/examplea/VanCarrier.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389106694093" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/src/examplea/Truck.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389106754773" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/ProcessExampleExperiment_debug.html" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389109236992" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/ProcessExampleExperiment_error.html" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389109236992" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/ProcessExampleExperiment_report.html" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389109236992" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/ProcessExampleExperiment_trace.html" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389109236992" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../desmo/.idea/libraries/desmoj_2_4_0_demo_src.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389112714645" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/copyright/profiles_settings.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184057935" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/misc.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184057935" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/encodings.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184057935" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/uiDesigner.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184057935" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/compiler.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184057935" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/vcs.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184057935" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/scopes/scope_settings.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184057935" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/workspace.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184057935" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/modules.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184057935" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/pom.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184057935" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__org_apache_jena_jena_arq_2_11_0.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085141" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__org_apache_jena_jena_core_2_11_0.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085141" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__xerces_xercesImpl_2_11_0.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085141" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__org_apache_jena_jena_tdb_1_0_0.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085141" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__org_apache_lucene_lucene_analyzers_3_6_2.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085141" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__log4j_log4j_1_2_16.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085141" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_2_2.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085141" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_6_4.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085141" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__org_apache_jena_jena_iri_1_0_0.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085141" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__org_apache_lucene_lucene_core_3_6_2.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085141" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_4.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085141" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__commons_codec_commons_codec_1_3.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085141" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__xml_apis_xml_apis_1_4_01.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085142" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_4.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085142" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__mysql_mysql_connector_java_5_1_6.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085142" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__edu_mit_jwi_2_2_6.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085142" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_2_3.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184085503" ignored="false" />
-    <file path="/application.properties" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184674102" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/application.properties" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389184675668" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/scopes/scope_settings.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185387510" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/modules.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185387510" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/vcs.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185387510" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/uiDesigner.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185387510" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/compiler.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185390460" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/workspace.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185387511" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/misc.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185387511" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/copyright/profiles_settings.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185387511" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/encodings.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185387511" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_2_2.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461036" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_4.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461036" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_2_3.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461036" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__org_apache_lucene_lucene_analyzers_3_6_2.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461036" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_4.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461036" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__org_apache_jena_jena_core_2_11_0.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461036" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__mysql_mysql_connector_java_5_1_6.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461036" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__edu_mit_jwi_2_2_6.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461036" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__xerces_xercesImpl_2_11_0.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461036" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__commons_codec_commons_codec_1_3.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461036" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_6_4.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461118" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__log4j_log4j_1_2_16.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461118" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__org_apache_jena_jena_arq_2_11_0.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461118" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__org_apache_jena_jena_iri_1_0_0.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461118" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__org_apache_jena_jena_tdb_1_0_0.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461118" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__org_apache_lucene_lucene_core_3_6_2.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461118" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/indexer/.idea/libraries/Maven__xml_apis_xml_apis_1_4_01.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389185461118" ignored="false" />
-    <file path="/Calculater.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389202163845" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/src/groovy/de/dfki/heja/indexer/utils/jena/IndexLookup.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389280726426" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileInDesmoJ/.idea/copyright/profiles_settings.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600556433" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileInDesmoJ/.idea/encodings.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600556433" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileInDesmoJ/.idea/scopes/scope_settings.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600556433" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileInDesmoJ/.idea/workspace.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600572426" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileInDesmoJ/.idea/vcs.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600556433" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileInDesmoJ/.idea/modules.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600560385" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileInDesmoJ/.idea/uiDesigner.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600556433" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileInDesmoJ/.idea/compiler.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600560385" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileInDesmoJ/.idea/misc.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600556433" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileSimInDesmoJ/.idea/uiDesigner.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600734252" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileSimInDesmoJ/.idea/encodings.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600734252" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileSimInDesmoJ/.idea/scopes/scope_settings.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600734252" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileSimInDesmoJ/.idea/modules.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600738758" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileSimInDesmoJ/.idea/copyright/profiles_settings.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600734253" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileSimInDesmoJ/.idea/compiler.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600738758" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileSimInDesmoJ/.idea/workspace.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389605293570" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileSimInDesmoJ/.idea/vcs.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389600734253" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileSimInDesmoJ/.idea/misc.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389604189594" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../emobileSimInDesmoJ/src/de/dfki/gs/emobilesim/SimulationModel.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389604594514" ignored="false" />
-    <file path="/SimulationModel.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389604554051" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../tmp/indexerSVNTest/emobileSimInDesmoJ/.idea/libraries/desmoj_2_4_0_demo_bin_gui.xml" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389604189128" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../emobileSimInDesmoJ/src/de/dfki/gs/emobilesim/SimulationStarter.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389604891124" ignored="false" />
-    <file path="/SimulationStarter.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389604670770" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../emobileSimInDesmoJ/src/de/dfki/gs/emobilesim/model/SimulationModel.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389604891145" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/src/de/dfki/km/semanticsearch/utils/QueryPartResult.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389616202586" ignored="false" />
-    <file path="/QueryPartResult.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389616200965" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../jenaindexer/indexer/grails-app/conf/BuildConfig.groovy" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389624596909" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/src/de/dfki/km/semanticsearch/data/access/LocalIndexSearcher.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389625187069" ignored="false" />
-    <file path="$PROJECT_DIR$/../../../sinfioBackend/sinfiobackend/src/de/dfki/km/semanticsearch/syntacticmatching/LookupDbPediaResultItem.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389625262981" ignored="false" />
-    <file path="/LookupDbPediaResultItem.java" changelist="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" time="1389625261295" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -337,7 +96,7 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
+    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true" converted="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
         <option name="NOTIFY_UNCAUGHT" value="true" />
@@ -373,9 +132,9 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <breakpoint_rules />
-    <ui_properties />
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" converted="true" />
+    <breakpoint_rules converted="true" />
+    <ui_properties converted="true" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
@@ -383,100 +142,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="RouteService.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grails-app/services/de/dfki/gs/service/RouteService.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="521" column="20" selection-start="19082" selection-end="19082" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimulationThreadFrameworkService.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grails-app/services/de/dfki/gs/service/simulation/SimulationThreadFrameworkService.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="145" column="29" selection-start="5530" selection-end="5530" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimulationThreadTask.groovy" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="SimulationThreadTask.groovy" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/groovy/de/dfki/gs/simulation/SimulationThreadTask.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="385" column="35" selection-start="11135" selection-end="11151" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimulationRoute.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grails-app/domain/de/dfki/gs/domain/SimulationRoute.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="6" selection-start="58" selection-end="58" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Track.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grails-app/domain/de/dfki/gs/domain/Track.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="24" selection-start="142" selection-end="142" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TrackEdge.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grails-app/domain/de/dfki/gs/domain/TrackEdge.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="13" selection-start="397" selection-end="399" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DataSource.groovy" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/grails-app/conf/DataSource.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="41" selection-start="601" selection-end="610" vertical-scroll-proportion="0.31454545">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MapViewController.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grails-app/controllers/de/dfki/gs/controller/MapViewController.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="454" column="4" selection-start="14795" selection-end="14795" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimulationController.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grails-app/controllers/de/dfki/gs/controller/SimulationController.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="122" column="56" selection-start="4132" selection-end="4132" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BuildConfig.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grails-app/conf/BuildConfig.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="44" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="0.0" vertical-offset="5595" max-vertical-offset="10215">
+              <caret line="385" column="35" selection-start-line="385" selection-start-column="35" selection-end-line="385" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -607,7 +277,7 @@
     <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
-    <navigator proportions="" version="1" splitterProportion="0.5">
+    <navigator proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -921,14 +591,7 @@
       <patterns />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugSession" factoryName="Local" singleton="true">
-      <JSDebuggerConfigurationSettings>
-        <option name="engineId" value="embedded" />
-        <option name="fileUrl" />
-      </JSDebuggerConfigurationSettings>
-      <method />
-    </configuration>
-    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local">
+    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" ALTERNATIVE_JRE_ENABLED="false">
       <deployment />
       <server-settings />
       <predefined_log_file id="Tomcat" enabled="true" />
@@ -937,6 +600,12 @@
       <predefined_log_file id="Tomcat Host Manager" enabled="false" />
       <predefined_log_file id="Tomcat Localhost Access" enabled="false" />
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <method />
+    </configuration>
+    <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
+      <option name="VM_PARAMETERS" value="" />
+      <option name="USER_CFG_CLASS" />
+      <option name="CONTEXT_PROVIDER" />
       <method />
     </configuration>
     <configuration default="false" name="Grails:emobile" type="GrailsRunConfigurationType" factoryName="Grails">
@@ -1004,16 +673,10 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="fe3c0ce8-b17d-48ef-bdde-03cdfdc429fc" name="Default" comment="" />
-      <changelist id="" name="added message code" comment="" />
-      <changelist id="" name="changed app name" comment="" />
-      <changelist id="" name="added haversine distance calculator" comment="" />
-      <changelist id="" name="try using cache for osm graph" comment="" />
-      <changelist id="" name="error to debug log" comment="" />
-      <changelist id="" name="skipped jndi for mysql " comment="" />
-      <changelist id="" name="changed lists to sets" comment="" />
-      <changelist id="" name="green" comment="" />
       <created>1380526139586</created>
       <updated>1380526139586</updated>
+      <workItem from="1404119213909" duration="339000" />
+      <workItem from="1404119662309" duration="181000" />
     </task>
     <task id="LOCAL-00001" summary="integrated osm-navigation, traveling salesman a.s.o.">
       <created>1380610404299</created>
@@ -1430,6 +1093,9 @@
     <option name="localTasksCounter" value="104" />
     <servers />
   </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="520000" />
+  </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
       <are-packages-shown value="false" />
@@ -1451,97 +1117,62 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1680" height="1024" extended-state="6" />
+    <frame x="0" y="22" width="1680" height="1024" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.335177" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33480176" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17931457" sideWeight="0.28650442" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5397059" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32964602" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17931457" sideWeight="0.30752212" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Grails View" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17074664" sideWeight="0.664823" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32964602" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32986537" sideWeight="0.670354" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32964602" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32743362" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32986537" sideWeight="0.6836283" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32874617" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30551052" sideWeight="0.4924012" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901135" sideWeight="0.47713414" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16288492" sideWeight="0.6039823" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3340708" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Regex" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5397059" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17931457" sideWeight="0.30752212" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Grails View" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17032968" sideWeight="0.664823" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30551052" sideWeight="0.4924012" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901135" sideWeight="0.47713414" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27828747" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32986537" sideWeight="0.6836283" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.50759876" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32743362" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Regex" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
-    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
-    <option name="CHECK_NEW_TODO" value="true" />
     <option name="myTodoPanelSettings">
-      <value>
-        <are-packages-shown value="false" />
-        <are-modules-shown value="false" />
-        <flatten-packages value="false" />
-        <is-autoscroll-to-source value="false" />
-      </value>
+      <TodoPanelSettings />
     </option>
-    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
-    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
-    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
-    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
-    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
-    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
-    <option name="SHORT_DIFF_HORIZONTALLY" value="true" />
-    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
-    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
-    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
-    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
-    <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
-    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
-    <option name="SHOW_DIRTY_RECURSIVELY" value="false" />
-    <option name="LIMIT_HISTORY" value="true" />
-    <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
-    <option name="UPDATE_FILTER_SCOPE_NAME" />
-    <option name="USE_COMMIT_MESSAGE_MARGIN" value="false" />
-    <option name="COMMIT_MESSAGE_MARGIN_SIZE" value="72" />
-    <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
-    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="green" />
-    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
-    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
-    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
-    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
-    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
-    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
-    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
-    <option name="ACTIVE_VCS_NAME" />
-    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
-    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
-    <option name="UPDATE_FILTER_BY_SCOPE" value="false" />
-    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
-    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
     <MESSAGE value="no real changes here" />
     <MESSAGE value="removed route infos on select page" />
     <MESSAGE value="to time scale simulation" />
@@ -1567,6 +1198,7 @@
     <MESSAGE value="skipped jndi for mysql" />
     <MESSAGE value="try using cache for osm graph" />
     <MESSAGE value="green" />
+    <option name="LAST_COMMIT_MESSAGE" value="green" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1600,119 +1232,55 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/groovy/de/dfki/gs/simulation/SimulationTask.groovy">
+    <entry file="file://$PROJECT_DIR$/src/groovy/de/dfki/gs/simulation/SimulationThreadTask.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="495" column="17" selection-start="16579" selection-end="16579" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/groovy/de/dfki/gs/simulation/ThreadScheduler.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="144" column="17" selection-start="3553" selection-end="3553" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/taglib/de/dfki/gs/taglib/EmobileSimTagLib.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="17" selection-start="1608" selection-end="1608" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="19" selection-start="97" selection-end="97" vertical-scroll-proportion="0.05408654">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/groovy/de/dfki/gs/threadutils/CreatePathTask.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="48" selection-start="1219" selection-end="1226" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/conf/BuildConfig.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="44" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/controllers/de/dfki/gs/controller/MapViewController.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="454" column="4" selection-start="14795" selection-end="14795" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/domain/de/dfki/gs/domain/CarType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/domain/de/dfki/gs/domain/SimulationRoute.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="6" selection-start="58" selection-end="58" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/domain/de/dfki/gs/domain/Track.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="24" selection-start="142" selection-end="142" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/controllers/de/dfki/gs/controller/SimulationController.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="122" column="56" selection-start="4132" selection-end="4132" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/services/de/dfki/gs/service/simulation/SimulationThreadFrameworkService.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="145" column="29" selection-start="5530" selection-end="5530" vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5595" max-vertical-offset="10215">
+          <caret line="385" column="35" selection-start-line="385" selection-start-column="35" selection-end-line="385" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/groovy/de/dfki/gs/simulation/SimulationThreadTask.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="385" column="35" selection-start="11135" selection-end="11151" vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5775" max-vertical-offset="10395">
+          <caret line="385" column="35" selection-start-line="385" selection-start-column="35" selection-end-line="385" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/services/de/dfki/gs/service/RouteService.groovy">
+    <entry file="file://$PROJECT_DIR$/src/groovy/de/dfki/gs/simulation/SimulationTask.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="521" column="20" selection-start="19082" selection-end="19082" vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
+          <caret line="495" column="17" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/groovy/de/dfki/gs/simulation/ThreadScheduler.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
+          <caret line="144" column="17" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.05408654" vertical-offset="0" max-vertical-offset="0">
+          <caret line="3" column="19" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/domain/de/dfki/gs/domain/TrackEdge.groovy">
+    <entry file="file://$PROJECT_DIR$/src/groovy/de/dfki/gs/threadutils/CreatePathTask.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="13" selection-start="397" selection-end="399" vertical-scroll-proportion="0.0">
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
+          <caret line="39" column="48" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
-      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
-        <state />
-      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/conf/DataSource.groovy">
+    <entry file="file://$PROJECT_DIR$/src/groovy/de/dfki/gs/simulation/SimulationThreadTask.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="41" selection-start="601" selection-end="610" vertical-scroll-proportion="0.31454545">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5775" max-vertical-offset="10395">
+          <caret line="385" column="35" selection-start-line="385" selection-start-column="35" selection-end-line="385" selection-end-column="35" />
           <folding />
         </state>
       </provider>
@@ -1724,16 +1292,22 @@
         <entry key="emobilesim2">
           <value>
             <GrailsSettings>
-              <option name="buildConfigCrc" value="-1856989760" />
+              <option name="buildConfigCrc" value="-2095408959" />
+              <option name="pluginDependenciesCrc" value="-2110547036" />
               <option name="properties">
                 <map>
-                  <entry key="grails.global.plugins.dir" value="$USER_HOME$/.grails/2.3.5/global-plugins" />
-                  <entry key="grails.project.plugins.dir" value="$USER_HOME$/.grails/2.3.5/projects/emobilesim/plugins" />
-                  <entry key="grails.project.work.dir" value="$USER_HOME$/.grails/2.3.5/projects/emobilesim" />
-                  <entry key="grails.work.dir" value="$USER_HOME$/.grails/2.3.5" />
+                  <entry key="grails.global.plugins.dir" value="$USER_HOME$/.grails/2.3.1/global-plugins" />
+                  <entry key="grails.project.plugins.dir" value="$USER_HOME$/.grails/2.3.1/projects/emobilesim/plugins" />
+                  <entry key="grails.project.work.dir" value="$USER_HOME$/.grails/2.3.1/projects/emobilesim" />
+                  <entry key="grails.work.dir" value="$USER_HOME$/.grails/2.3.1" />
                 </map>
               </option>
             </GrailsSettings>
+          </value>
+        </entry>
+        <entry key="emobilesim2-grailsPlugins">
+          <value>
+            <GrailsSettings />
           </value>
         </entry>
       </map>

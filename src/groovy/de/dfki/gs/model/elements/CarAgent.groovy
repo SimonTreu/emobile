@@ -57,6 +57,7 @@ class CarAgent extends Agent {
 
     long simulationId
 
+    long simulationRouteId
 
     CarStatus carStatus
     /**
@@ -73,6 +74,8 @@ class CarAgent extends Agent {
     int currentKmh = 0
     int DEFAULT_KMH;
     double currentKm
+
+    // the real driven distance in km
     double kmDriven = 0
     double lastStepKm = 0
 
@@ -105,14 +108,15 @@ class CarAgent extends Agent {
      * @return carAgent
      */
     public static CarAgent createCarAgent(
-                    RoutingPlan routingPlan,
-                    ModelCar modelCar,
-                    ConcurrentMap<Long, EFillingStationAgent> fillingStationsMap,
-                    List<GasolineStation> gasolineStations,
-                    long simulationId,
-                    int defaultKmh,
-                    long startTime,
-                    Double plannedDist ) {
+            RoutingPlan routingPlan,
+            ModelCar modelCar,
+            ConcurrentMap<Long, EFillingStationAgent> fillingStationsMap,
+            List<GasolineStation> gasolineStations,
+            long simulationId,
+            int defaultKmh,
+            long startTime,
+            Double plannedDist,
+            long simulationRouteId ) {
 
         CarAgent carAgent = new CarAgent()
         carAgent.routingPlan = routingPlan;
@@ -129,6 +133,8 @@ class CarAgent extends Agent {
         carAgent.carStatus = CarStatus.DRIVING_FULL;
 
         carAgent.startTime = startTime
+
+        carAgent.simulationRouteId = simulationRouteId
 
         Double sumKm = 0;
         double secondsPlanned = 0;
@@ -147,7 +153,7 @@ class CarAgent extends Agent {
         }
         carAgent.kmToDrive = plannedDist;
 
-        log.error( "simRoute: ${simRouteId} has ${sumKm} planned km to drive in ${secondsPlanned} sec" )
+        log.error( "simRoute: ${simRouteId} has ${sumKm} planned km to drive in ${(secondsPlanned *  ( 1 / ( 60 * 60 ) ) )} h" )
 
         carAgent.carAgentResult = new CarAgentResult(
                 carType: modelCar.carType,
@@ -179,7 +185,13 @@ class CarAgent extends Agent {
 
                 moveCar( currentTimeStamp )
 
+                /**
+                 * if, after moving, the last edge is arrived, the ride is finished and we
+                 * can set carStatus to MISSION_ACCOMBLISHED
+                 *
+                 */
                 if ( currentEdgeIndex == routingPlan.trackEdges.size() ) {
+
                     totalTimeNeeded = currentTimeStamp - startTime;
                     carAgentResult.timeForRealDistance = currentTimeStamp - startTime
                     carStatus = CarStatus.MISSION_ACCOMBLISHED;
@@ -197,6 +209,7 @@ class CarAgent extends Agent {
 
                     } else {
 
+                        log.error( "uuh, running out of energy: ${batChargePercentage}% < ${modelCar.getRelativeSearchLimit()*100}% or ${modelCar.getCurrentEnergy()} < ${modelCar.getAbsoluteSearchLimit()}" )
                         carStatus = CarStatus.DRIVING_RUNNING_OUT
 
                     }
@@ -231,7 +244,11 @@ class CarAgent extends Agent {
                         double neededEnergy = ( modelCar.maxEnergy - modelCar.currentEnergy );
                         long timeForNeededEnergy = Math.ceil( neededEnergy / energyPortionToFill )
 
+                        log.error( "car: ${modelCar.carName} - neededEnergy: ${neededEnergy} / energyPortion: ${energyPortionToFill} =  timeForLoading: ${timeForNeededEnergy} -- prev sum TimeForloading: ${timeForLoading}" )
+
                         timeForLoading += timeForNeededEnergy
+
+                        log.error( "    now sum timeForLoading: ${timeForLoading}" )
 
                         timeStampForNextActionAllowed = currentTimeStamp + timeForNeededEnergy
 
@@ -359,12 +376,11 @@ class CarAgent extends Agent {
 
                 EFillingStationAgent fillingAgent = fillingStationsMap.get( gasoline.id )
 
-
                 if ( fillingAgent.fillingStationStatus.equals( FillingStationStatus.FREE ) ) {
 
                     log.debug( "${personalId} - after ${free} trials: take gasolineStation ${gasoline} - now in use" )
 
-                    log.error( "${personalId} - found station at ${(( modelCar.getCurrentEnergy() / modelCar.getMaxEnergy()) *100 )} %" )
+                    log.error( "${simulationRouteId} - found station at ${(( modelCar.getCurrentEnergy() / modelCar.getMaxEnergy()) *100 )} %" )
 
                     fillingAgent.fillingStationStatus = FillingStationStatus.IN_USE;
 
@@ -399,6 +415,12 @@ class CarAgent extends Agent {
 
                 if ( routeToEnergy.size() == 0 ) {
                     // skip
+                    //fillingAgent.fillingStationStatus = FillingStationStatus.;
+                    EFillingStationAgent fillingAgent = fillingStationsMap.get( gasolineStation.id )
+                    fillingAgent.setFillingStationStatus( FillingStationStatus.FREE )
+
+                    log.error( " time: ${currentTime} -- failed to get path to gasoline station.. ${gasolineStation.id}" )
+
                     gasolineStation = null
 
                 } else {
@@ -413,6 +435,7 @@ class CarAgent extends Agent {
                     //      and build  track-edges-list
                     TrackEdge backEdge = null
 
+                    // myIndex is calculated and set to the index of the edge, which is either the next via_target or the target
                     int myIndex
                     for ( myIndex = currentEdgeIndex; myIndex < routingPlan.trackEdges.size(); myIndex++ ) {
 
@@ -421,6 +444,7 @@ class CarAgent extends Agent {
                         if ( backEdge == null
                                 && ( edge.type.equals( TrackEdgeType.via_target.toString() ) || edge.type.equals( TrackEdgeType.target.toString() ) ) ) {
                             backEdge = edge
+                            break
                         }
                     }
 
@@ -431,85 +455,101 @@ class CarAgent extends Agent {
                             backEdge.toLon
                     )
 
-                    double toSubstract = 0;
-                    for (  int k = currentEdgeIndex ; k < myIndex; k++ ) {
-                        toSubstract += routingPlan.trackEdges.get( k ).km
-                    }
+                    if ( routeToTarget.size() == 0 ) {
+                        EFillingStationAgent fillingAgent = fillingStationsMap.get( gasolineStation.id )
+                        fillingAgent.setFillingStationStatus( FillingStationStatus.FREE )
 
+                        log.error( "failed to get path back to next target.. (gasolineStation was ${gasolineStation.id})" )
 
-                    // 4.) get currentEdge++ and append the track-edgeList (directed to the filling station) into simulationObjec.edges
-
-                    List<TrackEdge> trackEdgesToStation = routeService.convertToUnsavedTrackEdges( routeToEnergy )
-                    List<TrackEdge> trackEdgesBack = routeService.convertToUnsavedTrackEdges( routeToTarget )
-
-                    double lll = 0;
-                    for ( TrackEdge eee : trackEdgesToStation ) {
-                        lll += eee.km
-                    }
-                    log.debug( "${personalId} - need ${lll} km to energy" )
-
-                    // log.error( "back to: ${backEdge.toLat} ${backEdge.toLon}" )
-                    lll = 0;
-                    for ( TrackEdge be : trackEdgesBack ) {
-                        lll += be.km
-                    }
-                    log.debug( "${personalId} - need ${lll} km back to next target" )
-
-
-
-                    double sumToDriveToGasAndBack = 0;
-                    for ( TrackEdge trackEdge : trackEdgesToStation ) {
-                        sumToDriveToGasAndBack += trackEdge.km;
-                    }
-                    for ( TrackEdge trackEdge : trackEdgesBack ) {
-                        sumToDriveToGasAndBack += trackEdge.km;
-                    }
-                    kmToDrive += sumToDriveToGasAndBack;
-
-                    kmToDrive = kmToDrive - toSubstract;
-
-                    log.debug( "found routes in ${System.currentTimeMillis() - millis} ms, try to append to route plan" )
-
-                    millis = System.currentTimeMillis()
-
-                    routeToGasolineStation = routeToEnergy
-                    routeBackToTarget = routeToTarget
-
-                    // have to remove old route from "currentEdgeIndex+1" to the next target or viaTarget
-                    if ( backEdge.type.toString().equals( TrackEdgeType.target.toString() ) || backEdge.type.toString().equals( TrackEdgeType.via_target.toString() )  ) {
-
-                        // remove from currentEdgeIndex+1 to next viaTarget/target
-                        int toRemovePosTo   = routingPlan.trackEdges.indexOf( backEdge )
-                        int toRemovePosFrom = currentEdgeIndex + 1
-
-                        for ( int i = toRemovePosTo; i >= toRemovePosFrom; i-- ) {
-                            routingPlan.trackEdges.remove( i )
-                        }
-
-                        // repair type of last trackEdgesBack to via_target
-                        if ( trackEdgesBack.size() > 0 ) {
-                            trackEdgesBack.get( trackEdgesBack.size() - 1 ).type = TrackEdgeType.via_target
+                        gasolineStation = null
+                    } else {
+                        double toSubstract = 0;
+                        // take out the km-values, which are not driven anymore due to new route to filling station
+                        for (  int k = currentEdgeIndex ; k < myIndex; k++ ) {
+                            toSubstract += routingPlan.trackEdges.get( k ).km
                         }
 
 
-                        // shift in at position currentEdgeIndex+1 both routes tracksToStation and trackBackToRoute
-                        routingPlan.trackEdges.addAll( currentEdgeIndex+1, trackEdgesToStation )
-                        routingPlan.trackEdges.addAll( currentEdgeIndex+1+routeToEnergy.size(), trackEdgesBack )
+                        // 4.) get currentEdge++ and append the track-edgeList (directed to the filling station) into simulationObjec.edges
 
-                        // repair type of very last edge of track to target
-                        routingPlan.trackEdges.get( routingPlan.trackEdges.size() - 1 ).type = TrackEdgeType.target
+                        List<TrackEdge> trackEdgesToStation = routeService.convertToUnsavedTrackEdges( routeToEnergy )
+                        List<TrackEdge> trackEdgesBack = routeService.convertToUnsavedTrackEdges( routeToTarget )
+
+                        double lll = 0;
+                        for ( TrackEdge eee : trackEdgesToStation ) {
+                            lll += eee.km
+                        }
+                        log.debug( "${personalId} - need ${lll} km to energy" )
+
+                        // log.error( "back to: ${backEdge.toLat} ${backEdge.toLon}" )
+                        lll = 0;
+                        for ( TrackEdge be : trackEdgesBack ) {
+                            lll += be.km
+                        }
+                        log.debug( "${personalId} - need ${lll} km back to next target" )
+
+
+
+                        double sumToDriveToGasAndBack = 0;
+                        for ( TrackEdge trackEdge : trackEdgesToStation ) {
+                            sumToDriveToGasAndBack += trackEdge.km;
+                        }
+                        for ( TrackEdge trackEdge : trackEdgesBack ) {
+                            sumToDriveToGasAndBack += trackEdge.km;
+                        }
+
+                        log.error( "${personalId} : previously planned: ${carAgentResult.plannedDistance}  have to substract: ${toSubstract} km and to add: ${sumToDriveToGasAndBack} km" )
+
+                        kmToDrive += sumToDriveToGasAndBack;
+
+                        kmToDrive = kmToDrive - toSubstract;
+
+                        log.debug( "found routes in ${System.currentTimeMillis() - millis} ms, try to append to route plan" )
+
+                        // millis = System.currentTimeMillis()
+
+                        routeToGasolineStation = routeToEnergy
+                        routeBackToTarget = routeToTarget
+
+                        // have to remove old route from "currentEdgeIndex+1" to the next target or viaTarget
+                        if ( backEdge.type.toString().equals( TrackEdgeType.target.toString() ) || backEdge.type.toString().equals( TrackEdgeType.via_target.toString() )  ) {
+
+                            // remove from currentEdgeIndex+1 to next viaTarget/target
+                            int toRemovePosTo   = routingPlan.trackEdges.indexOf( backEdge )
+                            int toRemovePosFrom = currentEdgeIndex + 1
+
+                            for ( int i = toRemovePosTo; i >= toRemovePosFrom; i-- ) {
+                                routingPlan.trackEdges.remove( i )
+                            }
+
+                            // repair type of last trackEdgesBack to via_target
+                            if ( trackEdgesBack.size() > 0 ) {
+                                trackEdgesBack.get( trackEdgesBack.size() - 1 ).type = TrackEdgeType.via_target
+                            }
+
+
+                            // shift in at position currentEdgeIndex+1 both routes tracksToStation and trackBackToRoute
+                            routingPlan.trackEdges.addAll( currentEdgeIndex+1, trackEdgesToStation )
+                            routingPlan.trackEdges.addAll( currentEdgeIndex+1+routeToEnergy.size(), trackEdgesBack )
+
+                            // repair type of very last edge of track to target
+                            routingPlan.trackEdges.get( routingPlan.trackEdges.size() - 1 ).type = TrackEdgeType.target
+
+                        }
+
+                        // TODO: clacluate new kmToDrive from updated track-list
+
+                        log.error( "successfully appended routes to routplan in ${System.currentTimeMillis() - millis} ms" )
+
+                        log.debug( "size now is ${routingPlan.trackEdges.size()}" )
+
+
+                        // has to be reset to false after refill !!!
+                        routeSent = false
 
                     }
 
-                    // TODO: clacluate new kmToDrive from updated track-list
 
-                    log.debug( "successfully appended routes to routplan in ${System.currentTimeMillis() - millis} ms" )
-
-                    log.debug( "size now is ${routingPlan.trackEdges.size()}" )
-
-
-                    // has to be reset to false after refill !!!
-                    routeSent = false
 
                 }
 
@@ -547,6 +587,8 @@ class CarAgent extends Agent {
 
             currentKm = km
 
+            // we assume, that the currentEdge is already driven, although
+            // it's not correct, -> after timeStampForNextActionAllowed it turns true
             kmDriven = kmDriven + currentKm;
 
 
@@ -555,7 +597,7 @@ class CarAgent extends Agent {
 
             // recalculate time to wait
             // one long step is 1 sec: so multiply by 60min * 60sec
-            timeStampForNextActionAllowed += Math.ceil( 3600 * km / currentKmh )
+            timeStampForNextActionAllowed += Math.round( 3600 * ( km / currentKmh ) )
             if ( timeStampForNextActionAllowed == lastTimeStamp ) {
                 // calculated movement is obviously false and zero
                 // do it by hand
@@ -615,7 +657,19 @@ class CarAgent extends Agent {
 
 
     def finish() {
+
+        /*
+        double realDistanceCalc = 0;
+        for ( TrackEdge edge : routingPlan.trackEdges ) {
+            realDistanceCalc += edge.km
+        }
+
+        carAgentResult.realDistance = realDistanceCalc;
+        log.error( "realDistanceCheck ( ${this.simulationRouteId} ): calc: ${realDistanceCalc}   driven: ${kmDriven}" )
+        */
+
         carAgentResult.realDistance = kmDriven;
+
         carAgentResult.energyLoaded = energyLoaded;
         carAgentResult.timeForLoading = timeForLoading;
         carAgentResult.timeForDetour = ( carAgentResult.timeForRealDistance - carAgentResult.timeForPlannedDistance ) - timeForLoading

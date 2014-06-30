@@ -26,7 +26,7 @@ class GenerateStatsPictureService {
         final NumberAxis yAxis = new NumberAxis("time in [ h ]");
         yAxis.setAutoRangeIncludesZero(false);
         final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
-        renderer.setFillBox(false);
+        renderer.setFillBox( true );
         renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
         final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
 
@@ -54,7 +54,7 @@ class GenerateStatsPictureService {
         final NumberAxis yAxis = new NumberAxis("time in [ h ]");
         yAxis.setAutoRangeIncludesZero(false);
         final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
-        renderer.setFillBox(false);
+        renderer.setFillBox(true);
         renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
         final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
 
@@ -74,6 +74,126 @@ class GenerateStatsPictureService {
         return file;
     }
 
+    public File createDataChartFileForDetourTimeDetails( m, Integer searchLimit, boolean withLoading ) {
+
+        final BoxAndWhiskerCategoryDataset dataset = createDetourTimeDetailSampleDataset( m );
+
+        final CategoryAxis xAxis = new CategoryAxis("Planned Distance Group [ km ]");
+
+        final NumberAxis yAxis = new NumberAxis("detour time related to planned time in [ % ]");
+
+
+        // yAxis.setAutoRangeIncludesZero(false);
+        final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
+        renderer.setFillBox( true );
+        renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
+        final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
+
+        String loadingIncluded = "Loading Time is included";
+        if ( !withLoading ) {
+            loadingIncluded = "Loading Time is not included";
+        }
+
+        final JFreeChart chart = new JFreeChart(
+                "Percentage Detour Time Grouped By Planned Distance Class\nWith Search Limit of: ${searchLimit} %\n${loadingIncluded}",
+                // "Distance Details for Experiment: ${m.carType} \nSuccess-Rate: ${m.successRate} %\nFilling-Stations: ${m.fillingStations}\nFilling-Station-Type: ${m.fillingStationType}\nSearching started below of: ${m.relativeSearchLimit} %",
+                new Font("SansSerif", Font.BOLD, 12),
+                plot,
+                true
+        );
+
+
+        final ChartRenderingInfo info = new ChartRenderingInfo( new StandardEntityCollection() );
+        UUID uuid = UUID.randomUUID();
+        final File file = new File( "/tmp/emobile-detour-time-details-stats-${uuid}.png" );
+        ChartUtilities.saveChartAsPNG( file, chart, 1300, 700, info );
+
+        return file;
+
+    }
+
+    public File createDataChartFileForDetourDetails( m, Integer searchLimit ) {
+
+        final BoxAndWhiskerCategoryDataset dataset = createDetourDetailSampleDataset( m );
+
+        final CategoryAxis xAxis = new CategoryAxis("Planned Distance Group [ km ]");
+
+        final NumberAxis yAxis = new NumberAxis("detour distance related to planned distance in [ % ]");
+
+
+        // yAxis.setAutoRangeIncludesZero(false);
+        final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
+        renderer.setFillBox( true );
+        renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
+        final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
+
+        final JFreeChart chart = new JFreeChart(
+                "Percentage Detour Grouped By Planned Distance Class\nWith Search Limit of: ${searchLimit} %",
+                // "Distance Details for Experiment: ${m.carType} \nSuccess-Rate: ${m.successRate} %\nFilling-Stations: ${m.fillingStations}\nFilling-Station-Type: ${m.fillingStationType}\nSearching started below of: ${m.relativeSearchLimit} %",
+                new Font("SansSerif", Font.BOLD, 12),
+                plot,
+                true
+        );
+
+
+        final ChartRenderingInfo info = new ChartRenderingInfo( new StandardEntityCollection() );
+        UUID uuid = UUID.randomUUID();
+        final File file = new File( "/tmp/emobile-detour-details-stats-${uuid}.png" );
+        ChartUtilities.saveChartAsPNG( file, chart, 1300, 700, info );
+
+        return file;
+
+    }
+
+    public File createDataChartFileForDistanceDetails( m, String timeDistanceOption ) {
+
+        final BoxAndWhiskerCategoryDataset dataset = createDistanceDetailSampleDataset( m, timeDistanceOption );
+
+        final CategoryAxis xAxis = new CategoryAxis("Planned Distance Group [ km ]");
+
+        final NumberAxis yAxis
+        if ( timeDistanceOption.equals( "distance" ) ) {
+            yAxis= new NumberAxis("distance in [ km ]");
+        } else {
+            yAxis = new NumberAxis("time in [ h ]");
+        }
+
+
+        // yAxis.setAutoRangeIncludesZero(false);
+        final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
+        renderer.setFillBox( true );
+        renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
+        final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
+
+        final JFreeChart chart
+
+        if ( timeDistanceOption.equals( "distance" ) ) {
+            chart = new JFreeChart(
+                    "Distance Details for Experiment: ${m.carType} \nSuccess-Rate: ${m.successRate} %\nFilling-Stations: ${m.fillingStations}\nFilling-Station-Type: ${m.fillingStationType}\nSearching started below of: ${m.relativeSearchLimit} %",
+                    new Font("SansSerif", Font.BOLD, 12),
+                    plot,
+                    true
+            );
+        } else {
+            chart = new JFreeChart(
+                    "Time Details for Experiment: ${m.carType} \nSuccess-Rate: ${m.successRate} %\nFilling-Stations: ${m.fillingStations}\nFilling-Station-Type: ${m.fillingStationType}\nSearching started below of: ${m.relativeSearchLimit} %",
+                    new Font("SansSerif", Font.BOLD, 12),
+                    plot,
+                    true
+            );
+        }
+
+
+
+        final ChartRenderingInfo info = new ChartRenderingInfo( new StandardEntityCollection() );
+        UUID uuid = UUID.randomUUID();
+        final File file = new File( "/tmp/emobile-${timeDistanceOption}-details-stats-${uuid}.png" );
+        ChartUtilities.saveChartAsPNG( file, chart, 1300, 700, info );
+
+        return file;
+
+    }
+
     public File createDataChartFileForDistance( m ) {
         final BoxAndWhiskerCategoryDataset dataset = createDistanceSampleDataset( m );
 
@@ -81,7 +201,7 @@ class GenerateStatsPictureService {
         final NumberAxis yAxis = new NumberAxis("distance in [ km ]");
         yAxis.setAutoRangeIncludesZero(false);
         final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
-        renderer.setFillBox(false);
+        renderer.setFillBox( true );
         renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
         final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
 
@@ -110,7 +230,7 @@ class GenerateStatsPictureService {
         final NumberAxis yAxis = new NumberAxis("Value");
         yAxis.setAutoRangeIncludesZero(false);
         final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
-        renderer.setFillBox(false);
+        renderer.setFillBox( true );
         renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
         final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
 
@@ -210,10 +330,107 @@ class GenerateStatsPictureService {
         }
 
         return dataset;
+    }
+
+    private static BoxAndWhiskerCategoryDataset createDetourTimeDetailSampleDataset( m ) {
+
+        final DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
+
+        m.distanceClasses.each { distanceClass ->
+
+            distanceClass.types.each { type ->
+
+                type.counts.each { count ->
+
+                    // log.error( "${count.count} : ${count.valueList}" )
+
+                    if ( count.valueList.size > 0 ) {
+
+                        dataset.add( ( List ) count.valueList, "${count.count} of type ${type.type}", ( String ) distanceClass.distanceClass )
+
+                    }
+
+
+                }
 
 
 
+            }
 
+        }
+
+
+        return dataset;
+
+    }
+
+    private static BoxAndWhiskerCategoryDataset createDetourDetailSampleDataset( m ) {
+
+        final DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
+
+        m.distanceClasses.each { distanceClass ->
+
+            distanceClass.types.each { type ->
+
+                type.counts.each { count ->
+
+                    // log.error( "${count.count} : ${count.valueList}" )
+
+                    if ( count.valueList.size > 0 ) {
+
+                        dataset.add( ( List ) count.valueList, "${count.count} of type ${type.type}", ( String ) distanceClass.distanceClass )
+
+                    }
+
+
+                }
+
+
+
+            }
+
+        }
+
+
+        return dataset;
+
+    }
+
+    private static BoxAndWhiskerCategoryDataset createDistanceDetailSampleDataset( m, String timeDistanceOption ) {
+
+        final DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
+
+        m.details.each { detail ->
+
+            if ( detail.targetReached > 0 ) {
+
+                if ( timeDistanceOption.equals( "distance" ) ) {
+                    dataset.add( ( List ) detail.realDistances, "real distances", ( String ) detail.plannedDistanceClass );
+                    dataset.add( ( List ) detail.plannedDistanceList, "planned distances", ( String ) detail.plannedDistanceClass );
+                    dataset.add( ( List ) detail.diffDistanceList, "distance diff", ( String ) detail.plannedDistanceClass );
+                } else {
+
+                    def realTimeList = []
+                    def plannedTimeList = []
+                    def timeForLoadingList = []
+                    def diffRealPlannedTimeList = []
+
+                    detail.realTimeList.each { realTimeList << it / ( 60*60 ) }
+                    detail.plannedTimeList.each { plannedTimeList << it / ( 60*60 ) }
+                    detail.timeForLoadingList.each { timeForLoadingList << it / ( 60*60 ) }
+                    detail.diffRealPlannedTimeList.each { diffRealPlannedTimeList << it / ( 60*60 ) }
+
+                    dataset.add( ( List ) realTimeList, "real time", ( String ) detail.plannedDistanceClass );
+                    dataset.add( ( List ) plannedTimeList, "planned time", ( String ) detail.plannedDistanceClass );
+                    dataset.add( ( List ) timeForLoadingList, "loading time", ( String ) detail.plannedDistanceClass );
+                    dataset.add( ( List ) diffRealPlannedTimeList, "over time", ( String ) detail.plannedDistanceClass );
+                }
+
+            }
+
+        }
+
+        return dataset;
     }
 
     private static BoxAndWhiskerCategoryDataset createDistanceSampleDataset( m ) {

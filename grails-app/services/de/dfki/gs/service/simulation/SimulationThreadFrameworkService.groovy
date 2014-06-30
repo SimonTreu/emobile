@@ -237,7 +237,8 @@ class SimulationThreadFrameworkService {
                         simulationId,
                         35,
                         runningStartTime,
-                        simulationRoute.plannedDistance
+                        simulationRoute.plannedDistance,
+                        simulationRoute.id
                 )
 
                 threadMap.put( simulationRoute.id, carAgent )
@@ -727,7 +728,78 @@ class SimulationThreadFrameworkService {
 
         experimentRunResultId = experimentDataService.saveExperimentResult( carAgentResults, fillingResults, relativeSearchLimit, simTimeMillis )
 
+        threadMap.clear()
+        fillingStationMap.clear()
+
+        threadMap = new HashMap<Long,CarAgent>()
+        fillingStationMap = new HashMap<Long, EFillingStationAgent>()
+
+        carAgentsForSession.remove( sessionId )
+        fillingStationAgentsForSession.remove( sessionId )
+
         return experimentRunResultId
+    }
+
+    /**
+     * should stop all running tasks and collect all results
+     *
+     * @param simulationId
+     * @param sessionId
+     * @return
+     */
+    def stopSimulation3( Long simulationId, String sessionId, long simTimeMillis ) {
+
+        Map<Long, CarAgent> threadMap = carAgentsForSession.get( sessionId )
+        Map<Long, EFillingStationAgent> fillingStationMap = fillingStationAgentsForSession.get( sessionId )
+
+        List<CarAgentResult> carAgentResults = new ArrayList<CarAgentResult>()
+        List<EFillingStationAgentResult> fillingResults = new ArrayList<EFillingStationAgentResult>()
+
+        if ( threadMap ) {
+
+            for (  CarAgent task : threadMap.values()  ) {
+
+                //carAgentResults.add( task.getCarAgentResult() )
+                task.cancel()
+
+            }
+
+            statusForSession.put( sessionId, SchedulerStatus.stop )
+
+            log.debug( "simulation stopped for session: ${sessionId} and try to save results" )
+
+        } else {
+            log.error( "no threads found for session: ${sessionId}" )
+        }
+
+        if ( fillingStationMap ) {
+
+            for (  EFillingStationAgent task : fillingStationMap.values()  ) {
+
+                //fillingResults.add( task.geteFillingStationAgentResult() )
+                task.cancel()
+
+            }
+
+            statusForSession.put( sessionId, SchedulerStatus.stop )
+
+            log.debug( "simulation stopped for session: ${sessionId} and try to save results" )
+
+
+        } else {
+            log.error( "no threads found for session: ${sessionId}" )
+        }
+
+        threadMap.clear()
+        fillingStationMap.clear()
+
+        threadMap = new HashMap<Long,CarAgent>()
+        fillingStationMap = new HashMap<Long, EFillingStationAgent>()
+
+        carAgentsForSession.remove( sessionId )
+        fillingStationAgentsForSession.remove( sessionId )
+
+        return true
     }
 
 

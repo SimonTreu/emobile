@@ -43,52 +43,52 @@
             <div class="wrap">
                 <nav>
                     <ul id="menu">
-                        <li><a href="#"><span></span> Simulate</a>
+                        <li><a href="#"><span></span> <g:message code="layouts._topbar.simulate"/></a>
                             <ul>
-                                <li><g:link controller="simulation" action="init">New </g:link></li>
-                                <li><a href="#">Open...</a></li>
-                                <li><a href="#">Open resent</a></li>
-                                <li><a href="#">Load from file</a></li>
-                                <li><a href="#">Log out</a></li>
+                                <li><g:link controller="simulation" action="init"><g:message code="layouts._topbar.new"/> </g:link></li>
+                                <li><a href="#"><g:message code="layouts._topbar.open"/></a></li>
+                                <li><a href="#"><g:message code="layouts._topbar.openresent"/></a></li>
+                                <li><a href="#"><g:message code="layouts._topbar.loadfromfile"/></a></li>
+                                <li><a href="#"><g:message code="layouts._topbar.logout"/></a></li>
                             </ul>
                         </li>
-                        <li><a href="#"><span class=""></span> Execute</a>
+                        <li><a href="#"><span class=""></span> <g:message code="layouts._topbar.execute"/></a>
                         </li>
-                        <li><a href="#"><span class=""></span> View</a>
+                        <li><a href="#"><span class=""></span><g:message code="layouts._topbar.view"/></a>
                             <ul>
-                                <li><a href="#">View results</a></li>
-                                <li><a href="#">Export results in file</a></li>
+                                <li><a href="#"><g:message code="layouts._topbar.viewresults"/></a></li>
+                                <li><a href="#"><g:message code="layouts._topbar.exportinfile"/></a></li>
                             </ul>
                         </li>
-                        <li><a href="#"><span class=""></span> Extras</a>
+                        <li><g:link controller="extras" action="index"><span class=""></span><g:message code="layouts._topbar.extras"/></g:link>
                             <ul>
-                                <li><g:link controller="extras" action="index">Add new car type</g:link></li>
-                                <li><a href="#">Add new electric station</a></li>
-                                <li><a href="#">Electric station statistic</a></li>
+                                <li><g:link controller="extras" action="index"><g:message code="layouts._topbar.addnewcartype"/></g:link></li>
+                                <li><g:link controller="extras" action="station"><g:message code="layouts._topbar.addnewelectricstation"/></g:link></li>
+                                <li><g:link controller="mapView" action="listUsages"><g:message code="layouts._topbar.electricstationstatistic"/></g:link></li>
                             </ul>
                         </li>
-                        <li><a href="#"><span class=""></span> Help</a>
+                        <li><a href="#"><span class=""></span><g:message code="layouts._topbar.help"/></a>
                             <ul>
-                                <li><a href="#">Help</a></li>
-                                <li><a href="#">Contact</a></li>
+                                <li><a href="#"><g:message code="layouts._topbar.help"/></a></li>
+                                <li><a href="#"><g:message code="layouts._topbar.contact"/></a></li>
                             </ul>
                         </li>
 
                         <span class="registration1">
                             <li class="regristrationText">
-                                <input type="text" size="10" value="user name">
+                                <input type="text" size="10" value="<g:message code="layouts._topbar.username"/>">
                             </li>
 
                             <li class="regristrationText">
-                                <input type="password" size="10" value="password">
+                                <input type="password" size="10" value="<g:message code="layouts._topbar.password"/>">
                             </li>
 
                             <li class="regristrationText">
-                                <input type="submit" value="log in">
+                                <input type="submit" value="<g:message code="layouts._topbar.login"/>">
                             </li>
                             <span class="registrationButtons">
-                                <g:link class="registration" controller="fogotPassword" action="index">fogot password</g:link> <p>
-                                <g:link class="registration" controller="registration" action="index">registration</g:link>
+                                <g:link class="registration" controller="fogotPassword" action="index"><g:message code="layouts._topbar.fogotpassword"/></g:link> <p>
+                                <g:link class="registration" controller="registration" action="index"><g:message code="layouts._topbar.registration"/></g:link>
                             </span>
                         </span>
                     </ul>

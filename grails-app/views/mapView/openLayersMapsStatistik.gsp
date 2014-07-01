@@ -61,7 +61,7 @@
             top:10px;
         }
         </style>
-
+        <meta name="layout" content="main" />
         <script type="javascript">
             function getColor(value){
                 //value from 0 to 1
@@ -91,15 +91,14 @@
     <script type='text/javascript' src="${resource(dir: 'js', file: 'menu_jquery.js')}"></script>
 </head>
 
-<body style="margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom:0px;">
-
-<g:render template="/layouts/topbar"/>
+<body style="margin-left:10px; margin-right:10px; margin-top:10px; margin-bottom:10px;">
 
 <g:form controller="mapView" action="listUsages">
     <calendar:datePicker id="fromDate" name="fromDate" showTime="true" dateFormat="%H:%M - %d.%m.%Y" years="${2014}" singleClick="true" defaultValue="${fromDate}" value="${fromDate_value}"/>
     <calendar:datePicker id="toDate" name="toDate" showTime="true" dateFormat="%H:%M - %d.%m.%Y" years="${2014}" defaultValue="${toDate}" value="${toDate}"/>
     <g:submitButton name="Go" id="dateButton"></g:submitButton>
 </g:form>
+
 <div id="map" class="olMap" style="z-index:1">
 
 <div id="gmap_div"></div>

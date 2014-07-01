@@ -1,7 +1,7 @@
-<table border="0">
+<table border="0" xmlns="http://www.w3.org/1999/html">
     <tr>
         <td width="90px" align="left">
-            <img align="left" width="80px"  src="${g.resource( dir: '/images', file: 'logo_efahrung.png' )}"
+            <img class="efahrungLogo" align="left" width="80px"  src="${g.resource( dir: '/images', file: 'logo_efahrung.png' )}"
         </td>
         <td>
             <%--<div id='menu'>
@@ -73,24 +73,54 @@
                                 <li><a href="#"><g:message code="layouts._topbar.contact"/></a></li>
                             </ul>
                         </li>
+                        <span id="signup">
+                            <g:if test="${errors != null}" >
 
-                        <span class="registration1">
-                            <li class="regristrationText">
-                                <input type="text" size="10" value="<g:message code="layouts._topbar.username"/>">
-                            </li>
+                                Errors: ${errors}
 
-                            <li class="regristrationText">
-                                <input type="password" size="10" value="<g:message code="layouts._topbar.password"/>">
-                            </li>
+                            </g:if>
+                            <span id='login'>
+                                <span class='inner'>
 
-                            <li class="regristrationText">
-                                <input type="submit" value="<g:message code="layouts._topbar.login"/>">
-                            </li>
-                            <span class="registrationButtons">
-                                <g:link class="registration" controller="fogotPassword" action="index"><g:message code="layouts._topbar.fogotpassword"/></g:link> <p>
-                                <g:link class="registration" controller="registration" action="index"><g:message code="layouts._topbar.registration"/></g:link>
+                                    <span class="registration1">
+                                    <form>
+
+                                    </form action='${postUrl}' method='POST' id='loginForm' class='cssform' autocomplete='off'>
+                                            Welcome!
+                                            ${welcome.familyName}
+
+                                            <a class="logout" href="<g:createLink controller="login" action="logout" />"> <g:message code="layouts._topbar.logout2"/></a>
+                                    </form>
+                                    <%--<form action='${postUrl}' method='POST' id='loginForm' class='cssform' autocomplete='off'>
+                                    <li class="regristrationText">
+                                        <input type="text" size="10" name='j_username' id='username' value="<g:message code="layouts._topbar.username"/>">
+                                    </li>
+
+                                    <li class="regristrationText">
+                                        <input type="password" size="10" name='j_password' id='password' value="<g:message code="layouts._topbar.password"/>">
+                                    </li>
+
+                                    <li class="regristrationText">
+                                        <input type="submit" value="<g:message code="layouts._topbar.login"/>">
+                                    </li>
+                                    <span class="registrationButtons">
+                                        <g:link class="registration" controller="fogotPassword" action="index"><g:message code="layouts._topbar.fogotpassword"/></g:link> <p>
+                                        <g:link class="registration" controller="registration" action="index"><g:message code="layouts._topbar.registration"/></g:link>
+                                    </span>
+                                    </form>--%>
+
+                                        <script type='text/javascript'>
+                                            <!--
+                                            (function(){
+                                                document.forms['loginForm'].elements['j_username'].focus();
+                                            })();
+                                            // -->
+                                        </script>
+                                    </span>
+                                </span>
                             </span>
                         </span>
+
                     </ul>
                     <div class="clearfix"></div>
                 </nav>

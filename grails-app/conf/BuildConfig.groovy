@@ -33,7 +33,7 @@ grails.project.dependency.resolution = {
         // specify dependency exclusions here; for example, uncomment this to disable ehcache:
         // excludes 'ehcache'
     }
-    log "error" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
+    log "verbose" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     checksums true // Whether to verify checksums on resolve
     legacyResolve false // whether to do a secondary resolve on plugin installation, not advised and here for backwards compatibility
 
@@ -42,7 +42,7 @@ grails.project.dependency.resolution = {
 
         mavenRepo "http://download.osgeo.org/webdav/geotools/"
         mavenRepo "http://repo.opengeo.org"
-
+        mavenRepo 'http://repo.spring.io/milestone'
 
         grailsPlugins()
         grailsHome()
@@ -102,11 +102,14 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        runtime ":hibernate:3.6.10.2"
+        runtime ":hibernate:3.6.10.14"
         // runtime ":hibernate:2.3.1"
 
-        runtime ":jquery:1.8.3"
-        runtime ":resources:1.2"
+        runtime ":jquery:1.11.0.2"
+        //runtime ":resources:1.2.7"
+        compile ':asset-pipeline:1.8.3'
+
+
 
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0"
@@ -114,7 +117,7 @@ grails.project.dependency.resolution = {
         //runtime ":yui-minify-resources:0.1.5"
 
         // build ":tomcat:$grailsVersion"
-        build ":tomcat:7.0.42"
+        build ":tomcat:7.0.52.1"
         // build ":tomcat:2.3.1"
 
         runtime ":database-migration:1.3.2"
@@ -125,5 +128,7 @@ grails.project.dependency.resolution = {
         compile ":calendar:1.2.1"
         compile ":google-visualization:0.7"
         // compile ':cache-ehcache:1.0.0'
+
+        compile ':spring-security-core:2.0-RC3'
     }
 }

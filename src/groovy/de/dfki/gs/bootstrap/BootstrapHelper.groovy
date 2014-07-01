@@ -26,21 +26,21 @@ class BootstrapHelper {
     }
 
 
-    Person findOrCreatePersonInRole(String userName, Role role, boolean failOnError = true, boolean flush = true ) {
+    Person findOrCreatePersonInRole(String userName, String givenName, String familyName, Role role, boolean failOnError = true, boolean flush = true ) {
 
         log.debug( "findOrCreatePersonInRole: ${userName}")
 
         def p = Person.findByUsername( userName )
 
         if (!p) {
-            p = createPerson( userName, failOnError, flush )
+            p = createPerson( userName, givenName, familyName, failOnError, flush )
             if (!PersonRole.create(p, role, true)) log.error("failed to add Persion[ $p ] to Role[ $role ] -- errors: ${p?.errors}")
         }
 
         return p
     }
 
-    Person createPerson( String userName, boolean failOnError = true, boolean flush = true ) {
+    Person createPerson( String userName, String givenName, String familyName, boolean failOnError = true, boolean flush = true ) {
 
 
             def found = Person.findByUsername( userName )
@@ -51,6 +51,8 @@ class BootstrapHelper {
 
             def p = new Person(
                     username: userName,
+                    givenName: givenName,
+                    familyName: familyName,
                     password: newPassword
             )
 

@@ -37,6 +37,14 @@
         <g:textField name="signinGivenName" id="signinGivenName" value="" />
         <g:textField name="signinFamilyName" id="signinFamilyName" value="" />
 
+        <p>
+            <label for="password">Password</label>
+            <g:passwordField name="password" />
+        </p>
+        <p>
+            <label for="confirm">Confirm Password</label>
+            <g:passwordField name="confirm" />
+        </p>
 
         <g:submitButton name="signinButton" value="Sign In"/>
 

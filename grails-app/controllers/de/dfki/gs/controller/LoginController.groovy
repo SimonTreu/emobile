@@ -10,6 +10,8 @@ class LoginController {
     def authenticationTrustResolver
     def springSecurityService
 
+    def personService
+
     def index = {
 
         log.error( "frontpage requested" )
@@ -43,12 +45,6 @@ class LoginController {
         def savedUrl = session.SPRING_SECURITY_SAVED_REQUEST_KEY?.requestURL
         if( session.SPRING_SECURITY_SAVED_REQUEST_KEY?.queryString ) savedUrl = "${ savedUrl }?${ session.SPRING_SECURITY_SAVED_REQUEST_KEY?.queryString }"
 
-        /*
-        if( savedUrl?.contains( "/reader/" ) && session.SPRING_SECURITY_SAVED_REQUEST_KEY?.queryString?.contains( "&flash=timeout") ) {
-            flash.message = "Your session has timed out"
-        }
-        */
-
         def savedUrlWithoutPrefix = null
         if( savedUrl != null ) savedUrlWithoutPrefix = savedUrl - grailsApplication.config.grails.serverURL
 
@@ -81,7 +77,9 @@ class LoginController {
 
         }
 
-        log.error( "hua! success" )
+        def m = personService.createSigninPerson( cmd.signinGivenName, cmd.signinFamilyName, cmd.signinUserName, cmd.password )
+        log.error( "hua! success: ${m}" )
+
 
     }
 

@@ -49,11 +49,14 @@ class BootstrapHelper {
             def username4Pass = userName.split('@')[0]
             def newPassword = "hua!$username4Pass"
 
+            UUID uuid = UUID.randomUUID()
+
             def p = new Person(
                     username: userName,
                     givenName: givenName,
                     familyName: familyName,
-                    password: newPassword
+                    password: newPassword,
+                    confirmationCode: uuid.toString()
             )
 
             if (!p.save(flush: flush, failOnError: failOnError)) log.error("failed to save Person[ $p ] -- errors: ${p?.errors}" )

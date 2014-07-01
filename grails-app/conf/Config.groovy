@@ -65,10 +65,14 @@ grails.hibernate.cache.queries = false
 environments {
     development {
         grails.logging.jul.usebridge = true
+
+        // grails.serverURL = "http://localhost:8080"
     }
     production {
         grails.logging.jul.usebridge = false
         // TODO: grails.serverURL = "http://www.changeme.com"
+
+        // grails.serverURL = "http://serv-4101.kl.dfki.de:9090"
     }
 
     lnv {
@@ -182,6 +186,7 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/':                              ['permitAll'],
 	'/index':                         ['permitAll'],
 	'/index.gsp':                     ['permitAll'],
+    //'/login/**' :                     ['permitAll'],
 	'/**/js/**':                      ['permitAll'],
 	'/**/css/**':                     ['permitAll'],
 	'/**/images/**':                  ['permitAll'],
@@ -221,6 +226,8 @@ grails {
                  "mail.smtp.socketFactory.fallback":"false"]
     }
 }
+
+
 
 
 

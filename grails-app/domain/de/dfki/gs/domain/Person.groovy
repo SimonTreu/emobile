@@ -9,6 +9,8 @@ class Person {
     String givenName
     String familyName
 
+    String confirmationCode
+
     String password
     boolean enabled = true
     boolean accountExpired
@@ -23,6 +25,9 @@ class Person {
 
         givenName blank: false
         familyName blank: false
+
+        confirmationCode blank: false
+
     }
 
     static mapping = {

@@ -16,7 +16,8 @@ hibernate {
 environments {
     development {
         dataSource {
-            dbCreate = "update" //"create-drop"
+            dbCreate = "create-drop"
+            //dbCreate = "update" //"create-drop"
             // dbCreate = "create-drop"
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/emobilesim"

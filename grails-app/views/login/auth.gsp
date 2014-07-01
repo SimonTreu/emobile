@@ -17,6 +17,8 @@
 
 <div id="signup">
 
+    TestLink: ${testLink}
+
     Sign up with valid email address, name and company:
     Given Name:
     Family Name:
@@ -32,10 +34,19 @@
 
     <g:form controller="login" action="signin" id="signinForm" class="cssform" autocomplete="off">
 
+        <p>
+            <label for="signinUserName">Email Address</label>
+            <g:textField name="signinUserName" id="signinUserName" value="" />
+        </p>
+        <p>
+            <label for="signinGivenName">Given Name</label>
+            <g:textField name="signinGivenName" id="signinGivenName" value="" />
+        </p>
+        <p>
+            <label for="signinFamilyName">Family Name</label>
+            <g:textField name="signinFamilyName" id="signinFamilyName" value="" />
+        </p>
 
-        <g:textField name="signinUserName" id="signinUserName" value="" />
-        <g:textField name="signinGivenName" id="signinGivenName" value="" />
-        <g:textField name="signinFamilyName" id="signinFamilyName" value="" />
 
         <p>
             <label for="password">Password</label>

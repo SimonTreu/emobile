@@ -330,15 +330,19 @@ class BootStrap {
         def roleUser = helper.findOrCreateRole("ROLE_USER")
 
         // needs to be created first - since we need on user that has default documents public otherwise duplicates are created
-        def userUser = helper.findOrCreatePersonInRole("glenn.schuetze@gmail.com", "Glenn", "Schütze", roleAdmin)
+        // def userUser = helper.findOrCreatePersonInRole("glenn.schuetze@gmail.com", "Glenn", "Schütze", roleAdmin)
         def andreyUser = helper.findOrCreatePersonInRole( "andrey.bukhman@dfki.de", "Andrey", "Bukhman", roleAdmin )
 
 
         helper.findOrCreatePersonInRole("glennsen@googlemail.com", "Glenn", "Schütze", roleAdmin)
 
 
+        // helper.findOrCreateRequestmap( "/login/success", "IS_AUTHENTICATED_ANONYMOUSLY" )
+
         helper.findOrCreateRequestmap( "/sim", "ROLE_USER" )
         helper.findOrCreateRequestmap( "/simulation", "ROLE_USER" )
+
+        //
 
         // helper.findOrCreateRequestmap( "/gas", "ROLE_USER" )
         //helper.findOrCreateRequestmap( "/logout", "ROLE_USER" )

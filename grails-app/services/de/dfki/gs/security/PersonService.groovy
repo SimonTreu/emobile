@@ -23,13 +23,16 @@ class PersonService {
             return m
         }
 
+        UUID uuid = UUID.randomUUID()
+
         p = new Person(
                 familyName: familyName,
                 givenName: givenName,
                 username: emailAddress,
                 password: password,
                 accountLocked: true,
-                enabled: false
+                enabled: false,
+                confirmationCode: uuid.toString()
         )
 
         if ( !p.save( flush: true ) ) {
@@ -42,15 +45,8 @@ class PersonService {
 
         // otherwise inform admins with email to activate and enable user
 
-        mailService.sendMail {
-            to "${emailAddress}"
-            from "emobilesim-team"
-            subject "Your registration request"
-            body 'Please click following link and log in: '
-        }
-
         m.message = "signin request saved with email address ${emailAddress}"
-
+        m.person = p
 
 
         return m

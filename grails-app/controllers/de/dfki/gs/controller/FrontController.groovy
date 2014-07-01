@@ -15,6 +15,7 @@ class FrontController {
 
         Person loggedInPerson = (Person) springSecurityService.currentUser
 
+        log.error( "currentUser: ${loggedInPerson}" )
 
         def model = [:]
         model.name = ""

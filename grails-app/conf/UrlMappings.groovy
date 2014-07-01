@@ -2,6 +2,11 @@ class UrlMappings {
 
 	static mappings = {
 
+        "/sim" {
+            controller = "front"
+            action = "init"
+        }
+
         "/" {
             controller = "login"
             action = "index"
@@ -12,16 +17,15 @@ class UrlMappings {
             action = "logout"
         }
 
-        "/sim" {
-            controller = "front"
-            action = "init"
-        }
+
 
         "/$controller/$action?/$id?"{
             constraints {
                 // apply constraints here
             }
         }
+
+
 
 
         "/map/googleMaps" {

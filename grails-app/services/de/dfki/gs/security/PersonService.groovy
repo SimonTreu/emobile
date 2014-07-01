@@ -6,6 +6,8 @@ import grails.transaction.Transactional
 @Transactional
 class PersonService {
 
+    def mailService
+
 
     def createSigninPerson( String givenName, String familyName, String emailAddress, String password ) {
 
@@ -39,6 +41,13 @@ class PersonService {
         }
 
         // otherwise inform admins with email to activate and enable user
+
+        mailService.sendMail {
+            to "${emailAddress}"
+            from "emobilesim-team"
+            subject "Your registration request"
+            body 'Please click following link and log in: '
+        }
 
         m.message = "signin request saved with email address ${emailAddress}"
 

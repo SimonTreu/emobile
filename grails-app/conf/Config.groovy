@@ -209,3 +209,18 @@ grails.plugin.springsecurity.rememberMe.persistentToken.domainClassName = 'de.df
 
 
 
+grails {
+    mail {
+        host = "smtp.gmail.com"
+        port = 465
+        username = "emobiledfki@gmail.com"
+        password = "emobiledfki1"
+        props = ["mail.smtp.auth":"true",
+                 "mail.smtp.socketFactory.port":"465",
+                 "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+                 "mail.smtp.socketFactory.fallback":"false"]
+    }
+}
+
+
+

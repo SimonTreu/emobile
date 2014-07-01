@@ -19,6 +19,8 @@
     <p id="startSimulation">Please, log in to start the simulation</p>
     <p>${name}</p>
     <p>${info}</p>
+
+    <p>Welcome ${welcome.givenName} ${welcome.familyName}</p>
 </div>
 
 <div>

@@ -1590,3 +1590,18 @@ fieldset {
     height: 300px;
     z-index: -2;
 }
+
+.fheader{
+
+    padding-left: 100px;
+    padding-top: 30px;
+}
+
+.logout{
+    text-decoration: none;
+    font-size: 12px;
+    background-color: #fcfcfc;
+    border: 1px solid #cccccc;
+    font-size: 1em;
+    padding: 0.2em 0.4em;
+}

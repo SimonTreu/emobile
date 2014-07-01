@@ -17,7 +17,7 @@ class FrontController {
 
 
         def model = [:]
-        model.name = ""
+        model.name = "xa"
         model.info = ""
         model.welcome = [
                 'givenName' : loggedInPerson.givenName,
@@ -25,7 +25,8 @@ class FrontController {
         ]
 
 
-        render( view: 'index', model: model )
+        render( view: 'index',  model: model )
     }
+
 
 }

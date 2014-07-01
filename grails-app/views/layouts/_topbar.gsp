@@ -86,8 +86,8 @@
                                     <form>
 
                                     </form action='${postUrl}' method='POST' id='loginForm' class='cssform' autocomplete='off'>
-                                            Welcome!
-                                            ${welcome.familyName}
+                                            Logged in as:
+                                            ${welcome?.givenName} ${welcome?.familyName}
 
                                             <a class="logout" href="<g:createLink controller="login" action="logout" />"> <g:message code="layouts._topbar.logout2"/></a>
                                     </form>

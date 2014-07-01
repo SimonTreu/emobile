@@ -21,7 +21,7 @@ class SimulationController {
 
     def simulationCollectDataService
     def simulationThreadFrameworkService
-
+    def simulationDataService
     def experimentStatsService
     def generateStatsPictureService
 
@@ -58,6 +58,8 @@ class SimulationController {
         m.name = "Simulations"
         m.availableSimulations = simulationCollectDataService.collectSimulations()
 
+        m.carTypeCars = simulationDataService.collectCarTypes()
+        m.electricStations = simulationDataService.collectElectricStations()
         log.debug( "model: ${m}" )
 
         render( view: 'index', model: m )

@@ -8,7 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title></title>
+    <title>Add new station type</title>
+    <meta name="layout" content="main" />
 </head>
 
 <body>
@@ -20,22 +21,23 @@
             </div>
             <div class="layoutCell">
 
-                <TABLE id="dataTable1"  border="0">
-                    <TR class="cars">
-                        <TD></TD>
-                        <TD align="">
-
-                        </TD>
-                        <td align=""> &nbsp;&nbsp; 3,7 kW &nbsp;&nbsp;</td>
-                        <TD align="" valign="center">
-                            <a class="addButton" onclick=""><img width="22px" src="${g.resource( dir: '/images', file: 'edit.png' )}"><span class="addButtonText">  edit</span></a>
-                        </TD>
-                    </TR>
+                <table id="dataTable1"  border="0">
+                    <g:each in="${electricStations}" var="item">
+                        <TR class="cars">
+                            <td align="">
+                                &nbsp;&nbsp; ${item} &nbsp;&nbsp;
+                            </td>
+                            <TD align="" valign="center">
+                                <a class="addButton" onclick=""><img width="16px" src="${g.resource( dir: '/images', file: 'edit.png' )}">
+                                    <span class="addButtonText1">  edit</span></a>
+                            </TD>
+                        </TR>
+                    </g:each>
                 </TABLE>
 
             </div>
 
-            <div class="layoutCell">
+            <div class="layoutCellL">
                 <span class="leftR">
 
                 </span>

@@ -157,6 +157,16 @@ class SimulationDataService {
         return resultList
     }
 
+    def collectCarTypes () {
+        def returnList = CarType.findAll()
+        return returnList
+    }
+
+    def collectElectricStations () {
+        def returnList = GasolineStationType.findAll()
+        return returnList
+    }
+
     def collectModelForEditSimulation( long simulationId ) {
 
         def m = [ : ]

@@ -189,19 +189,11 @@
                                     <TR class="cars">
                                         <TD><INPUT type="checkbox" name="chk"/></TD>
                                         <TD align="">
-                                            <select size="1">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                            </select>
+                                            <g:select name="carNumber" from="${1..100}" />
                                         </TD>
                                         <td align=""> &nbsp;&nbsp; <g:message code="simulation.index.carstype"/> &nbsp;&nbsp;</td>
                                         <TD align="">
-                                            <g:each in="${carTypeCars}" var="item">
-                                                <g:form action="addCarTypeInstances" >  x
-                                            <g:select name="${item.key.name}" from="${item.key.name}"/>
-                                                </g:form>
-
-                                            </g:each>
+                                            <g:select name="${carTypeCars.name}" from="${carTypeCars.name}"/>
                                         </TD>
                                     </TR>
                                 </TABLE>
@@ -210,10 +202,10 @@
 
                             <div class="layoutCellL">
                                 <span class="leftR">
-                                    <a class="addButton" onclick="deleteRow('dataTable')"><img width="22px" src="${g.resource( dir: '/images', file: 'delete.png' )}"><span class="addButtonText"> delete car group</span></a>
+                                    <a class="addButton" onclick="deleteRow('dataTable')"><img width="22px" src="${g.resource( dir: '/images', file: 'delete.png' )}"><span class="addButtonText"> <g:message code="simulation.index.deletecargroup"/></span></a>
                                 </span>
                                 <div class="right">
-                                    <a class="addButton" onclick="addRow('dataTable')"><img width="22px" src="${g.resource( dir: '/images', file: 'add.png' )}"><span class="addButtonText"> add further car</span></a>
+                                    <a class="addButton" onclick="addRow('dataTable')"><img width="22px" src="${g.resource( dir: '/images', file: 'add.png' )}"><span class="addButtonText"> <g:message code="simulation.index.addfurthercar"/></span></a>
                                 </div>
                             </div>
                         </div>
@@ -222,9 +214,9 @@
                     <div class="layoutRight">
                         <div id="tabs-container">
                             <ul class="tabs-menu">
-                                <li class="current"><a href="#tab-1">Distributed</a></li>
-                                <li><a href="#tab-2">Own routes</a></li>
-                                <li><a href="#tab-3">Show on map</a></li>
+                                <li class="current"><a href="#tab-1"><g:message code="simulation.index.distributed"/></a></li>
+                                <li><a href="#tab-2"><g:message code="simulation.index.ownroutes"/></a></li>
+                                <li><a href="#tab-3"><g:message code="simulation.index.showonmap"/></a></li>
                             </ul>
                             <div class="tab">
                                 <div id="tab-1" class="tab-content">
@@ -237,7 +229,7 @@
 
                                 </div>
                                 <div id="tab-3" class="tab-content">
-                                    <p>Duis egestas fermentum ipsum et commodo. Proin bibendum consectetur elit, ha. </p>
+                                    <p>Duis  </p>
                                 </div>
 
                             </div>
@@ -267,7 +259,7 @@
                 <div class="layoutLeft" id="cell">
                     <div class="contentLeft">
                         <div class="layoutCellU">
-                            <div class="leftbig"><b>Select filling stations for fleet:</b></div>
+                            <div class="leftbig"><b><g:message code="simulation.index.selectfillingstations"/></b></div>
                         </div>
                         <div class="layoutCell">
 
@@ -275,17 +267,11 @@
                                 <TR class="cars">
                                     <TD><INPUT type="checkbox" name="chk"/></TD>
                                     <TD align="">
-                                        <select size="1">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
+                                        <g:select name="electricStations" from="${1..100}" />
                                     </TD>
-                                    <td align=""> &nbsp;&nbsp; Stations of type: &nbsp;&nbsp;</td>
+                                    <td align=""> &nbsp;&nbsp; <g:message code="simulation.index.stationoftype"/> &nbsp;&nbsp;</td>
                                     <TD align="">
-                                        <SELECT name="car">
-                                            <option value="22,2 kW">22,2 kW</option>
-                                            <option value="11,1 kW">11,1 kW</option>
-                                        </SELECT>
+                                        <g:select name="${electricStations}" from="${electricStations}"/>
                                     </TD>
                                 </TR>
                             </TABLE>
@@ -294,10 +280,10 @@
 
                         <div class="layoutCellL">
                             <span class="leftR">
-                                <a class="addButton" onclick="deleteRow('dataTable1')"><img width="22px" src="${g.resource( dir: '/images', file: 'delete.png' )}"><span class="addButtonText"> delete station group</span></a>
+                                <a class="addButton" onclick="deleteRow('dataTable1')"><img width="22px" src="${g.resource( dir: '/images', file: 'delete.png' )}"><span class="addButtonText"> <g:message code="simulation.index.deletestationgroup"/></span></a>
                             </span>
                             <div class="right">
-                                <a class="addButton" onclick="addRow('dataTable1')"><img width="22px" src="${g.resource( dir: '/images', file: 'add.png' )}"><span class="addButtonText"> add further stations</span></a>
+                                <a class="addButton" onclick="addRow('dataTable1')"><img width="22px" src="${g.resource( dir: '/images', file: 'add.png' )}"><span class="addButtonText"><g:message code="simulation.index.addfurtherstations"/></span></a>
                             </div>
                         </div>
                     </div>
@@ -306,9 +292,9 @@
                 <div class="layoutRight">
                     <div id="tabs-container1">
                         <ul class="tabs-menu1">
-                            <li class="current"><a href="#tab-10">Public stations</a></li>
-                            <li><a href="#tab-20">Public stations</a></li>
-                            <li><a href="#tab-30">Both</a></li>
+                            <li class="current"><a href="#tab-10"><g:message code="simulation.index.privatestations"/></a></li>
+                            <li><a href="#tab-20"><g:message code="simulation.index.publicstations"/></a></li>
+                            <li><a href="#tab-30"><g:message code="simulation.index.both"/></a></li>
                         </ul>
                         <div class="tab">
                             <div id="tab-10" class="tab-content1">
@@ -321,7 +307,7 @@
 
                             </div>
                             <div id="tab-30" class="tab-content1">
-                                <p>Duis egestas fermentum ipsum et commodo. Proin bibendum consectetur elit, ha. </p>
+                                <p> Proin bibendum consectetur elit, ha. </p>
                             </div>
 
                         </div>

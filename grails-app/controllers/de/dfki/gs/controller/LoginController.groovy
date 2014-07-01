@@ -1,6 +1,7 @@
 package de.dfki.gs.controller
 
 import de.dfki.gs.bootstrap.BootstrapHelper
+import de.dfki.gs.controller.commands.AllowPersonCommandObject
 import de.dfki.gs.controller.commands.ConfirmCommandObject
 import de.dfki.gs.controller.commands.SigninCommandObject
 import de.dfki.gs.domain.Person
@@ -18,6 +19,7 @@ class LoginController {
     def springSecurityService
     def mailService
     def grailsLinkGenerator
+    def sendMailService
 
     def personService
 
@@ -110,13 +112,11 @@ class LoginController {
 
 
             log.error( "try sending " )
+
             try {
-                mailService.sendMail {
-                    to "${p.username}"
-                    from "emobilesim-team"
-                    subject "Your registration request"
-                    body "Please click following link and log in: ${confirmLink}"
-                }
+
+                sendMailService.sendConfirmationMailToSigningUser( p, confirmLink )
+
             } catch ( SendFailedException e ) {
                 log.error( "tried to send mail to ${p.username}", e )
             }
@@ -129,6 +129,10 @@ class LoginController {
         render view: "waiting"
     }
 
+    /**
+     * this method completes signing request of the user
+     * next step is to allow user to log in
+     */
     def confirm = {
 
         log.error( "params: ${params}" )
@@ -148,15 +152,60 @@ class LoginController {
 
             personService.confirmPersonAsUser( p )
 
+            sendMailService.sendConfirmationRequestToAdmins( p )
+
             def m = [ : ]
             m.givenName = p.givenName
             m.familyName = p.familyName
 
-            m.loginLink = "${grailsLinkGenerator.serverBaseURL}" - "/emobilesim" + createLink( controller: "front", action: "init" )
+            // m.loginLink = "${grailsLinkGenerator.serverBaseURL}" - "/emobilesim" + createLink( controller: "front", action: "init" )
 
             render view: "success", model: m
 
         }
+
+    }
+
+    def showPendingUsers() {
+
+        def m = [ : ]
+
+        Person requestingUser = (Person)springSecurityService.currentUser
+        Role adminRole = Role.findByAuthority( "ROLE_ADMIN" )
+        List<PersonRole> adminPersonRoles = PersonRole.findAllByRoleAndPerson( adminRole, requestingUser )
+
+        if ( adminPersonRoles != null && adminPersonRoles.size() > 0 ) {
+            List<Person> pendingPersons = Person.findAllByAccountLocked( true )
+
+            m.pendingUsers = pendingPersons
+
+        }
+
+
+
+        render view: "pendings", model: m
+    }
+
+    def allowPersonToLogin() {
+
+        AllowPersonCommandObject cmd = new AllowPersonCommandObject()
+
+        bindData( cmd, params )
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "Validation of requesting sign in user failed: ${cmd.errors}" )
+
+        } else {
+
+            Person person = Person.get( cmd.personId )
+            personService.allowPersonToLogin( person )
+
+            sendMailService.sendLoginAllowedMailToPerson( person )
+
+        }
+
+
 
     }
 

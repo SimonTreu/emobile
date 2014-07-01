@@ -335,6 +335,7 @@ class BootStrap {
 
 
         helper.findOrCreatePersonInRole("glennsen@googlemail.com", "Glenn", "Schütze", roleUser)
+        helper.findOrCreatePersonInRole("glennsen@googlemail.com", "Glenn", "Schütze", roleAdmin)
 
 
         // helper.findOrCreateRequestmap( "/login/success", "IS_AUTHENTICATED_ANONYMOUSLY" )

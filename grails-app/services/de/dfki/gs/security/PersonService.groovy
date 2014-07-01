@@ -55,10 +55,19 @@ class PersonService {
         return m
     }
 
+    def allowPersonToLogin( Person p ) {
+
+        p.accountLocked = false
+
+        if ( !p.save( flush: true ) ) {
+            log.error( "failed to save person: ${p.errors}" )
+        }
+
+    }
+
     def confirmPersonAsUser( Person p ) {
 
         p.enabled = true
-        p.accountLocked = false
 
         Role role = findOrCreateRole( "ROLE_USER" )
 

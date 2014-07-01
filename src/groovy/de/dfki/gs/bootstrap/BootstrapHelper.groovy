@@ -34,8 +34,8 @@ class BootstrapHelper {
 
         if (!p) {
             p = createPerson( userName, givenName, familyName, failOnError, flush )
-            if (!PersonRole.create(p, role, true)) log.error("failed to add Persion[ $p ] to Role[ $role ] -- errors: ${p?.errors}")
         }
+        if (!PersonRole.create(p, role, true)) log.error("failed to add Persion[ $p ] to Role[ $role ] -- errors: ${p?.errors}")
 
         return p
     }

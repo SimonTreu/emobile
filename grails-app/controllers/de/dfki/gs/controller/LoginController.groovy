@@ -1,8 +1,11 @@
 package de.dfki.gs.controller
 
+import de.dfki.gs.bootstrap.BootstrapHelper
 import de.dfki.gs.controller.commands.ConfirmCommandObject
 import de.dfki.gs.controller.commands.SigninCommandObject
 import de.dfki.gs.domain.Person
+import de.dfki.gs.domain.PersonRole
+import de.dfki.gs.domain.Role
 import grails.plugin.springsecurity.SpringSecurityUtils
 
 import javax.mail.SendFailedException
@@ -21,12 +24,19 @@ class LoginController {
     def index = {
 
         log.error( "frontpage requested" )
+        def config = SpringSecurityUtils.securityConfig
 
-        log.error( "loggedIn? ${((Person)springSecurityService.currentUser).username}" )
+        // log.error( "loggedIn? ${((Person)springSecurityService.currentUser).username}" )
 
         if (springSecurityService.isLoggedIn()) {
 
-            redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
+            // redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
+
+
+            // redirect( controller: "front", action: "init" )
+            redirect uri: config.successHandler.defaultTargetUrl
+
+
 
         }
         else {
@@ -135,12 +145,8 @@ class LoginController {
         } else {
 
             Person p = Person.findByUsername( cmd.username )
-            p.enabled = true
-            p.accountLocked = false
 
-            if ( !p.save( flush: true ) ) {
-                log.error( "failed to save person: ${p.errors}" )
-            }
+            personService.confirmPersonAsUser( p )
 
             def m = [ : ]
             m.givenName = p.givenName

@@ -1,6 +1,9 @@
 package de.dfki.gs.security
 
+import de.dfki.gs.bootstrap.BootstrapHelper
 import de.dfki.gs.domain.Person
+import de.dfki.gs.domain.PersonRole
+import de.dfki.gs.domain.Role
 import grails.transaction.Transactional
 
 @Transactional
@@ -52,7 +55,31 @@ class PersonService {
         return m
     }
 
-    def serviceMethod() {
+    def confirmPersonAsUser( Person p ) {
 
+        p.enabled = true
+        p.accountLocked = false
+
+        Role role = findOrCreateRole( "ROLE_USER" )
+
+        if (!PersonRole.create(p, role, true)) log.error("failed to add Persion[ $p ] to Role[ $role ] -- errors: ${p?.errors}")
+
+
+        if ( !p.save( flush: true ) ) {
+            log.error( "failed to save person: ${p.errors}" )
+        }
+
+
+    }
+
+    Role findOrCreateRole( String roleName, failOnError = true ) {
+
+        def role = Role.findByAuthority(roleName)
+        if (!role) {
+            role = new Role(authority: roleName)
+            if (!role.save(flush: true, failOnError: true)) log.error("failed to save ROLE[ $roleName ] -- errors: ${role.errors}")
+        }
+
+        return role
     }
 }

@@ -169,3 +169,43 @@ grails.cache.config = {
         memoryStoreEvictionPolicy 'LRU'
     }
 }
+
+// Added by the Spring Security Core plugin:
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'de.dfki.gs.domain.Person'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'de.dfki.gs.domain.PersonRole'
+grails.plugin.springsecurity.authority.className = 'de.dfki.gs.domain.Role'
+grails.plugin.springsecurity.requestMap.className = 'de.dfki.gs.domain.RequestMap'
+grails.plugin.springsecurity.securityConfigType = 'Requestmap'
+
+
+grails.plugin.springsecurity.controllerAnnotations.staticRules = [
+	'/':                              ['permitAll'],
+	'/index':                         ['permitAll'],
+	'/index.gsp':                     ['permitAll'],
+	'/**/js/**':                      ['permitAll'],
+	'/**/css/**':                     ['permitAll'],
+	'/**/images/**':                  ['permitAll'],
+	'/**/favicon.ico':                ['permitAll']
+]
+
+grails.plugin.springsecurity.successHandler.defaultTargetUrl = '/sim'
+grails.plugin.springsecurity.auth.loginFormUrl = '/login/index'
+grails.plugin.springsecurity.auth.failureHandler.defaultFailureUrl = '/?login_error=1'
+grails.plugin.springsecurity.loginFormUrl = '/login/index'
+grails.plugin.springsecurity.failureHandler.defaultFailureUrl = '/?login_error=1'
+grails.plugin.springsecurity.adh.errorPage = '/?denied=1'
+grails.plugin.springsecurity.sessionFixationPrevention.alwaysCreateSession=true
+grails.plugin.springsecurity.useSecurityEventListener = false
+
+grails.plugin.springsecurity.logout.handlerNames = [
+        'rememberMeServices',
+        'securityContextLogoutHandler'
+        // 'securityLogoutEventListener'
+]
+
+
+grails.plugin.springsecurity.rememberMe.persistent = true
+grails.plugin.springsecurity.rememberMe.persistentToken.domainClassName = 'de.dfki.gs.domain.PersistentLogin'
+
+
+

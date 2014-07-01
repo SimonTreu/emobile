@@ -1,5 +1,6 @@
 import com.vividsolutions.jts.geom.Coordinate
 import com.vividsolutions.jts.geom.Point
+import de.dfki.gs.bootstrap.BootstrapHelper
 import de.dfki.gs.domain.Car
 import de.dfki.gs.domain.CarType
 import de.dfki.gs.domain.Simulation
@@ -20,6 +21,8 @@ import java.util.concurrent.TimeUnit
 class BootStrap {
 
     def routeService
+
+    transient def securityContextPersistenceFilter
 
 
     def createDefaultCarTypes() {
@@ -315,7 +318,42 @@ class BootStrap {
 
     }
 
+    def securityStuff() {
+
+        securityContextPersistenceFilter.forceEagerSessionCreation = true
+
+
+        def helper = new BootstrapHelper()
+
+        def roleAdmin = helper.findOrCreateRole("ROLE_ADMIN")
+        def roleEmployee = helper.findOrCreateRole("ROLE_EMPLOYEE")
+        def roleUser = helper.findOrCreateRole("ROLE_USER")
+
+        // needs to be created first - since we need on user that has default documents public otherwise duplicates are created
+        def userUser = helper.findOrCreatePersonInRole("glenn.schuetze@gmail.com", roleUser)
+        def andreyUser = helper.findOrCreatePersonInRole( "andrey.bukhman@dfki.de", roleUser )
+
+
+        helper.findOrCreatePersonInRole("glennsen@googlemail.com", roleAdmin)
+
+
+        helper.findOrCreateRequestmap( "/sim", "ROLE_USER" )
+        helper.findOrCreateRequestmap( "/simulation", "ROLE_USER" )
+
+        // helper.findOrCreateRequestmap( "/gas", "ROLE_USER" )
+        //helper.findOrCreateRequestmap( "/logout", "ROLE_USER" )
+
+        // helper.findOrCreateRequestmap( "/gasapi", "IS_AUTHENTICATED_ANONYMOUSLY" )
+        helper.findOrCreateRequestmap( "/**", "IS_AUTHENTICATED_ANONYMOUSLY" )
+
+
+    }
+
     def init = { servletContext ->
+
+        log.error( "check security config.." )
+        securityStuff()
+        log.error( " .. security config finished" )
 
         log.error( "preloading feature graph into application scope.." )
         routeService.getFeatureGraph( "osmGraph" )

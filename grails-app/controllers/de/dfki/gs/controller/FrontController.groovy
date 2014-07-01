@@ -8,6 +8,8 @@ class FrontController {
 
     def init() {
 
+
+
         def model = [:]
         model.name = ""
         model.info = ""

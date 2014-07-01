@@ -1,6 +1,22 @@
 class UrlMappings {
 
 	static mappings = {
+
+        "/" {
+            controller = "login"
+            action = "index"
+        }
+
+        "/logout" {
+            controller = "login"
+            action = "logout"
+        }
+
+        "/sim" {
+            controller = "front"
+            action = "init"
+        }
+
         "/$controller/$action?/$id?"{
             constraints {
                 // apply constraints here
@@ -60,10 +76,13 @@ class UrlMappings {
         }
 
 
+        /*
         "/" {
             controller = "front"
             action = "init"
         }
+        */
+
 
         "500"(view:'/error')
 	}

@@ -27,13 +27,9 @@
     </div>
     <g:render template="/login/topbar"/>
 
-    TestLink: ${testLink}
 
-    Sign up with valid email address, name and company:
-    Given Name:
-    Family Name:
-    Email Address:
-    Company:
+
+
     <div id="content">
     <div id="signup">
 
@@ -45,25 +41,29 @@
 
         </g:if>
 
-        <p>
-            <label for="signinUserName">Email Address</label>
-            <g:textField name="signinUserName" id="signinUserName" value="" />
-        </p>
-        <p>
-            <label for="signinGivenName">Given Name</label>
-            <g:textField name="signinGivenName" id="signinGivenName" value="" />
-        </p>
-        <p>
-            <label for="signinFamilyName">Family Name</label>
-            <g:textField name="signinFamilyName" id="signinFamilyName" value="" />
-        </p>
+        <g:form controller="login" action="signin" id="signinForm" class="cssform" autocomplete="off">
 
-        <%--<g:form controller="login" action="signin" id="signinForm" class="cssform" autocomplete="off">
+            <p>
+                <label for="signinUserName">Email Address</label>
+                <g:textField name="signinUserName" id="signinUserName" value="" />
+            </p>
+            <p>
+                <label for="signinGivenName">Given Name</label>
+                <g:textField name="signinGivenName" id="signinGivenName" value="" />
+            </p>
+            <p>
+                <label for="signinFamilyName">Family Name</label>
+                <g:textField name="signinFamilyName" id="signinFamilyName" value="" />
+            </p>
 
-
-            <g:textField name="signinUserName" id="signinUserName" value="" />
-            <g:textField name="signinGivenName" id="signinGivenName" value="" />
-            <g:textField name="signinFamilyName" id="signinFamilyName" value="" />
+            <p>
+                <label for="password">Password</label>
+                <g:passwordField name="password" />
+            </p>
+            <p>
+                <label for="confirm">Confirm Password</label>
+                <g:passwordField name="confirm" />
+            </p>
 
 
             <g:submitButton name="signinButton" value="Sign In"/>
@@ -71,7 +71,7 @@
         </g:form>
 
 
-        Confirmation will be sent to this address and invalidates after one day.--%>
+        Confirmation will be sent to this address and invalidates after one day.
 
 
     </div>
@@ -81,7 +81,7 @@
             <g:if test='${flash.message}'>
                 <div class='login_message'>${flash.message}</div>
             </g:if>
-            <div class='fheader'>Please Login!</div>
+            <div class='fheader'></div>
             <%--<form action='${postUrl}' method='POST' id='loginForm' class='cssform' autocomplete='off'>
                 <p>
                     <label for='username'>Login ID</label>

@@ -135,6 +135,25 @@
                             </div>
                         </form>
                     </div>
+
+                    <div class="contentLeftSignIn">
+                        <%--<form action='${postUrl}' method='POST' id='loginForm' class='cssform' autocomplete='off'>--%>
+                            <div class="rowU">
+                                <div class="leftbig"><b><g:message code="login.auth.fogotPassword"/></b></div>
+                            </div>
+                            <div class="row">
+                                <div class="left"><g:message code="login.auth.email"/></div>
+                                <div class="right"><input type="text" size="10" name='j_username' id='' value=""></div>
+                                <div class="clear"></div>
+                            </div>
+
+                            <div class="rowL">
+                                <div class="left"></div>
+                                <div class="right"><input type="submit" value="<g:message code="login.auth.send"/>"></div>
+                                <div class="clear"></div>
+                            </div>
+                        <%--</form>--%>
+                    </div>
                 </div>
                 <%--<div class="layoutImage">
                     <div class="contentRight">
@@ -153,7 +172,7 @@
                 <span class="layoutButtonM"></span>
                 <span class="layoutButtonR"><g:submitButton name="send" value="SAVE"/></span>
             </div>--%>
-            Confirmation will be sent to this address and invalidates after one day.
+            <span class="confirmationMessage">Confirmation will be sent to this address and invalidates shortly.</span>
 
         </fieldset>
         </div>

@@ -86,10 +86,12 @@
                                     <form>
 
                                     </form action='${postUrl}' method='POST' id='loginForm' class='cssform' autocomplete='off'>
-                                            Logged in as:
-                                            ${welcome?.givenName} ${welcome?.familyName}
-
-                                            <a class="logout" href="<g:createLink controller="login" action="logout" />"> <g:message code="layouts._topbar.logout2"/></a>
+                                            <span class="loggedIn">
+                                                <span class="loggedIndrin"><g:message code="layouts._topbar.logged"/>&nbsp;
+                                                    <b>${welcome?.givenName} ${welcome?.familyName}</b>
+                                                </span>
+                                                <a class="logout" href="<g:createLink controller="login" action="logout" />"> <g:message code="layouts._topbar.logout2"/></a>
+                                            </span>
                                     </form>
                                     <%--<form action='${postUrl}' method='POST' id='loginForm' class='cssform' autocomplete='off'>
                                     <li class="regristrationText">

@@ -5,42 +5,6 @@
             <img class="efahrungLogo" align="left" width="80px"  src="${g.resource( dir: '/images', file: 'logo_efahrung.png' )}"
         </td>
         <td>
-            <%--<div id='menu'>
-                <ul>
-                   <li class='active'><g:link controller="simulation" action="init"><span>Simulate</span></g:link>
-                        <ul>
-                            <li><g:link controller="simulation" action="init"><span>New</span></g:link></li>
-                            <li><g:link controller="simulation" action="init"><span>Open...</span></g:link></li>
-                            <li><g:link controller="simulation" action="init"><span>Open resent</span></g:link></li>
-                            <li><g:link controller="simulation" action="init"><span>Load from file</span></g:link></li>
-                            <li><g:link controller="simulation" action="init"><span>Log out</span></g:link></li>
-
-                        </ul>
-                   </li>
-                   <li>
-                       <g:link controller="simulationPreparator" action="index"><span>Execute</span></g:link>
-                   </li>
-                   <li>
-                       <g:link controller="simulationPreparator" action="index" params="[ viewOnly : 'true' ]" view="index"><span>View</span></g:link>
-                   </li>
-                   <li class='has-sub last'><g:link controller="mapView" action="listUsages"><span>Extras</span></g:link>
-                        <ul>
-                            <li><g:link controller="mapView" action="listUsages"><span>Charging stations</span></g:link></li>
-                            <li><a href='#'><span>Driver profile</span></a></li>
-                            <li class='last'><a href='#'><span>OBU Statistics</span></a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <g:link controller="simulationPreparator" action="index"><span>Help</span></g:link>
-                    </li>
-
-                    <li>
-                        <g:link controller="simulationPreparator" action="index"><span> fogot password</span></g:link>
-                    </li>
-
-               </ul>
-            </div>--%>
-
             <div class="wrap">
                 <nav>
                     <ul id="menu">
@@ -74,7 +38,7 @@
                                 <li><a><g:message code="layouts._topbar.contact"/></a></li>
                             </ul>
                         </li>
-                        <span id="signup">
+                        <%--<span id="signup">
                             <g:if test="${errors != null}" >
 
                                 Errors: ${errors}
@@ -111,7 +75,7 @@
                                     </span>
                                 </span>
                             </span>
-                        </span>
+                        </span>--%>
 
                     </ul>
                     <div class="clearfix"></div>

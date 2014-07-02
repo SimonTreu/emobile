@@ -149,8 +149,6 @@ class LoginController {
         } else {
 
             Person p = Person.findByUsername( cmd.username )
-            p.enabled = true
-            p.accountLocked = false
 
             personService.confirmPersonAsUser( p )
 

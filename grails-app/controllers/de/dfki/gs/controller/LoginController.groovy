@@ -25,7 +25,6 @@ class LoginController {
 
     def index = {
 
-        log.error( "frontpage requested" )
         def config = SpringSecurityUtils.securityConfig
 
         // log.error( "loggedIn? ${((Person)springSecurityService.currentUser).username}" )
@@ -51,7 +50,7 @@ class LoginController {
      */
     def auth = {
 
-        log.error( "auth.." )
+        // log.error( "auth.." )
 
         def config = SpringSecurityUtils.securityConfig
 
@@ -70,9 +69,6 @@ class LoginController {
 
         String view = 'auth'
         String postUrl = "${request.contextPath}${config.apf.filterProcessesUrl}"
-
-        String testLink = "${grailsLinkGenerator.serverBaseURL}"
-        log.error( "testLink: ${testLink}" )
 
         render view: view, model: [
                 postUrl: postUrl,

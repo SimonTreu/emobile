@@ -139,7 +139,11 @@ class MapViewController {
         CheckDateCommand cmd = new CheckDateCommand()
         bindData( cmd, params )
 
-        Date fromDate = new Date()
+
+        GregorianCalendar oneWeekBeforeCal = new GregorianCalendar()
+        oneWeekBeforeCal.add( Calendar.WEEK_OF_YEAR, -1 )
+        Date fromDate = oneWeekBeforeCal.getTime()
+
         Date toDate = new Date()
 
         def m = [:]
@@ -165,8 +169,6 @@ class MapViewController {
 
             toDate = calendar.getTime()
 
-        } else {
-            log.error( "failed to create dates from params: ${cmd.errors}" )
         }
 
         m = realStationsStatsService.getUsages( fromDate, toDate );

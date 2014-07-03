@@ -954,6 +954,7 @@ body.lightBoxBody{
 #startSimulation {
     margin-left: 150px;
     margin-top: 40px;
+    font-size: 12px;
 }
 
 #simple-menu {
@@ -1124,17 +1125,17 @@ body.lightBoxBody{
     height:0px;
 }
 .row{
-    border-left: 1px solid #000;
-    border-right: 1px solid #000;
-    border-bottom: 1px solid #000;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
     display:block;
     min-height:32px;
 }
 
 .rowL {
-    border-left: 1px solid #000;
-    border-right: 1px solid #000;
-    border-bottom: 1px solid #000;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
     border-bottom-right-radius: 6px;
     border-bottom-left-radius: 6px;
     display:block;
@@ -1143,7 +1144,7 @@ body.lightBoxBody{
 
 .rowU {
     background-color:#ccc;
-    border: 1px solid #000;
+    border: 1px solid #ddd;
     border-top-right-radius: 6px;
     border-top-left-radius: 6px;
     display:block;
@@ -1594,6 +1595,7 @@ a#login_pop:hover, a#join_pop1:hover {
 
 fieldset {
     border-radius: 6px;
+    border: 1px solid #d4d4d1;
 
 }
 
@@ -1620,4 +1622,27 @@ fieldset {
     border: 1px solid #cccccc;
     font-size: 1em;
     padding: 0.2em 0.4em;
+}
+
+.confirmationMessage {
+    font-size: 12px;
+}
+
+.confirmEmail {
+    font-size: 12px;
+    padding:30px;
+}
+
+.loggedIn {
+    color:#fff;
+    font-size: 11px;
+    vertical-align: middle;
+    position: relative;
+    padding: 8px 6px;
+    margin: 8px 8px;
+    display: block;
+}
+
+.loggedIndrin {
+    padding-right: 10px;
 }

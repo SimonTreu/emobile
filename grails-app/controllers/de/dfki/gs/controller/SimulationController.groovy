@@ -5,6 +5,7 @@ import de.dfki.gs.controller.commands.LoadSimulationRouteCommand
 import de.dfki.gs.controller.commands.ScaleCommand
 import de.dfki.gs.controller.commands.SelectSimulationCommand
 import de.dfki.gs.controller.commands.SimulationCommand
+import de.dfki.gs.domain.Person
 import de.dfki.gs.domain.Simulation
 import de.dfki.gs.domain.SimulationRoute
 import de.dfki.gs.service.simulation.AsyncSimulationFrameworkService
@@ -24,7 +25,7 @@ class SimulationController {
     def simulationDataService
     def experimentStatsService
     def generateStatsPictureService
-
+    def springSecurityService
     def routeService
 
     AsyncSimulationFrameworkService asyncSimulationFrameworkService
@@ -58,6 +59,11 @@ class SimulationController {
         m.name = "Simulations"
         m.availableSimulations = simulationCollectDataService.collectSimulations()
 
+        Person loggedInPerson = (Person) springSecurityService.currentUser
+        m.welcome = [
+                'givenName' : loggedInPerson.givenName,
+                'familyName' : loggedInPerson.familyName
+        ]
         m.carTypeCars = simulationDataService.collectCarTypes()
         m.electricStations = simulationDataService.collectElectricStations()
         log.debug( "model: ${m}" )

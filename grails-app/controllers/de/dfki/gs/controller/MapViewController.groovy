@@ -98,11 +98,6 @@ class MapViewController {
 
     }
 
-    def showRouters() {
-        log.debug( "params openlayers: ${params}" )
-        log.debug( "sessionId: ${request.requestedSessionId}" )
-    }
-
     def openLayersMapsStatistik() {
         log.debug( "params openlayers: ${params}" )
         log.debug( "sessionId: ${request.requestedSessionId}" )
@@ -155,7 +150,7 @@ class MapViewController {
             // GregorianCalendar...
             GregorianCalendar calendar = new GregorianCalendar();
             calendar.set(Calendar.MINUTE, cmd.fromDate_minute);
-            calendar.set(Calendar.HOUR, cmd.fromDate_hour);
+            calendar.set(Calendar.HOUR, cmd.fromDate_hour-12);
             calendar.set(Calendar.DAY_OF_MONTH, cmd.fromDate_day);
             calendar.set(Calendar.MONTH, cmd.fromDate_month - 1);
             calendar.set(Calendar.YEAR, cmd.fromDate_year);

@@ -33,19 +33,21 @@
 </head>
 
 <body>
+<div class="pContainer">
 <div class="newCar">
-
-    <div class="contentLeft">
+    <form>
+        <div class="d1">
+    <div class="contentLeftCar">
         <div class="rowU">
-            <div class="left"><b>Car types:</b></div>
-            <div class="right"></div>
+            <div class="left1"><b>Car types:</b></div>
+            <div class="right1"></div>
             <div class="clear"></div>
         </div>
         <div class="row">
             <g:each in="${carTypeCars.name}" var="item">
-                <div class="left"> &nbsp;&nbsp; ${item} &nbsp;&nbsp; </div>
-                <div class="right">
-                    <a class="addButton" onclick=""><img width="16px" src="${g.resource( dir: '/images', file: 'edit.png' )}">
+                <div class="left1"> &nbsp;&nbsp; ${item} &nbsp;&nbsp; </div>
+                <div class="right1">
+                    <a class="addButton" href="#join_form" id="join_pop"><img width="16px" src="${g.resource( dir: '/images', file: 'edit.png' )}">
                         <span class="addButtonText1">  edit</span></a>
                 </div>
                 <div class="clear"></div>
@@ -53,13 +55,11 @@
         </div>
 
         <div class="rowL">
-            <div class="left"></div>
-            <div class="right"><a class="addButton" href="#join_form" id="join_pop"><img width="22px"src="${g.resource( dir: '/images', file: 'add.png' )}"><span class="addButtonText"> add new car type</span></a></div>
+            <div class="left1"></div>
+            <div class="right2"><a class="addButton" href="#join_form" id="join_pop"><img width="22px"src="${g.resource( dir: '/images', file: 'add.png' )}"><span class="addButtonText"> add new car type</span></a></div>
             <div class="clear"></div>
         </div>
     </div>
-
-
 
     <a href="#x" class="overlay1" id="join_form"></a>
     <div class="popup1">
@@ -67,38 +67,27 @@
 
 
                 <div class="contentLeft">
-                    <div class="layoutCellU">
+                    <div class="rowU">
                         <div class="leftbig"><b>Create new car</b></div>
                     </div>
-                    <div class="layoutCell">
-
+                    <div>
                         <div class="row">
                             <div class="left">Car name</div>
-                            <div class="right"><input type="text" size="22%" name=""/></div>
+                            <div class="right"><input type="text" size="22%" value="${carTypeCars.name}"/></div>
                             <div class="clear"></div>
                         </div>
                         <div class="row">
                             <div class="left">Energy demand in kW</div>
-                            <div class="right"><input type="text" size="22%" name=""/></div>
+                            <div class="right"><input type="text" size="22%" value="${carTypeCars.energyConsumption}"/></div>
                             <div class="clear"></div>
                         </div>
-                        <div class="row">
+                        <div class="rowL">
                             <div class="left">Akku in kW</div>
-                            <div class="right"><input type="text" size="22%" name=""/></div>
+                            <div class="right"><input type="text" size="22%" value="${carTypeCars.maxEnergyLoad}"/></div>
                             <div class="clear"></div>
                         </div>
-
-
-
                     </div>
-
-
-
-            </div>
-
-
-
-
+                </div>
         </div>
         <br><br><br>
 
@@ -110,7 +99,10 @@
         <a class="close" href="#close"></a>
     </div>
     <!--END  Add fleet form -->
-</div>
 
+            </div>
+        </form>
+</div>
+</div>
 </body>
 </html>

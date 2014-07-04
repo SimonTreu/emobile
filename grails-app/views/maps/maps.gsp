@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Map created by GPS Visualizer</title>
+    <title></title>
     <base target="_top"></base>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="geo.position" content="52.4917555; 13.37085" />
@@ -33,7 +33,7 @@
 		-->
 <div style="margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom:0px;">
     <div id="gmap_div" style="width:1800px; height:1030px; margin:0px; margin-right:12px; background-color:#F0F0F0; float:left; overflow:hidden;">
-        <p align="center" style="font:10px Arial;">This map was created using <a target="_blank" href="http://www.gpsvisualizer.com/">GPS Visualizer</a>'s do-it-yourself geographic utilities.<br /><br />Please wait while the map data loads...</p>
+        <p align="center" style="font:10px Arial;"><a target="_blank" href=""><br /><br /></p>
     </div>
 
     <div id="gv_infobox" class="gv_infobox" style="font:11px Arial; border:solid #666666 1px; background:#ffffff; padding:4px; overflow:auto; display:none; ">

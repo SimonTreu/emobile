@@ -3,64 +3,7 @@
 
 <html>
 <head>
-    <style>
-        #date {
-            position:absolute;
-            z-index:1;
-            right:10px;
-            top:5px;
-        }
 
-        #date1 {
-            position:absolute;
-            z-index:1;
-            right:10px;
-            top:5px;
-        }
-        .calendar {
-            position:absolute;
-            z-index:3;
-            right:200px;
-            top:50px;
-        }
-        .calendar1 {
-            position:absolute;
-            z-index:3;
-            right:10px;
-            top:50px;
-        }
-        #fromDate_value{
-             z-index:3;
-             position:absolute;
-             right:270px;
-             top:10px;
-         }
-        #fromDate-trigger{
-            z-index:3;
-            position:absolute;
-            right:245px;
-            top:15px;
-        }
-
-        #toDate_value{
-            z-index:3;
-            position:absolute;
-            right:75px;
-            top:10px;
-        }
-        #toDate-trigger{
-            z-index:3;
-            position:absolute;
-            right:50px;
-            top:15px;
-        }
-        #dateButton {
-            position:absolute;
-            z-index:4;
-            right:5px;
-            top:10px;
-        }
-        </style>
         <meta name="layout" content="main" />
         <script type="javascript">
             function getColor(value){
@@ -92,12 +35,13 @@
 </head>
 
 <body style="margin-left:10px; margin-right:10px; margin-top:10px; margin-bottom:10px;">
-
+<span class="datesWindow">
 <g:form controller="mapView" action="listUsages">
     <calendar:datePicker id="fromDate" name="fromDate" showTime="true" dateFormat="%H:%M - %d.%m.%Y" years="${2014}" singleClick="true" defaultValue="${fromDate}" value="${fromDate_value}"/>
     <calendar:datePicker id="toDate" name="toDate" showTime="true" dateFormat="%H:%M - %d.%m.%Y" years="${2014}" defaultValue="${toDate}" value="${toDate}"/>
     <g:submitButton name="Go" id="dateButton"></g:submitButton>
 </g:form>
+</span>
 
 <div id="map" class="olMap" style="z-index:1">
 

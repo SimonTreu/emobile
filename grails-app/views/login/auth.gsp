@@ -143,7 +143,7 @@
                             </div>
                             <div class="row">
                                 <div class="left"><g:message code="login.auth.email"/></div>
-                                <div class="right"><input type="text" size="10" name='j_username' id='' value=""></div>
+                                <div class="right"><input type="text" size="20" name='j_username' id='' value=""></div>
                                 <div class="clear"></div>
                             </div>
 

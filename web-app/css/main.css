@@ -926,7 +926,7 @@ body.lightBoxBody{
 .olMap {
     width: 95%;
     border: 0.01px #111111 solid;
-    position:relative;
+    /*position:relative;*/
     border-radius: 10px 10px 10px 10px;
     box-shadow: 0px 13px 74px 1px #DDDDDD;
 
@@ -1042,6 +1042,7 @@ body.lightBoxBody{
     padding:10px;
     width:400px;
     border-radius: 6px;
+    font-size: 12px;
     /*background-color:#f0f0f0;*/
 }
 
@@ -1179,7 +1180,9 @@ td img{
 .dfkiLogo {
     vertical-align:top;
     position: relative;
-    top:-10px;
+    top:-13px;
+    right:5px;
+    z-index: 2222222;
 }
 
 .over{
@@ -1369,6 +1372,30 @@ a#login_pop:hover, a#join_pop1:hover {
     visibility: visible;
     opacity: 1;
 }
+
+.overlay1 {
+    background-color: rgba(0, 0, 0, 0.6);
+    bottom: 0;
+    cursor: default;
+    left: 0;
+    opacity: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    visibility: hidden;
+    z-index: 1;
+
+    -webkit-transition: opacity .5s;
+    -moz-transition: opacity .5s;
+    -ms-transition: opacity .5s;
+    -o-transition: opacity .5s;
+    transition: opacity .5s;
+}
+.overlay1:target {
+    visibility: visible;
+    opacity: 1;
+}
+
 .popup {
     background-color: #fff;
     border: 3px solid #fff;
@@ -1406,7 +1433,44 @@ a#login_pop:hover, a#join_pop1:hover {
     -o-transition: opacity .5s, top .5s;
     transition: opacity .5s, top .5s;
 }
+
+.popup1 {
+    background-color: #fff;
+    border: 1px solid #fff;
+    display: inline-block;
+    left: 50%;
+    max-width: 420px;
+    padding: 15px;
+    position: fixed;
+    text-align: justify;
+    top: 40%;
+    visibility: hidden;
+    z-index: 10;
+
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+
+
+}
+
+
+
 .overlay:target+.popup {
+    top: 50%;
+    opacity: 1;
+    visibility: visible;
+}
+
+.overlay1:target+.popup1 {
     top: 50%;
     opacity: 1;
     visibility: visible;
@@ -1645,4 +1709,90 @@ fieldset {
 
 .loggedIndrin {
     padding-right: 10px;
+}
+
+.datesWindow {
+    font-size: 11px;
+    background: #ccc;
+    left:110px;
+    top:60px;
+    display: block;
+    width:270px;
+    z-index: 32344;
+    position: absolute;
+    //height:30px;
+
+}
+
+#date {
+    //position:absolute;
+    //z-index:1;
+    //right:10px;
+    //top:5px;
+}
+
+#date1 {
+
+}
+.calendar {
+    position:absolute;
+    z-index:3;
+    left:200px;
+    top:100px;
+}
+.calendar1 {
+    position:absolute;
+    z-index:3;
+    right:10px;
+    top:50px;
+}
+#fromDate_value{
+vertical-align: middle;
+position: relative;
+width:100px;
+height:20px;
+
+}
+#fromDate-trigger{
+    position:absolute;
+    left:0px;
+}
+
+#toDate_value{
+    vertical-align: middle;
+    position: relative;
+    width:100px;
+    height:20px;
+}
+#toDate-trigger{
+    position:absolute;
+    left:115px;
+}
+#dateButton {
+    position:absolute;
+    z-index:4;
+    right:5px;
+    height:20px;
+    top:2px;
+}
+
+#gv_maptype_helplink {
+    display: none;
+}
+#gv_maptype_control {
+    top:60px;
+}
+
+#gv_infobox_container {
+    display: block;
+    position: absolute;
+    bottom: -3950px;
+    left: 3950px;
+    z-index: 99999;
+//right:5px;
+}
+
+#add_form {
+    background: #ccc;
+    width: 200px;
 }

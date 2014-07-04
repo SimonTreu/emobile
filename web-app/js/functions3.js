@@ -529,7 +529,7 @@ function GV_Setup_Map() {
 		credit_div = document.createElement('div'); credit_div.id = 'gv_credit';
 		credit_div.style.display = 'none'; credit_div.style.padding = '1px'; credit_div.style.backgroundColor = '#ffffff';
 		credit_div.style.filter = 'alpha(opacity=80)'; credit_div.style.opacity = 0.80; credit_div.style.MozOpacity = 0.80; credit_div.style.KhtmlOpacity = 0.80;
-		credit_div.innerHTML = (gv_options.custom_credit && gv_options.custom_credit.indexOf('gpsvisualizer.com') > -1) ? gv_options.custom_credit : 'Map created at <a style="font:inherit;" target="_blank" href="http://www.gpsvisualizer.com/">GPSVisualizer.com</a>';
+		credit_div.innerHTML = (gv_options.custom_credit && gv_options.custom_credit.indexOf('gpsvisualizer.com') > -1) ? gv_options.custom_credit : '<a style="font:inherit;" target="_blank" href=""></a>';
 		gmap.getDiv().appendChild(credit_div);
 	} else {
 		credit_div = $('gv_credit');
@@ -3950,7 +3950,7 @@ function GV_MapTypeControl() {
 	mtc_div.id = 'gv_maptype_control';
 	mtc_div.appendChild(selector);
 	if (!gvg.mobile_browser && !window.location.toString().match(/google_map_types/)) { mtc_div.appendChild(help_link); }
-	gvg.maptype_control = new GV_Control(mtc_div,'TOP_RIGHT',{left:3,right:5,top:6,bottom:6},1);
+	gvg.maptype_control = new GV_Control(mtc_div,'TOP_RIGHT',{left:3,right:5,top:60,bottom:6},1);
 }
 function GV_Set_Map_Type(id,keep_overlays) {
 	var map_id = gvg.bg[id]; // resolved from aliases
@@ -4019,7 +4019,7 @@ function GV_MapOpacityControl(opacity) {
 	google.maps.event.addDomListener(selector,"change",function(){ GV_Background_Opacity(this.value); });
 	oc_div.appendChild(selector);
 
-	gvg.opacitycontrol = new GV_Control(oc_div,'TOP_RIGHT',{left:3,right:3,top:6,bottom:6},2);
+	gvg.opacitycontrol = new GV_Control(oc_div,'TOP_RIGHT',{left:3,right:3,top:60,bottom:6},2);
 	GV_Background_Opacity(opacity);
 }
 
@@ -4107,7 +4107,7 @@ function GV_Show_Center_Coordinates(id) {
 	if ($(id)) {
 		var lat = parseFloat(gmap.getCenter().lat()).toFixed(5);
 		var lng = parseFloat(gmap.getCenter().lng()).toFixed(5);
-		$(id).innerHTML = 'Center: <span id="gv_center_coordinate_pair" ondblclick="SelectText(\'gv_center_coordinate_pair\')">'+lat+','+lng+'</span>';
+		$(id).innerHTML = '';
 	}
 	gvg.last_center = gmap.getCenter(); // this will come in handy; make sure it happens AFTER the crosshair is potentially unhidden
 }

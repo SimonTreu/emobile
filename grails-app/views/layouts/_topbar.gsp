@@ -111,13 +111,13 @@
                                     </span>
                                     </form>--%>
 
-                                        <script type='text/javascript'>
+                                       <%-- <script type='text/javascript'>
                                             <!--
                                             (function(){
                                                 document.forms['loginForm'].elements['j_username'].focus();
                                             })();
                                             // -->
-                                        </script>
+                                        </script>--%>
                                     </span>
                                 </span>
                             </span>

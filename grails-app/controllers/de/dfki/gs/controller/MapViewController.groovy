@@ -12,6 +12,7 @@ import de.dfki.gs.controller.commands.StartAndDestinationsCommandObject
 import de.dfki.gs.domain.CarType
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
+import de.dfki.gs.domain.Person
 import de.dfki.gs.domain.Simulation
 import de.dfki.gs.domain.SimulationRoute
 import de.dfki.gs.domain.Track
@@ -32,7 +33,7 @@ class MapViewController {
     def realStationsStatsService
     def simulationCollectDataService
     def grailsApplication
-
+    def springSecurityService
     def googleMaps() {
         render view: 'googleMaps'
     }
@@ -172,9 +173,14 @@ class MapViewController {
         }
 
         m = realStationsStatsService.getUsages( fromDate, toDate );
+        log.error( "MMM1: ${fromDate}" )
         m.fromDate = fromDate
         m.toDate = toDate
-
+        Person loggedInPerson = (Person) springSecurityService.currentUser
+        m.welcome = [
+                'givenName' : loggedInPerson.givenName,
+                'familyName' : loggedInPerson.familyName
+        ]
         render( view: 'openLayersMapsStatistik', model: m )
     }
 

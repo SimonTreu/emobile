@@ -15,10 +15,17 @@
 <body>
 
 <div class="pContainer">
+    <g:if test="${availableSimulations!=[]}">
     <g:form action='' method='POST' enctype='multipart/form-data'>
-        <span class="simulations"><b>Available simulations:</b></span><g:select class="simulations" name="${availableSimulations.name}" from="${availableSimulations.name}"/>&nbsp;&nbsp;
+        <span class="simulations"><b>Available simulations:</b></span>
+        <g:select class="simulations" name="${availableSimulations.name}" from="${availableSimulations.name}"/>
+        &nbsp;&nbsp;
         <input class="simulations" type='submit' name='upload_btn' value='Export results to file'>
     </g:form>
+    </g:if>
+    <g:if test="${availableSimulations==[]}">
+        There is no simulations...
+    </g:if>
 </div>
 </body>
 </html>

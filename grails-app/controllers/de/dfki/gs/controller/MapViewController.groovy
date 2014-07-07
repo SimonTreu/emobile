@@ -20,6 +20,7 @@ import de.dfki.gs.domain.TrackEdge
 import de.dfki.gs.utils.LatLonPoint
 import de.dfki.gs.utils.ResponseConstants
 import grails.converters.JSON
+import grails.plugin.springsecurity.SpringSecurityUtils
 import groovy.sql.Sql
 import org.geotools.graph.path.Path
 import org.geotools.graph.structure.Edge
@@ -146,42 +147,47 @@ class MapViewController {
         Date fromDate = oneWeekBeforeCal.getTime()
 
         Date toDate = new Date()
-
-        def m = [:]
-
-        if ( cmd.validate() && !cmd.hasErrors() ) {
-            // create Date objects...
-            // fromDate = ...
-            // GregorianCalendar...
-            GregorianCalendar calendar = new GregorianCalendar();
-            calendar.set(Calendar.MINUTE, cmd.fromDate_minute);
-            calendar.set(Calendar.HOUR, cmd.fromDate_hour-12);
-            calendar.set(Calendar.DAY_OF_MONTH, cmd.fromDate_day);
-            calendar.set(Calendar.MONTH, cmd.fromDate_month - 1);
-            calendar.set(Calendar.YEAR, cmd.fromDate_year);
-
-            fromDate = calendar.getTime()
-
-            calendar.set(Calendar.MINUTE, cmd.toDate_minute);
-            calendar.set(Calendar.HOUR, cmd.toDate_hour);
-            calendar.set(Calendar.DAY_OF_MONTH, cmd.toDate_day );
-            calendar.set(Calendar.MONTH, cmd.toDate_month - 1);
-            calendar.set(Calendar.YEAR, cmd.toDate_year);
-
-            toDate = calendar.getTime()
-
-        }
-
-        m = realStationsStatsService.getUsages( fromDate, toDate );
-        log.error( "MMM1: ${fromDate}" )
-        m.fromDate = fromDate
-        m.toDate = toDate
         Person loggedInPerson = (Person) springSecurityService.currentUser
-        m.welcome = [
-                'givenName' : loggedInPerson.givenName,
-                'familyName' : loggedInPerson.familyName
-        ]
-        render( view: 'openLayersMapsStatistik', model: m )
+        if (loggedInPerson!=null) {
+            def m = [:]
+
+            if ( cmd.validate() && !cmd.hasErrors() ) {
+                // create Date objects...
+                // fromDate = ...
+                // GregorianCalendar...
+                GregorianCalendar calendar = new GregorianCalendar();
+                calendar.set(Calendar.MINUTE, cmd.fromDate_minute);
+                calendar.set(Calendar.HOUR, cmd.fromDate_hour-12);
+                calendar.set(Calendar.DAY_OF_MONTH, cmd.fromDate_day);
+                calendar.set(Calendar.MONTH, cmd.fromDate_month - 1);
+                calendar.set(Calendar.YEAR, cmd.fromDate_year);
+
+                fromDate = calendar.getTime()
+
+                calendar.set(Calendar.MINUTE, cmd.toDate_minute);
+                calendar.set(Calendar.HOUR, cmd.toDate_hour);
+                calendar.set(Calendar.DAY_OF_MONTH, cmd.toDate_day );
+                calendar.set(Calendar.MONTH, cmd.toDate_month - 1);
+                calendar.set(Calendar.YEAR, cmd.toDate_year);
+
+                toDate = calendar.getTime()
+
+            }
+
+            m = realStationsStatsService.getUsages( fromDate, toDate );
+            log.error( "MMM1: ${fromDate}" )
+            m.fromDate = fromDate
+            m.toDate = toDate
+
+            m.welcome = [
+                    'givenName' : loggedInPerson.givenName,
+                    'familyName' : loggedInPerson.familyName
+            ]
+            render( view: 'openLayersMapsStatistik', model: m )
+        }
+        else {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+        }
     }
 
     def showCoords() {

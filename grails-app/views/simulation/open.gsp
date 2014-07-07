@@ -23,11 +23,16 @@
                 <div class="clear"></div>
             </div>
             <div class="row">
+                <g:if test="${availableSimulations!=[]}">
                 <g:each in="${availableSimulations}" var="item">
                         <div class="left">Simulation name:</div>
-                        <div class="right"> ${item.name}</div>
+                        <div class="right"> ${item.name}  <span class="detalized"> (1 routes, 2 electricity filling stations)</span></div>
                         <div class="clear"></div>
                 </g:each>
+                </g:if>
+                <g:if test="${availableSimulations==[]}">
+                    There is no simulations...
+                </g:if>
             </div>
 
 

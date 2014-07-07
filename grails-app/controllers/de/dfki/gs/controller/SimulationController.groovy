@@ -14,6 +14,7 @@ import de.dfki.gs.simulation.SimulationThreadTask
 import de.dfki.gs.utils.LatLonPoint
 import de.dfki.gs.utils.ResponseConstants
 import grails.converters.JSON
+import grails.plugin.springsecurity.SpringSecurityUtils
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 import javax.servlet.AsyncContext
@@ -36,73 +37,85 @@ class SimulationController {
 
         SelectSimulationCommand cmd = new SelectSimulationCommand();
         bindData( cmd, params )
-
-        if ( cmd.selectedSimulationId != null && !cmd.validate() ) {
-            log.error( "failed to get simulation by id: ${cmd.selectedSimulationId} -- ${cmd.errors}" )
-        }
-
-        def m = [ : ]
-
-        if ( cmd.selectedSimulationId ) {
-            log.debug( "selected simulation: ${cmd.selectedSimulationId} -- try to fetch data from db" )
-
-            Simulation simulation = Simulation.read( cmd.selectedSimulationId )
-            m.selectedSimulationId = simulation.id
-            m.selectedSimulation = simulation
-
-            // m.simulationRoutes = SimulationRoute.findAllBySimulation( simulation )
-            m.simulationRoutes = simulation.simulationRoutes
-
-            log.debug( "filled model for simulation with ${simulation.simulationRoutes.size()} simulationRoutes" )
-        }
-
-        m.name = "Simulations"
-        m.availableSimulations = simulationCollectDataService.collectSimulations()
-
         Person loggedInPerson = (Person) springSecurityService.currentUser
-        m.welcome = [
-                'givenName' : loggedInPerson.givenName,
-                'familyName' : loggedInPerson.familyName
-        ]
-        m.carTypeCars = simulationDataService.collectCarTypes()
-        m.electricStations = simulationDataService.collectElectricStations()
-        log.debug( "model: ${m}" )
+        if (loggedInPerson!=null) {
+            if ( cmd.selectedSimulationId != null && !cmd.validate() ) {
+                log.error( "failed to get simulation by id: ${cmd.selectedSimulationId} -- ${cmd.errors}" )
+            }
 
-        render( view: 'index', model: m )
+            def m = [ : ]
+
+            if ( cmd.selectedSimulationId ) {
+                log.debug( "selected simulation: ${cmd.selectedSimulationId} -- try to fetch data from db" )
+
+                Simulation simulation = Simulation.read( cmd.selectedSimulationId )
+                m.selectedSimulationId = simulation.id
+                m.selectedSimulation = simulation
+
+                // m.simulationRoutes = SimulationRoute.findAllBySimulation( simulation )
+                m.simulationRoutes = simulation.simulationRoutes
+
+                log.debug( "filled model for simulation with ${simulation.simulationRoutes.size()} simulationRoutes" )
+            }
+
+            m.name = "Simulations"
+            m.availableSimulations = simulationCollectDataService.collectSimulations()
+
+            m.welcome = [
+                    'givenName' : loggedInPerson.givenName,
+                    'familyName' : loggedInPerson.familyName
+            ]
+            m.carTypeCars = simulationDataService.collectCarTypes()
+            m.electricStations = simulationDataService.collectElectricStations()
+            log.debug( "model: ${m}" )
+
+            render( view: 'index', model: m )
+        } else {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+        }
+
     }
 
     def open () {
         def m = [ : ]
         SelectSimulationCommand cmd = new SelectSimulationCommand();
         bindData( cmd, params )
-
-        if ( cmd.selectedSimulationId != null && !cmd.validate() ) {
-            log.error( "failed to get simulation by id: ${cmd.selectedSimulationId} -- ${cmd.errors}" )
-        }
-
-        if ( cmd.selectedSimulationId ) {
-            log.debug( "selected simulation: ${cmd.selectedSimulationId} -- try to fetch data from db" )
-
-            Simulation simulation = Simulation.read( cmd.selectedSimulationId )
-            m.selectedSimulationId = simulation.id
-            m.selectedSimulation = simulation
-
-            // m.simulationRoutes = SimulationRoute.findAllBySimulation( simulation )
-            m.simulationRoutes = simulation.simulationRoutes
-
-            log.debug( "filled model for simulation with ${simulation.simulationRoutes.size()} simulationRoutes" )
-        }
-
-        m.name = "Simulations"
-        m.availableSimulations = simulationCollectDataService.collectSimulations()
-
         Person loggedInPerson = (Person) springSecurityService.currentUser
-        m.welcome = [
-                'givenName' : loggedInPerson.givenName,
-                'familyName' : loggedInPerson.familyName
-        ]
+        if (loggedInPerson != null) {
+            if ( cmd.selectedSimulationId != null && !cmd.validate() ) {
+                log.error( "failed to get simulation by id: ${cmd.selectedSimulationId} -- ${cmd.errors}" )
+            }
 
-        render( view: 'open', model: m )
+            if ( cmd.selectedSimulationId ) {
+                log.debug( "selected simulation: ${cmd.selectedSimulationId} -- try to fetch data from db" )
+
+                Simulation simulation = Simulation.read( cmd.selectedSimulationId )
+                m.selectedSimulationId = simulation.id
+                m.selectedSimulation = simulation
+
+                // m.simulationRoutes = SimulationRoute.findAllBySimulation( simulation )
+                m.simulationRoutes = simulation.simulationRoutes
+                log.debug( "filled model for simulation with ${simulation.simulationRoutes.size()} simulationRoutes" )
+            }
+
+            m.name = "Simulations"
+            m.simulationRoutesSize = simulationCollectDataService.collectSimulations()
+            //m.simulationGasolineStationSize = simulationCollectDataService.collectSimulations().gasolineStations.size()
+            //m.availableSimulations = simulationCollectDataService.collectSimulations()
+
+
+            log.error( "loggedInPerson: ${loggedInPerson}" )
+
+                m.welcome = [
+                        'givenName' : loggedInPerson.givenName,
+                        'familyName': loggedInPerson.familyName
+                ]
+
+            render( view: 'open', model: m )
+        } else {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+        }
+
     }
 
 
@@ -111,34 +124,37 @@ class SimulationController {
 
         SelectSimulationCommand cmd = new SelectSimulationCommand();
         bindData( cmd, params )
-
-        if ( cmd.selectedSimulationId != null && !cmd.validate() ) {
-            log.error( "failed to get simulation by id: ${cmd.selectedSimulationId} -- ${cmd.errors}" )
-        }
-
-        if ( cmd.selectedSimulationId ) {
-            log.debug( "selected simulation: ${cmd.selectedSimulationId} -- try to fetch data from db" )
-
-            Simulation simulation = Simulation.read( cmd.selectedSimulationId )
-            m.selectedSimulationId = simulation.id
-            m.selectedSimulation = simulation
-
-            // m.simulationRoutes = SimulationRoute.findAllBySimulation( simulation )
-            m.simulationRoutes = simulation.simulationRoutes
-
-            log.debug( "filled model for simulation with ${simulation.simulationRoutes.size()} simulationRoutes" )
-        }
-
-        m.name = "Simulations"
-        m.availableSimulations = simulationCollectDataService.collectSimulations()
-
         Person loggedInPerson = (Person) springSecurityService.currentUser
-        m.welcome = [
-                'givenName' : loggedInPerson.givenName,
-                'familyName' : loggedInPerson.familyName
-        ]
+        if (loggedInPerson!=null) {
+            if ( cmd.selectedSimulationId != null && !cmd.validate() ) {
+                log.error( "failed to get simulation by id: ${cmd.selectedSimulationId} -- ${cmd.errors}" )
+            }
 
-        render( view: 'load', model: m )
+            if ( cmd.selectedSimulationId ) {
+                log.debug( "selected simulation: ${cmd.selectedSimulationId} -- try to fetch data from db" )
+
+                Simulation simulation = Simulation.read( cmd.selectedSimulationId )
+                m.selectedSimulationId = simulation.id
+                m.selectedSimulation = simulation
+
+                // m.simulationRoutes = SimulationRoute.findAllBySimulation( simulation )
+                m.simulationRoutes = simulation.simulationRoutes
+
+                log.debug( "filled model for simulation with ${simulation.simulationRoutes.size()} simulationRoutes" )
+            }
+
+            m.name = "Simulations"
+            m.availableSimulations = simulationCollectDataService.collectSimulations()
+            log.error( "availableSimulations: ${simulationCollectDataService.collectSimulations()}" )
+            m.welcome = [
+                    'givenName' : loggedInPerson.givenName,
+                    'familyName' : loggedInPerson.familyName
+            ]
+
+            render( view: 'load', model: m )
+        } else {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+        }
     }
 
     def create() {

@@ -22,12 +22,16 @@
                 <div class="right"></div>
                 <div class="clear"></div>
             </div>
-
-            <div class="rowL">
-                <div class="left"></div>
-                <div class="right"><g:select name="selectedSimulationId" from="${availableSimulations}" optionKey="id" optionValue="name" value="${selectedSimulationId}" ></g:select></div>
-                <div class="clear"></div>
+            <div class="row">
+                <g:each in="${availableSimulations}" var="item">
+                        <div class="left">Simulation name:</div>
+                        <div class="right"> ${item.name}</div>
+                        <div class="clear"></div>
+                </g:each>
             </div>
+
+
+
         </div>
     </div>
 </g:form>

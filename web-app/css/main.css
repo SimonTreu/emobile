@@ -1830,3 +1830,8 @@ height:20px;
 #gv_opacity_selector {
     display: none;
 }
+
+.simulations {
+    font-size: 12px;
+    padding: 5px;
+}

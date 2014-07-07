@@ -105,6 +105,42 @@ class SimulationController {
         render( view: 'open', model: m )
     }
 
+
+    def load() {
+        def m = [ : ]
+
+        SelectSimulationCommand cmd = new SelectSimulationCommand();
+        bindData( cmd, params )
+
+        if ( cmd.selectedSimulationId != null && !cmd.validate() ) {
+            log.error( "failed to get simulation by id: ${cmd.selectedSimulationId} -- ${cmd.errors}" )
+        }
+
+        if ( cmd.selectedSimulationId ) {
+            log.debug( "selected simulation: ${cmd.selectedSimulationId} -- try to fetch data from db" )
+
+            Simulation simulation = Simulation.read( cmd.selectedSimulationId )
+            m.selectedSimulationId = simulation.id
+            m.selectedSimulation = simulation
+
+            // m.simulationRoutes = SimulationRoute.findAllBySimulation( simulation )
+            m.simulationRoutes = simulation.simulationRoutes
+
+            log.debug( "filled model for simulation with ${simulation.simulationRoutes.size()} simulationRoutes" )
+        }
+
+        m.name = "Simulations"
+        m.availableSimulations = simulationCollectDataService.collectSimulations()
+
+        Person loggedInPerson = (Person) springSecurityService.currentUser
+        m.welcome = [
+                'givenName' : loggedInPerson.givenName,
+                'familyName' : loggedInPerson.familyName
+        ]
+
+        render( view: 'load', model: m )
+    }
+
     def create() {
 
         log.debug( "params: ${params}" )

@@ -48,8 +48,8 @@
                                 <li><g:link controller="simulation" action="init"><g:message code="layouts._topbar.new"/> </g:link></li>
                                 <li><g:link controller="simulation" action="open"><g:message code="layouts._topbar.open"/></a></g:link></li>
                                 <li><a href="#"><g:message code="layouts._topbar.openresent"/></a></li>
-                                <li><a href="#"><g:message code="layouts._topbar.loadfromfile"/></a></li>
-                                <li><a href="#"><g:message code="layouts._topbar.logout"/></a></li>
+                                <li><g:link controller="simulation" action="load"><g:message code="layouts._topbar.loadfromfile"/></g:link></li>
+                                <li><a href="<g:createLink controller="login" action="logout" />"><g:message code="layouts._topbar.logout"/></a></li>
                             </ul>
                         </li>
                         <li><a href="#"><span class=""></span> <g:message code="layouts._topbar.execute"/></a>

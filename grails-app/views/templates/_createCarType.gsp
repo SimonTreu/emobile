@@ -1,11 +1,11 @@
-<a href="#x" ></a>
-<div class="popup1">
+<div id="openModal" class="modalDialog">
     <div class="layout">
         <g:form controller="configuration" action="createCarType">
 
             <div class="contentLeft">
                 <div class="rowU">
                     <div class="leftbig"><b>Create new car</b></div>
+
                 </div>
                 <div>
                     <div class="row">
@@ -25,7 +25,8 @@
                     </div>
                     <div class="rowL">
                         <div class="left2">
-                            <g:submitButton name="createCar" value="Cancel"/>
+                            <%--<g:submitButton name="createCar" value="Cancel"/>--%>
+                            <input type="button" value="Cancel" onclick="window.location.href=window.location.href"/>
                         </div>
                         <div class="right2">
                             <g:submitButton name="createCar" value="Create"/>

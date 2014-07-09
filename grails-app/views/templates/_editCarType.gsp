@@ -1,5 +1,5 @@
-<a href="#x" class="overlay1" id="join_form"></a>
-<div class="popup1">
+
+<div id="openModal" class="modalDialog">
 <div class="layout">
     <g:form controller="configuration" action="editCarType">
 
@@ -26,7 +26,8 @@
 
                 <div class="rowL">
                     <div class="left2">
-                        <g:submitButton name="createCar" value="Cancel"/>
+                        <%--<g:submitButton name="createCar" value="Cancel"/>--%>
+                        <input type="button" value="Cancel" onclick="window.location.href=window.location.href"/>
                     </div>
                     <div class="right2">
                         <g:hiddenField name="carTypeId" value="${carTypeId}"/>

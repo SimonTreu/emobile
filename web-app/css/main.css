@@ -1314,7 +1314,7 @@ td img{
 .addButton {
     text-decoration: none;
     border: 0px;
-    content:url(http://localhost:8080/emobilesim/images/edit.png);
+    font-weight: bold;
 }
 
 .addButtonText {
@@ -1413,7 +1413,7 @@ a#login_pop:hover, a#join_pop1:hover {
     opacity: 1;
 }
 
-#overlay1 {
+.overlay1 {
     background-color: rgba(0, 0, 0, 0.6);
     bottom: 0;
     cursor: default;
@@ -1432,7 +1432,7 @@ a#login_pop:hover, a#join_pop1:hover {
     transition: opacity .5s;
 }
 
-#overlay1:target {
+.overlay1:target {
     visibility: visible;
     opacity: 1;
     z-index: 1000000;
@@ -1478,14 +1478,14 @@ a#login_pop:hover, a#join_pop1:hover {
 
 .popup1 {
     background-color: #fff;
-    border: 1000000px solid #ddd;
+    border: 1px solid #ddd;
     display: inline-block;
     left: 50%;
     max-width: 420px;
     padding: 15px;
     position: fixed;
     text-align: justify;
-    opacity: 0.8;
+
     top: 40%;
     /*visibility: hidden;*/
     z-index: 1000000;
@@ -1513,7 +1513,7 @@ a#login_pop:hover, a#join_pop1:hover {
     visibility: visible;
 }
 
-#overlay1:target+.popup1 {
+.overlay1:target+.popup1 {
     top: 50%;
     opacity: 1;
     visibility: visible;
@@ -1852,3 +1852,65 @@ height:20px;
 .detalized {
     font-size:10px;
 }
+
+
+.btn-close{
+
+    font-size: 30px;
+    text-decoration: none;
+    position: absolute; right: 5px; top: 0;
+
+}
+
+
+.modalDialog {
+    position: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.8);
+ //   z-index: 9;
+    opacity:1;
+// -webkit-transition: opacity 400ms ease-in;
+   // -moz-transition: opacity 400ms ease-in;
+   // transition: opacity 400ms ease-in;
+   // pointer-events: none;
+}
+
+.modalDialog:target {
+    opacity:1;
+    pointer-events: auto;
+}
+
+.modalDialog > div {
+    width: 400px;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 20px 13px 20px;
+    border-radius: 10px;
+    background: #fff;
+
+}
+
+.close {
+    background: #606061;
+    color: #FFFFFF;
+    line-height: 25px;
+    position: absolute;
+    right: -12px;
+    text-align: center;
+    top: -10px;
+    width: 24px;
+    text-decoration: none;
+    font-weight: bold;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+    -moz-box-shadow: 1px 1px 3px #000;
+    -webkit-box-shadow: 1px 1px 3px #000;
+    box-shadow: 1px 1px 3px #000;
+}
+
+.close:hover { background: #00d9ff; }

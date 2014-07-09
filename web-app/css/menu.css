@@ -3,7 +3,7 @@
   height: 44px;
   background: #585858;
   width: auto;
-  z-index:22222222222;
+  z-index:22;
 }
 #menu ul {
   list-style: none;
@@ -102,7 +102,7 @@
   border-top-color: #2b2f3a;
   top: -12px;
   right: 100%;
-  z-index: -2;
+  z-index: 20;
 }
 #menu ul ul {
   position: absolute;
@@ -114,7 +114,7 @@
   -ms-transition: opacity .3s ease, top .25s ease;
   -o-transition: opacity .3s ease, top .25s ease;
   transition: opacity .3s ease, top .25s ease;
-  z-index: -1;
+  z-index: 10;
 }
 #menu ul ul ul {
   top: 37px;
@@ -145,7 +145,7 @@
   -ms-transition: all .35s ease;
   -o-transition: all .35s ease;
   transition: all .35s ease;
-    z-index: -1;
+    z-index: 10;
 }
 #menu ul ul li:hover > a {
   background: #f6f6f6;

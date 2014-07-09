@@ -1,31 +1,37 @@
+<div id="openModal" class="modalDialog">
+    <div class="layout">
+        <g:form controller="configuration" action="createFillingStationType">
 
-<div style="border: 1px">
+            <div class="contentLeft">
+                <div class="rowU">
+                    <div class="leftbig"><b>Create new filling station</b></div>
 
-    <g:form controller="configuration" action="createFillingStationType">
+                </div>
+                <div>
+                    <div class="row">
+                        <div class="left2">Filling station name</div>
+                        <div class="right2"><g:textField name="fillingStationTypeName" id="fillingStationTypeName" value=""/></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="row">
+                        <div class="left2"> Power in [ kw ]</div>
+                        <div class="right2"><g:textField name="power" id="power" value=""/></div>
+                        <div class="clear"></div>
+                    </div>
 
-        <table>
+                    <div class="rowL">
+                        <div class="left2">
+                            <%--<g:submitButton name="createCar" value="Cancel"/>--%>
+                            <input type="button" value="Cancel" onclick="window.location.href=window.location.href"/>
+                        </div>
+                        <div class="right2">
+                            <g:submitButton name="createFillingStationType" value="Create"/>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
 
-            <tr>
-                <td>
-                    Name Filling Station Type
-                </td>
-                <td>
-                    <g:textField name="fillingStationTypeName" id="fillingStationTypeName"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Power in [ kw ]
-                </td>
-                <td>
-                    <g:textField name="power" id="power"/>
-                </td>
-            </tr>
-
-        </table>
-
-
-        <g:submitButton name="createFillingStationType" value="Create"/>
-
-    </g:form>
+        </g:form>
+    </div>
 </div>

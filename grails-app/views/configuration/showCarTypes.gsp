@@ -31,8 +31,8 @@
 
                             <g:hiddenField name="carTypeId" value="${carType.carType.id}"/>
 
-                            <g:submitToRemote class="addButton" url="[ action: 'editCarTypeView' ]" update="updateMe" name="submit" value="edit">
-                                <img width="16px" src="${g.resource( dir: '/images', file: 'edit.png' )}">
+                            <g:submitToRemote class="addButton" url="[ action: 'editCarTypeView' ]" update="updateMe" name="submit" value="edit" id="openModal">
+                                <%--<img width="16px" src="${g.resource( dir: '/images', file: 'edit.png' )}">--%>
                             </g:submitToRemote>
 
                         </g:form>
@@ -45,7 +45,9 @@
                 <div class="rowL">
                     <g:form action="createCarTypeView">
                         <div class="left1"></div>
-                        <div class="right2"> <g:submitToRemote class="addButton" url="[action: 'createCarTypeView']" update="updateMe" name="submit" value="create new car type" /><img width="22px"src="${g.resource( dir: '/images', file: 'add.png' )}"></div>
+                        <div class="right2"> <g:submitToRemote class="addButton" url="[action: 'createCarTypeView']" update="updateMe" name="submit" value="create new car type" />
+                            <%--<img width="22px"src="${g.resource( dir: '/images', file: 'add.png' )}">--%>
+                        </div>
                         <div class="clear"></div>
                     </g:form>
                 </div>
@@ -56,10 +58,11 @@
         <%-- create-new --%>
 
         <%-- this shpuld be displayed as "lightbox" --%>
-            <div id="updateMe"></div>
+            <div id="updateMe">
 
 
-            <!--END  Add fleet form -->
+            </div>
+
 
 
       </div>

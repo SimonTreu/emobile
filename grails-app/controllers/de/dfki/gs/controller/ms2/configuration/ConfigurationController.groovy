@@ -1,9 +1,13 @@
 package de.dfki.gs.controller.ms2.configuration
 
 import de.dfki.gs.controller.ms2.configuration.commands.CreateCarTypeCommandObject
+import de.dfki.gs.controller.ms2.configuration.commands.CreateFillingStationTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditCarTypeCommandObject
+import de.dfki.gs.controller.ms2.configuration.commands.EditFillingStationCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.UpdateCarTypeCommandObject
+import de.dfki.gs.controller.ms2.configuration.commands.UpdateFillingStationTypeCommandObject
 import de.dfki.gs.domain.simulation.CarType
+import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.users.Person
 import grails.plugin.springsecurity.SpringSecurityUtils
 
@@ -12,8 +16,42 @@ class ConfigurationController {
     def springSecurityService
     def configurationService
 
+    /**
+     * show the FillingStationTypes available with edit button for each
+     * show the add button
+     *
+     * @return
+     */
+    def showFillingStationTypes() {
 
+        Person person = (Person) springSecurityService.currentUser
 
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        // plug the model..
+        def m = [ : ]
+
+        m.fillingStationTypes = [ ]
+        List<FillingStationType> fillingStationTypes = configurationService.getFillingStationTypesForCompany( person )
+        fillingStationTypes.each { FillingStationType fillingStationType ->
+
+            m.fillingStationTypes << fillingStationType
+        }
+        m.lightboxlink = g.createLink( controller: 'configuration', action: 'createFillingStationTypeView' )
+
+        render view: "showFillingStationTypes", model: m
+    }
+
+    /**
+     * show the cartypes available with edit button for each
+     * show the add button
+     *
+     * @return
+     */
     def showCarTypes() {
 
         Person person = (Person) springSecurityService.currentUser
@@ -66,6 +104,34 @@ class ConfigurationController {
         render view: 'index', model: m
     }
 
+    def editFillingStationType() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        log.error( "params: ${params}" )
+
+        UpdateFillingStationTypeCommandObject cmd = new UpdateFillingStationTypeCommandObject()
+        bindData( cmd, params )
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to find fillingStationType for id. errors: ${cmd.errors}" )
+
+        } else {
+
+            FillingStationType updatedfillingStationType = configurationService.updateFillingStationTypeForCompany( person, cmd.fillingStationTypeId, cmd.fillingStationTypeName, cmd.power )
+
+        }
+
+        redirect( controller: 'configuration', action: 'showFillingStationTypes' )
+    }
+
     def editCarType() {
 
         Person person = (Person) springSecurityService.currentUser
@@ -92,6 +158,41 @@ class ConfigurationController {
         }
 
         redirect( controller: 'configuration', action: 'showCarTypes' )
+    }
+
+    def editFillingStationTypeView() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        log.error( "params: ${params}" )
+
+        EditFillingStationCommandObject cmd = new EditFillingStationCommandObject()
+        bindData( cmd, params )
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to find fillingStationType for id. errors: ${cmd.errors}" )
+
+        } else {
+
+            def m = [ : ]
+
+            FillingStationType fillingStationType = FillingStationType.get( cmd.fillingStationTypeId )
+            m.fillingStationTypeName = fillingStationType.name
+            m.power                  = fillingStationType.power
+            m.fillingPortion         = fillingStationType.fillingPortion
+            m.fillingStationTypeId   = fillingStationType.id
+
+            render template: '/templates/editFillingStationType', model: m
+
+        }
+
     }
 
     def editCarTypeView() {
@@ -129,9 +230,48 @@ class ConfigurationController {
 
     }
 
+    def createFillingStationTypeView() {
+
+        render template: '/templates/createFillingStationType'
+
+    }
+
     def createCarTypeView() {
 
         render template: '/templates/createCarType'
+
+    }
+
+    def createFillingStationType() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        def m = [ : ]
+
+        CreateFillingStationTypeCommandObject cmd = new CreateFillingStationTypeCommandObject()
+        bindData( cmd, params )
+
+        FillingStationType fillingStationType = null
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to validate user input for creating fillingStationType: ${cmd.errors}" )
+            m.errors = cmd.errors
+            m.cmd = cmd
+
+        } else {
+
+            fillingStationType = configurationService.createFillingStationTypeForCompany( person, cmd.fillingStationTypeName, cmd.power )
+            m.fillingStationType = fillingStationType
+
+
+        }
+
+        redirect( controller: 'configuration', action: 'showFillingStationTypes' )
 
     }
 
@@ -164,8 +304,30 @@ class ConfigurationController {
             carType = configurationService.createCarTypeForCompany( person, cmd.carName, cmd.energyDemand, cmd.maxEnergyCapacity )
             m.carType = carType
 
+
         }
 
+        redirect( controller: 'configuration', action: 'showCarTypes' )
+
+    }
+
+    /**
+     * list available fillingStationTypes for company
+     */
+    def listAvailableFillingStationType() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        def m = [ : ]
+
+        List<FillingStationType> fillingStationTypes = configurationService.getFillingStationTypesForCompany( person )
+
+        m.fillingStationTypes = fillingStationTypes
 
         // TODO: render
     }
@@ -178,7 +340,8 @@ class ConfigurationController {
         Person person = (Person) springSecurityService.currentUser
 
         if ( !person ) {
-            // TODO: redirect(  ) login page
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
         }
 
         def m = [ : ]

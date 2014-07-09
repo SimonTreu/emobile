@@ -26,7 +26,7 @@
                     Maximal Battery Capacity in kW
                 </td>
                 <td>
-                    <g:textField name="capacity" id="capacity"/>
+                    <g:textField name="maxEnergyCapacity" id="maxEnergyCapacity"/>
                 </td>
             </tr>
 

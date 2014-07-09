@@ -6,6 +6,8 @@ class FillingStationType {
 
     Company company
 
+    String name
+
     String power
 
     /**

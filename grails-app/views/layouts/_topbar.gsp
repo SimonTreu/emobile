@@ -64,7 +64,7 @@
                             <ul>
                                 <%-- <li><g:link controller="configuration" action="showCarTypes"><g:message code="layouts._topbar.addnewcartype"/></g:link></li> --%>
                                 <li><g:link controller="configuration" action="showCarTypes"><g:message code="layouts._topbar.addnewcartype"/></g:link></li>
-                                <li><g:link controller="extras" action="station"><g:message code="layouts._topbar.addnewelectricstation"/></g:link></li>
+                                <li><g:link controller="configuration" action="showFillingStationTypes"><g:message code="layouts._topbar.addnewelectricstation"/></g:link></li>
                                 <li><g:link controller="mapView" action="listUsages"><g:message code="layouts._topbar.electricstationstatistic"/></g:link></li>
                             </ul>
                         </li>

@@ -30,11 +30,14 @@ class BootStrap {
 
         if ( CarType.count() < 1 ) {
 
+            Company company = Company.findByName( "dfki" )
+
             // car BMW i3
             CarType bmwI3 = new CarType(
                     name: "BMW i3",
                     energyConsumption: 13.5,
-                    maxEnergyLoad:     18.8
+                    maxEnergyLoad:     18.8,
+                    company: company
             );
 
 
@@ -46,7 +49,8 @@ class BootStrap {
             CarType vito = new CarType(
                     name: "MB Vito E-CELL",
                     energyConsumption: 25.2,
-                    maxEnergyLoad: 32
+                    maxEnergyLoad: 32,
+                    company: company
             );
 
             if ( !vito.save( flush: true ) ) {
@@ -57,7 +61,8 @@ class BootStrap {
             CarType mitsubishi = new CarType(
                     name: "Mitsubishi i-MiEV",
                     energyConsumption: 13.5,
-                    maxEnergyLoad: 13
+                    maxEnergyLoad: 13,
+                    company: company
             );
 
             if ( !mitsubishi.save( flush: true ) ) {
@@ -68,7 +73,8 @@ class BootStrap {
             CarType nissan = new CarType(
                     name: "Nissan Leaf",
                     energyConsumption: 17.4,
-                    maxEnergyLoad: 24
+                    maxEnergyLoad: 24,
+                    company: company
             );
 
             if ( !nissan.save( flush: true ) ) {
@@ -79,7 +85,8 @@ class BootStrap {
             CarType opel = new CarType(
                     name: "Opel Ampera",
                     energyConsumption: 10.5,
-                    maxEnergyLoad: 8
+                    maxEnergyLoad: 8,
+                    company: company
             );
 
             if ( !opel.save( flush: true ) ) {
@@ -90,7 +97,8 @@ class BootStrap {
             CarType renault = new CarType(
                     name: "Renault Kangoo Z.E.",
                     energyConsumption: 16,
-                    maxEnergyLoad: 22
+                    maxEnergyLoad: 22,
+                    company: company
             );
 
             if ( !renault.save( flush: true ) ) {
@@ -101,7 +109,8 @@ class BootStrap {
             CarType renaultZoe = new CarType(
                     name: "Renault ZOE",
                     energyConsumption: 16,
-                    maxEnergyLoad: 22
+                    maxEnergyLoad: 22,
+                    company: company
             );
 
             if ( !renaultZoe.save( flush: true ) ) {
@@ -112,7 +121,8 @@ class BootStrap {
             CarType vw = new CarType(
                     name: "VW E-up!",
                     energyConsumption: 11.7,
-                    maxEnergyLoad: 19
+                    maxEnergyLoad: 19,
+                    company: company
             );
 
             if ( !vw.save( flush: true ) ) {
@@ -368,6 +378,9 @@ class BootStrap {
 
         log.error( "preloading feature graph into application scope.." )
         routeService.getFeatureGraph( "osmGraph" )
+
+        createDefaultCarTypes()
+
 
         // create some carTypes
         CarType carType1 = new CarType(

@@ -11,7 +11,7 @@ class UpdateCarTypeCommandObject {
 
     String carName
     Double energyDemand
-    Double capacity
+    Double maxEnergyCapacity
     Long carTypeId
 
     static constraints = {
@@ -27,7 +27,7 @@ class UpdateCarTypeCommandObject {
         }
         carName nullable: false, blank: false
         energyDemand nullable: false, min: 0d
-        capacity nullable: false, min: 0d
+        maxEnergyCapacity nullable: false, min: 0d
 
     }
 

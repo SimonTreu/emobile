@@ -140,6 +140,8 @@ class ConfigurationController {
      */
     def createCarType() {
 
+        log.error( "params: ${params}" )
+
         Person person = (Person) springSecurityService.currentUser
 
         if ( !person ) {
@@ -166,8 +168,7 @@ class ConfigurationController {
 
         }
 
-
-        // TODO: render
+        redirect( controller: 'configuration', action: 'showCarTypes' )
     }
 
     /**

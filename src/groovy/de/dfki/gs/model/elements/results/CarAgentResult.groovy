@@ -1,6 +1,6 @@
 package de.dfki.gs.model.elements.results
 
-import de.dfki.gs.domain.CarType
+import de.dfki.gs.domain.simulation.CarType
 
 /**
  * Created by glenn on 01.04.14.

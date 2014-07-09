@@ -1,6 +1,6 @@
 package de.dfki.gs.controller.commands
 
-import de.dfki.gs.domain.stats.ExperimentRunResult
+
 import grails.validation.Validateable
 
 /**

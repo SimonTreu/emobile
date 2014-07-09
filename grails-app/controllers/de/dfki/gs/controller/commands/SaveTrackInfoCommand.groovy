@@ -1,9 +1,9 @@
 package de.dfki.gs.controller.commands
 
-import de.dfki.gs.domain.CarType
-import de.dfki.gs.domain.Simulation
-import de.dfki.gs.domain.SimulationRoute
-import de.dfki.gs.domain.Track
+import de.dfki.gs.domain.simulation.CarType
+import de.dfki.gs.domain.simulation.Simulation
+import de.dfki.gs.domain.simulation.SimulationRoute
+import de.dfki.gs.domain.simulation.Track
 import grails.validation.Validateable
 
 /**

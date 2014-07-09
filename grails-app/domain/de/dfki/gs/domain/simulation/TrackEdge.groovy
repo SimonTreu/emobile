@@ -1,4 +1,6 @@
-package de.dfki.gs.domain
+package de.dfki.gs.domain.simulation
+
+import de.dfki.gs.domain.utils.TrackEdgeType
 
 class TrackEdge {
 
@@ -6,22 +8,22 @@ class TrackEdge {
      * maybe a dirty hack, at least an unproper design
      * but this is to collect trackedges faster by it's simulationId
      */
-    Long simulationRouteId;
+    // Long simulationRouteId;
 
     Long gisId;
 
     /**
      * Berlin: lat: 52, lon: 13
      */
-    Double fromLat
-    Double fromLon
+    float fromLat
+    float fromLon
 
-    Double toLat
-    Double toLon
+    float toLat
+    float toLon
 
     Integer kmh
-    Double cost
-    Double km
+    float cost
+    float km
 
     String type
 

@@ -1,6 +1,10 @@
-package de.dfki.gs.domain
+package de.dfki.gs.domain.simulation
+
+import de.dfki.gs.domain.users.Company
 
 class CarType {
+
+    Company company
 
     /**
      * leaf, or tessla or sth useless
@@ -29,7 +33,7 @@ class CarType {
     // Double currentErnergyLoad
 
 
-    List<GasolineStation> allowedGasolationStations = []
+    List<FillingStationType> allowedFillingStationTypes = []
 
     static transients = [ 'currentErnergyLoad' ]
 

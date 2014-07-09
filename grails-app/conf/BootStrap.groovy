@@ -1,11 +1,12 @@
 import com.vividsolutions.jts.geom.Coordinate
 import com.vividsolutions.jts.geom.Point
 import de.dfki.gs.bootstrap.BootstrapHelper
-import de.dfki.gs.domain.Car
-import de.dfki.gs.domain.CarType
-import de.dfki.gs.domain.Simulation
-import de.dfki.gs.domain.SimulationRoute
-import de.dfki.gs.domain.Track
+import de.dfki.gs.domain.simulation.Car
+import de.dfki.gs.domain.simulation.CarType
+import de.dfki.gs.domain.simulation.Simulation
+import de.dfki.gs.domain.simulation.SimulationRoute
+import de.dfki.gs.domain.simulation.Track
+import de.dfki.gs.domain.users.Company
 import de.dfki.gs.service.RouteService
 import de.dfki.gs.threadutils.NotifyingBlockingThreadPoolExecutor
 import de.dfki.gs.utils.LatLonPoint
@@ -329,13 +330,15 @@ class BootStrap {
         def roleEmployee = helper.findOrCreateRole("ROLE_EMPLOYEE")
         def roleUser = helper.findOrCreateRole("ROLE_USER")
 
-        // needs to be created first - since we need on user that has default documents public otherwise duplicates are created
+        Company company = helper.findOrCreateCompany( "dfki" )
+
         // def userUser = helper.findOrCreatePersonInRole("glenn.schuetze@gmail.com", "Glenn", "Schütze", roleAdmin)
-        def andreyUser = helper.findOrCreatePersonInRole( "andrey.bukhman@dfki.de", "Andrey", "Bukhman", roleUser )
+        def andreyUser = helper.findOrCreatePersonInRole( company, "andrey.bukhman@dfki.de", "Andrey", "Bukhman", roleUser )
+        helper.findOrCreatePersonInRole( company, "andrey.bukhman@dfki.de", "Andrey", "Bukhman", roleAdmin )
 
 
-        helper.findOrCreatePersonInRole("glennsen@googlemail.com", "Glenn", "Schütze", roleUser)
-        helper.findOrCreatePersonInRole("glennsen@googlemail.com", "Glenn", "Schütze", roleAdmin)
+        helper.findOrCreatePersonInRole( company, "glennsen@googlemail.com", "Glenn", "Schütze", roleUser)
+        helper.findOrCreatePersonInRole( company, "glennsen@googlemail.com", "Glenn", "Schütze", roleAdmin)
 
 
         // helper.findOrCreateRequestmap( "/login/success", "IS_AUTHENTICATED_ANONYMOUSLY" )
@@ -343,6 +346,8 @@ class BootStrap {
         helper.findOrCreateRequestmap( "/sim", "ROLE_USER" )
 
         helper.findOrCreateRequestmap( "/simulation", "ROLE_USER" )
+
+        helper.findOrCreateRequestmap( "/configuration", "ROLE_USER" )
 
         //
 
@@ -364,10 +369,30 @@ class BootStrap {
         log.error( "preloading feature graph into application scope.." )
         routeService.getFeatureGraph( "osmGraph" )
 
-        log.error( "start bootstrapping and create some routes.." )
+        // create some carTypes
+        CarType carType1 = new CarType(
+                company: Company.findByName( "dfki" ),
+                energyConsumption: 14,
+                maxEnergyLoad: 30,
+                name: "carTypeHua1"
+        )
+        if ( !carType1.save( flush: true, failOnError: true ) ) {
+            log.error( "failed to save carTye: ${carType1.errors}" )
+        }
+        CarType carType2 = new CarType(
+                company: Company.findByName( "dfki" ),
+                energyConsumption: 21,
+                maxEnergyLoad: 25,
+                name: "carTypeHua2"
+        )
+        if ( !carType2.save( flush: true, failOnError: true ) ) {
+            log.error( "failed to save carTye: ${carType2.errors}" )
+        }
+
+        // log.error( "start bootstrapping and create some routes.." )
 
 
-        createDefaultCarTypes();
+        // createDefaultCarTypes();
 
         def bigSimName = "BigSim500"
         def howMuchRoutes = 500

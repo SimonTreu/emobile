@@ -1,6 +1,6 @@
 package de.dfki.gs.simulation
 
-import de.dfki.gs.domain.TrackEdge
+import de.dfki.gs.domain.simulation.TrackEdge
 import de.dfki.gs.utils.LatLonPoint
 
 /**

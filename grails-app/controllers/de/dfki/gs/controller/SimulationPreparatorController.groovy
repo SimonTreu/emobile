@@ -2,17 +2,11 @@ package de.dfki.gs.controller
 
 import de.dfki.gs.controller.commands.AddCarTypeAndRouteCommand
 import de.dfki.gs.controller.commands.AddFillingStationCommand
-import de.dfki.gs.controller.commands.CreateSimulationCommand
 import de.dfki.gs.controller.commands.CreateSimulationOnlyCommand
 import de.dfki.gs.controller.commands.DeleteFillingStationCommand
 import de.dfki.gs.controller.commands.SelectSimulationCommand
 import de.dfki.gs.controller.commands.ShowExperimentResultCommand
-import de.dfki.gs.domain.CarType
-import de.dfki.gs.domain.GasolineStation
-import de.dfki.gs.domain.GasolineStationType
-import de.dfki.gs.domain.Simulation
-import de.dfki.gs.domain.SimulationRoute
-import de.dfki.gs.domain.stats.ExperimentRunResult
+import de.dfki.gs.domain.simulation.Simulation
 
 class SimulationPreparatorController {
 

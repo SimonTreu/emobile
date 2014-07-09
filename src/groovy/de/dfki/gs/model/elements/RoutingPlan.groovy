@@ -1,7 +1,7 @@
 package de.dfki.gs.model.elements
 
 import com.sun.tools.doclets.formats.html.resources.standard
-import de.dfki.gs.domain.TrackEdge
+import de.dfki.gs.domain.simulation.TrackEdge
 import de.dfki.gs.utils.LatLonPoint
 
 /**

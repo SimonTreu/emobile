@@ -1,17 +1,14 @@
 package de.dfki.gs.controller
 
-import de.dfki.gs.domain.CarType
+import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.GasolineStationType
-import de.dfki.gs.domain.Simulation
 import de.dfki.gs.domain.stats.CarTypeCount
 import de.dfki.gs.domain.stats.ExperimentRunResult
 import de.dfki.gs.domain.stats.PersistedCarAgentResult
 import de.dfki.gs.domain.stats.PersistedFillingStationResult
-import de.dfki.gs.model.elements.results.CarAgentResult
 import de.dfki.gs.simulation.CarStatus
 import de.dfki.gs.utils.TimeCalculator
 import org.apache.commons.io.FileUtils
-import org.geotools.coverage.processing.operation.Exp
 
 class StatsController {
 

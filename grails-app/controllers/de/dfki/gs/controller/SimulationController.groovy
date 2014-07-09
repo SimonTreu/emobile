@@ -1,23 +1,17 @@
 package de.dfki.gs.controller
 
 import de.dfki.gs.controller.commands.CreateSimulationCommand
-import de.dfki.gs.controller.commands.LoadSimulationRouteCommand
 import de.dfki.gs.controller.commands.ScaleCommand
 import de.dfki.gs.controller.commands.SelectSimulationCommand
 import de.dfki.gs.controller.commands.SimulationCommand
-import de.dfki.gs.domain.Person
-import de.dfki.gs.domain.Simulation
-import de.dfki.gs.domain.SimulationRoute
+import de.dfki.gs.domain.users.Person
+import de.dfki.gs.domain.simulation.Simulation
 import de.dfki.gs.service.simulation.AsyncSimulationFrameworkService
 import de.dfki.gs.simulation.SchedulerStatus
-import de.dfki.gs.simulation.SimulationThreadTask
-import de.dfki.gs.utils.LatLonPoint
 import de.dfki.gs.utils.ResponseConstants
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityUtils
 import org.codehaus.groovy.grails.web.util.WebUtils
-
-import javax.servlet.AsyncContext
 
 class SimulationController {
 

@@ -107,10 +107,13 @@
                             </div>
                            <div class="row">
                                 <div class="left"><g:message code="simulation.index.existentfleet"/></div>
-                                <div class="right"><select size="1">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                </select></div>
+                                    <div class="right">
+                                        <g:select name="fleet" from="${availableFleets}"
+                                        <select size="1">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                        </select>
+                                    </div>
                                 <div class="clear"></div>
                             </div>
 

@@ -1,7 +1,6 @@
 package de.dfki.gs.controller
 
 import com.vividsolutions.jts.geom.Coordinate
-import com.vividsolutions.jts.geom.Point
 import de.dfki.gs.controller.commands.CheckDateCommand
 import de.dfki.gs.controller.commands.SaveGasolineInfoCommand
 import de.dfki.gs.controller.commands.SaveTrackInfoCommand
@@ -9,24 +8,18 @@ import de.dfki.gs.controller.commands.ShowGasolineInfoCommand
 import de.dfki.gs.controller.commands.ShowTrackInfoCommand
 import de.dfki.gs.controller.commands.SimulationCommand
 import de.dfki.gs.controller.commands.StartAndDestinationsCommandObject
-import de.dfki.gs.domain.CarType
+import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
-import de.dfki.gs.domain.Person
-import de.dfki.gs.domain.Simulation
-import de.dfki.gs.domain.SimulationRoute
-import de.dfki.gs.domain.Track
-import de.dfki.gs.domain.TrackEdge
+import de.dfki.gs.domain.users.Person
+import de.dfki.gs.domain.simulation.Simulation
+import de.dfki.gs.domain.simulation.SimulationRoute
+import de.dfki.gs.domain.simulation.Track
+import de.dfki.gs.domain.simulation.TrackEdge
 import de.dfki.gs.utils.LatLonPoint
 import de.dfki.gs.utils.ResponseConstants
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityUtils
-import groovy.sql.Sql
-import org.geotools.graph.path.Path
-import org.geotools.graph.structure.Edge
-import org.geotools.graph.structure.basic.BasicEdge
-import org.geotools.graph.structure.basic.BasicNode
-import org.opengis.feature.simple.SimpleFeature
 
 class MapViewController {
 

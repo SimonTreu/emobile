@@ -1,4 +1,4 @@
-package de.dfki.gs.domain
+package de.dfki.gs.domain.users
 
 class Person {
 
@@ -16,6 +16,8 @@ class Person {
     boolean accountExpired
     boolean accountLocked
     boolean passwordExpired
+
+    Company company
 
     static transients = ['springSecurityService']
 

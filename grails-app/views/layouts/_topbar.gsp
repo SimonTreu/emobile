@@ -45,7 +45,7 @@
                     <ul id="menu">
                         <li><a href="#"><span></span> <g:message code="layouts._topbar.simulate"/></a>
                             <ul>
-                                <li><g:link controller="simulation" action="init"><g:message code="layouts._topbar.new"/> </g:link></li>
+                                <li><g:link controller="configuration" action="index"><g:message code="layouts._topbar.new"/> </g:link></li>
                                 <li><g:link controller="simulation" action="open"><g:message code="layouts._topbar.open"/></a></g:link></li>
                                 <li><a href="#"><g:message code="layouts._topbar.openresent"/></a></li>
                                 <li><g:link controller="simulation" action="load"><g:message code="layouts._topbar.loadfromfile"/></g:link></li>
@@ -62,7 +62,8 @@
                         </li>
                         <li><g:link controller="extras" action="index"><span class=""></span><g:message code="layouts._topbar.extras"/></g:link>
                             <ul>
-                                <li><g:link controller="extras" action="index"><g:message code="layouts._topbar.addnewcartype"/></g:link></li>
+                                <%-- <li><g:link controller="configuration" action="showCarTypes"><g:message code="layouts._topbar.addnewcartype"/></g:link></li> --%>
+                                <li><g:link controller="configuration" action="showCarTypes"><g:message code="layouts._topbar.addnewcartype"/></g:link></li>
                                 <li><g:link controller="extras" action="station"><g:message code="layouts._topbar.addnewelectricstation"/></g:link></li>
                                 <li><g:link controller="mapView" action="listUsages"><g:message code="layouts._topbar.electricstationstatistic"/></g:link></li>
                             </ul>

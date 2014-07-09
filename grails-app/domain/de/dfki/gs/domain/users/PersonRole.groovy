@@ -1,4 +1,4 @@
-package de.dfki.gs.domain
+package de.dfki.gs.domain.users
 
 import org.apache.commons.lang.builder.HashCodeBuilder
 

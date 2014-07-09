@@ -4,8 +4,8 @@ import com.vividsolutions.jts.geom.Coordinate
 import com.vividsolutions.jts.geom.Point
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
-import de.dfki.gs.domain.TrackEdge
-import de.dfki.gs.domain.TrackEdgeType
+import de.dfki.gs.domain.simulation.TrackEdge
+import de.dfki.gs.domain.utils.TrackEdgeType
 import de.dfki.gs.service.RouteService
 import de.dfki.gs.utils.LatLonPoint
 import org.apache.commons.logging.LogFactory

@@ -1,11 +1,10 @@
 package de.dfki.gs.service
 
 import de.dfki.gs.domain.GasolineStation
-import de.dfki.gs.domain.Simulation
-import de.dfki.gs.domain.SimulationRoute
-import de.dfki.gs.domain.Track
-import de.dfki.gs.domain.TrackEdge
-import de.dfki.gs.domain.TrackEdgeType
+import de.dfki.gs.domain.simulation.Simulation
+import de.dfki.gs.domain.simulation.SimulationRoute
+import de.dfki.gs.domain.simulation.TrackEdge
+import de.dfki.gs.domain.utils.TrackEdgeType
 import grails.async.Promise
 
 import static grails.async.Promises.waitAll

@@ -1,6 +1,6 @@
 package de.dfki.gs.service.stats
 
-import de.dfki.gs.domain.CarType
+import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.GasolineStationType
 import de.dfki.gs.domain.stats.CarTypeCount
 import de.dfki.gs.domain.stats.ExperimentRunResult
@@ -9,7 +9,6 @@ import de.dfki.gs.domain.stats.PersistedCarAgentResult
 import de.dfki.gs.domain.stats.PersistedFillingStationResult
 import de.dfki.gs.model.stats.SimulationConfiguration
 import de.dfki.gs.simulation.CarStatus
-import de.dfki.gs.utils.TimeCalculator
 import grails.transaction.Transactional
 
 @Transactional

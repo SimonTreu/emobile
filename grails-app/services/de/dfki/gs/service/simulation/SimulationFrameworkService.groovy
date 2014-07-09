@@ -1,9 +1,9 @@
 package de.dfki.gs.service.simulation
 
 import de.dfki.gs.domain.GasolineStation
-import de.dfki.gs.domain.Simulation
-import de.dfki.gs.domain.SimulationRoute
-import de.dfki.gs.domain.TrackEdge
+import de.dfki.gs.domain.simulation.Simulation
+import de.dfki.gs.domain.simulation.SimulationRoute
+import de.dfki.gs.domain.simulation.TrackEdge
 import de.dfki.gs.simulation.CarStatus
 import de.dfki.gs.simulation.Scheduler
 import de.dfki.gs.simulation.SchedulerStatus

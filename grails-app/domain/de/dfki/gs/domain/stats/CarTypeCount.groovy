@@ -1,6 +1,7 @@
 package de.dfki.gs.domain.stats
 
-import de.dfki.gs.domain.CarType
+import de.dfki.gs.domain.simulation.CarType
+
 
 class CarTypeCount {
 

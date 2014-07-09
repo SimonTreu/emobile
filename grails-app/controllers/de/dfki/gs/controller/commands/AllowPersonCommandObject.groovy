@@ -1,6 +1,6 @@
 package de.dfki.gs.controller.commands
 
-import de.dfki.gs.domain.Person
+import de.dfki.gs.domain.users.Person
 import grails.validation.Validateable
 
 /**

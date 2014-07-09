@@ -1,5 +1,6 @@
 package de.dfki.gs.domain
 
+import de.dfki.gs.domain.users.PersistentLogin
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 

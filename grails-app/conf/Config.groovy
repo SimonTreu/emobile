@@ -175,10 +175,10 @@ grails.cache.config = {
 }
 
 // Added by the Spring Security Core plugin:
-grails.plugin.springsecurity.userLookup.userDomainClassName = 'de.dfki.gs.domain.Person'
-grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'de.dfki.gs.domain.PersonRole'
-grails.plugin.springsecurity.authority.className = 'de.dfki.gs.domain.Role'
-grails.plugin.springsecurity.requestMap.className = 'de.dfki.gs.domain.RequestMap'
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'de.dfki.gs.domain.users.Person'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'de.dfki.gs.domain.users.PersonRole'
+grails.plugin.springsecurity.authority.className = 'de.dfki.gs.domain.users.Role'
+grails.plugin.springsecurity.requestMap.className = 'de.dfki.gs.domain.users.RequestMap'
 grails.plugin.springsecurity.securityConfigType = 'Requestmap'
 
 
@@ -209,7 +209,7 @@ grails.plugin.springsecurity.logout.handlerNames = [
 
 
 grails.plugin.springsecurity.rememberMe.persistent = true
-grails.plugin.springsecurity.rememberMe.persistentToken.domainClassName = 'de.dfki.gs.domain.PersistentLogin'
+grails.plugin.springsecurity.rememberMe.persistentToken.domainClassName = 'de.dfki.gs.domain.users.PersistentLogin'
 
 
 

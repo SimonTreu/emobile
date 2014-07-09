@@ -1,4 +1,4 @@
-package de.dfki.gs.domain
+package de.dfki.gs.domain.simulation
 
 class SimulationRoute {
 

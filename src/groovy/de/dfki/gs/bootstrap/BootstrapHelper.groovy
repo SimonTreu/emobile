@@ -1,9 +1,10 @@
 package de.dfki.gs.bootstrap
 
-import de.dfki.gs.domain.Person
-import de.dfki.gs.domain.PersonRole
-import de.dfki.gs.domain.RequestMap
-import de.dfki.gs.domain.Role
+import de.dfki.gs.domain.users.Company
+import de.dfki.gs.domain.users.Person
+import de.dfki.gs.domain.users.PersonRole
+import de.dfki.gs.domain.users.RequestMap
+import de.dfki.gs.domain.users.Role
 import org.apache.commons.logging.LogFactory
 
 /**
@@ -13,6 +14,25 @@ class BootstrapHelper {
 
     private static def log = LogFactory.getLog(BootstrapHelper.class)
 
+    Company findOrCreateCompany( String companyName ) {
+
+        def company = Company.findByName( companyName )
+        if ( !company ) {
+            company = new Company(
+                            name: companyName,
+                            street: "dfkiStreet",
+                            number: "23",
+                            zipCode: "22222",
+                            telephoneNumber: "233",
+
+            )
+
+            if ( !company.save( flush: true, failOnError: true ) ) log.error( "failed to save company: ${company.errors}")
+
+        }
+
+        return company
+    }
 
     Role findOrCreateRole( String roleName, failOnError = true ) {
 
@@ -26,21 +46,21 @@ class BootstrapHelper {
     }
 
 
-    Person findOrCreatePersonInRole(String userName, String givenName, String familyName, Role role, boolean failOnError = true, boolean flush = true ) {
+    Person findOrCreatePersonInRole( Company company, String userName, String givenName, String familyName, Role role, boolean failOnError = true, boolean flush = true ) {
 
         log.debug( "findOrCreatePersonInRole: ${userName}")
 
         def p = Person.findByUsername( userName )
 
         if (!p) {
-            p = createPerson( userName, givenName, familyName, failOnError, flush )
+            p = createPerson( company, userName, givenName, familyName, failOnError, flush )
         }
         if (!PersonRole.create(p, role, true)) log.error("failed to add Persion[ $p ] to Role[ $role ] -- errors: ${p?.errors}")
 
         return p
     }
 
-    Person createPerson( String userName, String givenName, String familyName, boolean failOnError = true, boolean flush = true ) {
+    Person createPerson( Company company, String userName, String givenName, String familyName, boolean failOnError = true, boolean flush = true ) {
 
 
             def found = Person.findByUsername( userName )
@@ -56,7 +76,8 @@ class BootstrapHelper {
                     givenName: givenName,
                     familyName: familyName,
                     password: newPassword,
-                    confirmationCode: uuid.toString()
+                    confirmationCode: uuid.toString(),
+                    company: company
             )
 
             if (!p.save(flush: flush, failOnError: failOnError)) log.error("failed to save Person[ $p ] -- errors: ${p?.errors}" )

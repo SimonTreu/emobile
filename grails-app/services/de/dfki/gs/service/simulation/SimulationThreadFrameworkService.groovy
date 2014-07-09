@@ -1,12 +1,12 @@
 package de.dfki.gs.service.simulation
 
-import de.dfki.gs.domain.CarType
+import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
-import de.dfki.gs.domain.Simulation
-import de.dfki.gs.domain.SimulationRoute
-import de.dfki.gs.domain.Track
-import de.dfki.gs.domain.TrackEdge
+import de.dfki.gs.domain.simulation.Simulation
+import de.dfki.gs.domain.simulation.SimulationRoute
+import de.dfki.gs.domain.simulation.Track
+import de.dfki.gs.domain.simulation.TrackEdge
 import de.dfki.gs.model.elements.Agent
 import de.dfki.gs.model.elements.CarAgent
 import de.dfki.gs.model.elements.EFillingStationAgent

@@ -1,6 +1,6 @@
 package de.dfki.gs.service.stats
 import de.dfki.gs.controller.MapViewController
-import de.dfki.gs.domain.CarType
+import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.ElectricStationTimeStatus
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.model.elements.FillingStationStatus

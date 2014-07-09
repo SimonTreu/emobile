@@ -1,6 +1,6 @@
 package de.dfki.gs.model.elements
 
-import de.dfki.gs.domain.CarType
+import de.dfki.gs.domain.simulation.CarType
 
 import java.util.concurrent.Callable
 

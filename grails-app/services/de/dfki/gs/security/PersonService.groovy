@@ -1,9 +1,8 @@
 package de.dfki.gs.security
 
-import de.dfki.gs.bootstrap.BootstrapHelper
-import de.dfki.gs.domain.Person
-import de.dfki.gs.domain.PersonRole
-import de.dfki.gs.domain.Role
+import de.dfki.gs.domain.users.Person
+import de.dfki.gs.domain.users.PersonRole
+import de.dfki.gs.domain.users.Role
 import grails.transaction.Transactional
 
 @Transactional

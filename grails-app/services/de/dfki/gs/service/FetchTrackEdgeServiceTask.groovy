@@ -1,7 +1,7 @@
 package de.dfki.gs.service
 
-import de.dfki.gs.domain.SimulationRoute
-import de.dfki.gs.domain.TrackEdge
+import de.dfki.gs.domain.simulation.SimulationRoute
+import de.dfki.gs.domain.simulation.TrackEdge
 
 /**
  * Created by glenn on 19.04.14.

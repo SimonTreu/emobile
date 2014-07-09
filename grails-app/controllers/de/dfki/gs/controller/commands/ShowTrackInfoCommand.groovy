@@ -1,7 +1,7 @@
 package de.dfki.gs.controller.commands
 
-import de.dfki.gs.domain.SimulationRoute
-import de.dfki.gs.domain.Track
+import de.dfki.gs.domain.simulation.SimulationRoute
+import de.dfki.gs.domain.simulation.Track
 import grails.validation.Validateable
 
 /**

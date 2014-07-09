@@ -2,8 +2,8 @@ package de.dfki.gs.model.elements
 
 import com.vividsolutions.jts.geom.Point
 import de.dfki.gs.domain.GasolineStation
-import de.dfki.gs.domain.TrackEdge
-import de.dfki.gs.domain.TrackEdgeType
+import de.dfki.gs.domain.simulation.TrackEdge
+import de.dfki.gs.domain.utils.TrackEdgeType
 import de.dfki.gs.model.elements.results.CarAgentResult
 import de.dfki.gs.service.RouteService
 import de.dfki.gs.simulation.CarStatus

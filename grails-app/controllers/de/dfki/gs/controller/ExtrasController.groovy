@@ -1,12 +1,13 @@
 package de.dfki.gs.controller
 
-import de.dfki.gs.domain.Person
+import de.dfki.gs.domain.users.Person
 import grails.plugin.springsecurity.SpringSecurityUtils
 
 class ExtrasController {
 
     def simulationDataService
     def springSecurityService
+
     def index() {
         def m = [ : ]
         m.carTypeCars = simulationDataService.collectCarTypes()

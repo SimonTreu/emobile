@@ -1,5 +1,7 @@
 package de.dfki.gs.domain
 
+import de.dfki.gs.domain.simulation.Simulation
+
 class GasolineStation {
 
     String name

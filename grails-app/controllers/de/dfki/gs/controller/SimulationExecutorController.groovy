@@ -2,8 +2,8 @@ package de.dfki.gs.controller
 
 import de.dfki.gs.controller.commands.SimulationCommand
 import de.dfki.gs.controller.commands.SimulationExcecutorCommand
-import de.dfki.gs.domain.Simulation
-import de.dfki.gs.domain.SimulationRoute
+import de.dfki.gs.domain.simulation.Simulation
+import de.dfki.gs.domain.simulation.SimulationRoute
 import de.dfki.gs.simulation.SchedulerStatus
 import de.dfki.gs.utils.ResponseConstants
 import grails.converters.JSON

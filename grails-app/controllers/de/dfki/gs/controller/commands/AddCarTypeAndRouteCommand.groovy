@@ -1,7 +1,7 @@
 package de.dfki.gs.controller.commands
 
-import de.dfki.gs.domain.CarType
-import de.dfki.gs.domain.Simulation
+import de.dfki.gs.domain.simulation.CarType
+import de.dfki.gs.domain.simulation.Simulation
 import grails.validation.Validateable
 
 /**

@@ -1,6 +1,6 @@
 package de.dfki.gs.controller
 
-import de.dfki.gs.domain.Person
+import de.dfki.gs.domain.users.Person
 
 class FrontController {
 

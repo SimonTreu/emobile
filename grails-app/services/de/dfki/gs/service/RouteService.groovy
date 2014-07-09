@@ -2,35 +2,28 @@ package de.dfki.gs.service
 
 import com.vividsolutions.jts.geom.Coordinate
 import com.vividsolutions.jts.geom.Point
-import de.dfki.gs.domain.CarType
+import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
-import de.dfki.gs.domain.Simulation
-import de.dfki.gs.domain.SimulationRoute
-import de.dfki.gs.domain.Track
-import de.dfki.gs.domain.TrackEdge
-import de.dfki.gs.domain.TrackEdgeType
-import de.dfki.gs.threadutils.CreatePathTask
+import de.dfki.gs.domain.simulation.Simulation
+import de.dfki.gs.domain.simulation.SimulationRoute
+import de.dfki.gs.domain.simulation.TrackEdge
+import de.dfki.gs.domain.utils.TrackEdgeType
 import de.dfki.gs.threadutils.NotifyingBlockingThreadPoolExecutor
 import de.dfki.gs.utils.Calculater
 import de.dfki.gs.utils.LatLonPoint
 //import grails.plugin.cache.Cacheable
 import grails.util.Environment
-import org.codehaus.groovy.grails.web.context.ServletContextHolder
 import org.geotools.data.DataStore
 import org.geotools.data.DataStoreFinder
 import org.geotools.data.simple.SimpleFeatureCollection
 import org.geotools.data.simple.SimpleFeatureSource
 import org.geotools.feature.FeatureIterator
 import org.geotools.feature.simple.SimpleFeatureImpl
-import org.geotools.graph.build.basic.BasicDirectedGraphGenerator
 import org.geotools.graph.build.feature.FeatureGraphGenerator
-import org.geotools.graph.build.line.DirectedLineStringGraphGenerator
 import org.geotools.graph.build.line.LineStringGraphGenerator
 import org.geotools.graph.path.AStarShortestPathFinder
 import org.geotools.graph.path.Path
-import org.geotools.graph.path.Walk
-import org.geotools.graph.path.WrongPathException
 import org.geotools.graph.structure.Graph
 import org.geotools.graph.structure.basic.BasicEdge
 import org.geotools.graph.structure.basic.BasicNode
@@ -39,8 +32,6 @@ import org.opengis.feature.Feature
 import org.geotools.graph.structure.Edge
 import org.springframework.context.ApplicationContext
 
-import java.text.DecimalFormat
-import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.Callable
 import java.util.concurrent.TimeUnit
 

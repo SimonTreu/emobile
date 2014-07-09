@@ -17,6 +17,12 @@ class ConfigurationController {
     def configurationService
 
     /**
+     * this part handles all about fillingStationType manageing
+     *
+     *
+     */
+
+    /**
      * show the FillingStationTypes available with edit button for each
      * show the add button
      *
@@ -45,6 +51,77 @@ class ConfigurationController {
 
         render view: "showFillingStationTypes", model: m
     }
+
+    def editFillingStationType() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        log.error( "params: ${params}" )
+
+        UpdateFillingStationTypeCommandObject cmd = new UpdateFillingStationTypeCommandObject()
+        bindData( cmd, params )
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to find fillingStationType for id. errors: ${cmd.errors}" )
+
+        } else {
+
+            FillingStationType updatedfillingStationType = configurationService.updateFillingStationTypeForCompany( person, cmd.fillingStationTypeId, cmd.fillingStationTypeName, cmd.power )
+
+        }
+
+        redirect( controller: 'configuration', action: 'showFillingStationTypes' )
+    }
+
+    def editFillingStationTypeView() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        log.error( "params: ${params}" )
+
+        EditFillingStationCommandObject cmd = new EditFillingStationCommandObject()
+        bindData( cmd, params )
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to find fillingStationType for id. errors: ${cmd.errors}" )
+
+        } else {
+
+            def m = [ : ]
+
+            FillingStationType fillingStationType = FillingStationType.get( cmd.fillingStationTypeId )
+            m.fillingStationTypeName = fillingStationType.name
+            m.power                  = fillingStationType.power
+            m.fillingPortion         = fillingStationType.fillingPortion
+            m.fillingStationTypeId   = fillingStationType.id
+
+            render template: '/templates/fillingstationtype/editFillingStationType', model: m
+
+        }
+
+    }
+
+    def createFillingStationTypeView() {
+
+        render template: '/templates/fillingstationtype/createFillingStationType'
+
+    }
+
+
 
     /**
      * show the cartypes available with edit button for each
@@ -104,33 +181,6 @@ class ConfigurationController {
         render view: 'index', model: m
     }
 
-    def editFillingStationType() {
-
-        Person person = (Person) springSecurityService.currentUser
-
-        if ( !person ) {
-
-            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
-            return
-        }
-
-        log.error( "params: ${params}" )
-
-        UpdateFillingStationTypeCommandObject cmd = new UpdateFillingStationTypeCommandObject()
-        bindData( cmd, params )
-
-        if ( !cmd.validate() && cmd.hasErrors() ) {
-
-            log.error( "failed to find fillingStationType for id. errors: ${cmd.errors}" )
-
-        } else {
-
-            FillingStationType updatedfillingStationType = configurationService.updateFillingStationTypeForCompany( person, cmd.fillingStationTypeId, cmd.fillingStationTypeName, cmd.power )
-
-        }
-
-        redirect( controller: 'configuration', action: 'showFillingStationTypes' )
-    }
 
     def editCarType() {
 
@@ -153,47 +203,14 @@ class ConfigurationController {
 
         } else {
 
-            CarType updatedCarType = configurationService.updateCarTypeForCompany( person, cmd.carTypeId, cmd.carName, cmd.energyDemand, cmd.capacity)
+            CarType updatedCarType = configurationService.updateCarTypeForCompany( person, cmd.carTypeId, cmd.carName, cmd.energyDemand, cmd.maxEnergyCapacity)
 
         }
 
         redirect( controller: 'configuration', action: 'showCarTypes' )
     }
 
-    def editFillingStationTypeView() {
 
-        Person person = (Person) springSecurityService.currentUser
-
-        if ( !person ) {
-
-            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
-            return
-        }
-
-        log.error( "params: ${params}" )
-
-        EditFillingStationCommandObject cmd = new EditFillingStationCommandObject()
-        bindData( cmd, params )
-
-        if ( !cmd.validate() && cmd.hasErrors() ) {
-
-            log.error( "failed to find fillingStationType for id. errors: ${cmd.errors}" )
-
-        } else {
-
-            def m = [ : ]
-
-            FillingStationType fillingStationType = FillingStationType.get( cmd.fillingStationTypeId )
-            m.fillingStationTypeName = fillingStationType.name
-            m.power                  = fillingStationType.power
-            m.fillingPortion         = fillingStationType.fillingPortion
-            m.fillingStationTypeId   = fillingStationType.id
-
-            render template: '/templates/editFillingStationType', model: m
-
-        }
-
-    }
 
     def editCarTypeView() {
 
@@ -224,21 +241,17 @@ class ConfigurationController {
             m.maxEnergyLoad     = carType.maxEnergyLoad
             m.carTypeId         = carType.id
 
-            render template: '/templates/editCarType', model: m
+            render template: '/templates/cartype/editCarType', model: m
 
         }
 
     }
 
-    def createFillingStationTypeView() {
 
-        render template: '/templates/createFillingStationType'
-
-    }
 
     def createCarTypeView() {
 
-        render template: '/templates/createCarType'
+        render template: '/templates/cartype/createCarType'
 
     }
 

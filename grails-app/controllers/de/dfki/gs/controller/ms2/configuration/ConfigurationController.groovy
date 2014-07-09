@@ -280,6 +280,8 @@ class ConfigurationController {
      */
     def createCarType() {
 
+        log.error( "params: ${params}" )
+
         Person person = (Person) springSecurityService.currentUser
 
         if ( !person ) {
@@ -308,28 +310,6 @@ class ConfigurationController {
         }
 
         redirect( controller: 'configuration', action: 'showCarTypes' )
-
-    }
-
-    /**
-     * list available fillingStationTypes for company
-     */
-    def listAvailableFillingStationType() {
-
-        Person person = (Person) springSecurityService.currentUser
-
-        if ( !person ) {
-            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
-            return
-        }
-
-        def m = [ : ]
-
-        List<FillingStationType> fillingStationTypes = configurationService.getFillingStationTypesForCompany( person )
-
-        m.fillingStationTypes = fillingStationTypes
-
-        // TODO: render
     }
 
     /**

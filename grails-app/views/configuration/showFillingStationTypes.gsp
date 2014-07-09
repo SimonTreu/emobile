@@ -43,9 +43,11 @@
         <%-- create-new --%>
         <div class="rowL">
             <g:form action="createFillingStationTypeView">
-
-                <g:submitToRemote class="addButton" url="[action: 'createFillingStationTypeView']" update="updateMe" name="submit" value="Create" />
-
+                <div class="left1"></div>
+                <div class="right2">
+                    <g:submitToRemote class="addButton" url="[action: 'createFillingStationTypeView']" update="updateMe" name="submit" value="Create" />
+                </div>
+                <div class="clear"></div>
             </g:form>
         </div>
     </div>

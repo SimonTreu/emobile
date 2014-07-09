@@ -31,22 +31,23 @@
 
                             <g:hiddenField name="carTypeId" value="${carType.carType.id}"/>
 
-                            <g:submitToRemote class="addButton" url="[ action: 'editCarTypeView' ]" update="updateMe" name="submit" value="edit" id="openModal">
-                                <%--<img width="16px" src="${g.resource( dir: '/images', file: 'edit.png' )}">--%>
-                            </g:submitToRemote>
+                        <%--<img class="addImage" width="14px" src="${g.resource( dir: '/images', file: 'edit.png' )}">--%>
+                        <g:submitToRemote class="addButton" url="[ action: 'editCarTypeView' ]" update="updateMe" name="submit" value="edit" id="openModal">
 
-                        </g:form>
+                        </g:submitToRemote>
 
-                    </div>
-                    <div class="clear"></div>
-                </g:each>
+                    </g:form>
+
                 </div>
+                <div class="clear"></div>
+            </g:each>
+            </div>
 
-                <div class="rowL">
-                    <g:form action="createCarTypeView">
-                        <div class="left1"></div>
-                        <div class="right2"> <g:submitToRemote class="addButton" url="[action: 'createCarTypeView']" update="updateMe" name="submit" value="create new car type" />
-                            <%--<img width="22px"src="${g.resource( dir: '/images', file: 'add.png' )}">--%>
+            <div class="rowL">
+                <g:form action="createCarTypeView">
+                    <div class="left1"></div>
+                    <div class="right2"> <g:submitToRemote class="addButton" url="[action: 'createCarTypeView']" update="updateMe" name="submit" value="create new car type" />
+                        <%--<img width="22px"src="${g.resource( dir: '/images', file: 'add.png' )}">--%>
                         </div>
                         <div class="clear"></div>
                     </g:form>

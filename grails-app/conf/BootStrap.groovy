@@ -382,26 +382,6 @@ class BootStrap {
         createDefaultCarTypes()
 
 
-        // create some carTypes
-        CarType carType1 = new CarType(
-                company: Company.findByName( "dfki" ),
-                energyConsumption: 14,
-                maxEnergyLoad: 30,
-                name: "carTypeHua1"
-        )
-        if ( !carType1.save( flush: true, failOnError: true ) ) {
-            log.error( "failed to save carTye: ${carType1.errors}" )
-        }
-        CarType carType2 = new CarType(
-                company: Company.findByName( "dfki" ),
-                energyConsumption: 21,
-                maxEnergyLoad: 25,
-                name: "carTypeHua2"
-        )
-        if ( !carType2.save( flush: true, failOnError: true ) ) {
-            log.error( "failed to save carTye: ${carType2.errors}" )
-        }
-
         // log.error( "start bootstrapping and create some routes.." )
 
 

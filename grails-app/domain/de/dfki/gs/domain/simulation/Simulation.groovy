@@ -19,7 +19,7 @@ class Simulation {
     /**
      * for the possibility to have different configs for one simulation object
      */
-    Set<Configuration> configurations
+    Set<Configuration> configurations = []
 
     /**
      * the company of the person, who creates this simulation
@@ -32,6 +32,10 @@ class Simulation {
     ]
 
     static constraints = {
+        name nullable: true
+        description nullable: true
+        abstractText nullable: true
+
     }
 
     static mapping = {

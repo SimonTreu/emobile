@@ -1,15 +1,86 @@
 package de.dfki.gs.ms2.configuration
 
+import de.dfki.gs.domain.simulation.Car
 import de.dfki.gs.domain.simulation.CarType
+import de.dfki.gs.domain.simulation.Configuration
 import de.dfki.gs.domain.simulation.FillingStationGroup
 import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.simulation.Fleet
+import de.dfki.gs.domain.simulation.Simulation
 import de.dfki.gs.domain.users.Company
 import de.dfki.gs.domain.users.Person
 import grails.transaction.Transactional
 
 @Transactional
 class ConfigurationService {
+
+    def removeFleetFromConfiguration( Long configurationStubId, Long fleetId ) {
+
+        Configuration configuration = Configuration.get( configurationStubId )
+        Fleet fleet = Fleet.get( fleetId )
+
+        configuration.removeFromFleets( fleet )
+
+        if ( !configuration.save( flush: true ) ) {
+
+            log.error( "failed to remove fleet from configuarionStub: ${configuration.errors}" )
+
+        }
+
+        return
+    }
+
+    def addFleetToConfiguration( Long configurationStubId , Long fleetId) {
+
+        Configuration configuration = Configuration.get( configurationStubId )
+        Fleet fleet = Fleet.get( fleetId )
+
+        configuration.addToFleets( fleet )
+
+        if ( !configuration.save( flush: true ) ) {
+
+            log.error( "failed to add fleet to configuarionStub: ${configuration.errors}" )
+
+        }
+
+        return
+    }
+
+    def createConfigurationStub( Person person ) {
+
+        // getting the company
+        Company company = Company.get( person.company.id )
+
+        if ( !company ) {
+            log.error( "no company found for user: ${person.username}" )
+            return
+        }
+
+        Configuration configurationStub = new Configuration(
+            company: company
+        )
+
+        if ( !configurationStub.save( flush: true ) ) {
+            log.error( "failed to save configurationStub: ${configurationStub.errors}" )
+        }
+
+
+        return configurationStub
+    }
+
+    def getAddedFleets( Long configurationStubId ) {
+
+        Configuration stub = Configuration.get( configurationStubId )
+
+        List<Fleet> addedFleets = new ArrayList<Fleet>()
+        stub.fleets.each { Fleet fleet ->
+
+            addedFleets.add( Fleet.get( fleet.id ) )
+
+        }
+
+        return addedFleets
+    }
 
     /**
      * collect all available fillingStationGroups for currentUser's company
@@ -35,11 +106,12 @@ class ConfigurationService {
 
     /**
      * collect all available fleets for currentUser's company
+     * remove those fleets which are added to configuration already, so no fleet is selectable twice
      *
      * @param currentUser
      * @return
      */
-    def getFleetsForCompany( Person currentUser ) {
+    def getFleetsForCompany( Person currentUser, Long configurationStubId ) {
 
         // getting the company
         Company company = Company.get( currentUser.company.id )
@@ -50,6 +122,14 @@ class ConfigurationService {
         }
 
         List<Fleet> fleets = Fleet.findAllByCompany( company )
+
+        Configuration stub = Configuration.get( configurationStubId )
+        List<Fleet> alreadyAddedFleets = new ArrayList<Fleet>()
+        stub.fleets.each { Fleet fleet ->
+            alreadyAddedFleets.add( Fleet.get( fleet.id ) )
+        }
+
+        fleets.removeAll( alreadyAddedFleets )
 
         return fleets
     }
@@ -123,6 +203,56 @@ class ConfigurationService {
         }
 
         return carType
+    }
+
+    def addCarsToFleet( Long fleetStubId, Integer count, Long carTypeId ) {
+
+        Fleet fleetStub = Fleet.get( fleetStubId )
+
+        CarType carType = CarType.get( carTypeId )
+
+        count.times {
+
+            Car car = new Car(
+                carType: carType,
+                name: "${carType.name} - No.${it}"
+            )
+
+            if ( !car.save( flush: true ) ) {
+                log.error( "failed to save car: ${car.errors}" )
+            } else {
+
+                fleetStub.addToCars( car )
+
+            }
+
+        }
+
+        if ( !fleetStub.save( flush: true ) ) {
+            log.error( "failed to update fleet: ${fleetStub.errors}" )
+        }
+
+
+    }
+
+    def createFleetStub( Person person, Long configurationStubId ) {
+
+        Company company = Company.get( person.company.id )
+
+        Configuration stub = Configuration.get( configurationStubId )
+
+        Fleet fleetStub = new Fleet(
+                                company: company,
+                                name: "fleetStub-${UUID.randomUUID().toString().substring(0,5)}"
+                            )
+
+        if ( !fleetStub.save( flush: true ) ) {
+            log.error( "failed to save fleet stub: ${fleetStub.errors}" )
+            return null
+        }
+
+        return fleetStub
+
     }
 
     /**

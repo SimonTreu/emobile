@@ -11,88 +11,12 @@
 <head>
     <title>Simulation</title>
     <meta name="layout" content="main" />
-    <script language="javascript">
-        function addRow(tableID) {
 
-            var table = document.getElementById(tableID);
-
-            var rowCount = table.rows.length;
-            var row = table.insertRow(rowCount);
-
-            var colCount = table.rows[0].cells.length;
-
-            for(var i=0; i<colCount; i++) {
-
-                var newcell = row.insertCell(i);
-
-                newcell.innerHTML = table.rows[0].cells[i].innerHTML;
-                //alert(newcell.childNodes);
-                switch(newcell.childNodes[0].type) {
-                    case "text":
-                        newcell.childNodes[0].value = "";
-                        break;
-                    case "checkbox":
-                        newcell.childNodes[0].checked = false;
-                        break;
-                    case "select-one":
-                        newcell.childNodes[0].selectedIndex = 0;
-                        break;
-                }
-            }
-        }
-
-        function deleteRow(tableID) {
-            try {
-                var table = document.getElementById(tableID);
-                var rowCount = table.rows.length;
-
-                for(var i=0; i<rowCount; i++) {
-                    var row = table.rows[i];
-                    var chkbox = row.cells[0].childNodes[0];
-                    if(null != chkbox && true == chkbox.checked) {
-                        if(rowCount <= 1) {
-                            alert("Cannot delete all the rows.");
-                            break;
-                        }
-                        table.deleteRow(i);
-                        rowCount--;
-                        i--;
-                    }
-
-
-                }
-            }catch(e) {
-                alert(e);
-            }
-        }
-    </script>
-    <script>
-        $(document).ready(function() {
-            $(".tabs-menu a").click(function(event) {
-                event.preventDefault();
-                $(this).parent().addClass("current");
-                $(this).parent().siblings().removeClass("current");
-                var tab = $(this).attr("href");
-                $(".tab-content").not(tab).css("display", "none");
-                $(tab).fadeIn();
-            });
-
-            $(".tabs-menu1 a").click(function(event) {
-                event.preventDefault();
-                $(this).parent().addClass("current");
-                $(this).parent().siblings().removeClass("current");
-                var tab = $(this).attr("href");
-                $(".tab-content1").not(tab).css("display", "none");
-                $(tab).fadeIn();
-            });
-        });
-    </script>
 </head>
 <body>
 
 <div class="pContainer">
 
-<form>
 <div class="d1">
     <fieldset>
         <legend> Configure Simulation </legend>
@@ -110,10 +34,47 @@
                         <div class="row">
                             <div class="left"><g:message code="simulation.index.existentfleet"/></div>
                             <div class="right">
-                                <g:select name="fleet" from="${availableFleets}" optionKey="id" optionValue="name" />
+
+                                <g:form controller="configuration" action="addExistentFleetToConfiguration">
+                                    <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+                                    <g:select name="fleetId" from="${availableFleets}" optionKey="id" optionValue="name" />
+                                    <g:submitButton name="add" value="Add Fleet to Simulation" />
+                                </g:form>
+
+
+
                             </div>
                             <div class="clear"></div>
                         </div>
+                    </g:if>
+
+                    <g:message code="simulation.index.addedfleet"/>
+                    <g:if test="${addedFleets != null && addedFleets.size() > 0}">
+
+                        <g:each in="${addedFleets}" var="addedFleet">
+
+                            <g:form controller="configuration" action="removeFleetFromConfiguration">
+
+                                <div class="row">
+                                    <div class="left">
+                                        ${addedFleet.name} with ${addedFleet.cars.size()} cars
+                                    </div>
+                                    <div class="right">
+
+                                        <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+                                        <g:hiddenField name="fleetId" value="${addedFleet.id}"/>
+                                        <g:submitButton name="removeFleet" value="Remove Fleet From Simulation"/>
+
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+
+                            </g:form>
+
+                        </g:each>
+
+
+
                     </g:if>
 
                     <div class="row">
@@ -122,9 +83,20 @@
                         <div class="clear"></div>
                     </div>
                     <div class="rowL">
-                        <div class="left"><g:message code="simulation.index.createnewfleet"/></div>
-                        <div class="right"><a class="addButton" href="#join_form" id="join_pop"><img width="22px"src="${g.resource( dir: '/images', file: 'add.png' )}"><span class="addButtonText"> add</span></a></div>
-                        <div class="clear"></div>
+
+
+                        <g:form action="createFleetView">
+                            <div class="left1"><g:message code="simulation.index.createnewfleet"/></div>
+                            <div class="right">
+                                <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+
+                                <g:submitToRemote class="addButton" url="[action: 'createFleetView']" update="updateMe" name="submit" value="Create new Fleet" />
+                                <img width="22px"src="${g.resource( dir: '/images', file: 'add.png' )}">
+                            </div>
+                            <div class="clear"></div>
+                        </g:form>
+
+
                     </div>
                 </div>
             </div>
@@ -178,83 +150,11 @@
     </fieldset>
 </div>
 
+
+<div id="updateMe"></div>
+
 <!-- Add fleet form -->
-<a href="#x" class="overlay" id="join_form"></a>
-<div class="popup">
-    <div class="layout">
 
-        <div class="layoutLeft">
-            <div class="contentLeft">
-                <div class="layoutCellU">
-                    <div class="leftbig"><b><g:message code="simulation.index.selectcarstype"/></b></div>
-                </div>
-                <div class="layoutCell">
-
-                    <TABLE id="dataTable"  border="0">
-                        <TR class="cars">
-                            <TD><INPUT type="checkbox" name="chk"/></TD>
-                            <TD align="">
-                                <g:select name="carNumber" from="${1..100}" />
-                            </TD>
-                            <td align=""> &nbsp;&nbsp; <g:message code="simulation.index.carstype"/> &nbsp;&nbsp;</td>
-                            <%--
-                            <TD align="">
-                                <g:select name="${carTypeCars.name}" from="${carTypeCars.name}"/>
-                            </TD>
-                            --%>
-                        </TR>
-                    </TABLE>
-
-                </div>
-
-                <div class="layoutCellL">
-                    <span class="leftR">
-                        <a class="addButton" onclick="deleteRow('dataTable')"><img width="22px" src="${g.resource( dir: '/images', file: 'delete.png' )}"><span class="addButtonText"> <g:message code="simulation.index.deletecargroup"/></span></a>
-                    </span>
-                    <div class="right">
-                        <a class="addButton" onclick="addRow('dataTable')"><img width="22px" src="${g.resource( dir: '/images', file: 'add.png' )}"><span class="addButtonText"> <g:message code="simulation.index.addfurthercar"/></span></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="layoutRight">
-            <div id="tabs-container">
-                <ul class="tabs-menu">
-                    <li class="current"><a href="#tab-1"><g:message code="simulation.index.distributed"/></a></li>
-                    <li><a href="#tab-2"><g:message code="simulation.index.ownroutes"/></a></li>
-                    <li><a href="#tab-3"><g:message code="simulation.index.showonmap"/></a></li>
-                </ul>
-                <div class="tab">
-                    <div id="tab-1" class="tab-content">
-                        <p>Lorlis.</p>
-                    </div>
-                    <div id="tab-2" class="tab-content">
-                        <p>
-                            <input type="file">
-                        </p>
-
-                    </div>
-                    <div id="tab-3" class="tab-content">
-                        <p>Duis  </p>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-
-
-    </div>
-    <br><br><br>
-
-    <div class="layoutButton">
-        <span class="layoutButtonL"><g:submitButton name="send" value="CANCEL"/></span>
-        <span class="layoutButtonM"></span>
-        <span class="layoutButtonR"><g:submitButton name="send" value="SAVE"/></span>
-    </div>
-    <a class="close" href="#close"></a>
-</div>
 <!--END  Add fleet form -->
 
 
@@ -340,7 +240,6 @@
 <!--END Add electric station form -->
 
 
-</form>
 
 </div>
 

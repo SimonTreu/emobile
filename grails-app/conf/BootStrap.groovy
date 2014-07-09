@@ -3,6 +3,7 @@ import com.vividsolutions.jts.geom.Point
 import de.dfki.gs.bootstrap.BootstrapHelper
 import de.dfki.gs.domain.simulation.Car
 import de.dfki.gs.domain.simulation.CarType
+import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.domain.simulation.Simulation
 import de.dfki.gs.domain.simulation.SimulationRoute
 import de.dfki.gs.domain.simulation.Track
@@ -25,6 +26,133 @@ class BootStrap {
 
     transient def securityContextPersistenceFilter
 
+
+    def createDefaultFleet() {
+
+        Company company = Company.findByName( "dfki" )
+
+        if ( company == null ) {
+            log.error( "no company for name dfki found" )
+            return
+        }
+
+        Fleet dfki1Fleet = new Fleet(
+            company: company,
+            name: "Dfki-Fleet One",
+        )
+
+        if ( !dfki1Fleet.save( flush: true, failOnError: true ) ) {
+
+            log.error( "failed to save fleet: ${dfki1Fleet.errors}" )
+            return
+        }
+
+        CarType carType1 = CarType.get( 1 )
+        if ( carType1 == null ) {
+            log.error( "no cartype found" )
+            return
+        }
+        10.times {
+            Car car = new Car(
+                carType: carType1,
+                name: "car no.${it}"
+            )
+            if ( !car.save( flush: true, failOnError: true ) ) {
+                log.error( "failed to save car: ${car.errors}" )
+            }
+        }
+
+        CarType carType2 = CarType.get( 2 )
+        if ( carType2 == null ) {
+            log.error( "no cartype found" )
+            return
+        }
+        10.times {
+            Car car = new Car(
+                    carType: carType2,
+                    name: "car no.${it}"
+            )
+            if ( !car.save( flush: true, failOnError: true ) ) {
+                log.error( "failed to save car: ${car.errors}" )
+            }
+        }
+
+        List<Car> twentyCars = Car.findAll()
+
+        twentyCars.each { Car car ->
+
+            dfki1Fleet.addToCars( car )
+
+        }
+
+        if ( !dfki1Fleet.save( flush: true, failOnError: true ) ) {
+
+            log.error( "failed to update dfkifleet: ${dfki1Fleet.errors}" )
+
+        }
+
+
+
+        Fleet dfki2Fleet = new Fleet(
+                company: company,
+                name: "Dfki-Fleet Two",
+        )
+
+        if ( !dfki2Fleet.save( flush: true, failOnError: true ) ) {
+
+            log.error( "failed to save fleet: ${dfki2Fleet.errors}" )
+            return
+        }
+
+        CarType carType3 = CarType.get( 3 )
+        if ( carType3 == null ) {
+            log.error( "no cartype found" )
+            return
+        }
+        List<Car> twentyOtherCars = new ArrayList<Car>()
+        10.times {
+            Car car = new Car(
+                    carType: carType3,
+                    name: "car no.${it}"
+            )
+            if ( !car.save( flush: true, failOnError: true ) ) {
+                log.error( "failed to save car: ${car.errors}" )
+            }
+            twentyOtherCars.add( car )
+        }
+
+        CarType carType4 = CarType.get( 4 )
+        if ( carType4 == null ) {
+            log.error( "no cartype found" )
+            return
+        }
+        10.times {
+            Car car = new Car(
+                    carType: carType4,
+                    name: "car no.${it}"
+            )
+            if ( !car.save( flush: true, failOnError: true ) ) {
+                log.error( "failed to save car: ${car.errors}" )
+            }
+            twentyOtherCars.add( car )
+        }
+
+
+
+        twentyOtherCars.each { Car car ->
+
+            dfki2Fleet.addToCars( car )
+
+        }
+
+        if ( !dfki2Fleet.save( flush: true, failOnError: true ) ) {
+
+            log.error( "failed to update dfkifleet: ${dfki2Fleet.errors}" )
+
+        }
+
+
+    }
 
     def createDefaultCarTypes() {
 
@@ -379,156 +507,15 @@ class BootStrap {
         log.error( "preloading feature graph into application scope.." )
         routeService.getFeatureGraph( "osmGraph" )
 
+        log.error( "create some default cars.." )
         createDefaultCarTypes()
 
-
-        // log.error( "start bootstrapping and create some routes.." )
-
-
-        // createDefaultCarTypes();
-
-        def bigSimName = "BigSim500"
-        def howMuchRoutes = 500
-
-
-        /*
-        if ( !Simulation.findByName( bigSimName )   ) {
-            log.error( "create big sim with ${howMuchRoutes} routes" )
-            createBigSim( bigSimName, howMuchRoutes, routeService )
-        }
-
-        def midSimName = "BigSim50"
-        howMuchRoutes = 50
-
-        if ( !Simulation.findByName( midSimName )   ) {
-            log.error( "create mid sim with ${howMuchRoutes} routes" )
-            createBigSim( midSimName, howMuchRoutes, routeService )
-        }
-
-
-        if ( Simulation.findByName( "Simulation1" ) && Simulation.findByName( "Simulation2" ) ) {
-            log.error( "..already done." )
-        } else {
-
-
-            Simulation sim1 = new Simulation( name: "Simulation1" )
-            if ( !sim1.save( flush: true ) ) {
-                log.error( "failed to save simulation: ${sim1.errors}" )
-            }
-
-            Simulation sim2 = new Simulation( name: "Simulation2" )
-            if ( !sim2.save( flush: true ) ) {
-                log.error( "failed to save simulation: ${sim2.errors}" )
-            }
-
-
-            // some routes, some simulations
-            Coordinate start1  = new Coordinate( 13.274428253175115, 52.46068276562632 );
-            Coordinate target1 = new Coordinate( 13.44814956665116,  52.47197749605584 );
-
-            Coordinate start2  = new Coordinate( 13.3635205078127,   52.52966086599651 );
-            Coordinate target2 = new Coordinate( 13.270651702881338, 52.530078585246734 );
-
-            Coordinate start3  = new Coordinate( 13.45089614868153,  52.542817113867635 );
-            Coordinate target3 = new Coordinate( 13.307215576172183, 52.50657570304971 );
-
-
-            List<BasicEdge> fullPath1 = new ArrayList<BasicEdge>();
-            List<BasicEdge> fullPath2 = new ArrayList<BasicEdge>();
-            List<BasicEdge> fullPath3 = new ArrayList<BasicEdge>();
+        log.error( "create default fleet.." )
+        createDefaultFleet()
 
 
 
-            ArrayList<BasicEdge> path1 = routeService.calculatePath( start1, target1 )
-            path1 = routeService.repairEdges( path1 )
 
-            ArrayList<BasicEdge> path2 = routeService.calculatePath( start2, target2 )
-            path2 = routeService.repairEdges( path2 )
-
-            ArrayList<BasicEdge> path3 = routeService.calculatePath( start3, target3 )
-            path3 = routeService.repairEdges( path3 )
-
-            ArrayList<List<BasicEdge>> multiTargetRoute1 = new ArrayList<List<BasicEdge>>()
-            ArrayList<List<BasicEdge>> multiTargetRoute2 = new ArrayList<List<BasicEdge>>()
-            ArrayList<List<BasicEdge>> multiTargetRoute3 = new ArrayList<List<BasicEdge>>()
-
-            multiTargetRoute1.add( path1 )
-            multiTargetRoute2.add( path2 )
-            multiTargetRoute3.add( path3 )
-
-            Long id1;
-            Long id2;
-            Long id3;
-
-            if ( path1 ) {
-                id1 = routeService.persistRoute( multiTargetRoute1 );
-            }
-
-            if ( path2 ) {
-                id2 = routeService.persistRoute( multiTargetRoute2 );
-            }
-
-            if ( path3 ) {
-                id3 = routeService.persistRoute( multiTargetRoute3 );
-            }
-
-            if ( id1 ) {
-                SimulationRoute simRoute1 = new SimulationRoute(
-                        track: Track.get( id1 ),
-                        carType: CarType.audi.toString(),
-                        initialPersons: 3,
-                        initialEnergy: 87d,
-                        maxEnergy: 500,
-                        energyDrain: 50
-                )
-                if ( !simRoute1.save( flush: true ) ) {
-                    log.error( "failed to save simulation route: ${simRoute1.errors}" )
-                }
-
-                sim1.addToSimulationRoutes( simRoute1 )
-            }
-
-            if ( id2 ) {
-                SimulationRoute simRoute2 = new SimulationRoute(
-                        track: Track.get( id2 ),
-                        carType: CarType.bmw.toString(),
-                        initialPersons: 5,
-                        initialEnergy: 89d,
-                        maxEnergy: 500,
-                        energyDrain: 10
-                )
-                if ( !simRoute2.save( flush: true ) ) {
-                    log.error( "failed to save simulation route: ${simRoute2.errors}" )
-                }
-
-                sim1.addToSimulationRoutes( simRoute2 )
-            }
-
-            if ( id3 ) {
-                SimulationRoute simRoute3 = new SimulationRoute(
-                        track: Track.get( id3 ),
-                        carType: CarType.vw.toString(),
-                        initialPersons: 7,
-                        initialEnergy: 15d,
-                        maxEnergy: 500,
-                        energyDrain: 25
-                )
-                if ( !simRoute3.save( flush: true ) ) {
-                    log.error( "failed to save simulation route: ${simRoute3.errors}" )
-                }
-                sim2.addToSimulationRoutes( simRoute3 )
-            }
-
-            if ( !sim1.save( flush: true ) ) {
-                log.error( "failed to save simulation: ${sim1.errors}" )
-            }
-
-            if ( !sim2.save( flush: true ) ) {
-                log.error( "failed to save simulation: ${sim2.errors}" )
-            }
-
-        }
-        */
     }
     def destroy = {
     }

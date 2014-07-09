@@ -9,7 +9,7 @@ class Fleet {
      */
     String name
 
-    Set<Car> cars
+    Set<Car> cars = []
 
     Company company
 
@@ -19,6 +19,7 @@ class Fleet {
     ]
 
     static constraints = {
+        name nullable: true
     }
 
     static mapping = {

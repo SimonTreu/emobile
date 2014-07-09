@@ -16,7 +16,7 @@ class Car {
 
     static constraints = {
         name ( nullable: true, blank: true )
-
+        route nullable: true
     }
 
 }

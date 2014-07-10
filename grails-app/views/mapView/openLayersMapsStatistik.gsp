@@ -1,5 +1,4 @@
-
-<%@ page import="org.jfree.data.time.*; de.dfki.gs.domain.GasolineStation; de.dfki.gs.domain.CarType;  java.util.Date;" contentType="text/html;charset=UTF-8" %>
+<%@ page import="org.jfree.data.time.*; de.dfki.gs.domain.GasolineStation; de.dfki.gs.domain.simulation.CarType;  java.util.Date;" contentType="text/html;charset=UTF-8" %>
 
 <html>
 <head>

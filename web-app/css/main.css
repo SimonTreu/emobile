@@ -896,6 +896,15 @@ body.lightBoxBody{
     margin-right: 140px;
     min-height: 300px;
 }
+
+.pContainerBig {
+
+    margin-left: 120px;
+    margin-top:10px;
+    margin-right: 140px;
+    min-height: 300px;
+}
+
 .dContainer{
     height: 95%;
     width: 1100px;
@@ -1042,6 +1051,22 @@ body.lightBoxBody{
     /*background-color:#f0f0f0;*/
 }
 
+.contentLeft1{
+    padding:10px;
+    width:450px;
+    border-radius: 6px;
+    font-size: 12px;
+    /*background-color:#f0f0f0;*/
+}
+
+.contentLeft2{
+    padding:10px;
+    width:480px;
+    border-radius: 6px;
+    font-size: 12px;
+    /*background-color:#f0f0f0;*/
+}
+
 .contentLeftCar{
     padding:10px;
     width:300px;
@@ -1085,6 +1110,20 @@ body.lightBoxBody{
     //font-weight: bold;
 }
 
+.left3{
+    width:160px;
+    float:left;
+    padding:7px 0px 0px 7px;
+//font-weight: bold;
+}
+
+.left4{
+    width:130px;
+    float:left;
+    padding:7px 0px 0px 7px;
+    font-weight: bold;
+}
+
 .leftR {
     width:150px;
     float:left;
@@ -1110,8 +1149,23 @@ body.lightBoxBody{
     display: table-cell;
 }
 
+.right3{
+    width:170px;
+    float:right;
+    padding:5px;
+    min-height:24px;
+    display: table-cell;
+}
+
 .right1{
     width:50px;
+    float:right;
+    padding:5px;
+    display: table-cell;
+}
+
+.right4{
+    width:55px;
     float:right;
     padding:5px;
     display: table-cell;

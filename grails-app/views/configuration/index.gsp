@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<div class="pContainer">
+<div class="pContainerBig">
 
 <div class="d1">
     <fieldset>
@@ -23,7 +23,7 @@
 
         <div class="layout">
             <div class="layoutLeft">
-                <div class="contentLeft">
+                <div class="contentLeft2">
                     <div class="rowU">
                         <div class="left"><b><g:message code="simulation.index.fleetconfiguration" /></b></div>
                         <div class="right"></div>
@@ -32,8 +32,8 @@
 
                     <g:if test="${availableFleets != null && availableFleets.size() > 0}">
                         <div class="row">
-                            <div class="left"><g:message code="simulation.index.existentfleet"/></div>
-                            <div class="right">
+                            <div class="left4"><g:message code="simulation.index.existentfleet"/></div>
+                            <div class="right2">
 
                                 <g:form controller="configuration" action="addExistentFleetToConfiguration">
                                     <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
@@ -41,25 +41,21 @@
                                     <g:submitButton name="add" value="Add Fleet to Simulation" />
                                 </g:form>
 
-
-
                             </div>
                             <div class="clear"></div>
                         </div>
                     </g:if>
 
-                    <g:message code="simulation.index.addedfleet"/>
+
                     <g:if test="${addedFleets != null && addedFleets.size() > 0}">
-
                         <g:each in="${addedFleets}" var="addedFleet">
-
                             <g:form controller="configuration" action="removeFleetFromConfiguration">
-
+                                <%--<g:message code="simulation.index.addedfleet"/>--%>
                                 <div class="row">
-                                    <div class="left">
+                                    <div class="left2">
                                         ${addedFleet.name} with ${addedFleet.cars.size()} cars
                                     </div>
-                                    <div class="right">
+                                    <div class="right3">
 
                                         <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
                                         <g:hiddenField name="fleetId" value="${addedFleet.id}"/>
@@ -68,13 +64,8 @@
                                     </div>
                                     <div class="clear"></div>
                                 </div>
-
                             </g:form>
-
                         </g:each>
-
-
-
                     </g:if>
 
                     <div class="row">
@@ -87,11 +78,11 @@
 
                         <g:form action="createFleetView">
                             <div class="left1"><g:message code="simulation.index.createnewfleet"/></div>
-                            <div class="right">
+                            <div class="right4">
                                 <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
 
-                                <g:submitToRemote class="addButton" url="[action: 'createFleetView']" update="updateMe" name="submit" value="Create new Fleet" />
-                                <img width="22px"src="${g.resource( dir: '/images', file: 'add.png' )}">
+                                <g:submitToRemote class="addButton" url="[action: 'createFleetView']" update="updateMe" name="submit" value="Create" />
+                                <%--<img width="22px"src="${g.resource( dir: '/images', file: 'add.png' )}">--%>
                             </div>
                             <div class="clear"></div>
                         </g:form>
@@ -101,7 +92,7 @@
                 </div>
             </div>
             <div class="layoutRight">
-                <div class="contentLeft">
+                <div class="contentLeft1">
                     <div class="rowU">
                         <div class="leftbig"><b><g:message code="simulation.index.fillingconfiguration"/></b></div>
                     </div>

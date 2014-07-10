@@ -46,8 +46,8 @@
                         <li><a href="#"><span></span> <g:message code="layouts._topbar.simulate"/></a>
                             <ul>
                                 <li><g:link controller="configuration" action="index"><g:message code="layouts._topbar.new"/> </g:link></li>
-                                <li><g:link controller="simulation" action="open"><g:message code="layouts._topbar.open"/></a></g:link></li>
-                                <li><a href="#"><g:message code="layouts._topbar.openresent"/></a></li>
+                                <li><g:link controller="simulation" action="open"><g:message code="layouts._topbar.open"/></g:link></li>
+                                <li><g:link controller="configuration" action="showRecentlyEditedConfiguration"><g:message code="layouts._topbar.openresent"/></g:link> </li>
                                 <li><g:link controller="simulation" action="load"><g:message code="layouts._topbar.loadfromfile"/></g:link></li>
                                 <li><a href="<g:createLink controller="login" action="logout" />"><g:message code="layouts._topbar.logout"/></a></li>
                             </ul>

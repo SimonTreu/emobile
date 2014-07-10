@@ -21,6 +21,8 @@ class FillingStation {
     ]
 
     static constraints = {
+        streetName ( nullable: true, blank: true )
+        houseNumber nullable: true
     }
 
     static mapping = {

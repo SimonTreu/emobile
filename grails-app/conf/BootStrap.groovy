@@ -3,6 +3,8 @@ import com.vividsolutions.jts.geom.Point
 import de.dfki.gs.bootstrap.BootstrapHelper
 import de.dfki.gs.domain.simulation.Car
 import de.dfki.gs.domain.simulation.CarType
+import de.dfki.gs.domain.simulation.FillingStation
+import de.dfki.gs.domain.simulation.FillingStationGroup
 import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.domain.simulation.Simulation
@@ -156,6 +158,62 @@ class BootStrap {
 
 
     }
+
+    def createDefaultGroup() {
+
+        Company company = Company.findByName( "dfki" )
+
+        if ( company == null ) {
+            log.error( "no company for name dfki found" )
+            return
+        }
+
+        FillingStationGroup dfki1Group = new FillingStationGroup(
+                company: company,
+                name: "Dfki-Group One",
+        )
+
+        if ( !dfki1Group.save( flush: true, failOnError: true ) ) {
+
+            log.error( "failed to save group: ${dfki1Group.errors}" )
+            return
+        }
+
+        List<FillingStation> dfki1GroupStations = new ArrayList<FillingStation>()
+        FillingStationType.findAll().each { FillingStationType fillingStationType ->
+
+            10.times {
+
+                Point point = routeService.getRandomValidPoint()
+
+                FillingStation station = new FillingStation(
+                        fillingStationType: fillingStationType,
+                        name: "${fillingStationType.name}-${it}",
+                        lat: point.coordinate.x.toFloat(),
+                        lon: point.coordinate.y.toFloat()
+                )
+
+                if ( !station.save( flush: true, failOnError: true ) ) {
+
+                    log.error( "fail : ${station.errors}" )
+
+                } else {
+                    dfki1Group.addToFillingStations( station )
+                }
+
+            }
+
+        }
+
+        if ( !dfki1Group.save( flush: true, failOnError: true ) ) {
+
+            log.error( "failed to update (add fillingStations) dfkigroup: ${dfki1Group.errors}" )
+
+        }
+
+
+    }
+
 
     def createDefaultCarTypes() {
 
@@ -586,6 +644,8 @@ class BootStrap {
         log.error( "create default fleet.." )
         createDefaultFleet()
 
+        log.error( "create default group.." )
+        createDefaultGroup()
 
 
 

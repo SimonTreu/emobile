@@ -313,6 +313,39 @@ class RouteService {
         return gasolineStation
     }
 
+
+    public Point getRandomValidPoint() {
+
+        return getRandomValidPointsFromMap( 1 ).get( 0 )
+
+    }
+
+    public List<Point> getRandomValidPointsFromMap( int count ) {
+
+        List<Point> foundPoints = new ArrayList<Point>( count )
+
+        Graph graph = getFeatureGraph( "osmGraph" )
+
+        Collection<org.geotools.graph.structure.Node> nodes = (Collection<org.geotools.graph.structure.Node>) graph.getNodes();
+        List<org.geotools.graph.structure.Node> validNodes = new ArrayList<org.geotools.graph.structure.Node>( nodes )
+
+        int sizeValidNodes = validNodes.size()
+
+        Random random = new Random();
+
+        for ( int i = 0; i < count; i++ ) {
+
+            int randomIndex = random.nextInt( sizeValidNodes )
+
+            org.geotools.graph.structure.Node stationNode = validNodes.get( randomIndex )
+
+            foundPoints.add( (Point) stationNode.getObject() )
+        }
+
+        return foundPoints
+    }
+
+
     public void createRandomStations( Long stationCount, Long simulationId, String fillingType ) {
 
         Graph graph = getFeatureGraph( "osmGraph" )

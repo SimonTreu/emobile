@@ -14,6 +14,14 @@ import grails.transaction.Transactional
 @Transactional
 class ConfigurationService {
 
+    /**
+     * configuration can have some fleets
+     * this method is used to remove one fleet from configuration
+     *
+     * @param configurationStubId
+     * @param fleetId
+     * @return
+     */
     def removeFleetFromConfiguration( Long configurationStubId, Long fleetId ) {
 
         Configuration configuration = Configuration.get( configurationStubId )
@@ -30,6 +38,14 @@ class ConfigurationService {
         return
     }
 
+    /**
+     * configuration can have some fleets
+     * this method is used to add one fleet to configuration
+     *
+     * @param configurationStubId
+     * @param fleetId
+     * @return
+     */
     def addFleetToConfiguration( Long configurationStubId , Long fleetId) {
 
         Configuration configuration = Configuration.get( configurationStubId )
@@ -46,6 +62,13 @@ class ConfigurationService {
         return
     }
 
+    /**
+     * this method creates a configuration stub and persist it to db
+     *
+     *
+     * @param person to find his company, which is then the owner of the configuration
+     * @return
+     */
     def createConfigurationStub( Person person ) {
 
         // getting the company
@@ -57,7 +80,8 @@ class ConfigurationService {
         }
 
         Configuration configurationStub = new Configuration(
-            company: company
+            company: company,
+            stub: true
         )
 
         if ( !configurationStub.save( flush: true ) ) {
@@ -68,6 +92,12 @@ class ConfigurationService {
         return configurationStub
     }
 
+    /**
+     * get all fleets added to a certain configuration stub
+     *
+     * @param configurationStubId
+     * @return
+     */
     def getAddedFleets( Long configurationStubId ) {
 
         Configuration stub = Configuration.get( configurationStubId )
@@ -205,6 +235,15 @@ class ConfigurationService {
         return carType
     }
 
+    /**
+     * this method adds 'count' Cars of type 'carType' to fleet with given fleetStubId
+     * these cars are stub cars, i.e. there are no routes persisted for these cars
+     *
+     * @param fleetStubId
+     * @param count
+     * @param carTypeId
+     * @return
+     */
     def addCarsToFleet( Long fleetStubId, Integer count, Long carTypeId ) {
 
         Fleet fleetStub = Fleet.get( fleetStubId )
@@ -235,6 +274,14 @@ class ConfigurationService {
 
     }
 
+    /**
+     * this method creates a fleet stub and persists it to db
+     * this fleet belongs to a given person's company
+     *
+     * @param person
+     * @param configurationStubId
+     * @return
+     */
     def createFleetStub( Person person, Long configurationStubId ) {
 
         Company company = Company.get( person.company.id )
@@ -243,7 +290,8 @@ class ConfigurationService {
 
         Fleet fleetStub = new Fleet(
                                 company: company,
-                                name: "fleetStub-${UUID.randomUUID().toString().substring(0,5)}"
+                                name: "fleetStub-${UUID.randomUUID().toString().substring(0,5)}",
+                                stub: true
                             )
 
         if ( !fleetStub.save( flush: true ) ) {

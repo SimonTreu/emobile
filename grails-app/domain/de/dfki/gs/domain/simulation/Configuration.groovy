@@ -25,6 +25,7 @@ class Configuration {
      */
     Set<FillingStationGroup> fillingStationGroups = []
 
+    Boolean stub
 
     static hasMany = [
             experiments : Experiment,
@@ -36,5 +37,8 @@ class Configuration {
     }
 
     static mapping = {
+
+        stub type: 'yes_no'
+
     }
 }

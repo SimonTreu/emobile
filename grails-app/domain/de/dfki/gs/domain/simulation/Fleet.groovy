@@ -14,6 +14,9 @@ class Fleet {
     Company company
 
 
+    Boolean stub
+
+
     static hasMany = [
             cars : Car
     ]
@@ -23,5 +26,8 @@ class Fleet {
     }
 
     static mapping = {
+
+        stub type: 'yes_no'
+
     }
 }

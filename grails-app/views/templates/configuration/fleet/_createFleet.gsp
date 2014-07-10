@@ -9,14 +9,16 @@
                                 </div>
                                 <div class="row">
                                     <div class="left3">
-                                        <g:select name="count" from="${1..100}" /> &nbsp;&nbsp;
+                                        <g:select name="carCount" from="${1..100}" /> &nbsp;&nbsp;
                                         <g:message code="simulation.index.carstype"/>
                                     </div>
                                     <div class="right2">
                                         <g:select name="carTypeId" from="${availableCarTypes}" optionKey="id" optionValue="name" />
                                         &nbsp;&nbsp;
+                                        <%--
                                         <g:hiddenField name="availableCarTypes" value="${availableCarTypes}"/>
                                         <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+                                        --%>
                                         <g:hiddenField name="fleetStubId" value="${fleetStubId}"/>
                                         <g:submitToRemote class="addButton"
                                                           url="[action: 'updateFleetOfConfiguration']"

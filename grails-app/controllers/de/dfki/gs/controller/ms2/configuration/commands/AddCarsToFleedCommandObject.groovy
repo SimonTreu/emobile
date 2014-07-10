@@ -12,7 +12,8 @@ import grails.validation.Validateable
 class AddCarsToFleedCommandObject {
 
     Long configurationStubId
-    Integer count
+    Integer carCount
+    List<Integer> carCountList
     Long carTypeId
     Long fleetStubId
 
@@ -30,7 +31,8 @@ class AddCarsToFleedCommandObject {
 
 
         }
-        count nullable: false, min: 1, max: 100
+        carCount nullable: true
+        carCountList nullable: true
         carTypeId nullable: false, validator: { val,obj ->
 
             CarType carType = CarType.get( val )

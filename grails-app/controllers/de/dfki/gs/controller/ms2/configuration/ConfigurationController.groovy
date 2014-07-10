@@ -410,6 +410,7 @@ class ConfigurationController {
 
         log.error( "params: ${params}" )
 
+
         AddCarsToFleedCommandObject cmd = new AddCarsToFleedCommandObject()
         bindData( cmd, params )
 
@@ -419,7 +420,14 @@ class ConfigurationController {
 
         } else {
 
-            configurationService.addCarsToFleet( cmd.fleetStubId, cmd.count, cmd.carTypeId )
+            int count = 0
+            if ( cmd.carCountList != null && cmd.carCountList.size() > 0 ) {
+                count = cmd.carCountList.get( cmd.carCountList.size() - 1 )
+            } else {
+                count = cmd.carCount
+            }
+
+            configurationService.addCarsToFleet( cmd.fleetStubId, count, cmd.carTypeId )
 
         }
 

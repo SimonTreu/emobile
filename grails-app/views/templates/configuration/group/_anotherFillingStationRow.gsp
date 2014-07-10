@@ -5,11 +5,11 @@
             <g:message code="simulation.index.carstype"/>
         </div>
         <div class="right2">
-            <g:select name="carTypeSelect" from="${availableFillingStations}" optionKey="id" optionValue="name" />
+            <g:select name="carTypeSelect" from="${availableFillingStationTypes}" optionKey="id" optionValue="name" />
             &nbsp;&nbsp;
             <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
             <g:hiddenField name="groupStubId" value="${groupStubId}"/>
-            <g:hiddenField name="availableFillingStations" value="${availableFillingStations}"/>
+            <g:hiddenField name="availableFillingStations" value="${availableFillingStationTypes}"/>
             <g:submitToRemote class="addButton"
                               url="[action: 'updateGroupOfConfiguration']"
                               update="updateCar${uuid}"

@@ -4,6 +4,10 @@ input, select, textarea {
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
+body {
+    min-width: 1000px;
+}
+
 h1, h2, h3, h4, h5, h6 {
 	line-height: 1.1;
 }
@@ -899,10 +903,11 @@ body.lightBoxBody{
 
 .pContainerBig {
 
-    margin-left: 120px;
+    margin-left:5%;
     margin-top:10px;
-    margin-right: 140px;
+    margin-right: 6%;
     min-height: 300px;
+    min-width: 1000px;
 }
 
 .dContainer{
@@ -1061,7 +1066,7 @@ body.lightBoxBody{
 
 .contentLeft2{
     padding:10px;
-    width:480px;
+    width:450px;
     border-radius: 6px;
     font-size: 12px;
     /*background-color:#f0f0f0;*/
@@ -1287,9 +1292,9 @@ td img{
 }
 .layoutRight {
     vertical-align: top;
-    width: 50%;
     position: relative;
     display: table-cell;
+    float:right;
 
 }
 
@@ -1349,11 +1354,13 @@ td img{
     width: 5%;
     display: table-cell;
     border-radius: 6px;
+    float:left;
 }
 .layoutButtonR {
     width: 5%;
     display: table-cell;
     border-radius: 6px;
+    float:right;
 }
 .layoutButtonM {
     width: 90%;

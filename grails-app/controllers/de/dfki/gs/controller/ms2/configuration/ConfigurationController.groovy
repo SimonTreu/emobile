@@ -2,6 +2,10 @@ package de.dfki.gs.controller.ms2.configuration
 
 import de.dfki.gs.controller.ms2.configuration.commands.AddCarsToFleedCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.AddFleetToConfigurationCommandObject
+import de.dfki.gs.controller.ms2.configuration.commands.AddGroupToConfigurationCommandObject
+import de.dfki.gs.controller.ms2.configuration.commands.AddFillingStationsToGroupCommandObject
+import de.dfki.gs.controller.ms2.configuration.commands.CreateGroupForConfigurationCommandObject
+import de.dfki.gs.controller.ms2.configuration.commands.CreateGroupForConfigurationViewCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.CreateCarTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.CreateFillingStationTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.CreateFleetForConfigurationCommandObject
@@ -202,6 +206,32 @@ class ConfigurationController {
 
     }
 
+    def removeGroupFromConfiguration() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        log.error( "params: ${params}" )
+
+        AddGroupToConfigurationCommandObject cmd = new AddGroupToConfigurationCommandObject()
+        bindData( cmd, params )
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+            log.error( "failed to vaildate AddGroupToConfigurationCommandObject to remove group: ${cmd.errors}" )
+        } else {
+
+            configurationService.removeGroupFromConfiguration( cmd.configurationStubId, cmd.groupId )
+
+        }
+        redirect( controller: 'configuration', action: 'index', params: [ configurationStubId : params.configurationStubId ] )
+
+    }
+
+
     def addExistentFleetToConfiguration() {
 
         Person person = (Person) springSecurityService.currentUser
@@ -229,6 +259,34 @@ class ConfigurationController {
 
     }
 
+
+
+    def addExistentGroupToConfiguration() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        log.error( "params: ${params}" )
+
+        AddGroupToConfigurationCommandObject cmd = new AddGroupToConfigurationCommandObject()
+        bindData( cmd, params )
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+            log.error( "failed to vaildate AddGroupToConfigurationCommandObject: ${cmd.errors}" )
+        } else {
+
+            configurationService.addGroupToConfiguration( cmd.configurationStubId, cmd.groupId )
+
+        }
+
+
+        redirect( controller: 'configuration', action: 'index', params: [ configurationStubId : params.configurationStubId ] )
+
+    }
 
 
     def index() {
@@ -271,6 +329,11 @@ class ConfigurationController {
         // fleets already added to configuration stub
         m.addedFleets = configurationService.getAddedFleets( configurationStubId )
 
+        //groups
+        m.availableGroups = configurationService.getGroupsForCompany( person, configurationStubId )
+
+        // groups already added to configuration stub
+        m.addedGroups = configurationService.getAddedGroups( configurationStubId )
 
         // fillingStationGroups
         m.fillingStationGroups = configurationService.getFillingStationGroupsForCompany( person )
@@ -375,6 +438,37 @@ class ConfigurationController {
         redirect( controller: 'configuration', action: 'index', params: [ configurationStubId : params.configurationStubId ] )
     }
 
+    def createGroup() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        log.error( "params: ${params}" )
+
+
+        CreateGroupForConfigurationCommandObject cmd = new CreateGroupForConfigurationCommandObject()
+        bindData( cmd, params )
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to vaildate CreateGroupForConfigurationCommandObject: ${cmd.errors}" )
+
+        } else {
+
+            // configurationService.createFleetForCompany(  )
+            log.error( "hua!! ${cmd.configurationStubId}" )
+
+        }
+
+
+        redirect( controller: 'configuration', action: 'index', params: [ configurationStubId : params.configurationStubId ] )
+    }
+
     def createFleetView() {
 
         Person person = (Person) springSecurityService.currentUser
@@ -409,6 +503,39 @@ class ConfigurationController {
 
     }
 
+    def createGroupView() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        log.error( "params: ${params}" )
+
+        CreateGroupForConfigurationViewCommandObject cmd = new CreateGroupForConfigurationViewCommandObject()
+        bindData( cmd, params )
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to find configurationStub for id. errors: ${cmd.errors}" )
+
+        } else {
+
+            def m = [ : ]
+
+            m.groupStubId = configurationService.createGroupStub( person, cmd.configurationStubId )?.id
+
+            m.configurationStubId = cmd.configurationStubId
+            m.availableFillingStationTypes = configurationService.getFillingStationTypesForCompany( person )
+
+            render template: '/templates/configuration/group/createGroup', model: m
+
+        }
+
+    }
 
 
     def updateFleetOfConfiguration() {
@@ -452,6 +579,49 @@ class ConfigurationController {
 
         render template: "/templates/configuration/fleet/anotherCarRow", model: m
     }
+
+    def updateGroupOfConfiguration() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        log.error( "params: ${params}" )
+
+
+        AddFillingStationsToGroupCommandObject cmd = new AddFillingStationsToGroupCommandObject()
+        bindData( cmd, params )
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to add filling stations to group: ${cmd.errors}" )
+
+        } else {
+
+            int count = 0
+            if ( cmd.stationCountList != null && cmd.stationCountList.size() > 0 ) {
+                count = cmd.stationCountList.get( cmd.stationCountList.size() - 1 )
+            } else {
+                count = cmd.stationCount
+            }
+
+            configurationService.addStationsToGroup( cmd.groupStubId, count, cmd.stationTypeId )
+
+        }
+
+        def m = [ : ]
+        m.uuid = UUID.randomUUID()
+        m.groupStubId = cmd.groupStubId
+        m.configurationStubId = cmd.configurationStubId
+        m.availableFillingStationTypes = configurationService.getFillingStationTypesForCompany( person )
+
+        render template: "/templates/configuration/group/anotherFillingStationRow", model: m
+    }
+
 
     def createCarTypeView() {
 

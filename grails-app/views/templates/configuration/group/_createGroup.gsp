@@ -13,9 +13,9 @@
                         Filling stations types:
                     </div>
                     <div class="right2">
-                        <g:select name="fillingType" from="${availableFillingStations}" optionKey="id" optionValue="name" />
+                        <g:select name="fillingType" from="${availableFillingStationTypes}" optionKey="id" optionValue="name" />
                         &nbsp;&nbsp;
-                        <g:hiddenField name="availableFillingStations" value="${availableFillingStations}"/>
+                        <g:hiddenField name="availableFillingStations" value="${availableFillingStationTypes}"/>
                         <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
                         <g:hiddenField name="groupStubId" value="${groupStubId}"/>
                         <g:submitToRemote class="addButton"

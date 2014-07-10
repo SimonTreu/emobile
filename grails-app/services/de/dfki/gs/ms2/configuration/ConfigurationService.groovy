@@ -3,6 +3,7 @@ package de.dfki.gs.ms2.configuration
 import de.dfki.gs.domain.simulation.Car
 import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.simulation.Configuration
+import de.dfki.gs.domain.simulation.FillingStation
 import de.dfki.gs.domain.simulation.FillingStationGroup
 import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.simulation.Fleet
@@ -39,6 +40,30 @@ class ConfigurationService {
     }
 
     /**
+     * configuration can have some electric groups
+     * this method is used to remove one group from configuration
+     *
+     * @param configurationStubId
+     * @param groupId
+     * @return
+     */
+    def removeGroupFromConfiguration( Long configurationStubId, Long groupId ) {
+
+        Configuration configuration = Configuration.get( configurationStubId )
+        FillingStationGroup group = FillingStationGroup.get( groupId )
+
+        configuration.removeFromFillingStationGroups( group )
+
+        if ( !configuration.save( flush: true ) ) {
+
+            log.error( "failed to remove group from configuarionStub: ${configuration.errors}" )
+
+        }
+
+        return
+    }
+
+    /**
      * configuration can have some fleets
      * this method is used to add one fleet to configuration
      *
@@ -61,6 +86,32 @@ class ConfigurationService {
 
         return
     }
+
+
+    /**
+     * configuration can have some electric groups
+     * this method is used to add one group to configuration
+     *
+     * @param configurationStubId
+     * @param groupId
+     * @return
+     */
+    def addGroupToConfiguration( Long configurationStubId , Long groupId) {
+
+        Configuration configuration = Configuration.get( configurationStubId )
+        FillingStationGroup group = FillingStationGroup.get( groupId )
+
+        configuration.addToFillingStationGroups( group )
+
+        if ( !configuration.save( flush: true ) ) {
+
+            log.error( "failed to add group to configuarionStub: ${configuration.errors}" )
+
+        }
+
+        return
+    }
+
 
     /**
      * this method creates a configuration stub and persist it to db
@@ -113,6 +164,26 @@ class ConfigurationService {
     }
 
     /**
+     * get all groups added to a certain configuration stub
+     *
+     * @param configurationStubId
+     * @return
+     */
+    def getAddedGroups( Long configurationStubId ) {
+
+        Configuration stub = Configuration.get( configurationStubId )
+
+        List<FillingStationGroup> addedGroups = new ArrayList<FillingStationGroup>()
+        stub.fillingStationGroups.each { FillingStationGroup group ->
+
+            addedGroups.add( FillingStationGroup.get( group.id ) )
+
+        }
+
+        return addedGroups
+    }
+
+    /**
      * collect all available fillingStationGroups for currentUser's company
      *
      *
@@ -162,6 +233,36 @@ class ConfigurationService {
         fleets.removeAll( alreadyAddedFleets )
 
         return fleets
+    }
+
+    /**
+     * collect all available filling station groups for currentUser's company
+     * remove those groups which are added to configuration already, so no groups is selectable twice
+     *
+     * @param currentUser
+     * @return
+     */
+    def getGroupsForCompany( Person currentUser, Long configurationStubId ) {
+
+        // getting the company
+        Company company = Company.get( currentUser.company.id )
+
+        if ( !company ) {
+            log.error( "no company found for user: ${currentUser.username}" )
+            return
+        }
+
+        List<FillingStationGroup> fillingStationGroups = FillingStationGroup.findAllByCompany( company )
+
+        Configuration stub = Configuration.get( configurationStubId )
+        List<FillingStationGroup> alreadyAddedGroups = new ArrayList<FillingStationGroup>()
+        stub.fillingStationGroups.each { FillingStationGroup group ->
+            alreadyAddedGroups.add( FillingStationGroup.get( group.id ) )
+        }
+
+        fillingStationGroups.removeAll( alreadyAddedGroups )
+
+        return fillingStationGroups
     }
 
     /**
@@ -275,6 +376,45 @@ class ConfigurationService {
     }
 
     /**
+     * this method adds 'count' Stations of type 'FillingStationType' to group with given groupStubId
+     * these stations are stub stations, i.e. there are no routes persisted for these stations
+     *
+     * @param groupStubId
+     * @param count
+     * @param stationTypeId
+     * @return
+     */
+    def addStationsToGroup( Long groupStubId, Integer count, Long stationTypeId ) {
+
+        FillingStationGroup groupStub = FillingStationGroup.get( groupStubId )
+
+        FillingStationType fillingStationType = FillingStationType.get( stationTypeId )
+
+        count.times {
+
+            FillingStation station = new FillingStation(
+                    fillingStationType: fillingStationType,
+                    name: "${fillingStationType.name} - No.${it}"
+            )
+
+            if ( !station.save( flush: true ) ) {
+                log.error( "failed to save car: ${car.errors}" )
+            } else {
+
+                groupStub.addToFillingStations( station )
+
+            }
+
+        }
+
+        if ( !groupStub.save( flush: true ) ) {
+            log.error( "failed to update group: ${groupStub.errors}" )
+        }
+
+
+    }
+
+    /**
      * this method creates a fleet stub and persists it to db
      * this fleet belongs to a given person's company
      *
@@ -300,6 +440,35 @@ class ConfigurationService {
         }
 
         return fleetStub
+
+    }
+
+    /**
+     * this method creates a group stub and persists it to db
+     * this group belongs to a given person's company
+     *
+     * @param person
+     * @param configurationStubId
+     * @return
+     */
+    def createGroupStub( Person person, Long configurationStubId ) {
+
+        Company company = Company.get( person.company.id )
+
+        Configuration stub = Configuration.get( configurationStubId )
+
+        FillingStationGroup groupStub = new FillingStationGroup(
+                company: company,
+                name: "groupStub-${UUID.randomUUID().toString().substring(0,5)}",
+                stub: true
+        )
+
+        if ( !groupStub.save( flush: true ) ) {
+            log.error( "failed to save fleet stub: ${groupStub.errors}" )
+            return null
+        }
+
+        return groupStub
 
     }
 

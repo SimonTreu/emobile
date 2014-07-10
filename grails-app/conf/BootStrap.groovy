@@ -3,6 +3,7 @@ import com.vividsolutions.jts.geom.Point
 import de.dfki.gs.bootstrap.BootstrapHelper
 import de.dfki.gs.domain.simulation.Car
 import de.dfki.gs.domain.simulation.CarType
+import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.domain.simulation.Simulation
 import de.dfki.gs.domain.simulation.SimulationRoute
@@ -264,6 +265,73 @@ class BootStrap {
     }
 
 
+    def createDefaultElectricStations () {
+        if (FillingStationType.count() < 1) {
+            Company company = Company.findByName( "dfki" )
+
+            //filling station 2,3 kW
+            FillingStationType station2_3 = new FillingStationType(
+                    name: "AC 2,3KW",
+                    power: 2.3,
+                    company: company
+            );
+
+            if ( !station2_3.save( flush: true ) ) {
+                log.error( "failed to save station2_3: ${station2_3.errors}" )
+            }
+
+            //filling station 3,7 kW
+            FillingStationType station3_7 = new FillingStationType(
+                    name: "AC 3,7KW",
+                    power: 3.7,
+                    company: company
+            );
+
+            if ( !station3_7.save( flush: true ) ) {
+                log.error( "failed to save station3_7: ${station3_7.errors}" )
+            }
+            //filling station 11,1 kW
+            FillingStationType station_11 = new FillingStationType(
+                    name: "AC 11,1KW",
+                    power: 11.1,
+                    company: company
+            );
+
+            if ( !station_11.save( flush: true ) ) {
+                log.error( "failed to save station_11: ${station_11.errors}" )
+            }
+            //filling station 22,2 kW
+            FillingStationType station_22 = new FillingStationType(
+                    name: "AC 22,2KW",
+                    power: 22.2,
+                    company: company
+            );
+
+            if ( !station_22.save( flush: true ) ) {
+                log.error( "failed to save station_22: ${station_22.errors}" )
+            }
+            //filling station 43 kW
+            FillingStationType station_43 = new FillingStationType(
+                    name: "AC 43KW",
+                    power: 43,
+                    company: company
+            );
+
+            if ( !station_43.save( flush: true ) ) {
+                log.error( "failed to save station_43: ${station_43.errors}" )
+            }
+            //filling station 49,8 kW
+            FillingStationType station_49 = new FillingStationType(
+                    name: "DC 49,8KW",
+                    power: 49.8,
+                    company: company
+            );
+
+            if ( !station_49.save( flush: true ) ) {
+                log.error( "failed to save station_49: ${station_49.errors}" )
+            }
+        }
+    }
 
     def createBigSim( String simName, long howMuchRoutes, RouteService myRS ) {
 
@@ -509,6 +577,9 @@ class BootStrap {
 
         log.error( "create some default cars.." )
         createDefaultCarTypes()
+
+        log.error( "create some default electric stations.." )
+        createDefaultElectricStations()
 
         log.error( "create default fleet.." )
         createDefaultFleet()

@@ -40,6 +40,7 @@ class BootStrap {
         Fleet dfki1Fleet = new Fleet(
             company: company,
             name: "Dfki-Fleet One",
+            stub: false
         )
 
         if ( !dfki1Fleet.save( flush: true, failOnError: true ) ) {
@@ -97,6 +98,7 @@ class BootStrap {
         Fleet dfki2Fleet = new Fleet(
                 company: company,
                 name: "Dfki-Fleet Two",
+                stub: false
         )
 
         if ( !dfki2Fleet.save( flush: true, failOnError: true ) ) {

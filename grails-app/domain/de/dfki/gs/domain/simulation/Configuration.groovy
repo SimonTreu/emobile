@@ -20,6 +20,7 @@ class Configuration {
      * possibility to have different fleets, and to plug ready-steady-fleets into Configuration
      */
     Set<Fleet> fleets = []
+
     /**
      * same same for fillingstations
      */

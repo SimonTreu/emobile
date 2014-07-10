@@ -132,9 +132,23 @@
         </div>
         <br><br><br>
         <div class="layoutButton">
-            <span class="layoutButtonL"><g:submitButton name="send" value="CANCEL"/></span>
+            <span class="layoutButtonL">
+                <g:form controller="configuration" action="removeStubConfiguration">
+
+                    <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+                    <g:submitButton name="cancel" value="Cancel"/>
+
+                </g:form>
+            </span>
             <span class="layoutButtonM"></span>
-            <span class="layoutButtonR"><g:submitButton name="send" value="SAVE"/></span>
+            <span class="layoutButtonR">
+                <g:form controller="configuration" action="saveFinishedConfiguration">
+
+                    <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+                    <g:submitButton name="save" value="Save"/>
+
+                </g:form>
+            </span>
         </div>
 
 
@@ -221,12 +235,11 @@
     </div>
     <br><br><br>
 
+
     <div class="layoutButton">
-        <span class="layoutButtonL"><g:submitButton name="send" value="CANCEL"/></span>
-        <span class="layoutButtonM"></span>
-        <span class="layoutButtonR"><g:submitButton name="send" value="SAVE"/></span>
+
+
     </div>
-    <a class="close" href="#close"></a>
 </div>
 <!--END Add electric station form -->
 

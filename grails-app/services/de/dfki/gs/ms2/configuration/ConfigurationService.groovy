@@ -437,4 +437,49 @@ class ConfigurationService {
         return fillingStationTypes
     }
 
+
+    def removeConfigurationStub( Long configurationStubId ) {
+
+        Configuration configurationToRemove = Configuration.get( configurationStubId )
+
+        configurationToRemove.delete( flush: true )
+
+        if ( Configuration.get( configurationStubId ) == null ) {
+
+            log.error( "configuration stub with id ${configurationStubId} is removed again" )
+
+        } else {
+
+            log.error( "something wrent deeply wrong during removing of configuration stub" )
+
+        }
+
+    }
+
+    def saveFinishedConfigurationStub( Long configurationStubId ) {
+
+        Configuration configurationStubToSave = Configuration.get( configurationStubId )
+        configurationStubToSave.stub = false
+
+        if ( !configurationStubToSave.save( flush: true ) ) {
+            log.error( "failed to save configuration: ${configurationStubToSave.errors}" )
+        } else {
+
+            log.error( "configuration with id ${configurationStubId} is now unStubbed!" )
+
+        }
+
+
+    }
+
+
+    def getRecentlyEditedConfigurationsOfCompany( Person person ) {
+
+        Company company = Company.get( person.company.id )
+
+        List<Configuration> configurations = Configuration.findAllByCompany( company )
+
+        return configurations
+    }
+
 }

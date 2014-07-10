@@ -12,6 +12,7 @@ import de.dfki.gs.controller.ms2.configuration.commands.EditFillingStationComman
 import de.dfki.gs.controller.ms2.configuration.commands.UpdateCarTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.UpdateFillingStationTypeCommandObject
 import de.dfki.gs.domain.simulation.CarType
+import de.dfki.gs.domain.simulation.Configuration
 import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.users.Person
 import grails.plugin.springsecurity.SpringSecurityUtils
@@ -549,6 +550,79 @@ class ConfigurationController {
         // TODO: render
     }
 
+
+    def removeStubConfiguration() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        CreateFleetForConfigurationViewCommandObject cmd = new CreateFleetForConfigurationViewCommandObject()
+        bindData( cmd, params )
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+            log.error( "nothing to remove, no coniguration stub found for ${cmd.configurationStubId} : ${cmd.errors}" )
+        } else {
+
+            configurationService.removeConfigurationStub( cmd.configurationStubId )
+
+        }
+
+
+        redirect controller: 'front', action: 'init'
+    }
+
+    def saveFinishedConfiguration() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        CreateFleetForConfigurationViewCommandObject cmd = new CreateFleetForConfigurationViewCommandObject()
+        bindData( cmd, params )
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+            log.error( "nothing to save, no coniguration stub found for ${cmd.configurationStubId} : ${cmd.errors}" )
+        } else {
+
+            configurationService.saveFinishedConfigurationStub( cmd.configurationStubId )
+
+        }
+
+        redirect controller: 'front', action: 'init'
+    }
+
+    def showRecentlyEditedConfiguration() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        def m = [ : ]
+        m.configurations = [  ]
+
+        List<Configuration> configurations = configurationService.getRecentlyEditedConfigurationsOfCompany( person )
+
+        configurations.each { Configuration configuration ->
+
+            def conf = [ : ]
+            conf.configurationId = configuration.id
+
+
+            m.configurations << conf
+        }
+
+        render view: 'recentConfigurations', model: m
+    }
 
     def checkPerson() {
 

@@ -20,7 +20,7 @@ class UpdateFillingStationTypeCommandObject {
             FillingStationType fillingStationType = FillingStationType.get( val )
 
             if ( fillingStationType == null ) {
-                return 'fillingStationType.not.exist'
+                return 'configuration.fillingStationType.not.exist'
             }
 
         }

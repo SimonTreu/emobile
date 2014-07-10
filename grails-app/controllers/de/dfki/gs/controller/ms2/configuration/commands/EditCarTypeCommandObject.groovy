@@ -17,7 +17,7 @@ class EditCarTypeCommandObject {
 
             CarType carType = CarType.get( val )
             if ( carType == null ) {
-                return 'cartype.not.exist'
+                return 'configuration.cartype.not.exist'
             }
 
         }

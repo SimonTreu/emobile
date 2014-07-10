@@ -16,6 +16,18 @@ import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.users.Person
 import grails.plugin.springsecurity.SpringSecurityUtils
 
+
+/**
+ * this controller is to handle all user inputs for configurainf simulation configurations
+ * intially config-object is persisted as stub and after finished editing persisted as
+ * executable
+ * a) manage cartypes
+ * b) manage cars-stubs
+ * c) manage fleets
+ * d) manage fillingStations
+ * e) manage groups of fillingStations
+ *
+ */
 class ConfigurationController {
 
     def springSecurityService

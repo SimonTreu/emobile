@@ -17,4 +17,33 @@ class FillingStationType {
 
     static constraints = {
     }
+
+    def beforeUpdate() {
+
+        if ( fillingPortion == null ) {
+
+            try {
+                fillingPortion = ( 1 / 3600 ) * Float.parseFloat( power )
+            } catch ( NumberFormatException nfe ) {
+                log.error( "failed to calc fillingPortion during Float parsing from String: ${power}", nfe )
+            }
+
+        }
+
+    }
+
+    def beforeSave() {
+
+        if ( fillingPortion == null ) {
+
+            try {
+                fillingPortion = ( 1 / 3600 ) * Float.parseFloat( power )
+            } catch ( NumberFormatException nfe ) {
+                log.error( "failed to calc fillingPortion during Float parsing from String: ${power}", nfe )
+            }
+
+        }
+
+    }
+
 }

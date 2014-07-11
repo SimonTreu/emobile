@@ -106,6 +106,114 @@ log4j = {
     //       'org.hibernate'
 }
 
+defaultFillingStationTypes {
+
+    AC_2_3_KW {
+        name    = "AC 2,3 kW"
+        power   = 2.3
+        company = "dfki"
+    }
+
+    AC_3_7_KW {
+        name    = "AC 3,7 kW"
+        power   = 3.7
+        company = "dfki"
+    }
+
+    AC_7_4_KW {
+        name    = "AC 7,4 kW"
+        power   = 7.4
+        company = "dfki"
+    }
+
+    AC_11_1_KW {
+        name    = "AC 11,1 kW"
+        power   = 11.1
+        company = "dfki"
+    }
+
+    AC_22_2_KW {
+        name    = "AC 22,2 kW"
+        power   = 22.2
+        company = "dfki"
+    }
+
+    AC_43_KW {
+        name    = "AC 43 kW"
+        power   = 43
+        company = "dfki"
+    }
+
+    DC_49_8_KW {
+        name    = "DC 49,8 kW"
+        power   = 49.8
+        company = "dfki"
+    }
+
+}
+
+defaultCarTypes {
+
+    bmwi3 {
+        name = "BMW i3"
+        energyConsumption = 13.5
+        maxEnergyLoad = 18.8
+        company = "dfki"
+    }
+
+    vito {
+        name = "MB Vito E-CELL"
+        energyConsumption = 25.2
+        maxEnergyLoad = 32
+        company = "dfki"
+    }
+
+    mitsubishi {
+        name = "Mitsubishi i-MiEV"
+        energyConsumption = 13.5
+        maxEnergyLoad = 13
+        company = "dfki"
+    }
+
+    nissan {
+        name = "Nissan Leaf"
+        energyConsumption = 17.4
+        maxEnergyLoad = 24
+        company = "dfki"
+    }
+
+    opel {
+        name = "Opel Ampera"
+        energyConsumption = 10.5
+        maxEnergyLoad = 8
+        company = "dfki"
+    }
+
+    renault {
+        name = "Renault Kangoo Z.E."
+        energyConsumption = 16
+        maxEnergyLoad = 22
+        company = "dfki"
+    }
+
+    renaultZoe {
+        name = "Renault ZOE"
+        energyConsumption = 16
+        maxEnergyLoad = 22
+        company = "dfki"
+    }
+
+    vw {
+        name = "VW E-up!"
+        energyConsumption = 11.7
+        maxEnergyLoad = 19
+        company = "dfki"
+    }
+
+
+}
+
+
 energyConfig {
     initialEnergy           = 500    // kWh
     initialPersons          = 1

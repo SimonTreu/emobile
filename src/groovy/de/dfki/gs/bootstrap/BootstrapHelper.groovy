@@ -1,5 +1,7 @@
 package de.dfki.gs.bootstrap
 
+import de.dfki.gs.domain.simulation.CarType
+import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.users.Company
 import de.dfki.gs.domain.users.Person
 import de.dfki.gs.domain.users.PersonRole
@@ -13,6 +15,7 @@ import org.apache.commons.logging.LogFactory
 class BootstrapHelper {
 
     private static def log = LogFactory.getLog(BootstrapHelper.class)
+
 
     Company findOrCreateCompany( String companyName ) {
 
@@ -95,5 +98,61 @@ class BootstrapHelper {
         return p
     }
 
+
+    def createDefaultFillingStationTypesIfNotExits() {
+
+        def grailsApplication = FillingStationType.grailsApplication
+
+        grailsApplication.config.defaultFillingStationTypes.each {
+
+            FillingStationType type = FillingStationType.findByName( it.value.name )
+
+            if ( !type ) {
+                type = new FillingStationType(
+                        name: it.value.name,
+                        power: it.value.power,
+                        company: findOrCreateCompany( it.value.company )
+                )
+
+                if ( !type.save( flush: true, failOnError: true ) ) {
+
+                    log.error( "failed to save fillingStationType: ${type.errors}" )
+
+                }
+            }
+
+        }
+
+    }
+
+    def createDefaultCarTypeIfNotExist() {
+
+        def grailsApplication = CarType.grailsApplication
+
+        grailsApplication.config.defaultCarTypes.each {
+
+            CarType carType = CarType.findByName( it.value.name )
+
+
+            if ( !carType ) {
+
+                carType = new CarType(
+                        name: it.value.name,
+                        energyConsumption: it.value.energyConsumption,
+                        maxEnergyLoad:     it.value.maxEnergyLoad,
+                        company: findOrCreateCompany( it.value.company )
+                )
+
+                if ( !carType.save( flush: true, failOnError: true ) ) {
+
+                    log.error( "failed to save carType: ${carType.errors}" )
+
+                }
+
+            }
+
+        }
+
+    }
 
 }

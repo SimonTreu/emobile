@@ -17,7 +17,10 @@ import de.dfki.gs.controller.ms2.configuration.commands.UpdateCarTypeCommandObje
 import de.dfki.gs.controller.ms2.configuration.commands.UpdateFillingStationTypeCommandObject
 import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.simulation.Configuration
+import de.dfki.gs.domain.simulation.FillingStationGroup
 import de.dfki.gs.domain.simulation.FillingStationType
+import de.dfki.gs.domain.simulation.Fleet
+import de.dfki.gs.domain.users.Company
 import de.dfki.gs.domain.users.Person
 import grails.plugin.springsecurity.SpringSecurityUtils
 
@@ -466,6 +469,7 @@ class ConfigurationController {
         redirect( controller: 'configuration', action: 'index', params: [ configurationStubId : params.configurationStubId ] )
     }
 
+
     def createFleetView() {
 
         Person person = (Person) springSecurityService.currentUser
@@ -489,10 +493,12 @@ class ConfigurationController {
 
             def m = [ : ]
 
-            m.fleetStubId = configurationService.createFleetStub( person, cmd.configurationStubId )?.id
+            Long fleetStubId = configurationService.createFleetStub( person, cmd.configurationStubId )?.id
+            m.fleetStubId = fleetStubId
 
             m.configurationStubId = cmd.configurationStubId
             m.availableCarTypes = configurationService.getCarTypesForCompany( person )
+            m.generatedName = Fleet.get( fleetStubId ).name
 
             render template: '/templates/configuration/fleet/createFleet', model: m
 
@@ -523,10 +529,13 @@ class ConfigurationController {
 
             def m = [ : ]
 
-            m.groupStubId = configurationService.createGroupStub( person, cmd.configurationStubId )?.id
+            Long groupStubId = configurationService.createGroupStub( person, cmd.configurationStubId )?.id
+            m.groupStubId = groupStubId
 
             m.configurationStubId = cmd.configurationStubId
             m.availableFillingStationTypes = configurationService.getFillingStationTypesForCompany( person )
+
+            m.generatedName = FillingStationGroup.get( groupStubId ).name
 
             render template: '/templates/configuration/group/createGroup', model: m
 
@@ -564,7 +573,7 @@ class ConfigurationController {
                 count = cmd.carCount
             }
 
-            configurationService.addCarsToFleet( cmd.fleetStubId, count, cmd.carTypeId )
+            configurationService.addCarsToFleet( cmd.fleetStubId, count, cmd.carTypeId, cmd.nameForFleet )
 
         }
 
@@ -606,7 +615,7 @@ class ConfigurationController {
                 count = cmd.stationCount
             }
 
-            configurationService.addStationsToGroup( cmd.groupStubId, count, cmd.stationTypeId )
+            configurationService.addStationsToGroup( cmd.groupStubId, count, cmd.stationTypeId, cmd.nameForGroup )
 
         }
 

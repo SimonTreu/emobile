@@ -11,6 +11,8 @@ class FillingStationGroup {
 
     Company company
 
+    Boolean stub
+
     static hasMany = [
             fillingStations : FillingStation
     ]
@@ -19,5 +21,8 @@ class FillingStationGroup {
     }
 
     static mapping = {
+
+        stub type: 'yes_no'
+
     }
 }

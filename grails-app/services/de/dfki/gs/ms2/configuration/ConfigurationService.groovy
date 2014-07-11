@@ -345,7 +345,7 @@ class ConfigurationService {
      * @param carTypeId
      * @return
      */
-    def addCarsToFleet( Long fleetStubId, Integer count, Long carTypeId ) {
+    def addCarsToFleet( Long fleetStubId, Integer count, Long carTypeId, String nameForFleet ) {
 
         Fleet fleetStub = Fleet.get( fleetStubId )
 
@@ -368,6 +368,8 @@ class ConfigurationService {
 
         }
 
+        fleetStub.name = nameForFleet
+
         if ( !fleetStub.save( flush: true ) ) {
             log.error( "failed to update fleet: ${fleetStub.errors}" )
         }
@@ -384,7 +386,7 @@ class ConfigurationService {
      * @param stationTypeId
      * @return
      */
-    def addStationsToGroup( Long groupStubId, Integer count, Long stationTypeId ) {
+    def addStationsToGroup( Long groupStubId, Integer count, Long stationTypeId, String nameForGroup ) {
 
         FillingStationGroup groupStub = FillingStationGroup.get( groupStubId )
 
@@ -407,6 +409,8 @@ class ConfigurationService {
 
         }
 
+        groupStub.name = nameForGroup
+
         if ( !groupStub.save( flush: true ) ) {
             log.error( "failed to update group: ${groupStub.errors}" )
         }
@@ -428,9 +432,11 @@ class ConfigurationService {
 
         Configuration stub = Configuration.get( configurationStubId )
 
+        String generatedFleetName = "Fleet No. ${Fleet.countByCompany( Company.get( person.company.id ) ) + 1}"
+
         Fleet fleetStub = new Fleet(
                                 company: company,
-                                name: "fleetStub-${UUID.randomUUID().toString().substring(0,5)}",
+                                name: generatedFleetName,
                                 stub: true
                             )
 
@@ -457,9 +463,12 @@ class ConfigurationService {
 
         Configuration stub = Configuration.get( configurationStubId )
 
+        String generatedFleetName = "Group No. ${FillingStationGroup.countByCompany( Company.get( person.company.id ) ) + 1}"
+
+
         FillingStationGroup groupStub = new FillingStationGroup(
                 company: company,
-                name: "groupStub-${UUID.randomUUID().toString().substring(0,5)}",
+                name: generatedFleetName,
                 stub: true
         )
 

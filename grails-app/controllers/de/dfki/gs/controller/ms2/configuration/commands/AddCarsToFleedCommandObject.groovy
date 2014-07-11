@@ -17,7 +17,11 @@ class AddCarsToFleedCommandObject {
     Long carTypeId
     Long fleetStubId
 
+    String nameForFleet
+
     static constraints = {
+
+        nameForFleet nullable: false, blank: false
 
         configurationStubId nullable: false, validator: { val,obj ->
 

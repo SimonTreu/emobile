@@ -6,6 +6,20 @@
                 <div class="rowU">
                     <div class="leftbig"><b><%--<<g:message code="simulation.index.selectcarstype"/>--%>Select filling stations for group</b></div>
                 </div>
+
+
+                <div class="row">
+
+                    <div class="left3">
+                        Set Name for Fleet
+                    </div>
+
+                    <div class="right2">
+                        <g:textField name="nameForGroup" value="${generatedName}"/>
+                    </div>
+
+                </div>
+
                 <div class="row">
                     <div class="left3">
                         <g:select name="stationCount" from="${1..100}" /> &nbsp;&nbsp;

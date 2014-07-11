@@ -17,7 +17,11 @@ class AddFillingStationsToGroupCommandObject {
     Long stationTypeId
     Long groupStubId
 
+    String nameForGroup
+
     static constraints = {
+
+        nameForGroup nullable: false, blank: false
 
         configurationStubId nullable: false, validator: { val,obj ->
 

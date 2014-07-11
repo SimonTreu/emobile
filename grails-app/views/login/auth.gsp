@@ -44,7 +44,7 @@
 
                 <div class="d1">
         <fieldset>
-            <legend>Sign in or log in</legend>
+            <legend><g:message code="login.auth.registrate" /> or <g:message code="login.auth.login"/></legend>
 
             <div class="layout">
                 <div class="layoutLeft">
@@ -105,7 +105,7 @@
 
                             <div class="rowL">
                                 <div class="left"></div>
-                                <div class="right"><g:submitButton name="signinButton" value="Sign In"/></div>
+                                <div class="right"><g:submitButton name="signinButton" value="Sign Up" /></div>
                                 <div class="clear"></div>
                             </div>
                         </div>

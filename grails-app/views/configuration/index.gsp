@@ -98,13 +98,13 @@
                             <div class="leftbig"><b><g:message code="simulation.index.fillingconfiguration"/></b></div>
                         </div>
 
-                        <g:if test="${availableGroups != null && availableGroups.size() > 0}">
+                        <g:if test="${availableFillingStationGroups != null && availableFillingStationGroups.size() > 0}">
                             <div class="row">
                                 <div class="left4"><g:message code="simulation.index.selectgroup"/></div>
                                 <div class="right2">
                                     <g:form controller="configuration" action="addExistentGroupToConfiguration">
                                         <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
-                                        <g:select name="groupId" from="${availableGroups}" optionKey="id" optionValue="name" />
+                                        <g:select name="groupId" from="${availableFillingStationGroups}" optionKey="id" optionValue="name" />
                                         <g:submitButton name="add" value="Add Group to Simulation" />
                                     </g:form>
                                 </div>
@@ -112,20 +112,20 @@
                             </div>
                         </g:if>
 
-                        <g:if test="${addedGroups != null && addedGroups.size() > 0}">
-                            <g:each in="${addedGroups}" var="addedGroups">
+                        <g:if test="${addedFillingStationGroups != null && addedFillingStationGroups.size() > 0}">
+                            <g:each in="${addedFillingStationGroups}" var="addedGroup">
 
                                 <g:form controller="configuration" action="removeGroupFromConfiguration">
 
                                 <%--<g:message code="simulation.index.addedfleet"/>--%>
                                     <div class="row">
                                         <div class="left2">
-                                            ${addedGroups.name} with ${addedGroups.stations.size()} filling stations
+                                            ${addedGroup.name} with ${addedGroup.fillingStations.size()} Filling Stations
                                         </div>
                                         <div class="right3">
 
                                             <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
-                                            <g:hiddenField name="groupId" value="${addedGroups.id}"/>
+                                            <g:hiddenField name="groupId" value="${addedGroup.id}"/>
                                             <g:submitButton name="removeGroup" value="Remove Group From Simulation"/>
 
                                         </div>

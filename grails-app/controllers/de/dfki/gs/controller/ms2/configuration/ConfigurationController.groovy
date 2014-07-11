@@ -329,14 +329,11 @@ class ConfigurationController {
         // fleets already added to configuration stub
         m.addedFleets = configurationService.getAddedFleets( configurationStubId )
 
-        //groups
-        m.availableGroups = configurationService.getGroupsForCompany( person, configurationStubId )
+        // filling station groups
+        m.availableFillingStationGroups = configurationService.getGroupsForCompany( person, configurationStubId )
 
         // groups already added to configuration stub
-        m.addedGroups = configurationService.getAddedGroups( configurationStubId )
-
-        // fillingStationGroups
-        m.fillingStationGroups = configurationService.getFillingStationGroupsForCompany( person )
+        m.addedFillingStationGroups = configurationService.getAddedGroups( configurationStubId )
 
         render view: 'index', model: m
     }

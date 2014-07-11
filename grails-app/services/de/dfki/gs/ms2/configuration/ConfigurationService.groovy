@@ -543,7 +543,7 @@ class ConfigurationService {
      * @param energyDemand
      * @param maxEnergyCapacity
      */
-    def createFillingStationTypeForCompany( Person person, String fillingStationTypeName, String power  ) {
+    def createFillingStationTypeForCompany( Person person, String fillingStationTypeName, Double power  ) {
 
         // getting the company
         Company company = Company.get( person.company.id )
@@ -553,33 +553,22 @@ class ConfigurationService {
             return
         }
 
-        FillingStationType fillingStationType = null
+        FillingStationType fillingStationType = new FillingStationType(
+                company:  company,
+                name: fillingStationTypeName,
+                power: power,
+                fillingPortion: ( 1 / 3600 ) * power
+        )
 
-        try {
-            Float powerValue = Float.parseFloat( power )
-
-            fillingStationType = new FillingStationType(
-                    company:  company,
-                    name: fillingStationTypeName,
-                    power: power,
-                    fillingPortion: ( 1 / 3600 ) * powerValue
-            )
-
-            if ( !fillingStationType.validate() && fillingStationType.hasErrors() ) {
-                log.error( "failed to vaildate new fillingStationType: ${fillingStationType.errors}" )
-                return
-            }
-
-            if ( !fillingStationType.save( flush: true ) ) {
-                log.error( "failed to save new fillingStationType: ${fillingStationType.errors}" )
-                return
-            }
-        } catch ( NumberFormatException nfe ) {
-
-            log.error( "failed to save fillingStationType: ", nfe )
-
+        if ( !fillingStationType.validate() && fillingStationType.hasErrors() ) {
+            log.error( "failed to vaildate new fillingStationType: ${fillingStationType.errors}" )
+            return
         }
 
+        if ( !fillingStationType.save( flush: true ) ) {
+            log.error( "failed to save new fillingStationType: ${fillingStationType.errors}" )
+            return
+        }
 
 
         return fillingStationType

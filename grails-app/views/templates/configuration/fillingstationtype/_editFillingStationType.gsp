@@ -5,11 +5,11 @@
 
             <div class="contentLeft">
                 <div class="rowU">
-                    <div class="leftbig"><b>Edit filling station</b></div>
+                    <div class="leftbig"><b>Edit Filling Station Type</b></div>
                 </div>
                 <div>
                     <div class="row">
-                        <div class="left2">Filling station name</div>
+                        <div class="left2">Filling Station Type Name</div>
                         <div class="right2"><g:textField name="fillingStationTypeName" id="fillingStationTypeName" value="${fillingStationTypeName}"/></div>
                         <div class="clear"></div>
                     </div>

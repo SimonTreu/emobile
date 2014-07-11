@@ -10,12 +10,12 @@ import grails.validation.Validateable
 class CreateFillingStationTypeCommandObject {
 
     String fillingStationTypeName
-    String power
+    Double power
 
     static constraints = {
 
         fillingStationTypeName nullable: false, blank: false
-        power nullable: false, blank: false, matches: "\\d+(\\.\\d+)?"
+        power nullable: false, blank: false
 
     }
 

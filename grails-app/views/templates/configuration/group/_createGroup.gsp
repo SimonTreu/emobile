@@ -8,15 +8,14 @@
                 </div>
                 <div class="row">
                     <div class="left3">
-                        <g:select name="count" from="${1..100}" /> &nbsp;&nbsp;
+                        <g:select name="stationCount" from="${1..100}" /> &nbsp;&nbsp;
                         <%--<g:message code="simulation.index.carstype"/>--%>
-                        Filling stations types:
+                        Filling Station Types:
                     </div>
                     <div class="right2">
-                        <g:select name="fillingType" from="${availableFillingStationTypes}" optionKey="id" optionValue="name" />
+                        <g:select name="stationTypeId" from="${availableFillingStationTypes}" optionKey="id" optionValue="name" />
                         &nbsp;&nbsp;
-                        <g:hiddenField name="availableFillingStations" value="${availableFillingStationTypes}"/>
-                        <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+
                         <g:hiddenField name="groupStubId" value="${groupStubId}"/>
                         <g:submitToRemote class="addButton"
                                           url="[action: 'updateGroupOfConfiguration']"

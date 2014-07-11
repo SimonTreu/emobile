@@ -173,6 +173,7 @@ class BootStrap {
         FillingStationGroup dfki1Group = new FillingStationGroup(
                 company: company,
                 name: "Dfki-Group One",
+                stub: false
         )
 
         if ( !dfki1Group.save( flush: true, failOnError: true ) ) {

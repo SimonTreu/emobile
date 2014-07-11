@@ -649,4 +649,17 @@ class ConfigurationService {
         return configurations
     }
 
+    def getCarsFromFleet( Long fleetId ) {
+
+        def cars = []
+
+        Fleet fleet = Fleet.get( fleetId )
+
+        fleet.cars.each { Car car ->
+            cars << Car.get( car.id )
+        }
+
+        return cars
+    }
+
 }

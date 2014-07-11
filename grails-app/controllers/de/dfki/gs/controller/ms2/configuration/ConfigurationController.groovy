@@ -10,6 +10,7 @@ import de.dfki.gs.controller.ms2.configuration.commands.CreateCarTypeCommandObje
 import de.dfki.gs.controller.ms2.configuration.commands.CreateFillingStationTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.CreateFleetForConfigurationCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.CreateFleetForConfigurationViewCommandObject
+import de.dfki.gs.controller.ms2.configuration.commands.CreateRouteSelectorCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditCarTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditConfigurationStubCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditFillingStationCommandObject
@@ -22,6 +23,7 @@ import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.domain.users.Company
 import de.dfki.gs.domain.users.Person
+import de.dfki.gs.domain.utils.Distribution
 import grails.plugin.springsecurity.SpringSecurityUtils
 
 
@@ -40,6 +42,9 @@ class ConfigurationController {
 
     def springSecurityService
     def configurationService
+
+
+
 
     /**
      * this part handles all about fillingStationType manageing
@@ -467,6 +472,47 @@ class ConfigurationController {
 
 
         redirect( controller: 'configuration', action: 'index', params: [ configurationStubId : params.configurationStubId ] )
+    }
+
+
+    def createRouteSelectorView() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        log.error( "params: ${params}" )
+
+        CreateRouteSelectorCommandObject cmd = new CreateRouteSelectorCommandObject()
+
+        bindData( cmd, params )
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to validate : ${cmd.errors}" )
+
+        } else {
+
+            def m = [ : ]
+
+            // put fleetId
+            m.fleetId = cmd.fleetId
+
+            // put in available Distributions
+            m.distributions = Distribution.values()
+
+
+            // put all cars from fleet
+            m.cars = configurationService.getCarsFromFleet( cmd.fleetId )
+
+
+            render template: '/templates/configuration/fleet/distribution', model: m
+
+        }
     }
 
 

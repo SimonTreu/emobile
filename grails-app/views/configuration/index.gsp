@@ -22,76 +22,164 @@
             <legend> Configure Simulation </legend>
 
             <div class="layout">
-                <div class="layoutLeft">
-                    <div class="contentLeft2">
-                        <div class="rowU">
-                            <div class="left"><b><g:message code="simulation.index.fleetconfiguration" /></b></div>
-                            <div class="right"></div>
-                            <div class="clear"></div>
-                        </div>
 
-                        <g:if test="${availableFleets != null && availableFleets.size() > 0}">
-                            <div class="row">
-                                <div class="left4"><g:message code="simulation.index.existentfleet"/></div>
-                                <div class="right2">
 
-                                    <g:form controller="configuration" action="addExistentFleetToConfiguration">
-                                        <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
-                                        <g:select name="fleetId" from="${availableFleets}" optionKey="id" optionValue="name" />
-                                        <g:submitButton name="add" value="Add Fleet to Simulation" />
-                                    </g:form>
+                    <div class="layoutLeft">
+                        <div class="contentLeft2">
 
-                                </div>
+                            <div class="rowU">
+                                <div class="left"><b><g:message code="simulation.index.fleetconfiguration" /></b></div>
+                                <div class="right"></div>
                                 <div class="clear"></div>
                             </div>
-                        </g:if>
+
+                            <div class="rowSpace">
+                                <div class="clear"></div>
+                            </div>
+
+                            <div class="rowGroup">
+
+                                <div class="rowBrightGrey">
+
+                                    <div class="leftLongBold">
+                                        Select Fleets for Simulation
+                                    </div>
+                                    <div class="right1">
 
 
-                        <g:if test="${addedFleets != null && addedFleets.size() > 0}">
-                            <g:each in="${addedFleets}" var="addedFleet">
 
-                                <g:form controller="configuration" action="removeFleetFromConfiguration">
-                                <%--<g:message code="simulation.index.addedfleet"/>--%>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+
+                                <g:if test="${availableFleets != null && availableFleets.size() > 0}">
                                     <div class="row">
-                                        <div class="left2">
-                                            ${addedFleet.name} with ${addedFleet.cars.size()} cars
-                                        </div>
-                                        <div class="right3">
+                                        <div class="left2"><g:message code="simulation.index.existentfleet"/></div>
+                                        <div class="right2">
 
-                                            <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
-                                            <g:hiddenField name="fleetId" value="${addedFleet.id}"/>
-                                            <g:submitButton name="removeFleet" value="Remove Fleet From Simulation"/>
+                                            <g:form controller="configuration" action="addExistentFleetToConfiguration">
+                                                <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+                                                <g:select name="fleetId" from="${availableFleets}" optionKey="id" optionValue="name" />
+                                                <g:submitButton name="add" value="Add Fleet to Simulation" />
+                                            </g:form>
 
                                         </div>
                                         <div class="clear"></div>
                                     </div>
-                                </g:form>
-                            </g:each>
-                        </g:if>
+                                </g:if>
 
-                        <div class="row">
-                            <div class="left"></div>
-                            <div class="right"></div>
-                            <div class="clear"></div>
-                        </div>
-                        <div class="rowL">
+                                <div class="row">
 
 
-                            <g:form action="createFleetView">
-                                <div class="left1"><g:message code="simulation.index.createnewfleet"/></div>
-                                <div class="right4">
-                                    <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+                                    <g:form action="createFleetView">
+                                        <div class="left2">Not enough Fleets?</div>
+                                        <div class="left2">
+                                            <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
 
-                                    <g:submitToRemote class="addButton" url="[action: 'createFleetView']" update="updateMe" name="submit" value="Create" />
-                                    <%--<img width="22px"src="${g.resource( dir: '/images', file: 'add.png' )}">--%>
+                                            <g:submitToRemote class="addButton"
+                                                              url="[action: 'createFleetView']"
+                                                              update="updateMe"
+                                                              name="submit"
+                                                              value="Create New Fleet" />
+                                            <%--<img width="22px"src="${g.resource( dir: '/images', file: 'add.png' )}">--%>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </g:form>
+
+
                                 </div>
+
+                            </div>
+
+                            <div class="rowSpace">
                                 <div class="clear"></div>
-                            </g:form>
+                            </div>
+
+
+
+                            <div class="rowGroup">
+
+                                <div class="rowBrightGrey">
+
+                                    <div class="leftLongBold">
+                                        Collected Fleets for Simulation
+                                    </div>
+                                    <div class="right1">
+
+
+
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+
+                                <g:if test="${addedFleets != null && addedFleets.size() > 0}">
+                                    <g:each in="${addedFleets}" var="addedFleet">
+
+
+                                        <%--<g:message code="simulation.index.addedfleet"/>--%>
+                                            <div class="row">
+                                                <div class="left2">
+                                                    ${addedFleet.name} <br/> ( ${addedFleet.cars.size()} cars )
+                                                </div>
+                                                <div class="left2">
+
+                                                    <g:form controller="configuration" action="removeFleetFromConfiguration">
+
+                                                        <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+                                                        <g:hiddenField name="fleetId" value="${addedFleet.id}"/>
+                                                        <g:submitButton name="removeFleet" value="Unselect"/>
+
+                                                    </g:form>
+
+                                                </div>
+
+
+                                                <div class="right2">
+
+                                                    <g:form action="createRouteSelectorView">
+
+                                                        <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+                                                        <g:hiddenField name="fleetId" value="${addedFleet.id}"/>
+                                                        <g:submitToRemote class="addButton"
+                                                                          url="[action: 'createRouteSelectorView']"
+                                                                          update="updateMe"
+                                                                          name="submit"
+                                                                          value="Configure Routes" />
+
+                                                    </g:form>
+
+                                                </div>
+                                                <div class="clear"></div>
+
+
+
+
+                                                <div class="clear"></div>
+                                            </div>
+
+
+                                    </g:each>
+
+                                </g:if>
+
+                                <div class="row">
+                                    <div class="left"></div>
+                                    <div class="right"></div>
+                                    <div class="clear"></div>
+                                </div>
+
+                            </div>
+
+                            <div class="rowSpace">
+                                <div class="clear"></div>
+                            </div>
+
+
 
 
                         </div>
                     </div>
-                </div>
+
                 <div class="layoutRight">
                     <div class="contentLeft1">
                         <div class="rowU">

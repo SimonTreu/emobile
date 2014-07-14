@@ -56,7 +56,7 @@
 
                         <g:form controller="configuration" action="addExistentFleetToConfiguration">
                             <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
-                            <g:select name="fleetId" from="${availableFleets}" optionKey="id" optionValue="name" />
+                            <g:select name="fleetId" from="${availableFleets}" optionKey="id" optionValue="${{it.name+' ('+it.cars?.size()+' Cars)'}}" />
                             <g:submitButton name="add" value="Add Fleet to Simulation" />
                         </g:form>
 
@@ -107,27 +107,20 @@
 
                 <%--<g:message code="simulation.index.addedfleet"/>--%>
                     <div class="row1">
-                        <div class="left5">
-                            ${addedFleet.name}  ( ${addedFleet.cars.size()} cars )
-                        </div>
-                        <div class="right2">
-                            <g:form action="createRouteSelectorView">
+                        <g:if test="${addedFleet.routesConfigured == true}">
+                            <div class="left5">
+                                ${addedFleet.name} <br/> ( ${addedFleet.cars.size()} cars )
+                                <br/>All Routes are configured
+                            </div>
+                        </g:if>
+                        <g:else>
+                            <div class="left5">
+                                ${addedFleet.name} <br/> ( ${addedFleet.cars.size()} cars )
+                                <br/>Routes have to be configured
+                            </div>
+                        </g:else>
 
-                                <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
-                                <g:hiddenField name="fleetId" value="${addedFleet.id}"/>
-                                <g:submitToRemote class="addButton"
-                                                  url="[action: 'createRouteSelectorView']"
-                                                  update="updateMe"
-                                                  name="submit"
-                                                  value="Configure Routes" />
-
-                            </g:form>
-
-
-                        </div>
-
-
-                        <div class="right2">
+                        <div class="left2">
 
                             <g:form controller="configuration" action="removeFleetFromConfiguration">
 
@@ -138,6 +131,31 @@
                             </g:form>
 
                         </div>
+
+                        <div class="right2">
+
+                            <g:if test="${addedFleet.routesConfigured == true}">
+
+                                Show Routes
+
+                            </g:if>
+                            <g:else>
+                                <g:form action="createRouteSelectorView">
+
+                                    <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+                                    <g:hiddenField name="fleetId" value="${addedFleet.id}"/>
+                                    <g:submitToRemote class="addButton"
+                                                      url="[action: 'createRouteSelectorView']"
+                                                      update="updateMe"
+                                                      name="submit"
+                                                      value="Configure Routes" />
+
+                                </g:form>
+                            </g:else>
+
+                        </div>
+
+
                         <div class="clear"></div>
 
 

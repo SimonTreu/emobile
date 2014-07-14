@@ -913,7 +913,7 @@ body.lightBoxBody{
 .settingsWindowBig {
 
     min-height: 500px;
-    min-width: 900px;
+    min-width: 950px;
 
 }
 
@@ -1079,7 +1079,9 @@ body.lightBoxBody{
     border-radius: 6px;
     font-size: 12px;
     /*background-color:#f0f0f0;*/
-    -webkit-box-shadow: 3px 3px 15px #909090;	/* webkit browser*/ -moz-box-shadow: 3px 3px 15px #909090;	/* firefox */ box-shadow: 3px 3px 15px #909090;
+    /*-webkit-box-shadow: 3px 3px 15px #909090;
+    /* webkit browser*/ /*-moz-box-shadow: 3px 3px 15px #909090;	*/
+    /* firefox */ /*box-shadow: 3px 3px 15px #909090;*/
 }
 
 .contentLeft1{
@@ -1088,7 +1090,9 @@ body.lightBoxBody{
     width:450px;
     border-radius: 6px;
     font-size: 12px;
-    -webkit-box-shadow: 3px 3px 15px #909090;	/* webkit browser*/ -moz-box-shadow: 3px 3px 15px #909090;	/* firefox */ box-shadow: 3px 3px 15px #909090;
+    /*-webkit-box-shadow: 3px 3px 15px #909090;*/	/* webkit browser*/
+    /*-moz-box-shadow: 3px 3px 15px #909090;	*//* firefox */
+    /*box-shadow: 3px 3px 15px #909090;*/
 
     /*background-color:#f0f0f0;*/
 }
@@ -1099,7 +1103,9 @@ body.lightBoxBody{
     width:100%;
     border-radius: 6px;
     font-size: 12px;
-    -webkit-box-shadow: 3px 3px 15px #909090;	/* webkit browser*/ -moz-box-shadow: 3px 3px 15px #909090;	/* firefox */ box-shadow: 3px 3px 15px #909090;
+   /* -webkit-box-shadow: 3px 3px 15px #909090;	*/
+    /* webkit browser*//*  -moz-box-shadow: 3px 3px 15px #909090;	*/
+    /* firefox *//*  box-shadow: 3px 3px 15px #909090;*/
 
     /*background-color:#f0f0f0;*/
 }
@@ -1109,10 +1115,24 @@ body.lightBoxBody{
     margin: 10px;
     width:450px;
     border-radius: 6px;
+    border: 1px solid  #ccc;
     font-size: 12px;
-    -webkit-box-shadow: 3px 3px 15px #909090;	/* webkit browser*/ -moz-box-shadow: 3px 3px 15px #909090;	/* firefox */ box-shadow: 3px 3px 15px #909090;
+    /*-webkit-box-shadow: 3px 3px 15px #909090;	*/
+    /* webkit browser*//* -moz-box-shadow: 3px 3px 15px #909090;		*/
+    /* firefox *//* box-shadow: 3px 3px 15px #909090;	*/
     /*background-color:#f0f0f0;*/
 }
+
+.contentLeft4{
+    padding:0px;
+    margin: 10px;
+    width:350px;
+    border-radius: 6px;
+    border: 1px solid  #ccc;
+    font-size: 12px;
+
+}
+
 
 .contentLeftCar{
     padding:10px;
@@ -1128,7 +1148,9 @@ body.lightBoxBody{
     width:400px;
     border-radius: 6px;
     /*background-color:#f0f0f0;*/
-    -webkit-box-shadow: 3px 3px 15px #909090;	/* webkit browser*/ -moz-box-shadow: 3px 3px 15px #909090;	/* firefox */ box-shadow: 3px 3px 15px #909090;
+    /*-webkit-box-shadow: 3px 3px 15px #909090;	*/
+    /* webkit browser*//*  -moz-box-shadow: 3px 3px 15px #909090;	*/
+    /* firefox */ /*box-shadow: 3px 3px 15px #909090; */
 
 }
 
@@ -1186,10 +1208,25 @@ body.lightBoxBody{
 }
 
 .left4{
-    width:130px;
+    width:138px;
     float:left;
     padding:7px 0px 0px 7px;
     font-weight: bold;
+}
+
+.left65{
+    width:65px;
+    float:left;
+    padding:10px 0px 0px 7px;
+    font-weight: bold;
+}
+
+
+.left5{
+    width:210px;
+    float:left;
+    padding:7px 0px 0px 7px;
+
 }
 
 .leftR {
@@ -1218,9 +1255,23 @@ body.lightBoxBody{
 }
 
 .right3{
-    width:170px;
+    width:178px;
     float:right;
     padding:5px;
+    min-height:24px;
+    display: table-cell;
+}
+
+.right65{
+    width:65px;
+    padding:10px 0px 0px 7px;
+    font-weight: bold;
+    min-height:24px;
+    display: table-cell;
+}
+
+.right60{
+    width:65px;
     min-height:24px;
     display: table-cell;
 }
@@ -1239,12 +1290,22 @@ body.lightBoxBody{
     display: table-cell;
 }
 
+.right5{
+    width:155px;
+    float:right;
+    padding:5px;
+    display: table-cell;
+}
+
 .right2 {
     float:right;
     padding:5px;
     min-height:24px;
     display: table-cell;
 }
+
+
+
 .rightCar{
     width:200px;
     //float:right;
@@ -1287,6 +1348,18 @@ body.lightBoxBody{
     min-height:32px;
 }
 
+.row1{
+    display:block;
+    min-height:32px;
+    border-bottom: 1px solid #ddd;
+}
+
+.row2{
+    display:block;
+    min-height:32px;
+
+}
+
 .rowSpace {
     min-height:7px;
 }
@@ -1301,13 +1374,20 @@ body.lightBoxBody{
     min-height:32px;
 }
 
+.rowL1 {
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    display:block;
+    min-height:32px;
+}
+
 .rowGroup {
     margin-left: 7px;
     margin-right: 7px;
     margin-top: 2px;
     margin-bottom: 2px;
-    background-color: #f9f9f9;
-    border: 2px solid #ddd;
+    background-color: #fff;
+    border: 1px solid #ccc;
     border-top-right-radius: 6px;
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
@@ -1326,9 +1406,16 @@ body.lightBoxBody{
 
 }
 
+.rowU1 {
+    background-color:#ccc;
+    display:block;
+    min-height:32px;
+
+}
+
 .rowBrightGrey {
     background-color: #e9e9e9;
-    border: 1px solid #ddd;
+
     border-top-right-radius: 6px;
     border-top-left-radius: 6px;
     display:block;
@@ -1381,7 +1468,12 @@ td img{
     width: 50%;
     vertical-align: top;
     display: table-cell;
+}
 
+.layoutLeftLittle {
+    width: 40%;
+    vertical-align: top;
+    display: table-cell;
 }
 
 
@@ -1390,8 +1482,15 @@ td img{
     position: relative;
     display: table-cell;
     float:right;
-
 }
+.layoutRightLittle {
+    vertical-align: top;
+    position: relative;
+    display: table-cell;
+    float:right;
+    margin-top: 10px;
+}
+
 
 .layoutRightSignIn {
     vertical-align: top;
@@ -1411,6 +1510,7 @@ td img{
 .layout {
     display:table;
     width: 100%;
+    min-height:400px;
     font-size: 12px;
     background: #fff;
     border-radius: 6px
@@ -1800,7 +1900,7 @@ a#login_pop:hover, a#join_pop1:hover {
 }
 
 .tab-content {
-    width: 450px;
+    width: 500px;
     padding: 20px;
     display: none;
 }
@@ -2081,12 +2181,13 @@ height:20px;
 }
 
 .modalDialogRoutes > div {
-    width: 800px;
+    width: 950px;
     position: relative;
     margin: 10% auto;
-    padding: 0px 0px 0px 0px;
+    padding: 10px 10px 0px 10px;
     border-radius: 10px;
     background: #fff;
+    min-height:500px;
 
 }
 

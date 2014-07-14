@@ -1,6 +1,7 @@
 package de.dfki.gs.controller.ms2.configuration.commands
 
 import de.dfki.gs.domain.simulation.Configuration
+import de.dfki.gs.domain.simulation.Fleet
 import grails.validation.Validateable
 
 /**
@@ -10,7 +11,8 @@ import grails.validation.Validateable
 class CreateFleetForConfigurationCommandObject {
 
     Long configurationStubId
-
+    String nameForFleet
+    Long fleetStubId
 
     static constraints = {
 
@@ -25,6 +27,17 @@ class CreateFleetForConfigurationCommandObject {
 
         }
 
+        nameForFleet nullable: false, blank: false
+
+        fleetStubId nullable: false, validator: { val,obj ->
+
+            Fleet fleet = Fleet.get( val )
+
+            if ( fleet == null ) {
+                return 'configuration.fleet.not.exist'
+            }
+
+        }
 
     }
 

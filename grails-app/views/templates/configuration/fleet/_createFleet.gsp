@@ -52,6 +52,7 @@
                                         <input type="button" value="Cancel" onclick="window.location.href=window.location.href"/>
                                     </div>
                                     <div class="right2">
+                                        <g:hiddenField name="fleetStubId" value="${fleetStubId}"/>
                                         <g:submitButton name="createFleet" value="Create Fleet"/>
                                     </div>
                                     <div class="clear"></div>

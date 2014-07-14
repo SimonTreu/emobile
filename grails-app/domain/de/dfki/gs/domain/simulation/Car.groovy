@@ -12,11 +12,20 @@ class Car {
 
     Route route
 
+    Boolean routesConfigured
+
 
 
     static constraints = {
         name ( nullable: true, blank: true )
         route nullable: true
+        routesConfigured nullable: false
+    }
+
+    static mapping = {
+
+        routesConfigured: 'yes_no'
+
     }
 
 }

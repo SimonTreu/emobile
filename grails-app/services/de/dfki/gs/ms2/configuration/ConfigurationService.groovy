@@ -10,6 +10,7 @@ import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.domain.simulation.Simulation
 import de.dfki.gs.domain.users.Company
 import de.dfki.gs.domain.users.Person
+import de.dfki.gs.domain.utils.Distribution
 import grails.transaction.Transactional
 
 @Transactional
@@ -355,7 +356,8 @@ class ConfigurationService {
 
             Car car = new Car(
                 carType: carType,
-                name: "${carType.name} - No.${it}"
+                name: "${carType.name} - No.${it}",
+                routesConfigured: false
             )
 
             if ( !car.save( flush: true ) ) {
@@ -437,7 +439,9 @@ class ConfigurationService {
         Fleet fleetStub = new Fleet(
                                 company: company,
                                 name: generatedFleetName,
-                                stub: true
+                                stub: true,
+                                distribution: Distribution.NOT_ASSIGNED,
+                                routesConfigured: false
                             )
 
         if ( !fleetStub.save( flush: true ) ) {
@@ -660,6 +664,36 @@ class ConfigurationService {
         }
 
         return cars
+    }
+
+    def setDistributionForFleet( Distribution distribution, Long fleetId ) {
+
+        Fleet fleet = Fleet.get( fleetId )
+
+        fleet.distribution = distribution
+        fleet.routesConfigured = false
+
+        if ( !fleet.save( flush: true ) ) {
+
+            log.error( "failed to save fleet: ${fleet.errors}" )
+
+        }
+
+
+    }
+
+    def updateNameOfFleet( String nameForFleet, Long fleetStubId ) {
+
+        Fleet fleet = Fleet.get( fleetStubId )
+        fleet.name = nameForFleet
+
+        if ( !fleet.save( flush: true ) ) {
+
+            log.error( "failed to update fleetName for fleet: ${fleet.errors}" )
+
+        }
+
+
     }
 
 }

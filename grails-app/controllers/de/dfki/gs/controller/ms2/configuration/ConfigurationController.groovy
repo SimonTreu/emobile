@@ -11,6 +11,7 @@ import de.dfki.gs.controller.ms2.configuration.commands.CreateFillingStationType
 import de.dfki.gs.controller.ms2.configuration.commands.CreateFleetForConfigurationCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.CreateFleetForConfigurationViewCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.CreateRouteSelectorCommandObject
+import de.dfki.gs.controller.ms2.configuration.commands.DistributionForFleetCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditCarTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditConfigurationStubCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditFillingStationCommandObject
@@ -434,8 +435,8 @@ class ConfigurationController {
 
         } else {
 
-            // configurationService.createFleetForCompany(  )
             log.error( "hua!! ${cmd.configurationStubId}" )
+            configurationService.updateNameOfFleet( cmd.nameForFleet, cmd.fleetStubId )
 
         }
 
@@ -515,6 +516,32 @@ class ConfigurationController {
         }
     }
 
+    def setDistributionForFleet() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        log.error( "params: ${params}" )
+
+        DistributionForFleetCommandObject cmd = new DistributionForFleetCommandObject()
+        bindData( cmd, params )
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to validate distribution for fleet: ${cmd.errors}" )
+
+        } else {
+
+            configurationService.setDistributionForFleet( cmd.selectedDist, cmd.fleetId )
+
+        }
+
+    }
 
     def createFleetView() {
 

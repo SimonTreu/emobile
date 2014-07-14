@@ -6,7 +6,9 @@ package de.dfki.gs.domain.utils
 public enum Distribution {
 
     NORMAL_DISTRIBUTION( "Normal Distribution" ),
-    EQUAL_DISTRIBUTION( "Equal Distribution" )
+    EQUAL_DISTRIBUTION( "Equal Distribution" ),
+    SELF_MADE_ROUTES( "Self Configured Routes" ),
+    NOT_ASSIGNED( "Not Assigned" )
 
     final String value
 

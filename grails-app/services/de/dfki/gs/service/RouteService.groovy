@@ -5,6 +5,7 @@ import com.vividsolutions.jts.geom.Point
 import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
+import de.dfki.gs.domain.simulation.Route
 import de.dfki.gs.domain.simulation.Simulation
 import de.dfki.gs.domain.simulation.SimulationRoute
 import de.dfki.gs.domain.simulation.TrackEdge
@@ -646,6 +647,192 @@ class RouteService {
 
         return edges;
 
+    }
+
+
+    public List<Route> createRandomFixedDistanceRoutes( long routeCount, double fixedKm ) {
+
+        List<Route> routes = new ArrayList<Route>()
+
+        List<List<org.geotools.graph.structure.Node>> routeStartTargetsList = createViaNodesWithFixedKm( routeCount, fixedKm );
+
+        // initialized with size of routeStartTargetsList
+        List<List<List<BasicEdge>>> routesToPersist = Collections.synchronizedList( new ArrayList<ArrayList<List<BasicEdge>>>() );
+        // ArrayBlockingQueue<List<List<BasicEdge>>> routesToPersist = new ArrayBlockingQueue<ArrayList<List<BasicEdge>>>( routeStartTargetsList.size() )
+
+        int poolSize = 32;      // the count of currently paralellized threads
+        int queueSize = 64;    // recommended - twice the size of the poolSize
+        int threadKeepAliveTime = 15;
+        TimeUnit threadKeepAliveTimeUnit = TimeUnit.SECONDS;
+        int maxBlockingTime = 10;
+        TimeUnit maxBlockingTimeUnit = TimeUnit.MILLISECONDS;
+        Callable<Boolean> blockingTimeoutCallback = new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                // log.error("*** Still waiting for task insertion... ***");
+                // nothing to be done here..
+                return true; // keep waiting
+            }
+        };
+
+        NotifyingBlockingThreadPoolExecutor threadPoolExecutorForPoints =
+                new NotifyingBlockingThreadPoolExecutor(poolSize, queueSize,
+                        threadKeepAliveTime, threadKeepAliveTimeUnit,
+                        maxBlockingTime, maxBlockingTimeUnit, blockingTimeoutCallback);
+
+        int cc = 0;
+
+        for ( List<org.geotools.graph.structure.Node> routeStartTargetList : routeStartTargetsList ) {
+
+            log.debug( "start thread no ${++cc}  of ${routeStartTargetsList.size()} " )
+
+            def pairs = routeStartTargetList.collate( 2, 1, false );
+
+            threadPoolExecutorForPoints.execute( new Runnable() {
+
+                @Override
+                void run() {
+
+                    List<List<BasicEdge>> multiTargetRoute = new ArrayList<List<BasicEdge>>()
+
+                    boolean pathBroken = false
+
+                    for ( List<org.geotools.graph.structure.Node> pairList : pairs ) {
+
+                        /*
+                        Point startPoint =  (Point) pairList.get( 0 ).getObject();
+                        Point targetPoint = (Point) pairList.get( 1 ).getObject();
+
+                        Coordinate currentStart  = new Coordinate( startPoint.y, startPoint.x );
+                        Coordinate currentTarget = new Coordinate( targetPoint.y, targetPoint.x );
+
+                        List<BasicEdge> pathEdges = calculatePath( currentStart, currentTarget );
+                        */
+
+                        List<BasicEdge> pathEdges = calculatePathFromNodes( pairList.get( 0 ), pairList.get( 1 ) )
+
+                        /**
+                         * if this happens, all the routes are worthless
+                         */
+                        if ( pathEdges.size() == 0 ) {
+                            // log.error( "path is broken !! from ${currentStart.y} : ${currentStart.x}  to  ${currentTarget.y} : ${currentTarget.x}" )
+                            log.error( "path broken.. from: ${pairList.get( 0 ).toString()}  to: ${pairList.get( 1 ).toString()}" )
+                            pathBroken = true
+                            // return
+                        } else {
+                            // repair all edges' direction
+                            pathEdges = repairEdges( pathEdges )
+
+                            // adding repaired edges to multiTargetRoute
+                            multiTargetRoute.add( pathEdges )
+                        }
+
+                    }
+
+                    if ( !pathBroken ) {
+                        routesToPersist.add( multiTargetRoute )
+                        log.debug( "added a non broken path: ${multiTargetRoute} as path" )
+                    }
+
+                }
+
+            } );
+
+        }
+
+        def done1 = false
+        int doneCount = 0;
+
+        int waiter = 1500000
+        while ( !done1 && waiter >= 0 && doneCount < routeStartTargetsList.size() ) {
+            done1 = threadPoolExecutorForPoints.await( 20, TimeUnit.MILLISECONDS )
+            waiter--
+            if ( waiter%100 == 0 ) {
+                log.error( "waiter: ${waiter} -- finished threads: ${threadPoolExecutorForPoints.runnables.size()} of ${routeStartTargetsList.size()}" )
+            }
+            doneCount = threadPoolExecutorForPoints.runnables.size()
+        }
+
+        log.debug( "added ${routesToPersist.size()} valid routes" )
+
+
+
+
+
+        for ( List<List<BasicEdge>> multiTargetRoute : routesToPersist ) {
+
+            int routeIdx = 0;
+
+            Route route = new Route()
+
+            for ( List<BasicEdge> partOfMultiTargetRoute : multiTargetRoute ) {
+
+
+                int edgeIdx = 0
+
+                long millis = System.currentTimeMillis()
+
+                for ( BasicEdge basicEdge : partOfMultiTargetRoute ) {
+
+                    Point from = (Point) basicEdge.nodeA.getObject();
+                    Point to = (Point) basicEdge.nodeB.getObject();
+
+                    // BasicEdge featureEdge = graph.
+                    BasicEdge featureEdge = (BasicEdge) basicEdge.nodeA.getEdge( basicEdge.nodeB )
+
+                    SimpleFeatureImpl feature = ( SimpleFeatureImpl ) featureEdge.getObject()
+
+                    String featureIdString = feature.getID()
+                    int f = featureIdString.lastIndexOf( "." ) + 1
+                    int t = featureIdString.length()
+
+                    Long fId = Long.parseLong( featureIdString.substring( f, t ) )
+
+                    // default is "normal" edge
+                    TrackEdgeType edgeType = TrackEdgeType.normal
+                    if ( routeIdx == 0 && edgeIdx == 0 ) {
+                        edgeType = TrackEdgeType.start
+                    }
+                    if ( routeIdx > 0 && edgeIdx == 0 ) {
+                        edgeType = TrackEdgeType.via_target
+                    }
+                    if ( routeIdx == multiTargetRoute.size() - 1 && edgeIdx == partOfMultiTargetRoute.size() - 1 ) {
+                        edgeType = TrackEdgeType.target
+                    }
+
+                    TrackEdge trackEdge = new TrackEdge(
+                            type: edgeType,
+                            fromLat: from.getY(),
+                            fromLon: from.getX(),
+                            toLat: to.getY(),
+                            toLon: to.getX(),
+                            cost: (Double) feature.getAttribute( "cost" ),
+                            gisId: fId,
+                            km: (Double) feature.getAttribute( "km" ),
+                            streetName: feature.getAttribute( "osm_name" ),
+                            kmh: (Integer) feature.getAttribute( "kmh" ) );
+
+                    route.addToEdges( trackEdge )
+
+                    edgeIdx++
+                }
+
+
+            }
+
+            if ( !route.save( flush: true ) ) {
+
+                log.error( "failed to save Route: ${route.errors}" )
+
+            } else {
+
+                routes.add( route )
+
+            }
+
+        }
+
+        return routes
     }
 
     public void createRandomFixedDistanceRoutes( long routeCount, Long simulationId, double fixedKm, long carTypeId ) {

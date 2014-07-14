@@ -7,10 +7,12 @@ import de.dfki.gs.domain.simulation.FillingStation
 import de.dfki.gs.domain.simulation.FillingStationGroup
 import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.simulation.Fleet
+import de.dfki.gs.domain.simulation.Route
 import de.dfki.gs.domain.simulation.Simulation
 import de.dfki.gs.domain.simulation.SimulationRoute
 import de.dfki.gs.domain.simulation.Track
 import de.dfki.gs.domain.users.Company
+import de.dfki.gs.domain.utils.Distribution
 import de.dfki.gs.service.RouteService
 import de.dfki.gs.threadutils.NotifyingBlockingThreadPoolExecutor
 import de.dfki.gs.utils.LatLonPoint
@@ -44,6 +46,8 @@ class BootStrap {
         Fleet dfki1Fleet = new Fleet(
             company: company,
             name: "Dfki-Fleet One",
+            distribution: Distribution.SELF_MADE_ROUTES,
+            routesConfigured: false,
             stub: false
         )
 
@@ -53,18 +57,43 @@ class BootStrap {
             return
         }
 
+        List<Car> dfki1FleetCars = new ArrayList<Car>()
+
         CarType carType1 = CarType.get( 1 )
         if ( carType1 == null ) {
             log.error( "no cartype found" )
             return
         }
-        10.times {
+        2.times {
+
+            List<Route> routeList = null
+
+            boolean havingRoute = false
+
+            while ( !havingRoute ) {
+                routeList = routeService.createRandomFixedDistanceRoutes( 1, 90 )
+                if( routeList != null &&
+                        routeList.size() > 0 &&
+                        routeList.get( 0 ) != null &&
+                        routeList.get( 0 ).edges != null &&
+                        routeList.get( 0 ).edges.size() > 0 ) {
+
+                    break;
+                }
+            }
+
+            Route route = routeList.get( 0 )
+
             Car car = new Car(
                 carType: carType1,
-                name: "car no.${it}"
+                name: "car no.${it}",
+                route: route,
+                routesConfigured: true
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )
+            } else {
+                dfki1FleetCars.add( car )
             }
         }
 
@@ -73,23 +102,44 @@ class BootStrap {
             log.error( "no cartype found" )
             return
         }
-        10.times {
+        2.times {
+
+            List<Route> routeList = null
+            boolean havingRoute = false
+
+            while ( !havingRoute ) {
+                routeList = routeService.createRandomFixedDistanceRoutes( 1, 90 )
+                if( routeList != null &&
+                        routeList.size() > 0 &&
+                        routeList.get( 0 ) != null &&
+                        routeList.get( 0 ).edges != null &&
+                        routeList.get( 0 ).edges.size() > 0 ) {
+
+                    break;
+                }
+            }
+
+            Route route = routeList.get( 0 )
+
             Car car = new Car(
                     carType: carType2,
-                    name: "car no.${it}"
+                    name: "car no.${it}",
+                    route: route,
+                    routesConfigured: true
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )
+            } else {
+                dfki1FleetCars.add( car )
             }
         }
 
-        List<Car> twentyCars = Car.findAll()
-
-        twentyCars.each { Car car ->
+        dfki1FleetCars.each { Car car ->
 
             dfki1Fleet.addToCars( car )
 
         }
+        dfki1Fleet.routesConfigured = true
 
         if ( !dfki1Fleet.save( flush: true, failOnError: true ) ) {
 
@@ -102,7 +152,9 @@ class BootStrap {
         Fleet dfki2Fleet = new Fleet(
                 company: company,
                 name: "Dfki-Fleet Two",
-                stub: false
+                distribution: Distribution.SELF_MADE_ROUTES,
+                stub: false,
+                routesConfigured: false
         )
 
         if ( !dfki2Fleet.save( flush: true, failOnError: true ) ) {
@@ -117,15 +169,36 @@ class BootStrap {
             return
         }
         List<Car> twentyOtherCars = new ArrayList<Car>()
-        10.times {
+        2.times {
+
+            List<Route> routeList = null
+            boolean havingRoute = false
+
+            while ( !havingRoute ) {
+                routeList = routeService.createRandomFixedDistanceRoutes( 1, 90 )
+                if( routeList != null &&
+                        routeList.size() > 0 &&
+                        routeList.get( 0 ) != null &&
+                        routeList.get( 0 ).edges != null &&
+                        routeList.get( 0 ).edges.size() > 0 ) {
+
+                    break
+                }
+            }
+
+            Route route = routeList.get( 0 )
+
             Car car = new Car(
                     carType: carType3,
-                    name: "car no.${it}"
+                    name: "car no.${it}",
+                    route: route,
+                    routesConfigured: true
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )
+            } else {
+                twentyOtherCars.add( car )
             }
-            twentyOtherCars.add( car )
         }
 
         CarType carType4 = CarType.get( 4 )
@@ -133,18 +206,38 @@ class BootStrap {
             log.error( "no cartype found" )
             return
         }
-        10.times {
+        2.times {
+
+            List<Route> routeList = null
+            boolean havingRoute = false
+
+            while ( !havingRoute ) {
+                routeList = routeService.createRandomFixedDistanceRoutes( 1, 90 )
+                if( routeList != null &&
+                        routeList.size() > 0 &&
+                        routeList.get( 0 ) != null &&
+                        routeList.get( 0 ).edges != null &&
+                        routeList.get( 0 ).edges.size() > 0 ) {
+
+                    break
+                }
+            }
+
+            Route route = routeList.get( 0 )
+
             Car car = new Car(
                     carType: carType4,
-                    name: "car no.${it}"
+                    name: "car no.${it}",
+                    route: route,
+                    routesConfigured: true
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )
+            } else {
+                twentyOtherCars.add( car )
             }
-            twentyOtherCars.add( car )
+
         }
-
-
 
         twentyOtherCars.each { Car car ->
 
@@ -152,6 +245,7 @@ class BootStrap {
 
         }
 
+        dfki2Fleet.routesConfigured = true
         if ( !dfki2Fleet.save( flush: true, failOnError: true ) ) {
 
             log.error( "failed to update dfkifleet: ${dfki2Fleet.errors}" )

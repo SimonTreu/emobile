@@ -503,12 +503,16 @@ class ConfigurationController {
             // put fleetId
             m.fleetId = cmd.fleetId
 
+
+            m.fleetName = configurationService.getNameOfFleet( cmd.fleetId )
             // put in available Distributions
             m.distributions = Distribution.values()
 
 
             // put all cars from fleet
-            m.cars = configurationService.getCarsFromFleet( cmd.fleetId )
+            // m.cars = configurationService.getCarsFromFleet( cmd.fleetId )
+
+            m.carTypes = configurationService.getCarsFromFleetTypeOrdered( cmd.fleetId )
 
 
             render template: '/templates/configuration/fleet/distribution', model: m
@@ -646,7 +650,16 @@ class ConfigurationController {
                 count = cmd.carCount
             }
 
-            configurationService.addCarsToFleet( cmd.fleetStubId, count, cmd.carTypeId, cmd.nameForFleet )
+            Long carTypeId = null
+            if ( cmd.carTypeSelect != null && cmd.carTypeSelect.size() > 0 ) {
+                carTypeId = cmd.carTypeSelect.get( cmd.carTypeSelect.size() - 1 )
+            } else if ( cmd.carTypeId != null ) {
+                carTypeId = cmd.carTypeId
+            }
+
+            if ( carTypeId != null ) {
+                configurationService.addCarsToFleet( cmd.fleetStubId, count, carTypeId, cmd.nameForFleet )
+            }
 
         }
 

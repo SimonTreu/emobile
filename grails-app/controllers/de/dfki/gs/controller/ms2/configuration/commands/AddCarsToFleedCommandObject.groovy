@@ -12,11 +12,14 @@ import grails.validation.Validateable
 class AddCarsToFleedCommandObject {
 
     Long configurationStubId
+
     Integer carCount
     List<Integer> carCountList
-    Long carTypeId
-    Long fleetStubId
 
+    Long carTypeId
+    List<Long> carTypeSelect
+
+    Long fleetStubId
     String nameForFleet
 
     static constraints = {
@@ -37,17 +40,10 @@ class AddCarsToFleedCommandObject {
         }
         carCount nullable: true
         carCountList nullable: true
-        carTypeId nullable: false, validator: { val,obj ->
 
-            CarType carType = CarType.get( val )
+        carTypeId nullable: true
+        carTypeSelect nullable: true
 
-            if ( carType == null ) {
-
-                return 'configuration.cartype.not.exist'
-
-            }
-
-        }
         fleetStubId nullable: false, validator: { val,obj ->
 
             Fleet fleet = Fleet.get( val )

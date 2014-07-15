@@ -653,6 +653,20 @@ class ConfigurationService {
         return configurations
     }
 
+    def getCarsFromFleetTypeOrdered( Long fleetId ) {
+
+        def cars = []
+        Fleet fleet = Fleet.get( fleetId )
+
+        fleet.cars.each { Car car ->
+            cars << Car.get( car.id )
+        }
+
+        def types = cars.groupBy { Car car -> car.carType }
+
+        return types
+    }
+
     def getCarsFromFleet( Long fleetId ) {
 
         def cars = []
@@ -694,6 +708,13 @@ class ConfigurationService {
         }
 
 
+    }
+
+    def getNameOfFleet( Long fleetId ) {
+
+        Fleet fleet = Fleet.get( fleetId )
+
+        return fleet.name
     }
 
 }

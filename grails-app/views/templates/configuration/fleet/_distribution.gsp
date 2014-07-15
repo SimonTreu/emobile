@@ -17,55 +17,62 @@
         <fieldset>
             <legend> Select Routes of Fleet-Cars </legend>
                 <div class="layout">
-                <div class="layoutLeftLittle">
-                    <div class="contentLeft4">
-                <g:form controller="configuration" action="createDistributionForFleet">
-                    <div class="contentLeftRoutes">
-                        <div class="rowU1">
-                            <div class="leftbig"><b>Select a Distribution</b></div>
-                        </div>
-                        <div class="row1">
-                            <div class="left4">
-                                Select a Distribution
-                            </div>
-                            <div class="right2">
-                                <g:select name="selectedDist" from="${distributions}" optionKey="key" optionValue="${it}" />
-                            </div>
-                            <div class="clear"></div>
-                        </div>
-                        <div class="row1">
-                            <div class="left65">
-                                From [ km ]
-                            </div>
-                            <div class="left2">
-                                <g:select name="fromKm" from="${(10..550).step( 10 )}" />
-                            </div>
-                            <div class="right65">
-                                To [ km ]
-                            </div>
-                            <div class="right60">
-                                <g:select name="toKm" from="${(10..550).step( 10 )}" />
-                            </div>
+                    <div class="layoutLeftLittle">
+                        <div class="contentLeft4">
+                            <g:form controller="configuration" action="createDistributionForFleet">
+                                <div class="contentLeftRoutes">
+                                    <div class="rowU1">
+                                        <div class="leftbig"><b>Fleet Properties</b></div>
+                                    </div>
 
-                            <div class="clear"></div>
-                        </div>
+                                    <div class="row1">
 
-                        <div class="clear"></div>
+                                        <div class="left2">
+                                            Fleet Name
+                                        </div>
 
-                        <div class="rowL1">
-                            <div class="left2">
-                                <%--<g:submitButton name="createCar" value="Cancel"/>--%>
-                                <input type="button" value="Cancel" onclick="window.location.href=window.location.href"/>
-                            </div>
-                            <div class="right2">
-                                <g:submitButton name="createFleet" value="Create Fleet"/>
-                            </div>
-                            <div class="clear"></div>
+                                        <div class="left2">
+                                            ${fleetName}
+                                        </div>
+
+
+                                    </div>
+                                    <g:each in="${carTypes}" var="carType">
+                                        <div class="row1">
+
+                                            <div class="left2">
+                                                ${carType.value.size()}
+                                            </div>
+
+                                            <div class="left2">
+                                                of
+                                            </div>
+
+                                            <div class="left2">
+                                                ${carType.key.name}
+                                            </div>
+
+
+                                        </div>
+                                    </g:each>
+
+
+                                    <div class="clear"></div>
+
+                                    <div class="rowL1">
+                                        <div class="left2">
+                                            <%--<g:submitButton name="createCar" value="Cancel"/>--%>
+                                            <input type="button" value="Cancel" onclick="window.location.href=window.location.href"/>
+                                        </div>
+                                        <div class="right2">
+                                            <g:submitButton name="createFleet" value="Create Fleet"/>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                            </g:form>
                         </div>
                     </div>
-                </g:form>
-                    </div>
-            </div>
                     <div class="layoutRightLittle">
                         <div id="tabs-container">
                             <ul class="tabs-menu">
@@ -75,7 +82,38 @@
                             </ul>
                             <div class="tab">
                                 <div id="tab-1" class="tab-content">
-                                    <p>Lorlis.</p>
+
+                                    <div class="row1">
+                                        <div class="left4">
+                                            Select a Distribution
+                                        </div>
+                                        <div class="right2">
+                                            <g:select name="selectedDist" from="${distributions}" optionKey="key" optionValue="${it}" />
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="row1">
+                                        <div class="left65">
+                                            From [ km ]
+                                        </div>
+                                        <div class="left2">
+                                            <g:select name="fromKm" from="${(10..550).step( 10 )}" />
+                                        </div>
+                                        <div class="right65">
+                                            To [ km ]
+                                        </div>
+                                        <div class="right60">
+                                            <g:select name="toKm" from="${(10..550).step( 10 )}" />
+                                        </div>
+
+                                        <div class="clear"></div>
+                                    </div>
+
+                                    <div class="clear"></div>
+
+
+
+
                                 </div>
                                 <div id="tab-2" class="tab-content">
                                     <p>

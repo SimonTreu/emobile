@@ -89,7 +89,10 @@
                                     </form action='${postUrl}' method='POST' id='loginForm' class='cssform' autocomplete='off'>
                                             <span class="loggedIn">
                                                 <span class="loggedIndrin"><g:message code="layouts._topbar.logged"/>&nbsp;
-                                                    <b>${welcome?.givenName} ${welcome?.familyName}</b>
+                                                    <b>
+                                                        <%-- ${welcome?.givenName} ${welcome?.familyName} --%>
+                                                        <es:welcomeLoggedInUser/>
+                                                    </b>
                                                 </span>
                                                 <a class="logout" href="<g:createLink controller="login" action="logout" />"> <g:message code="layouts._topbar.logout2"/></a>
                                             </span>

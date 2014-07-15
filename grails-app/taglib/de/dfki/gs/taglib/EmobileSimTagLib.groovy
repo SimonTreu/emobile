@@ -1,8 +1,12 @@
 package de.dfki.gs.taglib
 
+import de.dfki.gs.domain.users.Person
+import grails.plugin.springsecurity.SpringSecurityUtils
+
 class EmobileSimTagLib {
 
     static namespace = "es"
+    def springSecurityService
 
     def inputLabeled = { attrs, body ->
         def m = [ : ];
@@ -55,6 +59,27 @@ class EmobileSimTagLib {
         def m = [ : ]
         m.href = attrs.href;
         out << g.render( template: '/mapView/box.lightBox.close', model: m )
+    }
+
+
+    def welcomeLoggedInUser = {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        String givenName = ""
+        String familyName = ""
+
+        if ( person != null ) {
+
+            // response.sendRedirect( "${SpringSecurityUtils.securityConfig.logout.filterProcessesUrl}" )
+            //return
+
+            givenName = person.givenName
+            familyName = person.familyName
+        }
+
+        out << "${givenName} ${familyName}"
+
     }
 
     def mapDiv = { attrs, body ->

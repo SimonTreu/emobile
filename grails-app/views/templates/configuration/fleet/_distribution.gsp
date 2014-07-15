@@ -15,14 +15,14 @@
 <div id="openModal" class="modalDialogRoutes">
     <div class="settingsWindowBig">
         <fieldset class="fieldSet100Percent">
-            <legend> Select Routes of Fleet-Cars </legend>
+            <legend> <g:message code="templates.configuration.fleet._distribution.selectroutes"/> </legend>
                 <div class="layout">
                     <div class="layoutLeftLittle">
                         <div class="contentLeft4">
                             <g:form controller="configuration" action="createDistributionForFleet">
                                 <div class="contentLeftRoutes">
                                     <div class="rowU1">
-                                        <div class="leftbig"><b>Fleet Properties</b></div>
+                                        <div class="leftbig"><b><g:message code="templates.configuration.fleet._distribution.properties"/></b></div>
                                     </div>
 
                                     <div class="row1">
@@ -84,7 +84,7 @@
 
                                         <div class="row1">
                                             <div class="left4">
-                                                Select a Distribution
+                                                <g:message code="templates.configuration.fleet._distribution.selectdistribution"/>
                                             </div>
                                             <div class="right2">
                                                 <g:select name="selectedDist" from="${distributions}" optionKey="key" optionValue="${it}" />
@@ -93,13 +93,13 @@
                                         </div>
                                         <div class="row1">
                                             <div class="left75">
-                                                From [ km ]
+                                                <g:message code="templates.configuration.fleet._distribution.from"/>
                                             </div>
-                                            <div class="left2">
+                                            <div class="left60">
                                                 <g:select name="fromKm" from="${(10..550).step( 10 )}" />
                                             </div>
                                             <div class="right65">
-                                                To [ km ]
+                                                <g:message code="templates.configuration.fleet._distribution.to"/>
                                             </div>
                                             <div class="right60">
                                                 <g:select name="toKm" from="${(10..550).step( 10 )}" />

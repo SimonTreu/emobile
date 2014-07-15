@@ -10,8 +10,8 @@
 
                                 <div class="row">
 
-                                    <div class="left3">
-                                        Set Name for Filling Station Group
+                                    <div class="left5">
+                                        <g:message code="templates.configuration.fleet._createFleet.setnamegroup"/>
                                     </div>
 
                                     <div class="right2">

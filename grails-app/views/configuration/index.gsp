@@ -28,7 +28,7 @@
     <div class="contentLeft2">
 
         <div class="rowU">
-            <div class="left"><b><g:message code="simulation.index.fleetconfiguration" /></b></div>
+            <div class="left"><b><g:message code="simulation.index.fleetconfiguration"/></b></div>
             <div class="right"></div>
             <div class="clear"></div>
         </div>
@@ -109,18 +109,18 @@
                     <div class="row1">
                         <g:if test="${addedFleet.routesConfigured == true}">
                             <div class="left5">
-                                ${addedFleet.name} <br/> ( ${addedFleet.cars.size()} cars )
+                                ${addedFleet.name} ( ${addedFleet.cars.size()} cars )
                                 <br/>All Routes are configured
                             </div>
                         </g:if>
                         <g:else>
                             <div class="left5">
-                                ${addedFleet.name} <br/> ( ${addedFleet.cars.size()} cars )
+                                ${addedFleet.name} ( ${addedFleet.cars.size()} cars )
                                 <br/>Routes have to be configured
                             </div>
                         </g:else>
 
-                        <div class="left2">
+                        <div class="right2">
 
                             <g:form controller="configuration" action="removeFleetFromConfiguration">
 

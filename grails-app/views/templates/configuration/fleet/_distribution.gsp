@@ -14,7 +14,7 @@
 
 <div id="openModal" class="modalDialogRoutes">
     <div class="settingsWindowBig">
-        <fieldset>
+        <fieldset class="fieldSet100Percent">
             <legend> Select Routes of Fleet-Cars </legend>
                 <div class="layout">
                     <div class="layoutLeftLittle">
@@ -59,16 +59,6 @@
 
                                     <div class="clear"></div>
 
-                                    <div class="rowL1">
-                                        <div class="left2">
-                                            <%--<g:submitButton name="createCar" value="Cancel"/>--%>
-                                            <input type="button" value="Cancel" onclick="window.location.href=window.location.href"/>
-                                        </div>
-                                        <div class="right2">
-                                            <g:submitButton name="createFleet" value="Create Fleet"/>
-                                        </div>
-                                        <div class="clear"></div>
-                                    </div>
                                 </div>
                             </g:form>
                         </div>
@@ -81,40 +71,57 @@
                                 <li><a href="#tab-3"><g:message code="simulation.index.showonmap"/></a></li>
                             </ul>
                             <div class="tab">
-                                <div id="tab-1" class="tab-content">
 
-                                    <div class="row1">
-                                        <div class="left4">
-                                            Select a Distribution
+                                <g:form controller="configuration" action="setDistributionForFleet">
+                                    <div id="tab-1" class="tab-content-buttons-bottomed">
+
+
+                                        <div class="rowSpace">
+                                            <div class="clear">
+
+                                            </div>
                                         </div>
-                                        <div class="right2">
-                                            <g:select name="selectedDist" from="${distributions}" optionKey="key" optionValue="${it}" />
+
+                                        <div class="row1">
+                                            <div class="left4">
+                                                Select a Distribution
+                                            </div>
+                                            <div class="right2">
+                                                <g:select name="selectedDist" from="${distributions}" optionKey="key" optionValue="${it}" />
+                                            </div>
+                                            <div class="clear"></div>
                                         </div>
+                                        <div class="row1">
+                                            <div class="left75">
+                                                From [ km ]
+                                            </div>
+                                            <div class="left2">
+                                                <g:select name="fromKm" from="${(10..550).step( 10 )}" />
+                                            </div>
+                                            <div class="right65">
+                                                To [ km ]
+                                            </div>
+                                            <div class="right60">
+                                                <g:select name="toKm" from="${(10..550).step( 10 )}" />
+                                            </div>
+
+                                            <div class="clear"></div>
+                                        </div>
+
                                         <div class="clear"></div>
+
+                                        <div class="rowL1Bottom">
+
+                                            <div class="right2-bottomed">
+                                                <g:submitButton name="setDistribution" value="Save Distribution for Fleet"/>
+                                            </div>
+
+                                            <div class="clear"></div>
+
+                                        </div>
+
                                     </div>
-                                    <div class="row1">
-                                        <div class="left65">
-                                            From [ km ]
-                                        </div>
-                                        <div class="left2">
-                                            <g:select name="fromKm" from="${(10..550).step( 10 )}" />
-                                        </div>
-                                        <div class="right65">
-                                            To [ km ]
-                                        </div>
-                                        <div class="right60">
-                                            <g:select name="toKm" from="${(10..550).step( 10 )}" />
-                                        </div>
-
-                                        <div class="clear"></div>
-                                    </div>
-
-                                    <div class="clear"></div>
-
-
-
-
-                                </div>
+                                </g:form>
                                 <div id="tab-2" class="tab-content">
                                     <p>
                                         <input type="file">

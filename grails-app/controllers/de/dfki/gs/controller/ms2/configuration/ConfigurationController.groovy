@@ -506,7 +506,7 @@ class ConfigurationController {
 
             m.fleetName = configurationService.getNameOfFleet( cmd.fleetId )
             // put in available Distributions
-            m.distributions = Distribution.values()
+            m.distributions = Distribution.values() - Distribution.SELF_MADE_ROUTES
 
 
             // put all cars from fleet

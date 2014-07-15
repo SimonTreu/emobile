@@ -119,13 +119,13 @@
                             </div>
                             <div class="row">
                                 <div class="left"><g:message code="login.auth.username"/></div>
-                                <div class="right"><input type="text" size="22%" name='j_username' id='username' value="<g:message code="layouts._topbar.username"/>"></div>
+                                <div class="right"><input type="text" size="22%" name='j_username' id='username' value=""></div>
                                 <div class="clear"></div>
                             </div>
 
                             <div class="row">
                                 <div class="left"><g:message code="login.auth.password"/></div>
-                                <div class="right"><input type="password" size="22%" name='j_password' id='password' value="<g:message code="layouts._topbar.password"/>"></div>
+                                <div class="right"><input type="password" size="22%" name='j_password' id='password' value="" /></div>
                                 <div class="clear"></div>
                             </div>
                             <div class="rowL">

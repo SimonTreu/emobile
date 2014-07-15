@@ -901,6 +901,16 @@ body.lightBoxBody{
     min-height: 300px;
 }
 
+.pContainerResent {
+
+    margin-left:5%;
+    margin-top:10px;
+    margin-right: 6%;
+    min-height: 300px;
+    min-width: 450px;
+    max-width:700px;
+}
+
 .pContainerBig {
 
     margin-left:5%;
@@ -1113,7 +1123,7 @@ body.lightBoxBody{
 .contentLeft2{
     padding:0px;
     margin: 10px;
-    width:450px;
+    width:460px;
     border-radius: 6px;
     border: 1px solid  #ccc;
     font-size: 12px;
@@ -1156,7 +1166,7 @@ body.lightBoxBody{
 
 .leftbig {
     float:left;
-    padding:7px 0px 0px 7px;
+    padding:9px 0px 0px 7px;
     min-height:24px;
     font-weight: bold;
 }
@@ -1221,18 +1231,11 @@ body.lightBoxBody{
     font-weight: bold;
 }
 
-.left75{
-    width:75px;
-    float:left;
-    padding:10px 0px 0px 7px;
-    font-weight: bold;
-}
-
 
 .left5{
     width:210px;
     float:left;
-    padding:7px 0px 0px 7px;
+    padding:10px 0px 0px 7px;
 
 }
 
@@ -1311,16 +1314,6 @@ body.lightBoxBody{
     display: table-cell;
 }
 
-.right2-bottomed {
-
-    padding:5px;
-    min-height:24px;
-    display: table-cell;
-    position:absolute;
-    bottom:0px;
-    right:-520px;
-}
-
 
 
 .rightCar{
@@ -1396,15 +1389,6 @@ body.lightBoxBody{
     border-bottom-left-radius: 6px;
     display:block;
     min-height:32px;
-}
-
-.rowL1Bottom {
-    border-bottom-right-radius: 6px;
-    border-bottom-left-radius: 6px;
-    display:block;
-    min-height:32px;
-    position:absolute;
-    bottom: 20px;
 }
 
 .rowGroup {
@@ -1515,7 +1499,6 @@ td img{
     display: table-cell;
     float:right;
     margin-top: 10px;
-    height: 400px;
 }
 
 
@@ -1537,7 +1520,15 @@ td img{
 .layout {
     display:table;
     width: 100%;
-    min-height:400px;
+    min-height:160px;
+    font-size: 12px;
+    background: #fff;
+    border-radius: 6px
+}
+
+.layoutResent {
+    display:table;
+    width: 100%;
     font-size: 12px;
     background: #fff;
     border-radius: 6px
@@ -1924,32 +1915,16 @@ a#login_pop:hover, a#join_pop1:hover {
     float: left;
     margin-bottom: 20px;
     width: auto;
-    height: 420px;
 }
 
 .tab-content {
     width: 500px;
     padding: 20px;
     display: none;
-    height: 400px;
-}
-
-.tab-content-buttons-bottomed {
-    width: 500px;
-    padding: 20px;
-    display: none;
-    height: 400px;
-    display: block;
-    position: relative;
 }
 
 #tab-1 {
     display: block;
-}
-
-#tab-1Bottomed {
-    display: block;
-    position: relative;
 }
 
 
@@ -2011,12 +1986,6 @@ fieldset {
     border-radius: 6px;
     border: 1px solid #d4d4d1;
 
-}
-
-.fieldSet100Percent {
-    border-radius: 6px;
-    border: 1px solid #d4d4d1;
-    height: 470px;
 }
 
 .newCar {

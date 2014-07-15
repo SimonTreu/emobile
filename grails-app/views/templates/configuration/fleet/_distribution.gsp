@@ -11,7 +11,6 @@
     });
 </script>
 
-
 <div id="openModal" class="modalDialogRoutes">
     <div class="settingsWindowBig">
         <fieldset class="fieldSet100Percent">
@@ -24,41 +23,33 @@
                                     <div class="rowU1">
                                         <div class="leftbig"><b><g:message code="templates.configuration.fleet._distribution.properties"/></b></div>
                                     </div>
-
+                                    <div>
+                                        <div class="clear"></div>
+                                    </div>
                                     <div class="row1">
-
                                         <div class="left2">
-                                            Fleet Name
+                                            <b>Car number</b>
                                         </div>
-
                                         <div class="left2">
-                                            ${fleetName}
+                                            <b>Fleet name</b>
                                         </div>
-
-
+                                        <div class="left2">
+                                            <b>${fleetName}</b>
+                                        </div>
                                     </div>
                                     <g:each in="${carTypes}" var="carType">
                                         <div class="row1">
-
                                             <div class="left2">
                                                 ${carType.value.size()}
                                             </div>
-
                                             <div class="left2">
                                                 of
                                             </div>
-
                                             <div class="left2">
                                                 ${carType.key.name}
                                             </div>
-
-
                                         </div>
                                     </g:each>
-
-
-                                    <div class="clear"></div>
-
                                 </div>
                             </g:form>
                         </div>

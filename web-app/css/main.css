@@ -1199,6 +1199,14 @@ body.lightBoxBody{
     //font-weight: bold;
 }
 
+
+.leftTitle{
+    //width:70px;
+    float:left;
+    padding:7px 0px 0px 7px;
+    font-weight: bold;
+}
+
 .left3{
     width:160px;
     float:left;
@@ -1313,7 +1321,12 @@ body.lightBoxBody{
     min-height:24px;
     display: table-cell;
 }
-
+.rightTitle {
+    float:right;
+    padding:5px;
+    min-height:24px;
+    display: table-cell;
+}
 
 
 .rightCar{
@@ -1915,6 +1928,7 @@ a#login_pop:hover, a#join_pop1:hover {
     float: left;
     margin-bottom: 20px;
     width: auto;
+    min-width: 550px;
 }
 
 .tab-content {

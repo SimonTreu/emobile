@@ -11,6 +11,9 @@ class Configuration {
 
     Company company
 
+    Date dateCreated
+    Date lastUpdated
+
     /**
      * all executed experiments.. for the stats
      */

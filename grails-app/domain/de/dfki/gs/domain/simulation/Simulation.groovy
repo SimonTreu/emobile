@@ -4,6 +4,9 @@ import de.dfki.gs.domain.users.Company
 
 class Simulation {
 
+    Date dateCreated
+    Date lastUpdated
+
     String name
 
     /**

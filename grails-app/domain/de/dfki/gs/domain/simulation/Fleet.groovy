@@ -14,6 +14,9 @@ class Fleet {
 
     Company company
 
+    Date dateCreated
+    Date lastUpdated
+
 
     Boolean stub
 
@@ -33,7 +36,7 @@ class Fleet {
     static mapping = {
 
         stub type: 'yes_no'
-        routesConfigured: 'yes_no'
+        routesConfigured type: 'yes_no'
 
     }
 }

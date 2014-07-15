@@ -14,6 +14,8 @@ class Experiment {
      */
     ExperimentResult experimentResult
 
+    Date dateCreated
+    Date lastUpdated
 
     long executionTimeMillis
 

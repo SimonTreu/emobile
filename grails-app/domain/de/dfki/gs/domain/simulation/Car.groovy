@@ -24,7 +24,7 @@ class Car {
 
     static mapping = {
 
-        routesConfigured: 'yes_no'
+        routesConfigured type: 'yes_no'
 
     }
 

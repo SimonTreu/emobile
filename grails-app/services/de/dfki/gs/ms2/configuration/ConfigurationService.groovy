@@ -11,10 +11,14 @@ import de.dfki.gs.domain.simulation.Simulation
 import de.dfki.gs.domain.users.Company
 import de.dfki.gs.domain.users.Person
 import de.dfki.gs.domain.utils.Distribution
+import de.dfki.gs.domain.utils.FleetStatus
 import grails.transaction.Transactional
 
 @Transactional
 class ConfigurationService {
+
+    def routeService
+    def statisticService
 
     /**
      * configuration can have some fleets
@@ -376,7 +380,7 @@ class ConfigurationService {
             log.error( "failed to update fleet: ${fleetStub.errors}" )
         }
 
-
+        log.error( "fleetStup saved" )
     }
 
     /**
@@ -441,6 +445,7 @@ class ConfigurationService {
                                 name: generatedFleetName,
                                 stub: true,
                                 distribution: Distribution.NOT_ASSIGNED,
+                                fleetStatus: FleetStatus.NOT_CONFIGURED,
                                 routesConfigured: false
                             )
 
@@ -448,6 +453,7 @@ class ConfigurationService {
             log.error( "failed to save fleet stub: ${fleetStub.errors}" )
             return null
         }
+
 
         return fleetStub
 
@@ -632,6 +638,18 @@ class ConfigurationService {
         Configuration configurationStubToSave = Configuration.get( configurationStubId )
         configurationStubToSave.stub = false
 
+        // creating routes for distribution, set all FleetStatus
+        configurationStubToSave.fleets.each { Fleet fleet ->
+
+
+            fleet = Fleet.get( fleet.id )
+
+            fleet = routeService.createRandomDistanceRoutesForFleet( fleet.id )
+
+        }
+
+
+
         if ( !configurationStubToSave.save( flush: true ) ) {
             log.error( "failed to save configuration: ${configurationStubToSave.errors}" )
         } else {
@@ -680,12 +698,17 @@ class ConfigurationService {
         return cars
     }
 
-    def setDistributionForFleet( Distribution distribution, Long fleetId ) {
+    def setDistributionForFleet( Distribution distribution, Long fleetId, Integer fromKm, Integer toKm ) {
 
         Fleet fleet = Fleet.get( fleetId )
 
         fleet.distribution = distribution
         fleet.routesConfigured = false
+
+        fleet.plannedFromKm = fromKm
+        fleet.plannedToKm = toKm
+
+        fleet.fleetStatus = FleetStatus.SCHEDULED_FOR_CONFIGURING
 
         if ( !fleet.save( flush: true ) ) {
 

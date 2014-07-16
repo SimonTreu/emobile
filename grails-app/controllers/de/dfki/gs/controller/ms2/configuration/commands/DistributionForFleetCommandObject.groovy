@@ -1,5 +1,6 @@
 package de.dfki.gs.controller.ms2.configuration.commands
 
+import de.dfki.gs.domain.simulation.Configuration
 import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.domain.utils.Distribution
 import grails.validation.Validateable
@@ -10,10 +11,24 @@ import grails.validation.Validateable
 @Validateable
 class DistributionForFleetCommandObject {
 
+
+    Long configurationStubId
     Long fleetId
     Distribution selectedDist
 
+    Integer fromKm
+    Integer toKm
+
     static constraints = {
+
+        configurationStubId nullable: false, validator: { val,obj ->
+
+            Configuration configuration = Configuration.get( val )
+            if ( configuration == null ) {
+                return 'configuration.stub.not.exist'
+            }
+
+        }
 
         fleetId nullable: false, validator: { val,obj ->
 
@@ -25,7 +40,16 @@ class DistributionForFleetCommandObject {
 
         }
 
-        selectedDist nullable: false, inList: Distribution*.name()
+        selectedDist nullable: false, inList: Distribution.values() as List
+
+        fromKm nullable: false
+        toKm nullable: false, validator: { val, obj ->
+
+            if ( val <= obj.fromKm ) {
+                return 'configuration.fleet.distribution.tokm.too.small'
+            }
+
+        }
 
     }
 

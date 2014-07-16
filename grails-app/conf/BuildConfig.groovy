@@ -90,6 +90,9 @@ grails.project.dependency.resolution = {
         runtime( "org.jfree:jfreechart:1.0.17" ) {
             excludes "xml-apis", "servlet-api", "junit"
         }
+
+        runtime( "org.apache.commons:commons-math3:3.2" )
+
         /*
         compile ('com.vividsolutions:jts:1.8') {
             excludes 'xercesImpl'

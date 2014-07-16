@@ -503,6 +503,7 @@ class ConfigurationController {
             // put fleetId
             m.fleetId = cmd.fleetId
 
+            m.configurationStubId = cmd.configurationStubId
 
             m.fleetName = configurationService.getNameOfFleet( cmd.fleetId )
             // put in available Distributions
@@ -541,12 +542,22 @@ class ConfigurationController {
 
         } else {
 
-            configurationService.setDistributionForFleet( cmd.selectedDist, cmd.fleetId )
+            configurationService.setDistributionForFleet( cmd.selectedDist, cmd.fleetId, cmd.fromKm, cmd.toKm )
 
         }
 
+        redirect( controller: 'configuration', action: 'index', params: [ configurationStubId : cmd.configurationStubId ] )
     }
 
+    /**
+     * this calls a new modal window to put cars into a fleet
+     * there must be a configuration object identified by a configurationStubId
+     *
+     * a new fleet is created, which is than filled with cars
+     *
+     *
+     * @return
+     */
     def createFleetView() {
 
         Person person = (Person) springSecurityService.currentUser
@@ -857,7 +868,8 @@ class ConfigurationController {
 
         }
 
-        redirect controller: 'front', action: 'init'
+        //redirect controller: 'front', action: 'init'
+        redirect( controller: 'configuration', action: 'index', params: [ configurationStubId : cmd.configurationStubId ] )
     }
 
     def showRecentlyEditedConfiguration() {

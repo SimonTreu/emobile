@@ -112,6 +112,8 @@
 
                                         <div class="rowL1Bottom">
 
+                                            <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+                                            <g:hiddenField name="fleetId" value="${fleetId}"/>
                                             <div class="right2-bottomed">
                                                 <g:submitButton name="setDistribution" value="Save Distribution for Fleet"/>
                                             </div>

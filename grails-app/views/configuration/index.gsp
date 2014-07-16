@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="de.dfki.gs.domain.utils.FleetStatus" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Simulation</title>
@@ -107,18 +107,28 @@
 
                 <%--<g:message code="simulation.index.addedfleet"/>--%>
                     <div class="row1">
-                        <g:if test="${addedFleet.routesConfigured == true}">
+                        <g:if test="${addedFleet.fleetStatus == FleetStatus.CONFIGURED}">
                             <div class="left5">
                                 ${addedFleet.name} <br/> ( ${addedFleet.cars.size()} cars )
                                 <br/>All Routes are configured
                             </div>
                         </g:if>
-                        <g:else>
+
+                        <g:if test="${addedFleet.fleetStatus == FleetStatus.SCHEDULED_FOR_CONFIGURING}">
+                            <div class="left5">
+                                ${addedFleet.name} <br/> ( ${addedFleet.cars.size()} cars )
+                                <br/>Routes scheduled to Configure
+                            </div>
+                        </g:if>
+
+                        <g:if test="${addedFleet.fleetStatus == FleetStatus.NOT_CONFIGURED}">
                             <div class="left5">
                                 ${addedFleet.name} <br/> ( ${addedFleet.cars.size()} cars )
                                 <br/>Routes have to be configured
                             </div>
-                        </g:else>
+                        </g:if>
+
+
 
                         <div class="left2">
 
@@ -134,12 +144,16 @@
 
                         <div class="right2">
 
-                            <g:if test="${addedFleet.routesConfigured == true}">
-
+                            <g:if test="${addedFleet.fleetStatus == FleetStatus.CONFIGURED}">
                                 Show Routes
-
                             </g:if>
-                            <g:else>
+
+                            <g:if test="${addedFleet.fleetStatus == FleetStatus.SCHEDULED_FOR_CONFIGURING}">
+                                Please wait for Configuring Routes
+                            </g:if>
+
+                            <g:if test="${addedFleet.fleetStatus == FleetStatus.NOT_CONFIGURED}">
+
                                 <g:form action="createRouteSelectorView">
 
                                     <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
@@ -151,7 +165,8 @@
                                                       value="Configure Routes" />
 
                                 </g:form>
-                            </g:else>
+
+                            </g:if>
 
                         </div>
 
@@ -266,7 +281,15 @@
 <div class="layoutButton">
     <span class="layoutButtonL"><g:submitButton name="send" value="CANCEL"/></span>
     <span class="layoutButtonM"></span>
-    <span class="layoutButtonR"><g:submitButton name="send" value="SAVE"/></span>
+
+    <g:form action="saveFinishedConfiguration">
+
+        <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+
+        <span class="layoutButtonR"><g:submitButton name="send" value="SAVE"/></span>
+    </g:form>
+
+
 </div>
 
 

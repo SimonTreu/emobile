@@ -13,6 +13,7 @@ import de.dfki.gs.domain.simulation.SimulationRoute
 import de.dfki.gs.domain.simulation.Track
 import de.dfki.gs.domain.users.Company
 import de.dfki.gs.domain.utils.Distribution
+import de.dfki.gs.domain.utils.FleetStatus
 import de.dfki.gs.service.RouteService
 import de.dfki.gs.threadutils.NotifyingBlockingThreadPoolExecutor
 import de.dfki.gs.utils.LatLonPoint
@@ -48,6 +49,7 @@ class BootStrap {
             name: "Dfki-Fleet One",
             distribution: Distribution.SELF_MADE_ROUTES,
             routesConfigured: false,
+            fleetStatus: FleetStatus.NOT_CONFIGURED,
             stub: false
         )
 
@@ -140,6 +142,7 @@ class BootStrap {
 
         }
         dfki1Fleet.routesConfigured = true
+        dfki1Fleet.fleetStatus = FleetStatus.CONFIGURED
 
         if ( !dfki1Fleet.save( flush: true, failOnError: true ) ) {
 
@@ -153,6 +156,7 @@ class BootStrap {
                 company: company,
                 name: "Dfki-Fleet Two",
                 distribution: Distribution.SELF_MADE_ROUTES,
+                fleetStatus: FleetStatus.NOT_CONFIGURED,
                 stub: false,
                 routesConfigured: false
         )
@@ -246,6 +250,7 @@ class BootStrap {
         }
 
         dfki2Fleet.routesConfigured = true
+        dfki2Fleet.fleetStatus = FleetStatus.CONFIGURED
         if ( !dfki2Fleet.save( flush: true, failOnError: true ) ) {
 
             log.error( "failed to update dfkifleet: ${dfki2Fleet.errors}" )

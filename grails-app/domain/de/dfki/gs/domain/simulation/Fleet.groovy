@@ -2,6 +2,7 @@ package de.dfki.gs.domain.simulation
 
 import de.dfki.gs.domain.users.Company
 import de.dfki.gs.domain.utils.Distribution
+import de.dfki.gs.domain.utils.FleetStatus
 
 class Fleet {
 
@@ -14,6 +15,9 @@ class Fleet {
 
     Company company
 
+    Integer plannedFromKm
+    Integer plannedToKm
+
     Date dateCreated
     Date lastUpdated
 
@@ -21,6 +25,8 @@ class Fleet {
     Boolean stub
 
     Boolean routesConfigured
+
+    FleetStatus fleetStatus
 
     Distribution distribution
 
@@ -31,6 +37,8 @@ class Fleet {
 
     static constraints = {
         name nullable: true
+        plannedFromKm nullable: true
+        plannedToKm nullable: true
     }
 
     static mapping = {

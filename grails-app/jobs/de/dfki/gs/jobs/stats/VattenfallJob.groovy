@@ -1,4 +1,4 @@
-package de.dfki.gs.jobs
+package de.dfki.gs.jobs.stats
 
 class VattenfallJob {
 

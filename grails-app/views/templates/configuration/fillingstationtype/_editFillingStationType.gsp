@@ -5,16 +5,16 @@
 
             <div class="contentLeft">
                 <div class="rowU">
-                    <div class="leftbig"><b>Edit Filling Station Type</b></div>
+                    <div class="leftbig"><b><g:message code="templates.configuration.fillingstationtype._createfillingstationtype.editstation"/></b></div>
                 </div>
                 <div>
                     <div class="row">
-                        <div class="left2">Filling Station Type Name</div>
+                        <div class="left5"><g:message code="templates.configuration.fillingstationtype._createfillingstationtype.fillingstation"/></div>
                         <div class="right2"><g:textField name="fillingStationTypeName" id="fillingStationTypeName" value="${fillingStationTypeName}"/></div>
                         <div class="clear"></div>
                     </div>
                     <div class="row">
-                        <div class="left2"> Power in [ kW ]</div>
+                        <div class="left5"><g:message code="templates.configuration.fillingstationtype._createfillingstationtype.power"/></div>
                         <div class="right2"><g:textField name="power" id="power" value="${power}"/></div>
                         <div class="clear"></div>
                     </div>

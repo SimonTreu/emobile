@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>Simulation</title>
-    <meta name="layout" content="main" />
+    <meta name="layout" content="mainConfiguration" />
 
 </head>
 <body>
@@ -28,7 +28,7 @@
     <div class="contentLeft2">
 
         <div class="rowU">
-            <div class="left"><b><g:message code="simulation.index.fleetconfiguration" /></b></div>
+            <div class="left"><b><g:message code="simulation.index.fleetconfiguration"/></b></div>
             <div class="right"></div>
             <div class="clear"></div>
         </div>
@@ -109,28 +109,19 @@
                     <div class="row1">
                         <g:if test="${addedFleet.fleetStatus == FleetStatus.CONFIGURED}">
                             <div class="left5">
-                                ${addedFleet.name} <br/> ( ${addedFleet.cars.size()} cars )
+                                ${addedFleet.name} ( ${addedFleet.cars.size()} cars )
                                 <br/>All Routes are configured
                             </div>
                         </g:if>
 
                         <g:if test="${addedFleet.fleetStatus == FleetStatus.SCHEDULED_FOR_CONFIGURING}">
                             <div class="left5">
-                                ${addedFleet.name} <br/> ( ${addedFleet.cars.size()} cars )
-                                <br/>Routes scheduled to Configure
-                            </div>
-                        </g:if>
-
-                        <g:if test="${addedFleet.fleetStatus == FleetStatus.NOT_CONFIGURED}">
-                            <div class="left5">
-                                ${addedFleet.name} <br/> ( ${addedFleet.cars.size()} cars )
+                                ${addedFleet.name} ( ${addedFleet.cars.size()} cars )
                                 <br/>Routes have to be configured
                             </div>
                         </g:if>
 
-
-
-                        <div class="left2">
+                        <div class="right2">
 
                             <g:form controller="configuration" action="removeFleetFromConfiguration">
 
@@ -279,17 +270,15 @@
 </div>
 <br><br><br>
 <div class="layoutButton">
-    <span class="layoutButtonL"><g:submitButton name="send" value="CANCEL"/></span>
+    <span class="layoutButtonL">
+        <span class="addButtonCancel"><g:link controller="sim" action="">CANCEL</g:link></span>
+        <%--<g:submitToRemote class="addButton" url="[action: '/front/startSimulation']" update="sim" name="submit" value="CANCEL" />--%>
+    </span>
     <span class="layoutButtonM"></span>
-
-    <g:form action="saveFinishedConfiguration">
-
-        <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
-
-        <span class="layoutButtonR"><g:submitButton name="send" value="SAVE"/></span>
-    </g:form>
-
-
+    <span class="layoutButtonR">
+        <span class="addButtonCancel"><g:link controller="sim" action="">SAVE</g:link></span>
+        <%--<g:submitButton name="sim" value="SAVE"/>--%>
+    </span>
 </div>
 
 

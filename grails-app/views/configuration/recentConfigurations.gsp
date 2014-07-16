@@ -10,33 +10,42 @@
 
 <head>
 
-    <title>Simulation</title>
+    <title>Open resent</title>
     <meta name="layout" content="main" />
 
 </head>
 
 <body>
+<div class="pContainerResent">
+    <div class="d1">
+        <fieldset>
+            <legend> Open resent </legend>
+            <div class="layoutResent">
 
-    <table>
+                <table>
 
-        <tr>
-            <th>Configuration</th>
-            <th>Info text</th>
-            <th>Button</th>
-        </tr>
+                    <tr>
+                        <th>Configuration</th>
+                        <th>Info text</th>
+                        <th>Button</th>
+                    </tr>
 
-        <g:each in="${configurations}" var="conf">
+                    <g:each in="${configurations}" var="conf">
 
-            <tr>
-                <td>${conf.configurationId}</td>
-                <td>hua</td>
-                <td>Button</td>
+                        <tr>
+                            <td>${conf.configurationId}</td>
+                            <td>hua</td>
+                            <td>Button</td>
 
-            </tr>
+                        </tr>
 
-        </g:each>
+                    </g:each>
 
-    </table>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+</div>
 
 </body>
 </html>

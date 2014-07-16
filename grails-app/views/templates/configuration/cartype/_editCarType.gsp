@@ -5,21 +5,21 @@
 
         <div class="contentLeft">
             <div class="rowU">
-                <div class="leftbig"><b>Create new car</b></div>
+                <div class="leftbig"><b><g:message code="templates.configuration.cartype._createcartype.editnewcar"/></b></div>
             </div>
             <div>
                 <div class="row">
-                    <div class="left2">Car name</div>
+                    <div class="left5"><g:message code="templates.configuration.cartype._createcartype.carname"/></div>
                     <div class="right2"><g:textField name="carName" id="carName" value="${carTypeName}"/></div>
                     <div class="clear"></div>
                 </div>
                 <div class="row">
-                    <div class="left2"> Energy Demand in [ kWh / 100 km ]</div>
+                    <div class="left5"><g:message code="templates.configuration.cartype._createcartype.energydemand"/></div>
                     <div class="right2"><g:textField name="energyDemand" id="energyDemand" value="${energyConsumption}"/></div>
                     <div class="clear"></div>
                 </div>
                 <div class="row">
-                    <div class="left2">  Maximal Battery Capacity in kW</div>
+                    <div class="left5"><g:message code="templates.configuration.cartype._createcartype.maxcapacity"/></div>
                     <div class="right2"> <g:textField name="maxEnergyCapacity" id="maxEnergyCapacity" value="${maxEnergyLoad}"/></div>
                     <div class="clear"></div>
                 </div>

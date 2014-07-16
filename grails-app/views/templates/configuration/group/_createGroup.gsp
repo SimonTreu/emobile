@@ -10,7 +10,7 @@
 
                 <div class="row">
 
-                    <div class="left3">
+                    <div class="left5">
                         Set Name for Fleet
                     </div>
 
@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="left3">
+                    <div class="left5">
                         <g:select name="stationCount" from="${1..100}" /> &nbsp;&nbsp;
                         <%--<g:message code="simulation.index.carstype"/>--%>
                         Filling Station Types:

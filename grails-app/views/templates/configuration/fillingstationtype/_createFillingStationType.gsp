@@ -4,17 +4,17 @@
 
             <div class="contentLeft">
                 <div class="rowU">
-                    <div class="leftbig"><b>Create new filling station</b></div>
+                    <div class="leftbig"><b><g:message code="templates.configuration.fillingstationtype._createfillingstationtype.createnewstation"/></b></div>
 
                 </div>
                 <div>
                     <div class="row">
-                        <div class="left2">Filling station name</div>
+                        <div class="left5"><g:message code="templates.configuration.fillingstationtype._createfillingstationtype.fillingstation"/></div>
                         <div class="right2"><g:textField name="fillingStationTypeName" id="fillingStationTypeName" value=""/></div>
                         <div class="clear"></div>
                     </div>
                     <div class="row">
-                        <div class="left2"> Power in [ kw ]</div>
+                        <div class="left5"><g:message code="templates.configuration.fillingstationtype._createfillingstationtype.power"/></div>
                         <div class="right2"><g:textField name="power" id="power" value=""/></div>
                         <div class="clear"></div>
                     </div>

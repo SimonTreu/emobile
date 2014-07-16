@@ -641,7 +641,6 @@ class ConfigurationService {
         // creating routes for distribution, set all FleetStatus
         configurationStubToSave.fleets.each { Fleet fleet ->
 
-
             fleet = Fleet.get( fleet.id )
 
             fleet = routeService.createRandomDistanceRoutesForFleet( fleet.id )

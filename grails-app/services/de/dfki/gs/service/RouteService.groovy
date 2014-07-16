@@ -1011,6 +1011,8 @@ class RouteService {
                     fleet.distribution
             )
 
+            log.error( "created following ${fleet.distribution} distributed randoms: ${distances}" )
+
             List<List<org.geotools.graph.structure.Node>> routeStartTargetsList = createViaNodesWithRandomKm( distances );
 
             // initialized with size of routeStartTargetsList

@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>Simulation</title>
-    <meta name="layout" content="main" />
+    <meta name="layout" content="mainConfiguration" />
 
 </head>
 <body>
@@ -264,9 +264,15 @@
 </div>
 <br><br><br>
 <div class="layoutButton">
-    <span class="layoutButtonL"><g:submitButton name="send" value="CANCEL"/></span>
+    <span class="layoutButtonL">
+        <span class="addButtonCancel"><g:link controller="sim" action="">CANCEL</g:link></span>
+        <%--<g:submitToRemote class="addButton" url="[action: '/front/startSimulation']" update="sim" name="submit" value="CANCEL" />--%>
+    </span>
     <span class="layoutButtonM"></span>
-    <span class="layoutButtonR"><g:submitButton name="send" value="SAVE"/></span>
+    <span class="layoutButtonR">
+        <span class="addButtonCancel"><g:link controller="sim" action="">SAVE</g:link></span>
+        <%--<g:submitButton name="sim" value="SAVE"/>--%>
+    </span>
 </div>
 
 

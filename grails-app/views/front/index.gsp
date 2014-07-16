@@ -15,10 +15,7 @@
 <body>
 
 <div>
-    <br>
     <p id="startSimulation">Welcome! ${welcome.familyName}</p>
-
-
 </div>
 
 <div>

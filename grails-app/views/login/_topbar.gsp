@@ -1,8 +1,7 @@
-
 <table border="0">
     <tr>
         <td width="90px" align="left">
-            <img class="efahrungLogo" align="left" width="80px"  src="${g.resource( dir: '/images', file: 'logo_efahrung.png' )}"
+            <img class="efahrungLogo" align="left" width="80px"  src="${g.resource( dir: '/images', file: 'logo_efahrung.png' )}"/>
         </td>
         <td>
             <div class="wrap">
@@ -84,7 +83,7 @@
 
         </td>
         <td width="120px" align="right">
-            <img class="dfkiLogo" align="right" width="110px"  src="${g.resource( dir: '/images', file: 'dfki_logo.png' )}"
+            <img class="dfkiLogo" align="right" width="110px"  src="${g.resource( dir: '/images', file: 'dfki_logo.png' )}"/>
         </td>
     </tr>
 </table>

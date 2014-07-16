@@ -1607,6 +1607,17 @@ td img{
 
 }
 
+.addButtonCancel a{
+    -webkit-text-decoration: none;
+    background-color: #fcfcfc;
+    border: 1px solid #cccccc;
+    font-size: 1em;
+    padding: 0.2em 0.4em;
+    color: #000;
+    text-decoration: none;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
 .addImage {
     position:relative;
     right:20px;

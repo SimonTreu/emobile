@@ -7,26 +7,23 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Add new car type</title>
+    <title><g:message code="configuration.showFillingStationTypes.addnewfillingstation"/></title>
     <meta name="layout" content="main" />
 
 </head>
 
 <body>
 <div class="pContainer">
-    <div class="newCar">
-        <%-- to edit rows --%>
-        <div class="contentLeftCar">
-<%-- to edit rows --%>
-        <div class="rowU">
-            <div class="left1"><b>Electric station types:</b></div>
-            <div class="right1"></div>
+    <div class="carTypes">
+        <div class="rowUp">
+            <div class="leftBold"><b><g:message code="configuration.showFillingStationTypes.electrictypes"/></b></div>
+            <div class="right0PX"></div>
             <div class="clear"></div>
         </div>
-        <div class="row">
+        <div class="rowMiddle">
             <g:each in="${fillingStationTypes}" var="fillingStationType">
-                <div class="left1"> &nbsp;&nbsp; ${fillingStationType.name} &nbsp;&nbsp; </div>
-                <div class="right1">
+                <div class="leftCarTypes"> &nbsp;&nbsp; ${fillingStationType.name} &nbsp;&nbsp; </div>
+                <div class="right0PX">
 
                     <g:form action="editFillingStationTypeView">
 
@@ -41,10 +38,10 @@
             </g:each>
         </div>
         <%-- create-new --%>
-        <div class="rowL">
+        <div class="rowDown">
             <g:form action="createFillingStationTypeView">
-                <div class="left1"></div>
-                <div class="right2">
+                <div></div>
+                <div class="rightOnlyButton">
                     <g:submitToRemote class="addButton" url="[action: 'createFillingStationTypeView']" update="updateMe" name="submit" value="Create" />
                 </div>
                 <div class="clear"></div>
@@ -53,9 +50,7 @@
     </div>
 <%-- this shpuld be displayed as "lightbox" --%>
     <div id="updateMe"></div>
-
 </div>
-    </div>
 
 </body>
 </html>

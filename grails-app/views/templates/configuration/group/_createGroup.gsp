@@ -1,32 +1,32 @@
 <div id="openModal" class="modalDialog">
-    <div class="layout">
+    <div>
         <g:form controller="configuration" action="createGroup">
             <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
             <div class="contentLeft1">
-                <div class="rowU">
+                <div class="rowUp">
                     <div class="leftbig"><b><%--<<g:message code="simulation.index.selectcarstype"/>--%>Select filling stations for group</b></div>
                 </div>
 
 
-                <div class="row">
+                <div class="rowMiddle">
 
-                    <div class="left5">
+                    <div class="leftModal">
                         Set Name for Fleet
                     </div>
 
-                    <div class="right2">
+                    <div class="rightOnlyButton">
                         <g:textField name="nameForGroup" value="${generatedName}"/>
                     </div>
 
                 </div>
 
-                <div class="row">
-                    <div class="left5">
+                <div class="rowMiddle">
+                    <div class="left180PX">
                         <g:select name="stationCount" from="${1..100}" /> &nbsp;&nbsp;
                         <%--<g:message code="simulation.index.carstype"/>--%>
                         Filling Station Types:
                     </div>
-                    <div class="right2">
+                    <div class="right200PX">
                         <g:select name="stationTypeId" from="${availableFillingStationTypes}" optionKey="id" optionValue="name" />
                         &nbsp;&nbsp;
 
@@ -44,12 +44,12 @@
 
                 </div>
 
-                <div class="rowL">
-                    <div class="left2">
+                <div class="rowDown">
+                    <div class="left0PX">
                         <%--<g:submitButton name="createCar" value="Cancel"/>--%>
                         <input type="button" value="Cancel" onclick="window.location.href=window.location.href"/>
                     </div>
-                    <div class="right2">
+                    <div class="right90PX">
                         <g:submitButton name="createGroup" value="Create Group"/>
                     </div>
                     <div class="clear"></div>

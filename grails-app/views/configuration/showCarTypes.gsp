@@ -7,68 +7,42 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Add new car type</title>
+    <title><g:message code="configuration.showCarTypes.addnewcar"/></title>
     <meta name="layout" content="main" />
 
 </head>
 
 <body>
     <div class="pContainer">
-        <div class="newCar">
-        <%-- to edit rows --%>
-            <div class="contentLeftCar">
-            <div class="rowU">
-                <div class="left1"><b>Car types:</b></div>
-                <div class="right1"></div>
+        <div class="carTypes">
+            <div class="rowUp">
+                <div class="leftBold"><b><g:message code="configuration.showCarTypes.cartypes"/></b></div>
+                <div class="right0PX"></div>
                 <div class="clear"></div>
             </div>
-            <div class="row">
+            <div class="rowMiddle">
                 <g:each in="${carTypes}" var="carType">
-                    <div class="left1"> &nbsp;&nbsp; ${carType.carType.name} &nbsp;&nbsp; </div>
-                    <div class="right1">
-
+                    <div class="leftCarTypes"> &nbsp;&nbsp; ${carType.carType.name} &nbsp;&nbsp;</div>
+                    <div class="right0PX">
                         <g:form action="editCarTypeView">
-
                             <g:hiddenField name="carTypeId" value="${carType.carType.id}"/>
-
-                        <%--<img class="addImage" width="14px" src="${g.resource( dir: '/images', file: 'edit.png' )}">--%>
-                        <g:submitToRemote class="addButton" url="[ action: 'editCarTypeView' ]" update="updateMe" name="submit" value="edit" id="openModal">
-
-                        </g:submitToRemote>
-
-                    </g:form>
-
-                </div>
-                <div class="clear"></div>
-            </g:each>
+                            <g:submitToRemote class="addButton" url="[ action: 'editCarTypeView' ]" update="updateMe" name="submit" value="edit" id="openModal"/>
+                       </g:form>
+                    </div>
+                    <div class="clear"></div>
+                </g:each>
             </div>
-
-            <div class="rowL">
+            <div class="rowDown">
                 <g:form action="createCarTypeView">
-                    <div class="left1"></div>
-                    <div class="right2"> <g:submitToRemote class="addButton" url="[action: 'createCarTypeView']" update="updateMe" name="submit" value="create new car type" />
-                        <%--<img width="22px"src="${g.resource( dir: '/images', file: 'add.png' )}">--%>
-                        </div>
-                        <div class="clear"></div>
-                    </g:form>
-                </div>
-
+                    <div></div>
+                    <div class="rightOnlyButton">
+                        <g:submitToRemote class="addButton" url="[action: 'createCarTypeView']" update="updateMe" name="submit" value="create new car type" />
+                    </div>
+                    <div class="clear"></div>
+                </g:form>
             </div>
-
-
-        <%-- create-new --%>
-
-        <%-- this shpuld be displayed as "lightbox" --%>
-            <div id="updateMe">
-
-
-            </div>
-
-
-
-      </div>
+            <div id="updateMe"></div>
+        </div>
     </div>
-
-
 </body>
 </html>

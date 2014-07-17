@@ -20,32 +20,32 @@
                         <div class="contentLeft4">
                             <g:form controller="configuration" action="createDistributionForFleet">
                                 <div class="contentLeftRoutes">
-                                    <div class="rowU1">
+                                    <div class="rowUp">
                                         <div class="leftbig"><b><g:message code="templates.configuration.fleet._distribution.properties"/></b></div>
                                     </div>
                                     <div>
                                         <div class="clear"></div>
                                     </div>
-                                    <div class="row1">
-                                        <div class="left2">
+                                    <div class="rowMiddleWithoutBorder">
+                                        <div class="left0PX">
                                             <b>Car number</b>
                                         </div>
-                                        <div class="left2">
+                                        <div class="left0PX">
                                             <b>Fleet name</b>
                                         </div>
-                                        <div class="left2">
+                                        <div class="left0PX">
                                             <b>${fleetName}</b>
                                         </div>
                                     </div>
                                     <g:each in="${carTypes}" var="carType">
-                                        <div class="row1">
-                                            <div class="left2">
+                                        <div class="rowMiddleWithoutBorder2">
+                                            <div class="left0PX">
                                                 ${carType.value.size()}
                                             </div>
-                                            <div class="left2">
+                                            <div class="left0PX">
                                                 of
                                             </div>
-                                            <div class="left2">
+                                            <div class="left0PX">
                                                 ${carType.key.name}
                                             </div>
                                         </div>
@@ -63,17 +63,13 @@
                             </ul>
                             <div class="tab">
 
-                                <g:form controller="configuration" action="setDistributionForFleet">
-                                    <div id="tab-1" class="tab-content-buttons-bottomed">
-
-
+                                    <div id="tab-1" class="tab-content">
+                                        <g:form controller="configuration" action="setDistributionForFleet">
                                         <div class="rowSpace">
-                                            <div class="clear">
-
-                                            </div>
+                                            <div class="clear"></div>
                                         </div>
 
-                                        <div class="row1">
+                                        <div class="rowMiddleWithoutBorder2">
                                             <div class="left4">
                                                 <g:message code="templates.configuration.fleet._distribution.selectdistribution"/>
                                             </div>
@@ -82,7 +78,8 @@
                                             </div>
                                             <div class="clear"></div>
                                         </div>
-                                        <div class="row1">
+
+                                        <div class="rowMiddleWithoutBorder2">
                                             <div class="left75">
                                                 <g:message code="templates.configuration.fleet._distribution.from"/>
                                             </div>
@@ -102,7 +99,6 @@
                                         <div class="clear"></div>
 
                                         <div class="rowL1Bottom">
-
                                             <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
                                             <g:hiddenField name="fleetId" value="${fleetId}"/>
                                             <div class="right2-bottomed">
@@ -110,11 +106,11 @@
                                             </div>
 
                                             <div class="clear"></div>
-
                                         </div>
-
-                                    </div>
                                 </g:form>
+                                    </div>
+
+
                                 <div id="tab-2" class="tab-content">
                                     <p>
                                         <input type="file">
@@ -127,11 +123,11 @@
 
                             </div>
                         </div>
-
                     </div>
+
+                </div>
+        </fieldset>
     </div>
-  </fieldset>
-</div>
 </div>
 
 

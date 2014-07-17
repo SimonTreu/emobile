@@ -986,38 +986,43 @@ class RouteService {
 
         Fleet fleet = Fleet.get( fleetId )
 
-        boolean allCarsConfigured = false
+        /**
+         * this may be done only once, otherwise it is not the valid distribution
+         */
+        List<Double> distances = statisticService.generateRandomListFromDistribution(
+                fleet.cars.size(),
+                fleet.plannedFromKm,
+                fleet.plannedToKm,
+                fleet.distribution
+        )
 
-        while ( !allCarsConfigured ) {
+        log.error( "created following ${fleet.distribution} distributed randoms: ${distances}" )
 
+        Map<Car,Double> carDistanceMap= new HashMap<Car,Double>()
 
-            List<Car> cars = new ArrayList<Car>()
+        /**
+         * filling car distance map to have the distance for each car ready to go
+         */
+        int idx = 0;
+        for ( Car car : fleet.cars ) {
 
-            log.error( "cars: ${fleet.cars.size()}" )
+            car = Car.get( car.id )
 
-            fleet.cars.each { Car car ->
+            carDistanceMap.put( car, distances.get( idx ) )
 
-                if ( car.routesConfigured == false ) {
-                    cars.add( Car.get( car.id ) )
-                }
+            idx++
 
-            }
+        }
 
-            // generate random plannedDistances List
-            List<Double> distances = statisticService.generateRandomListFromDistribution(
-                    fleet.cars.size(),
-                    fleet.plannedFromKm,
-                    fleet.plannedToKm,
-                    fleet.distribution
-            )
+        while ( carDistanceMap.size() > 0 ) {
 
-            log.error( "created following ${fleet.distribution} distributed randoms: ${distances}" )
+            List<Double> openDistances = new ArrayList<Double>( carDistanceMap.values() )
+            log.error( "dd" )
 
-            List<List<org.geotools.graph.structure.Node>> routeStartTargetsList = createViaNodesWithRandomKm( distances );
+            List<List<org.geotools.graph.structure.Node>> routeStartTargetsList = createViaNodesWithRandomKm( openDistances );
 
             // initialized with size of routeStartTargetsList
             List<List<List<BasicEdge>>> routesToPersist = Collections.synchronizedList( new ArrayList<ArrayList<List<BasicEdge>>>() );
-            // ArrayBlockingQueue<List<List<BasicEdge>>> routesToPersist = new ArrayBlockingQueue<ArrayList<List<BasicEdge>>>( routeStartTargetsList.size() )
 
             int poolSize = 32;      // the count of currently paralellized threads
             int queueSize = 64;    // recommended - twice the size of the poolSize
@@ -1092,7 +1097,8 @@ class RouteService {
             def done1 = false
             int doneCount = 0;
 
-            int waiter = 1500000
+            //int waiter = 1500000
+            int waiter = 1500
             while ( !done1 && waiter >= 0 && doneCount < routeStartTargetsList.size() ) {
                 done1 = threadPoolExecutorForPoints.await( 20, TimeUnit.MILLISECONDS )
                 waiter--
@@ -1104,36 +1110,23 @@ class RouteService {
 
             log.debug( "added ${routesToPersist.size()} valid routes" )
 
-            int idx = 0;
-            // now save the routes..
+            /**
+             * fill the cars with found routes and persist to db
+             */
             for ( List<List<BasicEdge>> multiTargetRoute : routesToPersist ) {
 
-                Car car = cars.get( idx )
+                List<Car> carsToPersistList = new ArrayList<Car>( carDistanceMap.keySet() )
 
-                long millis = System.currentTimeMillis()
+                Car car = carsToPersistList.get( 0 )
 
                 persistRouteToCar( car, multiTargetRoute )
 
-                log.debug( "-- persisiting route took ${(System.currentTimeMillis() - millis)} ms" )
-
-            }
-
-            List<Car> openCars = new ArrayList<Car>()
-            fleet.cars.each { Car car ->
-
-                if ( car.routesConfigured == false ) {
-                    openCars.add( Car.get( car.id ) )
-                }
-
-            }
-            if ( openCars.size() == 0 ) {
-                allCarsConfigured = true
+                carDistanceMap.remove( car )
             }
 
         }
 
         log.error( "finished" )
-
 
         fleet.routesConfigured = true
         fleet.fleetStatus = FleetStatus.CONFIGURED

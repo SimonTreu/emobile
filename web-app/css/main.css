@@ -1994,7 +1994,7 @@ fieldset {
 }
 
 .leftConfigurationLong {
-    width:210px;
+    width:215px;
     float:left;
     padding:10px 0px 0px 7px;
 }
@@ -2081,6 +2081,18 @@ fieldset {
     padding:5px;
 }
 
+.left140PX{
+    width:140px;
+    float:left;
+    padding:5px;
+}
+
+.left180PX{
+    width:180px;
+    float:left;
+    padding:5px;
+}
+
 .leftCollectFleets{
     width:270px;
     float:left;
@@ -2108,8 +2120,35 @@ fieldset {
     display: table-cell;
 }
 
+.right80PX{
+    width:80px;
+    float:right;
+    padding:5px;
+    display: table-cell;
+}
+.right90PX{
+    width:95px;
+    float:right;
+    padding:5px;
+    display: table-cell;
+}
+
 .right100PX{
     width:115px;
+    float:right;
+    padding:5px;
+    display: table-cell;
+}
+
+.right235PX {
+    width:245px;
+    float:right;
+    padding:5px;
+    display: table-cell;
+}
+
+.right200PX {
+    width:210px;
     float:right;
     padding:5px;
     display: table-cell;
@@ -2123,7 +2162,7 @@ fieldset {
 }
 
 .rightOnlyBigButton{
-    width:178px;
+    width:188px;
     float:right;
     padding:5px;
     min-height:24px;
@@ -2167,7 +2206,15 @@ fieldset {
 }
 
 .contentModalWindow {
-    width:400px;
+    width:450px;
+    font-size: 12px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+}
+
+.contentModalWindowFleet {
+    width:450px;
     font-size: 12px;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -2191,7 +2238,7 @@ fieldset {
 }
 
 .modalDialog > div {
-    width: 400px;
+    width: 450px;
     position: relative;
     margin: 10% auto;
     padding: 5px 20px 13px 20px;

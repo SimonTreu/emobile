@@ -1,10 +1,10 @@
 <div class="cars">
-    <div class="row">
-        <div class="left3">
+    <div class="rowMiddle">
+        <div class="left140PX">
             <g:select name="stationCountList" from="${1..100}" /> &nbsp;&nbsp;
             <g:message code="simulation.index.carstype"/>
         </div>
-        <div class="right2">
+        <div class="right235PX">
             <g:select name="stationTypeId" from="${availableFillingStationTypes}" optionKey="id" optionValue="name" />
             &nbsp;&nbsp;
 

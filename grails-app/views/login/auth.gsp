@@ -39,143 +39,138 @@
 
         </g:if>
 
-        <div class="pContainer">
+        <div class="pContainerAuth">
+            <fieldset>
+                <legend><g:message code="login.auth.registrate" /> or <g:message code="login.auth.login"/></legend>
+                <div class="layout">
+                    <div class="layoutLeft">
+                        <div class="contentAuth">
+                            <g:form controller="login" action="signin" id="signinForm" class="cssform" autocomplete="off">
+                                <div class="rowUp">
+                                    <div class="leftBold"><b><g:message code="login.auth.registrate" /></b></div>
+                                    <div class="right"></div>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="rowMiddle">
+                                    <div class="left"><g:message code="login.auth.givenname"/></div>
+                                    <div class="right">
+                                        <g:textField name="signinGivenName" id="signinGivenName" value="" />
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
 
+                                <div class="rowMiddle">
+                                    <div class="left">
+                                        <g:message code="login.auth.familyname"/>
+                                    </div>
+                                    <div class="right">
+                                        <g:textField name="signinFamilyName" id="signinFamilyName" value="" />
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
 
-                <div class="d1">
-        <fieldset>
-            <legend><g:message code="login.auth.registrate" /> or <g:message code="login.auth.login"/></legend>
+                                <div class="rowMiddle">
+                                    <div class="left">
+                                        <g:message code="login.auth.email"/>
+                                    </div>
+                                    <div class="right">
+                                        <g:textField name="signinUserName" id="signinUserName" value="" />
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
 
-            <div class="layout">
-                <div class="layoutLeft">
-                    <div class="contentLeft">
-                        <g:form controller="login" action="signin" id="signinForm" class="cssform" autocomplete="off">
-                            <div class="rowU">
-                                <div class="left"><b><g:message code="login.auth.registrate" /></b></div>
-                                <div class="right"></div>
-                                <div class="clear"></div>
-                            </div>
-                            <div class="row">
-                                <div class="left"><g:message code="login.auth.givenname"/></div>
-                                <div class="right">
-                                    <g:textField name="signinGivenName" id="signinGivenName" value="" />
+                                <div class="rowMiddle">
+                                    <div class="left">
+                                        <g:message code="login.auth.password"/>
+                                    </div>
+                                    <div class="right">
+                                        <g:passwordField name="password" />
+                                    </div>
+                                    <div class="clear"></div>
                                 </div>
-                                <div class="clear"></div>
-                            </div>
 
-                            <div class="row">
-                                <div class="left">
-                                    <g:message code="login.auth.familyname"/>
+                                <div class="rowMiddle">
+                                    <div class="left">
+                                        <g:message code="login.auth.cofirmpassword"/>
+                                    </div>
+                                    <div class="right">
+                                        <g:passwordField name="confirm" />
+                                    </div>
+                                    <div class="clear"></div>
                                 </div>
-                                <div class="right">
-                                    <g:textField name="signinFamilyName" id="signinFamilyName" value="" />
-                                </div>
-                                <div class="clear"></div>
-                            </div>
 
-                            <div class="row">
-                                <div class="left">
-                                    <g:message code="login.auth.email"/>
+                                <div class="rowDown">
+                                    <div class="left"></div>
+                                    <div class="right"><g:submitButton name="signinButton" value="Sign Up" /></div>
+                                    <div class="clear"></div>
                                 </div>
-                                <div class="right">
-                                    <g:textField name="signinUserName" id="signinUserName" value="" />
-                                </div>
-                                <div class="clear"></div>
-                            </div>
-
-                            <div class="row">
-                                <div class="left">
-                                    <g:message code="login.auth.password"/>
-                                </div>
-                                <div class="right">
-                                    <g:passwordField name="password" />
-                                </div>
-                                <div class="clear"></div>
-                            </div>
-
-                            <div class="row">
-                                <div class="left">
-                                    <g:message code="login.auth.cofirmpassword"/>
-                                </div>
-                                <div class="right">
-                                    <g:passwordField name="confirm" />
-                                </div>
-                                <div class="clear"></div>
-                            </div>
-
-                            <div class="rowL">
-                                <div class="left"></div>
-                                <div class="right"><g:submitButton name="signinButton" value="Sign Up" /></div>
-                                <div class="clear"></div>
-                            </div>
+                            </g:form>
                         </div>
-                    </g:form>
+                    </div>
+                    <div class="layoutRightSignIn">
+                        <div class="contentAuth">
+                            <form action='${postUrl}' method='POST' id='loginForm' class='cssform' autocomplete='off'>
+                                <div class="rowUp">
+                                    <div class="leftbig"><b><g:message code="login.auth.login"/></b></div>
+                                </div>
+                                <div class="rowMiddle">
+                                    <div class="left"><g:message code="login.auth.username"/></div>
+                                    <div class="right"><input type="text" size="22%" name='j_username' id='username' value=""></div>
+                                    <div class="clear"></div>
+                                </div>
+
+                                <div class="rowMiddle">
+                                    <div class="left"><g:message code="login.auth.password"/></div>
+                                    <div class="right"><input type="password" size="22%" name='j_password' id='password' value="" /></div>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="rowDown">
+                                    <div class="left"></div>
+                                    <div class="right"><input type="submit" value="<g:message code="layouts._topbar.login"/>"></div>
+                                    <div class="clear"></div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="contentAuth">
+                            <%--<form action='${postUrl}' method='POST' id='loginForm' class='cssform' autocomplete='off'>--%>
+                                <div class="rowUp">
+                                    <div class="leftbig"><b><g:message code="login.auth.fogotPassword"/></b></div>
+                                </div>
+                                <div class="rowMiddle">
+                                    <div class="left"><g:message code="login.auth.email"/></div>
+                                    <div class="right"><input type="text" size="20" name='j_username' id='' value=""></div>
+                                    <div class="clear"></div>
+                                </div>
+
+                                <div class="rowDown">
+                                    <div class="left"></div>
+                                    <div class="right"><input type="submit" value="<g:message code="login.auth.send"/>"></div>
+                                    <div class="clear"></div>
+                                </div>
+                            <%--</form>--%>
+                        </div>
+                    </div>
+                    <%--<div class="layoutImage">
+                        <div class="contentRight">
+                          <img width="30px"src="${g.resource( dir: '/images', file: 'weather.png' )}"><br><br>
+                            <img width="30px"src="${g.resource( dir: '/images', file: 'settings.png' )}"><br><br><br><br>
+                            <img width="30px"src="${g.resource( dir: '/images', file: 'car.png' )}"><br>
+                            <img width="44px"src="${g.resource( dir: '/images', file: 'station.png' )}">
+                        </div>
+                    </div>--%>
+
+
                 </div>
-                <div class="layoutRightSignIn">
-                    <div class="contentLeftSignIn">
-                        <form action='${postUrl}' method='POST' id='loginForm' class='cssform' autocomplete='off'>
-                            <div class="rowU">
-                                <div class="leftbig"><b><g:message code="login.auth.login"/></b></div>
-                            </div>
-                            <div class="row">
-                                <div class="left"><g:message code="login.auth.username"/></div>
-                                <div class="right"><input type="text" size="22%" name='j_username' id='username' value=""></div>
-                                <div class="clear"></div>
-                            </div>
-
-                            <div class="row">
-                                <div class="left"><g:message code="login.auth.password"/></div>
-                                <div class="right"><input type="password" size="22%" name='j_password' id='password' value="" /></div>
-                                <div class="clear"></div>
-                            </div>
-                            <div class="rowL">
-                                <div class="left"></div>
-                                <div class="right"><input type="submit" value="<g:message code="layouts._topbar.login"/>"></div>
-                                <div class="clear"></div>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="contentLeftSignIn">
-                        <%--<form action='${postUrl}' method='POST' id='loginForm' class='cssform' autocomplete='off'>--%>
-                            <div class="rowU">
-                                <div class="leftbig"><b><g:message code="login.auth.fogotPassword"/></b></div>
-                            </div>
-                            <div class="row">
-                                <div class="left"><g:message code="login.auth.email"/></div>
-                                <div class="right"><input type="text" size="20" name='j_username' id='' value=""></div>
-                                <div class="clear"></div>
-                            </div>
-
-                            <div class="rowL">
-                                <div class="left"></div>
-                                <div class="right"><input type="submit" value="<g:message code="login.auth.send"/>"></div>
-                                <div class="clear"></div>
-                            </div>
-                        <%--</form>--%>
-                    </div>
-                </div>
-                <%--<div class="layoutImage">
-                    <div class="contentRight">
-                      <img width="30px"src="${g.resource( dir: '/images', file: 'weather.png' )}"><br><br>
-                        <img width="30px"src="${g.resource( dir: '/images', file: 'settings.png' )}"><br><br><br><br>
-                        <img width="30px"src="${g.resource( dir: '/images', file: 'car.png' )}"><br>
-                        <img width="44px"src="${g.resource( dir: '/images', file: 'station.png' )}">
-                    </div>
+                <br><br><br>
+                <%--<div class="layoutButton">
+                    <span class="layoutButtonL"><g:submitButton name="send" value="CANCEL"/></span>
+                    <span class="layoutButtonM"></span>
+                    <span class="layoutButtonR"><g:submitButton name="send" value="SAVE"/></span>
                 </div>--%>
+                <span class="confirmationMessage">Confirmation will be sent to this address and invalidates shortly.</span>
 
-
-            </div>
-            <br><br><br>
-            <%--<div class="layoutButton">
-                <span class="layoutButtonL"><g:submitButton name="send" value="CANCEL"/></span>
-                <span class="layoutButtonM"></span>
-                <span class="layoutButtonR"><g:submitButton name="send" value="SAVE"/></span>
-            </div>--%>
-            <span class="confirmationMessage">Confirmation will be sent to this address and invalidates shortly.</span>
-
-        </fieldset>
-        </div>
+            </fieldset>
         </div>
 
 

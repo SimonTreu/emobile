@@ -8,35 +8,26 @@
             <div class="wrap">
                 <nav>
                     <ul id="menu">
-                        <li><a href="#"><span></span> <g:message code="layouts._topbar.simulate"/></a>
+                        <li><g:link><g:message code="layouts._topbar.simulate"/></g:link>
                             <ul>
-                                <li><g:link controller="configuration" action="index"><g:message code="layouts._topbar.new"/> </g:link></li>
-                                <li><g:link><g:message code="layouts._topbar.open"/></g:link></li>
-                                <li><g:link><g:message code="layouts._topbar.openresent"/></g:link></li>
-                                <li><g:link><g:message code="layouts._topbar.loadfromfile"/></g:link></li>
-                                <li><g:link><g:message code="layouts._topbar.logout"/></g:link></li>
+
                             </ul>
                         </li>
-                        <li><a href="#"><span class=""></span> <g:message code="layouts._topbar.execute"/></a>
+                        <li><g:link><g:message code="layouts._topbar.execute"/></g:link>
                         </li>
-                        <li><a href="#"><span class=""></span><g:message code="layouts._topbar.view"/></a>
+                        <li><g:link><g:message code="layouts._topbar.view"/></g:link>
                             <ul>
-                                <li><g:link><g:message code="layouts._topbar.viewresults"/></g:link></li>
-                                <li><g:link><g:message code="layouts._topbar.exportinfile"/></g:link></li>
+
                             </ul>
                         </li>
-                        <li><g:link controller="extras" action="index"><span class=""></span><g:message code="layouts._topbar.extras"/></g:link>
+                        <li><g:link><g:message code="layouts._topbar.extras"/></g:link>
                             <ul>
-                                <%-- <li><g:link controller="configuration" action="showCarTypes"><g:message code="layouts._topbar.addnewcartype"/></g:link></li> --%>
-                                <li><g:link><g:message code="layouts._topbar.addnewcartype"/></g:link></li>
-                                <li><g:link><g:message code="layouts._topbar.addnewelectricstation"/></g:link></li>
-                                <li><g:link><g:message code="layouts._topbar.electricstationstatistic"/></g:link></li>
+
                             </ul>
                         </li>
-                        <li><a href="#"><span class=""></span><g:message code="layouts._topbar.help"/></a>
+                        <li><g:link><g:message code="layouts._topbar.help"/></g:link>
                             <ul>
-                                <li><g:link><g:message code="layouts._topbar.help"/></g:link></li>
-                                <li><g:link><g:message code="layouts._topbar.contact"/></g:link></li>
+
                             </ul>
                         </li>
                         <span id="signup">

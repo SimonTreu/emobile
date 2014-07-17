@@ -20,32 +20,32 @@
                         <div class="contentLeft4">
                             <g:form controller="configuration" action="createDistributionForFleet">
                                 <div class="contentLeftRoutes">
-                                    <div class="rowU1">
+                                    <div class="rowUp">
                                         <div class="leftbig"><b><g:message code="templates.configuration.fleet._distribution.properties"/></b></div>
                                     </div>
                                     <div>
                                         <div class="clear"></div>
                                     </div>
-                                    <div class="row1">
-                                        <div class="left2">
+                                    <div class="rowMiddleWithoutBorder">
+                                        <div class="left0PX">
                                             <b>Car number</b>
                                         </div>
-                                        <div class="left2">
+                                        <div class="left0PX">
                                             <b>Fleet name</b>
                                         </div>
-                                        <div class="left2">
+                                        <div class="left0PX">
                                             <b>${fleetName}</b>
                                         </div>
                                     </div>
                                     <g:each in="${carTypes}" var="carType">
-                                        <div class="row1">
-                                            <div class="left2">
+                                        <div class="rowMiddleWithoutBorder2">
+                                            <div class="left0PX">
                                                 ${carType.value.size()}
                                             </div>
-                                            <div class="left2">
+                                            <div class="left0PX">
                                                 of
                                             </div>
-                                            <div class="left2">
+                                            <div class="left0PX">
                                                 ${carType.key.name}
                                             </div>
                                         </div>
@@ -62,10 +62,8 @@
                                 <li><a href="#tab-3"><g:message code="simulation.index.showonmap"/></a></li>
                             </ul>
                             <div class="tab">
-
                                 <g:form controller="configuration" action="setDistributionForFleet">
                                     <div id="tab-1" class="tab-content-buttons-bottomed">
-
 
                                         <div class="rowSpace">
                                             <div class="clear">

@@ -33,7 +33,7 @@
                         <div class="rowGroup">
                             <div class="rowBrightGrey">
                                 <div class="leftConfigurationLong">
-                                    Select Fleets for Simulation
+                                    <g:message code="configuration.index.selectfleets"/>
                                 </div>
                                 <div class="right0PX">
                                 </div>
@@ -76,7 +76,7 @@
                         <div class="rowGroup">
                             <div class="rowBrightGrey">
                                 <div class="leftConfigurationLong">
-                                    Collected Fleets for Simulation
+                                    <g:message code="configuration.index.collectfleets"/>
                                 </div>
                             </div>
                             <g:if test="${addedFleets != null && addedFleets.size() > 0}">
@@ -85,18 +85,18 @@
                                     <div class="rowMiddleWithoutBorder">
                                         <g:if test="${addedFleet.fleetStatus == FleetStatus.CONFIGURED}">
                                             <div class="leftCollectFleets">
-                                                ${addedFleet.name} ( ${addedFleet.cars.size()} cars ) <span class="littleText">All Routes are configured</span>
+                                                ${addedFleet.name} ( ${addedFleet.cars.size()} cars ) <span class="littleText"><g:message code="configuration.index.allroutes"/></span>
                                             </div>
                                         </g:if>
                                         <g:if test="${addedFleet.fleetStatus == FleetStatus.SCHEDULED_FOR_CONFIGURING}">
                                             <div class="leftCollectFleets">
-                                                ${addedFleet.name}  ( ${addedFleet.cars.size()} cars ) <span class="littleText"> Routes scheduled to Configure</span>
+                                                ${addedFleet.name}  ( ${addedFleet.cars.size()} cars ) <span class="littleText"><g:message code="configuration.index.scheduleroute"/></span>
                                             </div>
                                         </g:if>
 
                                         <g:if test="${addedFleet.fleetStatus == FleetStatus.NOT_CONFIGURED}">
                                             <div class="leftCollectFleets">
-                                                ${addedFleet.name}  ( ${addedFleet.cars.size()} cars ) <span class="littleText">  Routes have to be configured </span>
+                                                ${addedFleet.name}  ( ${addedFleet.cars.size()} cars ) <span class="littleText"><g:message code="configuration.index.routesconfigured"/></span>
                                             </div>
                                         </g:if>
                                         <div class="right65PX">
@@ -111,7 +111,7 @@
                                                     <g:submitButton name="showRoutes" value="Show Routes"/>
                                                 </g:if>
                                                 <g:if test="${addedFleet.fleetStatus == FleetStatus.SCHEDULED_FOR_CONFIGURING}">
-                                                    Please wait for Configuring Routes
+                                                    <g:message code="configuration.index.pleasewait"/>
                                                 </g:if>
                                                 <g:if test="${addedFleet.fleetStatus == FleetStatus.NOT_CONFIGURED}">
                                                     <g:form action="createRouteSelectorView">
@@ -159,7 +159,7 @@
                         <div class="rowGroup">
                             <div class="rowBrightGrey">
                                 <div class="leftConfigurationLong">
-                                    Select Filling Stations for Simulation
+                                    <g:message code="configuration.index.selectfillingstation"/>
                                 </div>
                                 <div class="right0PX">
                                 </div>
@@ -200,7 +200,7 @@
                             <div class="rowGroup">
                                 <div class="rowBrightGrey">
                                     <div class="leftConfigurationLong">
-                                        Collected Filling Stations for Simulation
+                                        <g:message code="configuration.index.collectedfillingstation"/>
                                     </div>
                                     <div class="right0PX">
                                     </div>

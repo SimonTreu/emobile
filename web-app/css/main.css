@@ -1196,7 +1196,6 @@ body.lightBoxBody{
     padding:5px;
     min-height:24px;
     display: table-cell;
-    position:absolute;
     bottom:5px;
     right:5px;
 }
@@ -1244,7 +1243,6 @@ body.lightBoxBody{
     border-bottom-left-radius: 6px;
     display:block;
     min-height:32px;
-    position:absolute;
     bottom: 20px;
 }
 

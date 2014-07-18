@@ -28,10 +28,10 @@
                                     </div>
                                     <div class="rowMiddleWithoutBorder">
                                         <div class="left0PX">
-                                            <b>Car number</b>
+                                            <b><g:message code="templates.configuration.fleet._distribution.carnumber"/></b>
                                         </div>
                                         <div class="left0PX">
-                                            <b>Fleet name</b>
+                                            <b><g:message code="templates.configuration.fleet._distribution.fleetname"/></b>
                                         </div>
                                         <div class="left0PX">
                                             <b>${fleetName}</b>
@@ -118,7 +118,7 @@
 
                                 </div>
                                 <div id="tab-3" class="tab-content">
-                                    <p>Duis  </p>
+                                    <p>TAB-3</p>
                                 </div>
 
                             </div>

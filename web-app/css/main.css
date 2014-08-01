@@ -1122,6 +1122,24 @@ body.lightBoxBody{
     font-weight: bold;
 }
 
+.leftDistribution{
+    width:138px;
+    float:left;
+    padding:7px 0px 0px 7px;
+}
+
+.leftDistribution60PX{
+    width:65px;
+    float:left;
+    padding:10px 0px 0px 7px;
+}
+
+.leftDistributionButton {
+    width:65px;
+    float:left;
+    padding:7px 0px 0px 7px;
+}
+
 .left65{
     width:65px;
     float:left;
@@ -1173,8 +1191,14 @@ body.lightBoxBody{
     width:65px;
     min-height:24px;
     display: table-cell;
+    padding:7px 0px 0px 7px;
 }
-
+.right50PX {
+    width:50px;
+    min-height:24px;
+    display: table-cell;
+    padding:7px 0px 0px 7px;
+}
 
 
 .right4{
@@ -1192,7 +1216,7 @@ body.lightBoxBody{
 }
 
 .right2-bottomed {
-
+    float: right;
     padding:5px;
     min-height:24px;
     display: table-cell;
@@ -2145,8 +2169,21 @@ fieldset {
     display: table-cell;
 }
 
+.right211PX {
+    width:211px;
+    float:right;
+    padding:5px;
+    display: table-cell;
+}
+
 .right200PX {
     width:210px;
+    float:right;
+    padding:5px;
+    display: table-cell;
+}
+
+.rightDistribution {
     float:right;
     padding:5px;
     display: table-cell;

@@ -313,7 +313,49 @@ class BootStrap {
 
         }
 
+        FillingStationGroup dfki2Group = new FillingStationGroup(
+                company: company,
+                name: "Dfki-Group Two",
+                stub: false
+        )
 
+        if ( !dfki2Group.save( flush: true, failOnError: true ) ) {
+
+            log.error( "failed to save group: ${dfki2Group.errors}" )
+            return
+        }
+
+        List<FillingStation> dfki2GroupStations = new ArrayList<FillingStation>()
+        FillingStationType.findAll().each { FillingStationType fillingStationType ->
+
+            20.times {
+
+                Point point = routeService.getRandomValidPoint()
+
+                FillingStation station = new FillingStation(
+                        fillingStationType: fillingStationType,
+                        name: "${fillingStationType.name}-${it}",
+                        lat: point.coordinate.x.toFloat(),
+                        lon: point.coordinate.y.toFloat()
+                )
+
+                if ( !station.save( flush: true, failOnError: true ) ) {
+
+                    log.error( "fail : ${station.errors}" )
+
+                } else {
+                    dfki2Group.addToFillingStations( station )
+                }
+
+            }
+
+        }
+
+        if ( !dfki2Group.save( flush: true, failOnError: true ) ) {
+
+            log.error( "failed to update (add fillingStations) dfkigroup: ${dfki2Group.errors}" )
+
+        }
     }
 
 

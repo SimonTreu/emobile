@@ -212,9 +212,9 @@
                                     <g:each in="${addedFillingStationGroups}" var="addedGroup">
                                         <g:form controller="configuration" action="removeGroupFromConfiguration">
                                                 <%--<g:message code="simulation.index.addedfleet"/>--%>
-                                        <div class="rowMiddleWithoutBorder2">
+                                        <div class="rowMiddleWithoutBorder">
                                             <div class="leftCollectFleets">
-                                                ${addedGroup.name} with ${addedGroup.fillingStations.size()} Filling Stations
+                                                ${addedGroup.name} with ${addedGroup.fillingStations.size()*2} Filling Stations
                                             </div>
                                             <div class="rightOnlyBigButton">
                                                 <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
@@ -226,12 +226,13 @@
                                         </g:form>
                                     </g:each>
                                 </g:if>
+                                <div class="rowMiddleWithoutBorder2">
+                                    <div class="left0PX"></div>
+                                    <div class="right0PX"></div>
+                                    <div class="clear"></div>
+                                </div>
                             </div>
-                            <div class="rowMiddleWithoutBorder2">
-                                <div class="left0PX"></div>
-                                <div class="right0PX"></div>
-                                <div class="clear"></div>
-                            </div>
+
                             <div class="rowSpace">
                                 <div class="clear"></div>
                             </div>

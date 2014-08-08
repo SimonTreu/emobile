@@ -15,6 +15,7 @@ import de.dfki.gs.controller.ms2.configuration.commands.DistributionForFleetComm
 import de.dfki.gs.controller.ms2.configuration.commands.EditCarTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditConfigurationStubCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditFillingStationCommandObject
+import de.dfki.gs.controller.ms2.configuration.commands.FinishConfigurationCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.UpdateCarTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.UpdateFillingStationTypeCommandObject
 import de.dfki.gs.domain.simulation.CarType
@@ -343,6 +344,12 @@ class ConfigurationController {
 
         // groups already added to configuration stub
         m.addedFillingStationGroups = configurationService.getAddedGroups( configurationStubId )
+
+        // name of configuration
+        m.configurationName = configurationService.findNameOfConfiguration( configurationStubId )
+
+        // description of configuration
+        m.configurationDescription = configurationService.findDescriptionOfConfiguration( configurationStubId )
 
         render view: 'index', model: m
     }
@@ -857,14 +864,14 @@ class ConfigurationController {
             return
         }
 
-        CreateFleetForConfigurationViewCommandObject cmd = new CreateFleetForConfigurationViewCommandObject()
+        FinishConfigurationCommandObject cmd = new FinishConfigurationCommandObject()
         bindData( cmd, params )
 
         if ( !cmd.validate() && cmd.hasErrors() ) {
             log.error( "nothing to save, no coniguration stub found for ${cmd.configurationStubId} : ${cmd.errors}" )
         } else {
 
-            configurationService.saveFinishedConfigurationStub( cmd.configurationStubId )
+            configurationService.saveFinishedConfigurationStub( cmd.configurationStubId, cmd.configurationName, cmd.configurationDescription )
 
         }
 

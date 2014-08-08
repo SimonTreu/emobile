@@ -14,6 +14,9 @@ class Configuration {
     Date dateCreated
     Date lastUpdated
 
+    String configurationName
+    String configurationDescription
+
     /**
      * all executed experiments.. for the stats
      */
@@ -38,6 +41,10 @@ class Configuration {
     ]
 
     static constraints = {
+
+        configurationDescription type: 'text', nullable: true
+        configurationName nullable: true
+
     }
 
     static mapping = {

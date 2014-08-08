@@ -227,7 +227,7 @@ class ConfigurationService {
             return
         }
 
-        List<Fleet> fleets = Fleet.findAllByCompany( company )
+        List<Fleet> fleets = Fleet.findAllByCompany( company, [ sort: "dateCreated", order: "desc" ] )
 
         Configuration stub = Configuration.get( configurationStubId )
         List<Fleet> alreadyAddedFleets = new ArrayList<Fleet>()
@@ -633,7 +633,7 @@ class ConfigurationService {
 
     }
 
-    def saveFinishedConfigurationStub( Long configurationStubId ) {
+    def saveFinishedConfigurationStub( Long configurationStubId, String name, String description ) {
 
         Configuration configurationStubToSave = Configuration.get( configurationStubId )
         configurationStubToSave.stub = false
@@ -643,10 +643,15 @@ class ConfigurationService {
 
             fleet = Fleet.get( fleet.id )
 
-            fleet = routeService.createRandomDistanceRoutesForFleet( fleet.id )
+            if ( fleet.fleetStatus == FleetStatus.SCHEDULED_FOR_CONFIGURING ) {
+                fleet = routeService.createRandomDistanceRoutesForFleet( fleet.id )
+            }
 
         }
 
+
+        configurationStubToSave.configurationName = name
+        configurationStubToSave.configurationDescription = description
 
 
         if ( !configurationStubToSave.save( flush: true ) ) {
@@ -738,5 +743,66 @@ class ConfigurationService {
 
         return fleet.name
     }
+
+    def findNameOfConfiguration( Long configurationStubId ) {
+
+        Configuration configuration = Configuration.get( configurationStubId )
+        if ( configuration.configurationName && configuration.configurationName.length() > 0 ) {
+            return configuration.configurationName
+        }
+
+        // no name yet, create a suggestion
+
+        int fleetSize = configuration.fleets.size()
+        int carTotalCount = 0
+        configuration.fleets.each { Fleet fleet ->
+            fleet = Fleet.get( fleet.id )
+            carTotalCount += fleet.cars.size()
+        }
+
+        int groupSize = configuration.fillingStationGroups.size()
+        int fillingStationSize = 0
+        configuration.fillingStationGroups.each { FillingStationGroup fillingStationGroup ->
+            fillingStationGroup = FillingStationGroup.get( fillingStationGroup.id )
+            fillingStationSize += fillingStationGroup.fillingStations.size()
+        }
+
+        StringBuilder sbName = new StringBuilder()
+        sbName.append( "${fleetSize} Fs.(${carTotalCount} C.)-${groupSize} G.(${fillingStationSize} Fs.)" )
+
+        return sbName.toString()
+    }
+
+    def findDescriptionOfConfiguration( Long configurationStubId ) {
+
+        Configuration configuration = Configuration.get( configurationStubId )
+        if ( configuration.configurationDescription && configuration.configurationDescription.length() > 0 ) {
+            return configuration.configurationDescription
+        }
+
+        // no description yet, create a suggestion
+
+        int fleetSize = configuration.fleets.size()
+        int carTotalCount = 0
+        configuration.fleets.each { Fleet fleet ->
+            fleet = Fleet.get( fleet.id )
+            carTotalCount += fleet.cars.size()
+        }
+
+        int groupSize = configuration.fillingStationGroups.size()
+        int fillingStationSize = 0
+        configuration.fillingStationGroups.each { FillingStationGroup fillingStationGroup ->
+            fillingStationGroup = FillingStationGroup.get( fillingStationGroup.id )
+            fillingStationSize += fillingStationGroup.fillingStations.size()
+        }
+
+        StringBuilder sbDescription = new StringBuilder()
+        sbDescription.append( "${fleetSize} Fleets, all in all with ${carTotalCount} Cars\n" )
+        sbDescription.append( "${groupSize} Groups, all in all with ${fillingStationSize} Fillingstation" )
+
+        return sbDescription.toString()
+
+    }
+
 
 }

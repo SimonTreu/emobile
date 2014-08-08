@@ -36,8 +36,8 @@ class Simulation {
 
     static constraints = {
         name nullable: true
-        description nullable: true
-        abstractText nullable: true
+        description nullable: true, type: 'text'
+        abstractText nullable: true, type: 'text'
 
     }
 

@@ -250,19 +250,32 @@
                 </div>
 
                 </div>
-                <br><br><br>
 
-                <div class="layoutButton">
-                    <span class="layoutButtonL">
-                        <span class="addButtonCancel"><g:link controller="sim" action="">CANCEL</g:link></span>
-                        <%--<g:submitToRemote class="addButton" url="[action: '/front/startSimulation']" update="sim" name="submit" value="CANCEL" />--%>
-                    </span>
-                    <span class="layoutButtonM"></span>
-                    <g:form action="saveFinishedConfiguration">
-                        <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
-                        <span class="layoutButtonR"><g:submitButton name="send" value="SAVE"/></span>
-                    </g:form>
-                </div>
+                <g:form action="saveFinishedConfiguration">
+                    <div>
+
+                        Please name your Simulation:
+                        <g:textField name="configurationName" value="${configurationName}" />
+
+                        Please describe your Simulation:
+                        <g:textArea name="configurationDescription" value="${configurationDescription}" />
+
+                    </div>
+
+                    <br><br><br>
+
+                    <div class="layoutButton">
+                        <span class="layoutButtonL">
+                            <span class="addButtonCancel"><g:link controller="sim" action="">CANCEL</g:link></span>
+                            <%--<g:submitToRemote class="addButton" url="[action: '/front/startSimulation']" update="sim" name="submit" value="CANCEL" />--%>
+                        </span>
+                        <span class="layoutButtonM"></span>
+
+                            <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+                            <span class="layoutButtonR"><g:submitButton name="send" value="SAVE"/></span>
+
+                    </div>
+                </g:form>
         </fieldset>
         <div id="updateMe"></div>
     </div>

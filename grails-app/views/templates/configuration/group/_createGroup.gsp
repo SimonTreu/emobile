@@ -55,6 +55,6 @@
                     <div class="clear"></div>
                 </div>
             </div>
-        </g:form>
+        </g:form><a class="close" title="Close" href=""></a>
     </div>
 </div>

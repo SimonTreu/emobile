@@ -10,11 +10,13 @@ import de.dfki.gs.controller.ms2.configuration.commands.CreateCarTypeCommandObje
 import de.dfki.gs.controller.ms2.configuration.commands.CreateFillingStationTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.CreateFleetForConfigurationCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.CreateFleetForConfigurationViewCommandObject
+import de.dfki.gs.controller.ms2.configuration.commands.CreateGroupSelectorCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.CreateRouteSelectorCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.DistributionForFleetCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditCarTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditConfigurationStubCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditFillingStationCommandObject
+import de.dfki.gs.controller.ms2.configuration.commands.ShowFleetRoutesCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.UpdateCarTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.UpdateFillingStationTypeCommandObject
 import de.dfki.gs.domain.simulation.CarType
@@ -22,7 +24,6 @@ import de.dfki.gs.domain.simulation.Configuration
 import de.dfki.gs.domain.simulation.FillingStationGroup
 import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.simulation.Fleet
-import de.dfki.gs.domain.users.Company
 import de.dfki.gs.domain.users.Person
 import de.dfki.gs.domain.utils.Distribution
 import grails.plugin.springsecurity.SpringSecurityUtils
@@ -342,7 +343,7 @@ class ConfigurationController {
         m.availableFillingStationGroups = configurationService.getGroupsForCompany( person, configurationStubId )
 
         // groups already added to configuration stub
-        m.addedFillingStationGroups = configurationService.getAddedGroups( configurationStubId )
+        m.addedGroups = configurationService.getAddedGroups( configurationStubId )
 
         render view: 'index', model: m
     }
@@ -475,6 +476,47 @@ class ConfigurationController {
         redirect( controller: 'configuration', action: 'index', params: [ configurationStubId : params.configurationStubId ] )
     }
 
+    def createGroupSelectorView () {
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        log.error( "params: ${params}")
+
+        CreateGroupSelectorCommandObject cmd = new CreateGroupSelectorCommandObject()
+        bindData( cmd, params )
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to validate : ${cmd.errors}" )
+
+        } else {
+
+            def m = [ : ]
+
+            // put fleetId
+            m.groupId = cmd.groupId
+
+            m.configurationStubId = cmd.configurationStubId
+
+            m.groupName = configurationService.getNameOfGroup( cmd.groupId )
+
+            // put all cars from fleet
+            // m.cars = configurationService.getCarsFromFleet( cmd.fleetId )
+
+            m.groupTypes = configurationService.getFillingStationsFromGroupTypeOrdered( cmd.groupId )
+
+
+            render template: '/templates/configuration/group/distribution', model: m
+
+        }
+    }
+
+
 
     def createRouteSelectorView() {
 
@@ -592,6 +634,65 @@ class ConfigurationController {
 
         }
 
+    }
+
+    /**
+     *
+     *
+     * @return
+
+    def openLayersWithAction() {
+        log.debug( "params openlayers: ${params}" )
+        log.debug( "sessionId: ${request.requestedSessionId}" )
+
+
+        // params.simulationId can be null
+        try {
+            Long configurationStubId = Long.parseLong( params.configurationStubId as String )
+
+            SimulationCommand cmd = new SimulationCommand()
+            bindData( cmd, params )
+
+            if ( !cmd.validate() ) {
+                log.error( "failed to get simulation for provided simulationId: ${cmd.simulationId} -- ${cmd.errors}" )
+            }
+
+            def m =  simulationCollectDataService.collectSimulationModelForRendering( simulationId )
+
+            render view: 'showRoutes', model: m
+        } catch ( Exception e ) {
+            log.error( "cannot parse string to long ${params.configurationStubId}", e  )
+        }
+
+    }
+    */
+
+    def showFleetRoutesOnMap () {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        log.error( "params: ${params}" )
+        log.debug( "params openlayers: ${params}" )
+        log.debug( "sessionId: ${request.requestedSessionId}")
+
+        ShowFleetRoutesCommandObject cmd = new ShowFleetRoutesCommandObject()
+        bindData( cmd, params )
+
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+            log.error( "failed to get simulation for provided simulationId: ${cmd.simulationId} -- ${cmd.errors}" )
+        } else {
+            def m = [:]
+            m.fleets = configurationService.getFleetRoutesOfConfiguration( cmd.configurationStubId )
+            render template: '/templates/configuration/routes/showRoutesOnMap', model: m
+            //render view: 'index', model: m
+        }
     }
 
     def createGroupView() {

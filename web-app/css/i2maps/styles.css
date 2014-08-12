@@ -363,6 +363,5 @@ div.olControlSaveFeaturesItemInactive {
     padding-left: 10px;
 }
 .olControlLayerSwitcher .maximizeDiv, .olControlLayerSwitcher .minimizeDiv {
-    right: 0;
     top: 5px;
 }

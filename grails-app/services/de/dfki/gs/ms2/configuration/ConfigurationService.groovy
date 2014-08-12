@@ -7,11 +7,14 @@ import de.dfki.gs.domain.simulation.FillingStation
 import de.dfki.gs.domain.simulation.FillingStationGroup
 import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.simulation.Fleet
+import de.dfki.gs.domain.simulation.Route
 import de.dfki.gs.domain.simulation.Simulation
+import de.dfki.gs.domain.simulation.TrackEdge
 import de.dfki.gs.domain.users.Company
 import de.dfki.gs.domain.users.Person
 import de.dfki.gs.domain.utils.Distribution
 import de.dfki.gs.domain.utils.FleetStatus
+import de.dfki.gs.domain.utils.GroupStatus
 import grails.transaction.Transactional
 
 @Transactional
@@ -184,7 +187,7 @@ class ConfigurationService {
             addedGroups.add( FillingStationGroup.get( group.id ) )
 
         }
-
+        log.error("addedGroups---${addedGroups}")
         return addedGroups
     }
 
@@ -402,7 +405,8 @@ class ConfigurationService {
 
             FillingStation station = new FillingStation(
                     fillingStationType: fillingStationType,
-                    name: "${fillingStationType.name} - No.${it}"
+                    name: "${fillingStationType.name} - No.${it}",
+                    groupsConfigured: false
             )
 
             if ( !station.save( flush: true ) ) {
@@ -459,6 +463,50 @@ class ConfigurationService {
 
     }
 
+    def getFleetRoutesOfConfiguration( Long configurationId ) {
+
+        Configuration configuration = Configuration.get( configurationId )
+
+        def fleets = []
+
+        configuration.fleets.each { Fleet fleet ->
+
+            def fleetModel = [:]
+
+            fleet = Fleet.get( fleet.id )
+
+            fleetModel.cars = []
+            fleetModel.name = fleet.name
+
+            fleet.cars.each { Car car ->
+
+                car = Car.get( car.id )
+
+                def carModel = [:]
+                carModel.name = car.name
+                carModel.route = []
+
+                Route route = Route.get( car.route.id )
+
+                route.edges.each { TrackEdge trackEdge ->
+
+                    trackEdge = TrackEdge.get( trackEdge.id )
+
+                    carModel.route << trackEdge
+
+                }
+
+                fleetModel.cars << carModel
+
+            }
+
+            fleets << fleetModel
+
+        }
+
+        return fleets
+    }
+
     /**
      * this method creates a group stub and persists it to db
      * this group belongs to a given person's company
@@ -479,6 +527,8 @@ class ConfigurationService {
         FillingStationGroup groupStub = new FillingStationGroup(
                 company: company,
                 name: generatedFleetName,
+                groupStatus: GroupStatus.NOT_CONFIGURED,
+                groupsConfigured: false,
                 stub: true
         )
 
@@ -684,6 +734,21 @@ class ConfigurationService {
         return types
     }
 
+    def getFillingStationsFromGroupTypeOrdered (Long groupId) {
+
+        def stations = []
+        FillingStationGroup fillingStationGroup = FillingStationGroup.get(groupId)
+
+
+        fillingStationGroup.fillingStations.each { FillingStation fillingStation ->
+            stations << FillingStation.get( fillingStation.id )
+        }
+
+        def types = stations.groupBy { FillingStation fillingStation -> fillingStation.fillingStationType.power }
+
+        return types
+    }
+
     def getCarsFromFleet( Long fleetId ) {
 
         def cars = []
@@ -737,6 +802,14 @@ class ConfigurationService {
         Fleet fleet = Fleet.get( fleetId )
 
         return fleet.name
+    }
+
+    def getNameOfGroup (Long groupId) {
+
+        FillingStationGroup fillingStationGroup = FillingStationGroup.get(groupId)
+        log.error("fillingStationGroup---${fillingStationGroup}")
+        log.error("fillingStationGroup---${fillingStationGroup.name}")
+        return fillingStationGroup.name
     }
 
 }

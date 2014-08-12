@@ -115,15 +115,36 @@
                                         </g:form>
                                     </div>
 
-
                                 <div id="tab-2" class="tab-content">
-                                    <p>
-                                        <input type="file">
-                                    </p>
+                                    <div class="contentLeft1">
+                                        <div class="rowUp">
+                                            <div class="leftbig">Distribution settings:</div>
+                                        </div>
+                                        <div class="rowMiddle">
+                                            <div class="leftDistributionFile">
+                                                <input type="file">
+                                            </div>
+                                            <div class="rightDistribution">
 
+                                            </div>
+                                            <div class="clear"></div>
+                                        </div>
+
+                                        <div class="rowDown">
+                                            <div class="leftLongBold"></div>
+                                            <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+                                            <g:hiddenField name="fleetId" value="${fleetId}"/>
+                                            <div class="right2-bottomed">
+                                                <g:submitButton name="setDistribution" value="Save Distribution for Fleet"/>
+                                            </div>
+
+                                            <div class="clear"></div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div id="tab-3" class="tab-content">
-                                    <p>TAB-3</p>
+                                    <div id="map" class="olMap" style="z-index:1">
+                                    <div id="gmap_div"></div>
                                 </div>
 
                             </div>
@@ -131,7 +152,7 @@
                     </div>
 
                 </div>
-        </fieldset>
+        </fieldset><a class="close" title="Close" href=""></a>
     </div>
 </div>
 

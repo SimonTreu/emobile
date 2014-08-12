@@ -1,6 +1,7 @@
 package de.dfki.gs.domain.simulation
 
 import de.dfki.gs.domain.users.Company
+import de.dfki.gs.domain.utils.GroupStatus
 
 class FillingStationGroup {
 
@@ -10,8 +11,9 @@ class FillingStationGroup {
     String name
 
     Company company
-
+    GroupStatus groupStatus
     Boolean stub
+    Boolean groupsConfigured
 
     static hasMany = [
             fillingStations : FillingStation
@@ -23,6 +25,7 @@ class FillingStationGroup {
     static mapping = {
 
         stub type: 'yes_no'
+        groupsConfigured type: 'yes_no'
 
     }
 }

@@ -13,6 +13,7 @@ import de.dfki.gs.domain.simulation.SimulationRoute
 import de.dfki.gs.domain.simulation.TrackEdge
 import de.dfki.gs.domain.utils.Distribution
 import de.dfki.gs.domain.utils.FleetStatus
+import de.dfki.gs.domain.utils.GroupStatus
 import de.dfki.gs.domain.utils.TrackEdgeType
 import de.dfki.gs.threadutils.NotifyingBlockingThreadPoolExecutor
 import de.dfki.gs.utils.Calculater
@@ -456,6 +457,7 @@ class RouteService {
             simulation.addToGasolineStations( gas )
 
         }
+
 
         if ( !simulation.save( flush: true ) ) {
             log.error( "failed to save simulation: ${simulation.errors}" )

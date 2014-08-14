@@ -17,6 +17,7 @@ import de.dfki.gs.controller.ms2.configuration.commands.EditCarTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditConfigurationStubCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditFillingStationCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.ShowFleetRoutesCommandObject
+import de.dfki.gs.controller.ms2.configuration.commands.ShowGroupStationsCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.UpdateCarTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.UpdateFillingStationTypeCommandObject
 import de.dfki.gs.domain.simulation.CarType
@@ -54,35 +55,6 @@ class ConfigurationController {
      *
      */
 
-    /**
-     * show the FillingStationTypes available with edit button for each
-     * show the add button
-     *
-     * @return
-     */
-    def showFillingStationTypes() {
-
-        Person person = (Person) springSecurityService.currentUser
-
-        if ( !person ) {
-
-            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
-            return
-        }
-
-        // plug the model..
-        def m = [ : ]
-
-        m.fillingStationTypes = [ ]
-        List<FillingStationType> fillingStationTypes = configurationService.getFillingStationTypesForCompany( person )
-        fillingStationTypes.each { FillingStationType fillingStationType ->
-
-            m.fillingStationTypes << fillingStationType
-        }
-        m.lightboxlink = g.createLink( controller: 'configuration', action: 'createFillingStationTypeView' )
-
-        render view: "showFillingStationTypes", model: m
-    }
 
     def editFillingStationType() {
 
@@ -153,6 +125,35 @@ class ConfigurationController {
 
     }
 
+    /**
+     * show the FillingStationTypes available with edit button for each
+     * show the add button
+     *
+     * @return
+     */
+    def showFillingStationTypes() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        // plug the model..
+        def m = [ : ]
+
+        m.fillingStationTypes = [ ]
+        List<FillingStationType> fillingStationTypes = configurationService.getElectricStationTypesForCompany( person )
+        fillingStationTypes.each { FillingStationType fillingStationType ->
+
+            m.fillingStationTypes << fillingStationType
+        }
+        m.lightboxlink = g.createLink( controller: 'configuration', action: 'createFillingStationTypeView' )
+
+        render view: "showFillingStationTypes", model: m
+    }
 
 
     /**
@@ -504,7 +505,7 @@ class ConfigurationController {
             m.configurationStubId = cmd.configurationStubId
 
             m.groupName = configurationService.getNameOfGroup( cmd.groupId )
-
+            m.groupNumber = configurationService.getNumberOfGroup(cmd.groupId)
             // put all cars from fleet
             // m.cars = configurationService.getCarsFromFleet( cmd.fleetId )
 
@@ -636,6 +637,43 @@ class ConfigurationController {
 
     }
 
+    def createGroupView() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        log.error( "params: ${params}" )
+
+        CreateGroupForConfigurationViewCommandObject cmd = new CreateGroupForConfigurationViewCommandObject()
+        bindData( cmd, params )
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to find configurationStub for id. errors: ${cmd.errors}" )
+
+        } else {
+
+            def m = [ : ]
+
+            Long groupStubId = configurationService.createGroupStub( person, cmd.configurationStubId )?.id
+            m.groupStubId = groupStubId
+
+            m.configurationStubId = cmd.configurationStubId
+            m.availableFillingStationTypes = configurationService.getFillingStationTypesForCompany( person )
+
+            m.generatedName = FillingStationGroup.get( groupStubId ).name
+
+            render template: '/templates/configuration/group/createGroup', model: m
+
+        }
+
+    }
+
     /**
      *
      *
@@ -691,11 +729,10 @@ class ConfigurationController {
             def m = [:]
             m.fleets = configurationService.getFleetRoutesOfConfiguration( cmd.configurationStubId )
             render template: '/templates/configuration/routes/showRoutesOnMap', model: m
-            //render view: 'index', model: m
         }
     }
 
-    def createGroupView() {
+    def showGroupStationsOnMap () {
 
         Person person = (Person) springSecurityService.currentUser
 
@@ -705,32 +742,19 @@ class ConfigurationController {
             return
         }
 
-        log.error( "params: ${params}" )
-
-        CreateGroupForConfigurationViewCommandObject cmd = new CreateGroupForConfigurationViewCommandObject()
+        ShowGroupStationsCommandObject cmd = new ShowGroupStationsCommandObject()
         bindData( cmd, params )
 
+
         if ( !cmd.validate() && cmd.hasErrors() ) {
-
-            log.error( "failed to find configurationStub for id. errors: ${cmd.errors}" )
-
+            log.error( "failed to get simulation for provided simulationId: ${cmd.simulationId} -- ${cmd.errors}" )
         } else {
-
-            def m = [ : ]
-
-            Long groupStubId = configurationService.createGroupStub( person, cmd.configurationStubId )?.id
-            m.groupStubId = groupStubId
-
-            m.configurationStubId = cmd.configurationStubId
-            m.availableFillingStationTypes = configurationService.getFillingStationTypesForCompany( person )
-
-            m.generatedName = FillingStationGroup.get( groupStubId ).name
-
-            render template: '/templates/configuration/group/createGroup', model: m
-
+            def m = [:]
+            m.fillingStationGroups = configurationService.getGroupStationsOfConfiguration( cmd.configurationStubId )
+            render template: '/templates/configuration/stations/showStationsOnMap', model: m
         }
-
     }
+
 
 
     def updateFleetOfConfiguration() {
@@ -813,7 +837,16 @@ class ConfigurationController {
                 count = cmd.stationCount
             }
 
-            configurationService.addStationsToGroup( cmd.groupStubId, count, cmd.stationTypeId, cmd.nameForGroup )
+            Long stationTypeId = null
+            if ( cmd.stationTypeSelect != null && cmd.stationTypeSelect.size() > 0 ) {
+                stationTypeId = cmd.stationTypeSelect.get( cmd.stationTypeSelect.size() - 1 )
+            } else if ( cmd.stationTypeId != null ) {
+                stationTypeId = cmd.stationTypeId
+            }
+
+            if ( stationTypeId != null ) {
+                configurationService.addStationsToGroup( cmd.groupStubId, count, stationTypeId, cmd.nameForGroup )
+            }
 
         }
 

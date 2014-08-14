@@ -18,7 +18,7 @@
             <div class="layout">
                 <div class="layoutLeftLittle">
                     <div class="contentLeft4">
-                        <g:form controller="configuration" action="createDistributionForFleet">
+                        <g:form controller="configuration" action="createDistributionForGroup">
                             <div class="contentLeftRoutes">
                                 <div class="rowUp">
                                     <div class="leftbig"><b><g:message code="templates.configuration.group._distribution.properties"/></b></div>
@@ -37,19 +37,19 @@
                                         <b>${groupName}</b>
                                     </div>
                                 </div>
-                                <g:each in="${power}" var="carType">
+
+                                <g:each in="${groupTypes}" var="groupType">
                                     <div class="rowMiddleWithoutBorder2">
-                                        <div class="left0PX">
-                                            ${power}
-                                        </div>
-                                        <div class="left0PX">
-                                            of
-                                        </div>
-                                        <div class="left0PX">
-                                            ${power}
-                                        </div>
+                                        <table>
+                                            <tr>
+                                                <td width="60px" align="center" valign="middle">${groupType.value.size()}</td>
+                                                <td width="60px" valign="middle">of</td>
+                                                <td width="60px" valign="middle">${groupType.key}</td>
+                                            </tr>
+                                         </table>
                                     </div>
                                 </g:each>
+
                             </div>
                         </g:form>
                     </div>
@@ -65,16 +65,17 @@
 
                             <div id="tab-1" class="tab-content">
                                 <br>
-                                <div class="contentLeft1">
+                                <div class="contentLeft3">
                                     <div class="rowUp">
                                         <div class="leftbig">Electric stations settings:</div>
                                     </div>
                                     <div class="rowMiddle">
-                                        <div class="leftDistributionFile">
-                                            <g:radioGroup name="myGroup" labels="['Random Stations','Public Stations']" values="[1,2]" value="1">
-                                                <p><g:message code="${it.radio}   ${it.label}" /></p>
-                                            </g:radioGroup>
-
+                                        <div class="leftDistributionFile2">
+                                            <br>
+                                            <g:radio name="myGroup" value="1" label="Random Stations"/><span> Random Stations - ${groupNumber.value.size()} stations</span>
+                                            <br><br>
+                                            <g:radio name="myGroup" value="2" label="Random Stations"/><span> Public Stations - 142 stations</span>
+                                            <br><br>
                                         </div>
                                         <div class="rightDistribution">
 

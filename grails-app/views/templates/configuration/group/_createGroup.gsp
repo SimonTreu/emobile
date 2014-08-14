@@ -35,7 +35,7 @@
                                           url="[action: 'updateGroupOfConfiguration']"
                                           update="updateFillingStation"
                                           name="submit"
-                                          value="Add to group" />
+                                          value="Add to Group" />
                     </div>
                     <div class="clear"></div>
                 </div>
@@ -50,6 +50,7 @@
                         <input type="button" value="Cancel" onclick="window.location.href=window.location.href"/>
                     </div>
                     <div class="right90PX">
+                        <g:hiddenField name="groupStubId" value="${groupStubId}"/>
                         <g:submitButton name="createGroup" value="Create Group"/>
                     </div>
                     <div class="clear"></div>

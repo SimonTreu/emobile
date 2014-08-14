@@ -507,6 +507,42 @@ class ConfigurationService {
         return fleets
     }
 
+    def getGroupStationsOfConfiguration( Long configurationId ) {
+
+        Configuration configuration = Configuration.get( configurationId )
+
+        def fillingStationGroups = []
+
+        configuration.fillingStationGroups.each { FillingStationGroup fillingStationGroup ->
+
+            def fillingStationModel = [:]
+
+            fillingStationGroup = FillingStationGroup.get( fillingStationGroup.id )
+
+            fillingStationModel.stations = []
+            fillingStationModel.name = fillingStationGroup.name
+
+            fillingStationGroup.fillingStations.each { FillingStation fillingStation ->
+
+                fillingStation = FillingStation.get( fillingStation.id )
+
+                def stationModel = [:]
+                stationModel.name = fillingStation.name
+                stationModel.lat = fillingStation.lat
+                stationModel.lon = fillingStation.lon
+                //stationModel.stations = []
+
+                fillingStationModel.stations << stationModel
+
+            }
+
+            fillingStationGroups << fillingStationModel
+
+        }
+
+        return fillingStationGroups
+    }
+
     /**
      * this method creates a group stub and persists it to db
      * this group belongs to a given person's company
@@ -560,6 +596,48 @@ class ConfigurationService {
         }
 
         return carTypes
+    }
+
+    /**
+     * collect FillingStationtype of the company and adds the default ones of dfki
+     *
+     * @param currentUser to fetch available carType of the company
+     * @return list of available carTypes sbd. of company's persons created
+     */
+    def getFillingStationTypesForCompany( Person currentUser ) {
+
+        Company company = Company.get( currentUser.company.id )
+        List<FillingStationType> fillingStationTypes = FillingStationType.findAllByCompany( company )
+
+        if ( !company.name.equals( "dfki" ) ) {
+            Company dfkiCompany = Company.findByName( "dfki" )
+
+            fillingStationTypes.addAll( FillingStationType.findAllByCompany( dfkiCompany ) )
+
+        }
+
+        return fillingStationTypes
+    }
+
+    /**
+     * collect electricStationType of the company and adds the default ones of dfki
+     *
+     * @param currentUser to fetch available electricStationType of the company
+     * @return list of available electricStationType sbd. of company's persons created
+     */
+    def getElectricStationTypesForCompany( Person currentUser ) {
+
+        Company company = Company.get( currentUser.company.id )
+        List<FillingStationType> electricStationTypes = FillingStationType.findAllByCompany( company )
+
+        if ( !company.name.equals( "dfki" ) ) {
+            Company dfkiCompany = Company.findByName( "dfki" )
+
+            electricStationTypes.addAll( FillingStationType.findAllByCompany( dfkiCompany ) )
+
+        }
+
+        return electricStationTypes
     }
 
 
@@ -643,26 +721,7 @@ class ConfigurationService {
         return fillingStationType
     }
 
-    /**
-     * collect FillingStationtype of the company and adds the default ones of dfki
-     *
-     * @param currentUser to fetch available carType of the company
-     * @return list of available carTypes sbd. of company's persons created
-     */
-    def getFillingStationTypesForCompany( Person currentUser ) {
 
-        Company company = Company.get( currentUser.company.id )
-        List<FillingStationType> fillingStationTypes = FillingStationType.findAllByCompany( company )
-
-        if ( !company.name.equals( "dfki" ) ) {
-            Company dfkiCompany = Company.findByName( "dfki" )
-
-            fillingStationTypes.addAll( FillingStationType.findAllByCompany( dfkiCompany ) )
-
-        }
-
-        return fillingStationTypes
-    }
 
 
     def removeConfigurationStub( Long configurationStubId ) {
@@ -737,14 +796,13 @@ class ConfigurationService {
     def getFillingStationsFromGroupTypeOrdered (Long groupId) {
 
         def stations = []
-        FillingStationGroup fillingStationGroup = FillingStationGroup.get(groupId)
-
+        FillingStationGroup fillingStationGroup = FillingStationGroup.get( groupId )
 
         fillingStationGroup.fillingStations.each { FillingStation fillingStation ->
             stations << FillingStation.get( fillingStation.id )
         }
 
-        def types = stations.groupBy { FillingStation fillingStation -> fillingStation.fillingStationType.power }
+        def types = stations.groupBy { FillingStation fillingStation -> fillingStation.fillingStationType.name }
 
         return types
     }
@@ -804,11 +862,14 @@ class ConfigurationService {
         return fleet.name
     }
 
+    def getNumberOfGroup (Long groupId) {
+        FillingStationGroup fillingStationGroup = FillingStationGroup.get(groupId)
+        return fillingStationGroup.fillingStations
+    }
+
     def getNameOfGroup (Long groupId) {
 
         FillingStationGroup fillingStationGroup = FillingStationGroup.get(groupId)
-        log.error("fillingStationGroup---${fillingStationGroup}")
-        log.error("fillingStationGroup---${fillingStationGroup.name}")
         return fillingStationGroup.name
     }
 

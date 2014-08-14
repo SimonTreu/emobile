@@ -265,10 +265,10 @@
 
                                             <div class="right100PX">
                                                 <g:if test="${addedGroup.groupStatus == GroupStatus.CONFIGURED}">
-                                                    <g:form action="showFleetRoutesOnMap">
+                                                    <g:form action="showGroupStationsOnMap">
                                                         <g:hiddenField name="configurationStubId" value="${configurationStubId}" />
                                                         <g:submitToRemote class="addButton"
-                                                                          url="[action: 'showFleetRoutesOnMap']"
+                                                                          url="[action: 'showGroupStationsOnMap']"
                                                                           update="updateMe"
                                                                           name="showGroups"
                                                                           value="Show Stations" />

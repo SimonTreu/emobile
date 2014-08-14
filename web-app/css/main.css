@@ -1053,11 +1053,14 @@ body.lightBoxBody{
     width:450px;
     border-radius: 6px;
     font-size: 12px;
-    /*-webkit-box-shadow: 3px 3px 15px #909090;*/	/* webkit browser*/
-    /*-moz-box-shadow: 3px 3px 15px #909090;	*//* firefox */
-    /*box-shadow: 3px 3px 15px #909090;*/
+}
 
-    /*background-color:#f0f0f0;*/
+.contentLeft3{
+    padding:0px;
+    margin: 10px;
+    width:250px;
+    border-radius: 6px;
+    font-size: 12px;
 }
 
 .contentLeftRoutes{
@@ -1130,6 +1133,12 @@ body.lightBoxBody{
 
 .leftDistributionFile{
     width:138px;
+    float:left;
+    padding:4px 0px 0px 7px;
+}
+
+.leftDistributionFile2{
+    width:198px;
     float:left;
     padding:4px 0px 0px 7px;
 }
@@ -2582,3 +2591,6 @@ a.olControlZoomOut {
     border-radius: 0 0 4px 4px;
 }
 
+.olControlNavigationItemActive {
+    display: none;
+}

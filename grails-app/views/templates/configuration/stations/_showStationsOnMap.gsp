@@ -86,7 +86,7 @@
                     routesLayer: routesLayer,
                     calculateRouteLink: '${g.createLink( controller: 'mapView', action: 'calculateRoute' )}',
                     showGasolineInfoLink: '${g.createLink( controller: 'mapView', action: 'showGasolineInfo', params: [ gasolineId: gasolineId ] )}',
-                    showTrackInfoLink: '${g.createLink( controller: 'mapView', action: 'showTrackInfo', params: [ simulationRouteId: simulationRouteId ] )}'
+                    showTrackInfoLink: '${g.createLink( controller: 'mapView', action: 'showTrackInfo' )}'
                 };
                 serialize( data );
             }
@@ -103,103 +103,31 @@
         click: true
     };
 
-    // DRAW Routes to 'routes'
-    // and all markers to markers!
-    var fleetDat = new Object();
-    <g:each var="fleet" in="${fleets}" >
-        <g:each var="car" in="${fleet.cars}" >
-            var segments = new Array();
-            <g:each var="seg" in="${car.route}">
-                var segm = new Object();
-                segm.fromX = ${seg.fromLon};
-                segm.fromY = ${seg.fromLat};
-                segm.toX = ${seg.toLon};
-                segm.toY = ${seg.toLat};
-                segments.push( segm );
-            </g:each>
-            fleetDat.route = segments;
-            fleetDat.routesLayer = routesLayer;
-            fleetDat.markers = markers;
-            drawRoute( fleetDat );
+
+
+    //Draw Electric Stations
+    var gasDat = new Object();
+    <g:each var="fillingStationGroup" in="${fillingStationGroups}">
+
+
+
+        <g:each var="fillingStation" in="${fillingStationGroup.stations}">
+            var stations = new Array();
+            //gasDat.gasolineId = ${fillingStation.gasolineId};
+            gasDat.fromX = ${fillingStation.lat};
+            gasDat.fromY = ${fillingStation.lon};
+            //gasDat.gasolineId = ${fillingStation.gasolineId};
+            //gasDat.gasolineType = "${fillingStation.gasolineType}";
+            //electricStation.showGasolineInfoLink = '${g.createLink( controller: 'mapView', action: 'showGasolineInfo', params: [ gasolineId: fillingStation.gasolineId ] )}';
+            //stations.push( gasDat );
+            drawGasolineStation( gasDat );
         </g:each>
     </g:each>
-
-
-    <%--var gasDat = new Object();
-    <g:each var="gas" in="${gasolineStations}" >
-
-    gasDat.fromX = ${gas.fromY};
-    gasDat.fromY = ${gas.fromX};
-    gasDat.gasolineId = ${gas.gasolineId};
-    gasDat.gasolineType = "${gas.gasolineType}";
-    gasDat.showGasolineInfoLink = '${g.createLink( controller: 'mapView', action: 'showGasolineInfo', params: [ gasolineId: gas.gasolineId ] )}';
-    drawGasolineStation( gasDat );
-    </g:each>--%>
 
 
     lonlat.transform( p1, pMerc );
     map.setCenter( lonlat, zoom );
 
-
-
-    /*function deleteTrackInfos( trackId ) {
-
-        // doesn't work
-        // var kk = routes.features.getFeaturesByAttribute( "trackId", trackId );
-
-        var routeFeatSize = routesLayer.features.length;
-        var routeToDelete = new Array();
-
-        for ( var k = 0; k < routeFeatSize; k++ ) {
-            if ( routesLayer.features[ k ].simulationRouteId == id ) {
-                routeToDelete.push( routesLayer.features[ k ] );
-            }
-        }
-
-        routesLayer.removeFeatures( routeToDelete );
-
-
-        var markersFeatSize = markers.markers.length;
-        var markersToDelete = new Array();
-
-        for ( var k = 0; k < markersFeatSize; k++ ) {
-            if ( markers.markers[ k ].simulationRouteId == id ) {
-                markersToDelete.push( markers.markers[ k ] );
-            }
-        }
-
-        for ( var s = 0; s < markersToDelete.length; s++ ) {
-            markers.removeMarker( markersToDelete[ s ] );
-        }
-
-        document.getElementsByTagName("body")[0].removeChild(document.
-                getElementById("trackInfo"));
-        document.getElementsByTagName("body")[0].removeChild(document.
-                getElementById("lightBox"));
-    }
-
-
-    function deleteGasolineStation( gasolineId ) {
-
-        var markersFeatSize = markers.markers.length;
-        var markersToDelete = new Array();
-
-        for ( var k = 0; k < markersFeatSize; k++ ) {
-            if ( markers.markers[ k ].gasolineId == gasolineId ) {
-                markersToDelete.push( markers.markers[ k ] );
-            }
-        }
-
-        for ( var s = 0; s < markersToDelete.length; s++ ) {
-            markers.removeMarker( markersToDelete[ s ] );
-        }
-
-        document.getElementsByTagName("body")[0].removeChild(document.
-                getElementById("trackInfo"));
-        document.getElementsByTagName("body")[0].removeChild(document.
-                getElementById("lightBoxGasoline"));
-
-    }*/
 
 
 </script>

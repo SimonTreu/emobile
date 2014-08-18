@@ -141,6 +141,43 @@
     map.setCenter( lonlat, zoom );
 
 
+    function showTrackInfos( mode, trackId ) {
+
+        if( mode == 'display' ) {
+            if( document.getElementById("trackInfo") === null ) {
+                div = document.createElement("div");
+                div.setAttribute('id', 'trackInfo');
+                div.setAttribute('className', 'overlayBG');
+                div.setAttribute('class', 'overlayBG');
+                document.getElementsByTagName("body")[0].appendChild(div);
+            }
+            if( document.getElementById("lightBox") === null ) {
+                div = document.createElement("div");
+                div.setAttribute('id', 'lightBox');
+
+                var link = "${g.createLink( controller: 'mapView', action: 'showTrackInfo', params: [ trackId: trackId ] )}";
+
+                jQuery.ajax({
+                    url: link + trackId,
+                    type: "POST",
+                    success: function( data ) {
+                        div.innerHTML = data;
+                        document.getElementsByTagName("body")[0].appendChild(div);
+                    }
+                });
+
+            }
+
+
+        } else {
+            document.getElementsByTagName("body")[0].removeChild(document.
+                    getElementById("trackInfo"));
+            document.getElementsByTagName("body")[0].removeChild(document.
+                    getElementById("lightBox"));
+
+        }
+    }
+
 
     /*function deleteTrackInfos( trackId ) {
 

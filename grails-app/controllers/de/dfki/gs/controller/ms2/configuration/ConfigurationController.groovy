@@ -1,5 +1,6 @@
 package de.dfki.gs.controller.ms2.configuration
 
+import de.dfki.gs.controller.commands.ShowInfoStationsCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.AddCarsToFleedCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.AddFleetToConfigurationCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.AddGroupToConfigurationCommandObject
@@ -18,12 +19,16 @@ import de.dfki.gs.controller.ms2.configuration.commands.EditConfigurationStubCom
 import de.dfki.gs.controller.ms2.configuration.commands.EditFillingStationCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.ShowFleetRoutesCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.ShowGroupStationsCommandObject
+
 import de.dfki.gs.controller.ms2.configuration.commands.UpdateCarTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.UpdateFillingStationTypeCommandObject
+import de.dfki.gs.domain.GasolineStation
+import de.dfki.gs.domain.GasolineStationType
 import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.simulation.Configuration
 import de.dfki.gs.domain.simulation.FillingStationGroup
 import de.dfki.gs.domain.simulation.FillingStationType
+import de.dfki.gs.domain.simulation.FillingStation
 import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.domain.users.Person
 import de.dfki.gs.domain.utils.Distribution
@@ -730,6 +735,32 @@ class ConfigurationController {
             m.fleets = configurationService.getFleetRoutesOfConfiguration( cmd.configurationStubId )
             render template: '/templates/configuration/routes/showRoutesOnMap', model: m
         }
+    }
+
+    def showGasolineInfo () {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        ShowInfoStationsCommandObject cmd = new ShowInfoStationsCommandObject()
+        bindData( cmd, params )
+
+        if ( !cmd.validate() ) {
+            log.error( "failed to get gasoline station by id: ${cmd.configurationStubId} -- errors: ${cmd.errors}" )
+        }
+
+
+        def m = [ : ]
+
+        FillingStationType fillingStationType = FillingStationType.get(cmd.configurationStubId)
+        m.configurationStubId = cmd.configurationStubId
+        m.gasolineTypes = GasolineStationType.values()*.toString()
+
+        render( template: '/templates/configuration/stations/showGasolineInfo', model: m )
     }
 
     def showGroupStationsOnMap () {

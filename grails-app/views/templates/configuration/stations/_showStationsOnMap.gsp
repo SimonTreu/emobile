@@ -85,7 +85,7 @@
                     markers: markers,
                     routesLayer: routesLayer,
                     calculateRouteLink: '${g.createLink( controller: 'mapView', action: 'calculateRoute' )}',
-                    showGasolineInfoLink: '${g.createLink( controller: 'mapView', action: 'showGasolineInfo', params: [ gasolineId: gasolineId ] )}',
+                    showGasolineInfoLink: '${g.createLink( controller: 'configuration', action: 'showGasolineInfo', params: [ gasolineId: gasolineId ] )}',
                     showTrackInfoLink: '${g.createLink( controller: 'mapView', action: 'showTrackInfo' )}'
                 };
                 serialize( data );
@@ -108,18 +108,14 @@
     //Draw Electric Stations
     var gasDat = new Object();
     <g:each var="fillingStationGroup" in="${fillingStationGroups}">
-
-
-
         <g:each var="fillingStation" in="${fillingStationGroup.stations}">
             var stations = new Array();
             //gasDat.gasolineId = ${fillingStation.gasolineId};
             gasDat.fromX = ${fillingStation.lat};
             gasDat.fromY = ${fillingStation.lon};
             //gasDat.gasolineId = ${fillingStation.gasolineId};
-            //gasDat.gasolineType = "${fillingStation.gasolineType}";
-            //electricStation.showGasolineInfoLink = '${g.createLink( controller: 'mapView', action: 'showGasolineInfo', params: [ gasolineId: fillingStation.gasolineId ] )}';
-            //stations.push( gasDat );
+            gasDat.gasolineType = "${fillingStation.gasolineType}";
+            gasDat.showGasolineInfoLink = '${g.createLink( controller: 'configuration', action: 'showGasolineInfo')}';
             drawGasolineStation( gasDat );
         </g:each>
     </g:each>
@@ -127,7 +123,6 @@
 
     lonlat.transform( p1, pMerc );
     map.setCenter( lonlat, zoom );
-
 
 
 </script>

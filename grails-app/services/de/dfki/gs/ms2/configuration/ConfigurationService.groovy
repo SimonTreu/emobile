@@ -528,6 +528,7 @@ class ConfigurationService {
 
                 def stationModel = [:]
                 stationModel.name = fillingStation.name
+                stationModel.power = fillingStation.fillingStationType.power
                 stationModel.lat = fillingStation.lat
                 stationModel.lon = fillingStation.lon
                 //stationModel.stations = []
@@ -872,5 +873,13 @@ class ConfigurationService {
         FillingStationGroup fillingStationGroup = FillingStationGroup.get(groupId)
         return fillingStationGroup.name
     }
+
+    def getInfoOfFillingStation (Long groupId) {
+
+        FillingStationType fillingStationType = FillingStationType.get(groupId)
+        return fillingStationType.name
+
+    }
+
 
 }

@@ -696,12 +696,11 @@ body {
     margin-top:-80px;
     */
     z-index:2000001;
-    width:400px;
-    height:270px;
+    width:200px;
+    height:150px;
     background-color:#e8e8e8;
     text-align:center;
-
-    box-shadow: 0px 13px 74px 1px #DDDDDD;
+    font-size: 12px;
 
     border: 0.01px #111111 solid;
     border-radius: 10px 10px 10px 10px;
@@ -754,14 +753,14 @@ body {
     border-radius: 10px 10px 0px 0px;
 
     height: 35px;
-    width: 400px;
+    width: 200px;
     background-color: #BBBBBB;
 }
 .lightboxselection{
 
     float: left;
     height: 200px;
-    width: 400px;
+    width: 200px;
 }
 .lightboxtasks{
 
@@ -771,7 +770,7 @@ body {
 
     float: left;
     height: 45px;
-    width: 400px;
+    width: 200px;
     background-color: #BBBBBB;
 }
 
@@ -792,7 +791,7 @@ body {
 
 .lightbox-title{
     text-align: left;
-    width: 80%;
+
     padding: 12px 6px 0 13px;;
 }
 .lightbox-close{
@@ -2592,5 +2591,5 @@ a.olControlZoomOut {
 }
 
 .olControlNavigationItemActive {
-    display: none;
+    //display: none;
 }

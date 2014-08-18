@@ -7,9 +7,6 @@
     <div class="right235PX">
         <g:select name="carTypeSelect" from="${availableCarTypes}" optionKey="id" optionValue="name" />
         &nbsp;&nbsp;
-        <%-- <g:hiddenField name="configurationStubId" value="${configurationStubId}"/> --%>
-        <%-- <g:hiddenField name="fleetStubId" value="${fleetStubId}"/> --%>
-        <%-- <g:hiddenField name="availableCarTypes" value="${availableCarTypes}"/> --%>
         <g:submitToRemote class="addButton"
                   url="[action: 'updateFleetOfConfiguration']"
                   update="updateCar${uuid}"

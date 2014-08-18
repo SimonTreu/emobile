@@ -28,10 +28,10 @@
                                     </div>
                                     <div class="rowMiddleWithoutBorder">
                                         <div class="left0PX">
-                                            <b>Car number</b>
+                                            <b><g:message code="templates.configuration.fleet._distribution.carnumber"/></b>
                                         </div>
                                         <div class="left0PX">
-                                            <b>Fleet name</b>
+                                            <b><g:message code="templates.configuration.fleet._distribution.fleetname"/></b>
                                         </div>
                                         <div class="left0PX">
                                             <b>${fleetName}</b>
@@ -65,40 +65,73 @@
 
                                     <div id="tab-1" class="tab-content">
                                         <g:form controller="configuration" action="setDistributionForFleet">
-                                        <div class="rowSpace">
+                                            <div class="rowSpace">
+                                                <div class="clear"></div>
+                                            </div>
+                                            <div class="contentLeft1">
+                                                <div class="rowUp">
+                                                    <div class="leftbig">Distribution settings:</div>
+                                                </div>
+                                                <div class="rowMiddle">
+                                                    <div class="leftDistribution">
+                                                        <g:message code="templates.configuration.fleet._distribution.selectdistribution"/>
+                                                    </div>
+                                                    <div class="rightDistribution">
+                                                        <g:select name="selectedDist" from="${distributions}" optionKey="key" optionValue="${it}" />
+                                                    </div>
+                                                    <div class="clear"></div>
+                                                </div>
+
+                                                <div class="rowMiddle">
+                                                    <div class="leftDistribution60PX">
+                                                        <g:message code="templates.configuration.fleet._distribution.from"/>
+                                                    </div>
+                                                    <div class="leftDistributionButton">
+                                                        <g:select name="fromKm" from="${(10..550).step(10)}" />
+                                                    </div>
+                                                    <div class="right50PX">
+                                                        <g:message code="templates.configuration.fleet._distribution.to"/>
+                                                    </div>
+                                                    <div class="right60">
+                                                        <g:select name="toKm" from="${(10..550).step( 10 )}" />
+                                                    </div>
+
+                                                    <div class="clear"></div>
+                                                </div>
+
+                                                <div class="clear"></div>
+
+                                                <div class="rowDown">
+                                                    <div class="leftLongBold"></div>
+                                                    <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+                                                    <g:hiddenField name="fleetId" value="${fleetId}"/>
+                                                    <div class="right2-bottomed">
+                                                        <g:submitButton name="setDistribution" value="Save Distribution for Fleet"/>
+                                                    </div>
+
+                                                    <div class="clear"></div>
+                                                </div>
+                                            </div>
+                                        </g:form>
+                                    </div>
+
+                                <div id="tab-2" class="tab-content">
+                                    <div class="contentLeft1">
+                                        <div class="rowUp">
+                                            <div class="leftbig">Distribution settings:</div>
+                                        </div>
+                                        <div class="rowMiddle">
+                                            <div class="leftDistributionFile">
+                                                <input type="file">
+                                            </div>
+                                            <div class="rightDistribution">
+
+                                            </div>
                                             <div class="clear"></div>
                                         </div>
 
-                                        <div class="rowMiddleWithoutBorder2">
-                                            <div class="left4">
-                                                <g:message code="templates.configuration.fleet._distribution.selectdistribution"/>
-                                            </div>
-                                            <div class="right2">
-                                                <g:select name="selectedDist" from="${distributions}" optionKey="key" optionValue="${it}" />
-                                            </div>
-                                            <div class="clear"></div>
-                                        </div>
-
-                                        <div class="rowMiddleWithoutBorder2">
-                                            <div class="left75">
-                                                <g:message code="templates.configuration.fleet._distribution.from"/>
-                                            </div>
-                                            <div class="left60">
-                                                <g:select name="fromKm" from="${(10..550).step( 10 )}" />
-                                            </div>
-                                            <div class="right65">
-                                                <g:message code="templates.configuration.fleet._distribution.to"/>
-                                            </div>
-                                            <div class="right60">
-                                                <g:select name="toKm" from="${(10..550).step( 10 )}" />
-                                            </div>
-
-                                            <div class="clear"></div>
-                                        </div>
-
-                                        <div class="clear"></div>
-
-                                        <div class="rowL1Bottom">
+                                        <div class="rowDown">
+                                            <div class="leftLongBold"></div>
                                             <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
                                             <g:hiddenField name="fleetId" value="${fleetId}"/>
                                             <div class="right2-bottomed">
@@ -107,18 +140,11 @@
 
                                             <div class="clear"></div>
                                         </div>
-                                </g:form>
                                     </div>
-
-
-                                <div id="tab-2" class="tab-content">
-                                    <p>
-                                        <input type="file">
-                                    </p>
-
                                 </div>
                                 <div id="tab-3" class="tab-content">
-                                    <p>Duis  </p>
+                                    <div id="map" class="olMap" style="z-index:1">
+                                    <div id="gmap_div"></div>
                                 </div>
 
                             </div>
@@ -126,7 +152,7 @@
                     </div>
 
                 </div>
-        </fieldset>
+        </fieldset><a class="close" title="Close" href=""></a>
     </div>
 </div>
 

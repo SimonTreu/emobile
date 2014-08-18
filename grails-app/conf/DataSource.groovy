@@ -20,7 +20,7 @@ environments {
             //dbCreate = "update" //"create-drop"
             // dbCreate = "create-drop"
             driverClassName = "com.mysql.jdbc.Driver"
-            url = "jdbc:mysql://localhost/emobilesim"
+            url = "jdbc:mysql://localhost/emobilesim1"
             username = "emobilesim"
             password = "emobilesim"
         }
@@ -45,7 +45,7 @@ environments {
             dbCreate = "update" //"create-drop"
             driverClassName = "com.mysql.jdbc.Driver"
             dialect = org.hibernate.dialect.MySQLInnoDBDialect
-            url = "jdbc:mysql://localhost/emobilesim"
+            url = "jdbc:mysql://localhost/emobilesim1"
             username = "root"
             password = "reldb00"
             pooled = true

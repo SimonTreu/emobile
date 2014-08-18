@@ -12,9 +12,13 @@ import grails.validation.Validateable
 class AddFillingStationsToGroupCommandObject {
 
     Long configurationStubId
+
     Integer stationCount
     List<Integer> stationCountList
+
     Long stationTypeId
+    List<Long> stationTypeSelect
+
     Long groupStubId
 
     String nameForGroup
@@ -37,17 +41,11 @@ class AddFillingStationsToGroupCommandObject {
         }
         stationCount nullable: true
         stationCountList nullable: true
-        stationTypeId nullable: false, validator: { val,obj ->
 
-            FillingStationType fillingStationType = FillingStationType.get( val )
+        stationTypeId nullable: true
+        stationTypeSelect nullable: true
 
-            if ( fillingStationType == null ) {
 
-                return 'configuration.stationtype.not.exist'
-
-            }
-
-        }
         groupStubId nullable: false, validator: { val,obj ->
 
             FillingStationGroup group = FillingStationGroup.get( val )

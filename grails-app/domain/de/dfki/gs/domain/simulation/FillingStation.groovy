@@ -1,5 +1,7 @@
 package de.dfki.gs.domain.simulation
 
+
+
 class FillingStation {
 
 
@@ -15,7 +17,7 @@ class FillingStation {
     String houseNumber
 
     FillingStationType fillingStationType
-
+    Boolean groupsConfigured
 
     static hasMany = [
     ]
@@ -23,8 +25,10 @@ class FillingStation {
     static constraints = {
         streetName ( nullable: true, blank: true )
         houseNumber nullable: true
+        groupsConfigured nullable: true
     }
 
     static mapping = {
+        groupsConfigured type: 'yes_no'
     }
 }

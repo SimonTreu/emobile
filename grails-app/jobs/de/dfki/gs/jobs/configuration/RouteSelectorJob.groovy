@@ -7,13 +7,7 @@ class RouteSelectorJob {
 
     def routeService
 
-
-
-
-
     def execute() {
-
-
 
     }
 

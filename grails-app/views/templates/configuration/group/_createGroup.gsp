@@ -11,7 +11,7 @@
                 <div class="rowMiddle">
 
                     <div class="leftModal">
-                        Set Name for Fleet
+                        <g:message code="templates.configuration.group._createGroup.setname"/>
                     </div>
 
                     <div class="rightOnlyButton">
@@ -24,7 +24,7 @@
                     <div class="left180PX">
                         <g:select name="stationCount" from="${1..100}" /> &nbsp;&nbsp;
                         <%--<g:message code="simulation.index.carstype"/>--%>
-                        Filling Station Types:
+                        <g:message code="templates.configuration.group._createGroup.fillingstation"/>
                     </div>
                     <div class="right200PX">
                         <g:select name="stationTypeId" from="${availableFillingStationTypes}" optionKey="id" optionValue="name" />
@@ -35,7 +35,7 @@
                                           url="[action: 'updateGroupOfConfiguration']"
                                           update="updateFillingStation"
                                           name="submit"
-                                          value="Add to group" />
+                                          value="Add to Group" />
                     </div>
                     <div class="clear"></div>
                 </div>
@@ -50,11 +50,12 @@
                         <input type="button" value="Cancel" onclick="window.location.href=window.location.href"/>
                     </div>
                     <div class="right90PX">
+                        <g:hiddenField name="groupStubId" value="${groupStubId}"/>
                         <g:submitButton name="createGroup" value="Create Group"/>
                     </div>
                     <div class="clear"></div>
                 </div>
             </div>
-        </g:form>
+        </g:form><a class="close" title="Close" href=""></a>
     </div>
 </div>

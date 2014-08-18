@@ -7,11 +7,14 @@ import de.dfki.gs.domain.simulation.FillingStation
 import de.dfki.gs.domain.simulation.FillingStationGroup
 import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.simulation.Fleet
+import de.dfki.gs.domain.simulation.Route
 import de.dfki.gs.domain.simulation.Simulation
+import de.dfki.gs.domain.simulation.TrackEdge
 import de.dfki.gs.domain.users.Company
 import de.dfki.gs.domain.users.Person
 import de.dfki.gs.domain.utils.Distribution
 import de.dfki.gs.domain.utils.FleetStatus
+import de.dfki.gs.domain.utils.GroupStatus
 import grails.transaction.Transactional
 
 @Transactional
@@ -184,7 +187,7 @@ class ConfigurationService {
             addedGroups.add( FillingStationGroup.get( group.id ) )
 
         }
-
+        log.error("addedGroups---${addedGroups}")
         return addedGroups
     }
 
@@ -402,7 +405,8 @@ class ConfigurationService {
 
             FillingStation station = new FillingStation(
                     fillingStationType: fillingStationType,
-                    name: "${fillingStationType.name} - No.${it}"
+                    name: "${fillingStationType.name} - No.${it}",
+                    groupsConfigured: false
             )
 
             if ( !station.save( flush: true ) ) {
@@ -459,6 +463,87 @@ class ConfigurationService {
 
     }
 
+    def getFleetRoutesOfConfiguration( Long configurationId ) {
+
+        Configuration configuration = Configuration.get( configurationId )
+
+        def fleets = []
+
+        configuration.fleets.each { Fleet fleet ->
+
+            def fleetModel = [:]
+
+            fleet = Fleet.get( fleet.id )
+
+            fleetModel.cars = []
+            fleetModel.name = fleet.name
+
+            fleet.cars.each { Car car ->
+
+                car = Car.get( car.id )
+
+                def carModel = [:]
+                carModel.name = car.name
+                carModel.route = []
+
+                Route route = Route.get( car.route.id )
+
+                route.edges.each { TrackEdge trackEdge ->
+
+                    trackEdge = TrackEdge.get( trackEdge.id )
+
+                    carModel.route << trackEdge
+
+                }
+
+                fleetModel.cars << carModel
+
+            }
+
+            fleets << fleetModel
+
+        }
+
+        return fleets
+    }
+
+    def getGroupStationsOfConfiguration( Long configurationId ) {
+
+        Configuration configuration = Configuration.get( configurationId )
+
+        def fillingStationGroups = []
+
+        configuration.fillingStationGroups.each { FillingStationGroup fillingStationGroup ->
+
+            def fillingStationModel = [:]
+
+            fillingStationGroup = FillingStationGroup.get( fillingStationGroup.id )
+
+            fillingStationModel.stations = []
+            fillingStationModel.name = fillingStationGroup.name
+
+            fillingStationGroup.fillingStations.each { FillingStation fillingStation ->
+
+                fillingStation = FillingStation.get( fillingStation.id )
+
+                def stationModel = [:]
+                stationModel.name = fillingStation.name
+                stationModel.power = fillingStation.fillingStationType.power
+                stationModel.lat = fillingStation.lat
+                stationModel.lon = fillingStation.lon
+                //stationModel.stations = []
+
+                fillingStationModel.stations << stationModel
+
+            }
+
+            fillingStationGroups << fillingStationModel
+
+        }
+
+        return fillingStationGroups
+    }
+
     /**
      * this method creates a group stub and persists it to db
      * this group belongs to a given person's company
@@ -479,6 +564,8 @@ class ConfigurationService {
         FillingStationGroup groupStub = new FillingStationGroup(
                 company: company,
                 name: generatedFleetName,
+                groupStatus: GroupStatus.NOT_CONFIGURED,
+                groupsConfigured: false,
                 stub: true
         )
 
@@ -510,6 +597,48 @@ class ConfigurationService {
         }
 
         return carTypes
+    }
+
+    /**
+     * collect FillingStationtype of the company and adds the default ones of dfki
+     *
+     * @param currentUser to fetch available carType of the company
+     * @return list of available carTypes sbd. of company's persons created
+     */
+    def getFillingStationTypesForCompany( Person currentUser ) {
+
+        Company company = Company.get( currentUser.company.id )
+        List<FillingStationType> fillingStationTypes = FillingStationType.findAllByCompany( company )
+
+        if ( !company.name.equals( "dfki" ) ) {
+            Company dfkiCompany = Company.findByName( "dfki" )
+
+            fillingStationTypes.addAll( FillingStationType.findAllByCompany( dfkiCompany ) )
+
+        }
+
+        return fillingStationTypes
+    }
+
+    /**
+     * collect electricStationType of the company and adds the default ones of dfki
+     *
+     * @param currentUser to fetch available electricStationType of the company
+     * @return list of available electricStationType sbd. of company's persons created
+     */
+    def getElectricStationTypesForCompany( Person currentUser ) {
+
+        Company company = Company.get( currentUser.company.id )
+        List<FillingStationType> electricStationTypes = FillingStationType.findAllByCompany( company )
+
+        if ( !company.name.equals( "dfki" ) ) {
+            Company dfkiCompany = Company.findByName( "dfki" )
+
+            electricStationTypes.addAll( FillingStationType.findAllByCompany( dfkiCompany ) )
+
+        }
+
+        return electricStationTypes
     }
 
 
@@ -689,6 +818,20 @@ class ConfigurationService {
         return types
     }
 
+    def getFillingStationsFromGroupTypeOrdered (Long groupId) {
+
+        def stations = []
+        FillingStationGroup fillingStationGroup = FillingStationGroup.get( groupId )
+
+        fillingStationGroup.fillingStations.each { FillingStation fillingStation ->
+            stations << FillingStation.get( fillingStation.id )
+        }
+
+        def types = stations.groupBy { FillingStation fillingStation -> fillingStation.fillingStationType.name }
+
+        return types
+    }
+
     def getCarsFromFleet( Long fleetId ) {
 
         def cars = []
@@ -743,66 +886,5 @@ class ConfigurationService {
 
         return fleet.name
     }
-
-    def findNameOfConfiguration( Long configurationStubId ) {
-
-        Configuration configuration = Configuration.get( configurationStubId )
-        if ( configuration.configurationName && configuration.configurationName.length() > 0 ) {
-            return configuration.configurationName
-        }
-
-        // no name yet, create a suggestion
-
-        int fleetSize = configuration.fleets.size()
-        int carTotalCount = 0
-        configuration.fleets.each { Fleet fleet ->
-            fleet = Fleet.get( fleet.id )
-            carTotalCount += fleet.cars.size()
-        }
-
-        int groupSize = configuration.fillingStationGroups.size()
-        int fillingStationSize = 0
-        configuration.fillingStationGroups.each { FillingStationGroup fillingStationGroup ->
-            fillingStationGroup = FillingStationGroup.get( fillingStationGroup.id )
-            fillingStationSize += fillingStationGroup.fillingStations.size()
-        }
-
-        StringBuilder sbName = new StringBuilder()
-        sbName.append( "${fleetSize} Fs.(${carTotalCount} C.)-${groupSize} G.(${fillingStationSize} Fs.)" )
-
-        return sbName.toString()
-    }
-
-    def findDescriptionOfConfiguration( Long configurationStubId ) {
-
-        Configuration configuration = Configuration.get( configurationStubId )
-        if ( configuration.configurationDescription && configuration.configurationDescription.length() > 0 ) {
-            return configuration.configurationDescription
-        }
-
-        // no description yet, create a suggestion
-
-        int fleetSize = configuration.fleets.size()
-        int carTotalCount = 0
-        configuration.fleets.each { Fleet fleet ->
-            fleet = Fleet.get( fleet.id )
-            carTotalCount += fleet.cars.size()
-        }
-
-        int groupSize = configuration.fillingStationGroups.size()
-        int fillingStationSize = 0
-        configuration.fillingStationGroups.each { FillingStationGroup fillingStationGroup ->
-            fillingStationGroup = FillingStationGroup.get( fillingStationGroup.id )
-            fillingStationSize += fillingStationGroup.fillingStations.size()
-        }
-
-        StringBuilder sbDescription = new StringBuilder()
-        sbDescription.append( "${fleetSize} Fleets, all in all with ${carTotalCount} Cars\n" )
-        sbDescription.append( "${groupSize} Groups, all in all with ${fillingStationSize} Fillingstation" )
-
-        return sbDescription.toString()
-
-    }
-
 
 }

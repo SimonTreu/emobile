@@ -4149,7 +4149,7 @@ OpenLayers.Control.LayerSwitcher = OpenLayers.Class(OpenLayers.Control, {rounded
     var imgLocation = 'http://localhost:8080/emobilesim2/images/i2maps/';
     var sz = new OpenLayers.Size(18, 18);
     var img = imgLocation + 'layer-switcher-maximize.png';
-    this.maximizeDiv = OpenLayers.Util.createAlphaImageDiv("OpenLayers_Control_MaximizeDiv", null, sz, img, "absolute");
+    this.maximizeDiv = OpenLayers.Util.createAlphaImageDiv("OpenLayers_Control_MaximizeDiv", null, sz, img, "relative");
     OpenLayers.Element.addClass(this.maximizeDiv, "maximizeDiv");
     this.maximizeDiv.style.display = "none";
     OpenLayers.Event.observe(this.maximizeDiv, "click", OpenLayers.Function.bindAsEventListener(this.maximizeControl, this));

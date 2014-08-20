@@ -48,7 +48,7 @@ abstract class Agent extends Thread {
 
             } else if ( currentTime == startTime ) {
 
-                log.error( "now start ${this.id}.." )
+                log.debug( "now start ${this.id}.." )
                 step( currentTime )
 
 
@@ -119,7 +119,7 @@ abstract class Agent extends Thread {
         }
 
         canceled = true
-        log.error( "${personalId} : try to cancel" )
+        log.debug( "${personalId} : try to cancel" )
 
     }
 

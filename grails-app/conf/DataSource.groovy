@@ -20,7 +20,7 @@ environments {
             //dbCreate = "update" //"create-drop"
             // dbCreate = "create-drop"
             driverClassName = "com.mysql.jdbc.Driver"
-            url = "jdbc:mysql://localhost/emobilesim1"
+            url = "jdbc:mysql://localhost/emobilesim"
             username = "emobilesim"
             password = "emobilesim"
         }

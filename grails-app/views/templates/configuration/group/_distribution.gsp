@@ -72,10 +72,9 @@
                                     <div class="rowMiddle">
                                         <div class="leftDistributionFile2">
                                             <br>
-                                            <g:radio name="myGroup" value="1" label="Random Stations"/><span> Random Stations - ${groupNumber.value.size()} stations</span>
+                                            <g:radio name="myGroup" value="1" label="Random Stations"/><span> Random Stations - ${fillingStationCount} stations</span>
                                             <br><br>
-                                            <g:radio name="myGroup" value="2" label="Random Stations"/><span> Public Stations - 142 stations</span>
-                                            <br><br>
+
                                         </div>
                                         <div class="rightDistribution">
 

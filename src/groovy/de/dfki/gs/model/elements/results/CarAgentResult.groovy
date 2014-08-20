@@ -29,7 +29,7 @@ class CarAgentResult {
 
     int fillingStationsVisited
 
-    long simulationId
+    long configurationId
 
     double relativeSearchLimit
 

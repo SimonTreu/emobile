@@ -1,10 +1,10 @@
 package de.dfki.gs.model.elements
 
 import com.vividsolutions.jts.geom.Point
-import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.simulation.TrackEdge
 import de.dfki.gs.domain.utils.TrackEdgeType
 import de.dfki.gs.model.elements.results.CarAgentResult
+import de.dfki.gs.ms2.execution.FillingStationAgentSyncronizer
 import de.dfki.gs.service.RouteService
 import de.dfki.gs.simulation.CarStatus
 import org.apache.commons.logging.LogFactory
@@ -44,27 +44,25 @@ class CarAgent extends Agent {
     RouteService routeService = ctx.routeService
 
 
-    ConcurrentMap<Long, EFillingStationAgent> fillingStationsMap;
-
     private RoutingPlan routingPlan
 
     private ModelCar modelCar
 
     private CarAgentResult carAgentResult
 
-    private List<GasolineStation> gasolineStations;
+    private FillingStationAgentSyncronizer syncronizer
 
 
-    long simulationId
+    long configurationId
 
-    long simulationRouteId
+    long routeId
 
     CarStatus carStatus
     /**
      * if running out of energy and close gasolineStation was found, here we go
      */
-    GasolineStation gasolineStation
-    Long gasolineStationIdUsed;
+    EFillingStationAgent currentFillingStationToRouteFor;
+
 
     double energyPortionToFill = 0
     int currentEdgeIndex
@@ -100,33 +98,26 @@ class CarAgent extends Agent {
     TrackEdge currentEdge
 
 
-    /**
-     * factory method for a given RoutingPlan and a given ModelCar
-     *
-     * @param routingPlan
-     * @param modelCar
-     * @return carAgent
-     */
-    public static CarAgent createCarAgent(
+    public static CarAgent createCarAgentWithFillingStations(
             RoutingPlan routingPlan,
             ModelCar modelCar,
-            ConcurrentMap<Long, EFillingStationAgent> fillingStationsMap,
-            List<GasolineStation> gasolineStations,
-            long simulationId,
+            long configurationId,
             int defaultKmh,
             long startTime,
-            Double plannedDist,
-            long simulationRouteId ) {
+            Double plannedDistance,
+            long routeId,
+            FillingStationAgentSyncronizer syncronizer ) {
+
 
         CarAgent carAgent = new CarAgent()
         carAgent.routingPlan = routingPlan;
         carAgent.modelCar = modelCar;
-        carAgent.fillingStationsMap = fillingStationsMap
 
-        carAgent.gasolineStations = gasolineStations
+        carAgent.syncronizer = syncronizer
+
         carAgent.currentEdgeIndex = 0;
         carAgent.DEFAULT_KMH = defaultKmh;
-        carAgent.simulationId = simulationId;
+        carAgent.configurationId = configurationId;
 
         // initials
         carAgent.timeStampForNextActionAllowed = startTime;
@@ -134,15 +125,18 @@ class CarAgent extends Agent {
 
         carAgent.startTime = startTime
 
-        carAgent.simulationRouteId = simulationRouteId
+        carAgent.routeId = routeId
 
         Double sumKm = 0;
+
         double secondsPlanned = 0;
+
         Long simRouteId = null
+
         for ( TrackEdge trackEdge : routingPlan.trackEdges ) {
 
             if ( simRouteId == null ) {
-                simRouteId = trackEdge.simulationRouteId
+                simRouteId = trackEdge.routeId
             }
 
             // v = s/t <-> t = s / v
@@ -151,15 +145,17 @@ class CarAgent extends Agent {
             secondsPlanned += ( s / v ) * 60 * 60
             sumKm = sumKm + trackEdge.km
         }
-        carAgent.kmToDrive = plannedDist;
+        carAgent.kmToDrive = plannedDistance;
+
+        carAgent.currentFillingStationToRouteFor = null
 
         log.error( "simRoute: ${simRouteId} has ${sumKm} planned km to drive in ${(secondsPlanned *  ( 1 / ( 60 * 60 ) ) )} h" )
 
         carAgent.carAgentResult = new CarAgentResult(
                 carType: modelCar.carType,
-                plannedDistance: plannedDist,
+                plannedDistance: plannedDistance,
                 timeForPlannedDistance: Math.ceil( secondsPlanned ),
-                simulationId: simulationId,
+                configurationId: configurationId,
                 relativeSearchLimit: modelCar.relativeSearchLimit
         );
 
@@ -170,12 +166,10 @@ class CarAgent extends Agent {
 
 
 
-
-
     def step( long currentTimeStamp ) {
 
         if ( startTime > 0 && startTime == currentTime ) {
-            log.error( "${this.id} belated thread: time: ${currentTime}" )
+            log.debug( "${this.id} belated thread: time: ${currentTime}" )
         }
 
 
@@ -209,7 +203,7 @@ class CarAgent extends Agent {
 
                     } else {
 
-                        log.error( "uuh, running out of energy: ${batChargePercentage}% < ${modelCar.getRelativeSearchLimit()*100}% or ${modelCar.getCurrentEnergy()} < ${modelCar.getAbsoluteSearchLimit()}" )
+                        log.debug( "car ${personalId} running out of energy: ${batChargePercentage}% < ${modelCar.getRelativeSearchLimit()*100}% or ${modelCar.getCurrentEnergy()} < ${modelCar.getAbsoluteSearchLimit()}" )
                         carStatus = CarStatus.DRIVING_RUNNING_OUT
 
                     }
@@ -219,13 +213,16 @@ class CarAgent extends Agent {
                 break;
             case CarStatus.DRIVING_RUNNING_OUT:
 
-                if ( !gasolineStation ) {
-                    searchFillingStation()
+                if ( currentFillingStationToRouteFor == null ) {
+
+                    configureRouteToFillingStationAndBack()
+
                 }
 
                 moveCar( currentTimeStamp )
 
                 if ( currentEdgeIndex == routingPlan.trackEdges.size() ) {
+
                     totalTimeNeeded = currentTimeStamp - startTime;
                     carAgentResult.timeForRealDistance = currentTimeStamp - startTime
                     carStatus = CarStatus.MISSION_ACCOMBLISHED;
@@ -234,21 +231,19 @@ class CarAgent extends Agent {
 
                     double batChargePercentage = ( modelCar.getCurrentEnergy() / modelCar.getMaxEnergy() ) * 100
 
-                    if ( batChargePercentage >= 0 && gasolineStation && onStation() ) {
+                    if ( batChargePercentage >= 0 && currentFillingStationToRouteFor && onStation() ) {
 
-                        // log.error( "fill with: ${ (gasolineStationFillingAmount.get( gasolineStation.type.toString() )) / (60*60)}" )
+                        energyPortionToFill = currentFillingStationToRouteFor.fillingPortion
 
-                        // energyPortionToFill = ( gasolineStationFillingAmount.get( gasolineStation.type.toString() ) ) / ( 60 * 60);
-                        energyPortionToFill = fillingStationsMap.get( gasolineStation.id )?.fillingPortion
 
                         double neededEnergy = ( modelCar.maxEnergy - modelCar.currentEnergy );
                         long timeForNeededEnergy = Math.ceil( neededEnergy / energyPortionToFill )
 
-                        log.error( "car: ${modelCar.carName} - neededEnergy: ${neededEnergy} / energyPortion: ${energyPortionToFill} =  timeForLoading: ${timeForNeededEnergy} -- prev sum TimeForloading: ${timeForLoading}" )
+                        log.debug( "car: ${modelCar.carName} - neededEnergy: ${neededEnergy} / energyPortion: ${energyPortionToFill} =  timeForLoading: ${timeForNeededEnergy} -- prev sum TimeForloading: ${timeForLoading}" )
 
                         timeForLoading += timeForNeededEnergy
 
-                        log.error( "    now sum timeForLoading: ${timeForLoading}" )
+                        log.debug( "    now sum timeForLoading: ${timeForLoading}" )
 
                         timeStampForNextActionAllowed = currentTimeStamp + timeForNeededEnergy
 
@@ -256,16 +251,13 @@ class CarAgent extends Agent {
 
                     } else if ( batChargePercentage < 0 ) {
 
-                        if ( fillingStationsMap != null && !fillingStationsMap.isEmpty() && gasolineStationIdUsed != null ) {
-                            EFillingStationAgent fillingAgent = fillingStationsMap.get( gasolineStationIdUsed )
-                            if ( fillingAgent ) {
-                                fillingAgent.setFillingStationStatus( FillingStationStatus.FREE )
-                            }
+                        log.error( "Soc: ${batChargePercentage}" )
+
+                        if ( currentFillingStationToRouteFor ) {
+                            syncronizer.setFillingStationToFree( currentFillingStationToRouteFor )
                         }
 
                         carStatus = CarStatus.WAITING_EMPTY
-
-                        //cancel()
 
                     }
 
@@ -289,43 +281,10 @@ class CarAgent extends Agent {
                     fillingStationsVisited++;
 
                     // free filling station
-                    EFillingStationAgent fillingAgent = fillingStationsMap.get( gasolineStationIdUsed )
-                    fillingAgent.setFillingStationStatus( FillingStationStatus.FREE )
+                    syncronizer.setFillingStationToFree( currentFillingStationToRouteFor )
 
-                    log.error( "${personalId} - gasolineStation: ${gasolineStationIdUsed}  now free again" )
-
-                    gasolineStation = null
+                    currentFillingStationToRouteFor = null
                 }
-
-
-
-
-                /*
-                energyLoaded += energyPortionToFill;
-                timeForLoading++;
-
-                fillCar( energyPortionToFill )
-
-
-                if ( modelCar.getCurrentEnergy() >= modelCar.getMaxEnergy() ) {
-
-                    modelCar.setCurrentEnergy( modelCar.getMaxEnergy() );
-                    carStatus = CarStatus.DRIVING_FULL
-                    fillingStationsVisited++;
-
-                    // free filling station
-                    EFillingStationAgent fillingAgent = fillingStationsMap.get( gasolineStationIdUsed )
-                    fillingAgent.setFillingStationStatus( FillingStationStatus.FREE )
-
-                    log.error( "${personalId} - gasolineStation: ${gasolineStationIdUsed}  now free again" )
-
-
-                } else {
-
-                    carStatus = CarStatus.WAITING_FILLING
-
-                }
-                */
 
                 break;
             case CarStatus.WAITING_EMPTY:
@@ -344,226 +303,166 @@ class CarAgent extends Agent {
 
     }
 
-
-
-
-
     /**
-     * this method searches a closest filling station (closest to the car's position)
-     * calculates a route to station and a route back to the next via_target or target on the original route
-     *
-     * @return
+     * this method tries to find a close and free fillingStation
+     * tries to find a route to and back
      */
-    private void searchFillingStation() {
+    private void configureRouteToFillingStationAndBack() {
 
         long millis = System.currentTimeMillis()
 
-        // getting 10 nearest stations*.id
-        List<GasolineStation> nearestFillingStations = routeService.findNClosestGasolineStations(
-                currentEdge.toLat,
-                currentEdge.toLon,
-                gasolineStations,
-                15
+        EFillingStationAgent eFillingStationAgent = syncronizer.reserveFreeFillingStationAgentInRadius(
+                this.personalId,
+                this.currentEdge.toLon,
+                this.currentEdge.toLat,
+                10                      // [ km ]
         )
 
-        // log.error( "found gasoline stations: ${nearestFillingStations}" )
+        long millis2 = System.currentTimeMillis()
+        log.error( "needed ${ millis2 - millis } ms to find a close and free filling station" )
 
-        // checking from first to last, which one is free to use
-        int free = 1;
-        if ( nearestFillingStations != null && !nearestFillingStations.empty && fillingStationsMap != null && !fillingStationsMap.isEmpty() ) {
+        // only if we found a fillingStationAgent
+        if ( eFillingStationAgent != null ) {
 
-            for ( GasolineStation gasoline : nearestFillingStations ) {
+            List<BasicEdge> routeToEnergy = routeService.routeToTarget(
+                    currentEdge.toLat,
+                    currentEdge.toLon,
+                    eFillingStationAgent.lat,
+                    eFillingStationAgent.lon
+            )
 
-                EFillingStationAgent fillingAgent = fillingStationsMap.get( gasoline.id )
+            if ( routeToEnergy.size() == 0 ) {
 
-                if ( fillingAgent.fillingStationStatus.equals( FillingStationStatus.FREE ) ) {
+                // skip, no route found to efillingStationAgent
+                syncronizer.updateFailedToRouteCount( eFillingStationAgent, personalId )
+                syncronizer.setFillingStationToFree( eFillingStationAgent )
 
-                    log.debug( "${personalId} - after ${free} trials: take gasolineStation ${gasoline} - now in use" )
+            } else {
 
-                    log.error( "${simulationRouteId} - found station at ${(( modelCar.getCurrentEnergy() / modelCar.getMaxEnergy()) *100 )} %" )
+                // 3.) try to get a route to the next "via_target" or "target"
+                //      and build  track-edges-list
+                TrackEdge backEdge = null
 
-                    fillingAgent.fillingStationStatus = FillingStationStatus.IN_USE;
+                // myIndex is calculated and set to the index of the edge, which is either the next via_target or the target
+                int myIndex
+                for ( myIndex = currentEdgeIndex; myIndex < routingPlan.trackEdges.size(); myIndex++ ) {
 
-                    gasolineStation = gasoline
-                    gasolineStationIdUsed = gasolineStation.id
+                    TrackEdge edge = routingPlan.trackEdges.get( myIndex )
 
-                    break;
-                } else {
-
-                    log.debug( "${personalId} - gasolineStation ${gasoline} is in use already, try another one.." )
-                    free++;
+                    if ( backEdge == null
+                            && ( edge.type.equals( TrackEdgeType.via_target.toString() ) || edge.type.equals( TrackEdgeType.target.toString() ) ) ) {
+                        backEdge = edge
+                        break
+                    }
                 }
 
-            }
-
-            // 1.) try to get the node of the closest, free filling station
-
-            // gasolineStation = routeService.findClosestGasolineStation( currentEdge.toLat, currentEdge.toLon, gasolineStations );
-
-
-
-            // 2.) try to get a route to that node
-            //      and build  track-edges-list
-            if ( gasolineStation ) {
-
-                List<BasicEdge> routeToEnergy = routeService.routeToTarget(
-                        currentEdge.toLat,
-                        currentEdge.toLon,
-                        gasolineStation.lat,
-                        gasolineStation.lon
+                List<BasicEdge> routeToTarget = routeService.routeToTarget(
+                        eFillingStationAgent.lat,
+                        eFillingStationAgent.lon,
+                        backEdge.toLat,
+                        backEdge.toLon
                 )
 
-                if ( routeToEnergy.size() == 0 ) {
-                    // skip
-                    //fillingAgent.fillingStationStatus = FillingStationStatus.;
-                    EFillingStationAgent fillingAgent = fillingStationsMap.get( gasolineStation.id )
-                    fillingAgent.setFillingStationStatus( FillingStationStatus.FREE )
+                if ( routeToTarget.size() == 0 ) {
 
-                    log.error( " time: ${currentTime} -- failed to get path to gasoline station.. ${gasolineStation.id}" )
-
-                    gasolineStation = null
+                    // skip, no route found back to next target
+                    syncronizer.updateFailedToRouteCount( eFillingStationAgent, personalId )
+                    syncronizer.setFillingStationToFree( eFillingStationAgent )
 
                 } else {
 
-                    // log.error( "currentPos: ${currentEdge.toLat} ${currentEdge.toLon}" )
-                    // log.error( "energy    : ${gasolineStation.lat} ${gasolineStation.lon}" )
-
-
-
-
-                    // 3.) try to get a route to the next "via_target" or "target"
-                    //      and build  track-edges-list
-                    TrackEdge backEdge = null
-
-                    // myIndex is calculated and set to the index of the edge, which is either the next via_target or the target
-                    int myIndex
-                    for ( myIndex = currentEdgeIndex; myIndex < routingPlan.trackEdges.size(); myIndex++ ) {
-
-                        TrackEdge edge = routingPlan.trackEdges.get( myIndex )
-
-                        if ( backEdge == null
-                                && ( edge.type.equals( TrackEdgeType.via_target.toString() ) || edge.type.equals( TrackEdgeType.target.toString() ) ) ) {
-                            backEdge = edge
-                            break
-                        }
-                    }
-
-                    List<BasicEdge> routeToTarget = routeService.routeToTarget(
-                            gasolineStation.lat,
-                            gasolineStation.lon,
-                            backEdge.toLat,
-                            backEdge.toLon
-                    )
-
-                    if ( routeToTarget.size() == 0 ) {
-                        EFillingStationAgent fillingAgent = fillingStationsMap.get( gasolineStation.id )
-                        fillingAgent.setFillingStationStatus( FillingStationStatus.FREE )
-
-                        log.error( "failed to get path back to next target.. (gasolineStation was ${gasolineStation.id})" )
-
-                        gasolineStation = null
-                    } else {
-                        double toSubstract = 0;
-                        // take out the km-values, which are not driven anymore due to new route to filling station
-                        for (  int k = currentEdgeIndex ; k < myIndex; k++ ) {
-                            toSubstract += routingPlan.trackEdges.get( k ).km
-                        }
-
-
-                        // 4.) get currentEdge++ and append the track-edgeList (directed to the filling station) into simulationObjec.edges
-
-                        List<TrackEdge> trackEdgesToStation = routeService.convertToUnsavedTrackEdges( routeToEnergy )
-                        List<TrackEdge> trackEdgesBack = routeService.convertToUnsavedTrackEdges( routeToTarget )
-
-                        double lll = 0;
-                        for ( TrackEdge eee : trackEdgesToStation ) {
-                            lll += eee.km
-                        }
-                        log.debug( "${personalId} - need ${lll} km to energy" )
-
-                        // log.error( "back to: ${backEdge.toLat} ${backEdge.toLon}" )
-                        lll = 0;
-                        for ( TrackEdge be : trackEdgesBack ) {
-                            lll += be.km
-                        }
-                        log.debug( "${personalId} - need ${lll} km back to next target" )
-
-
-
-                        double sumToDriveToGasAndBack = 0;
-                        for ( TrackEdge trackEdge : trackEdgesToStation ) {
-                            sumToDriveToGasAndBack += trackEdge.km;
-                        }
-                        for ( TrackEdge trackEdge : trackEdgesBack ) {
-                            sumToDriveToGasAndBack += trackEdge.km;
-                        }
-
-                        log.error( "${personalId} : previously planned: ${carAgentResult.plannedDistance}  have to substract: ${toSubstract} km and to add: ${sumToDriveToGasAndBack} km" )
-
-                        kmToDrive += sumToDriveToGasAndBack;
-
-                        kmToDrive = kmToDrive - toSubstract;
-
-                        log.debug( "found routes in ${System.currentTimeMillis() - millis} ms, try to append to route plan" )
-
-                        // millis = System.currentTimeMillis()
-
-                        routeToGasolineStation = routeToEnergy
-                        routeBackToTarget = routeToTarget
-
-                        // have to remove old route from "currentEdgeIndex+1" to the next target or viaTarget
-                        if ( backEdge.type.toString().equals( TrackEdgeType.target.toString() ) || backEdge.type.toString().equals( TrackEdgeType.via_target.toString() )  ) {
-
-                            // remove from currentEdgeIndex+1 to next viaTarget/target
-                            int toRemovePosTo   = routingPlan.trackEdges.indexOf( backEdge )
-                            int toRemovePosFrom = currentEdgeIndex + 1
-
-                            for ( int i = toRemovePosTo; i >= toRemovePosFrom; i-- ) {
-                                routingPlan.trackEdges.remove( i )
-                            }
-
-                            // repair type of last trackEdgesBack to via_target
-                            if ( trackEdgesBack.size() > 0 ) {
-                                trackEdgesBack.get( trackEdgesBack.size() - 1 ).type = TrackEdgeType.via_target
-                            }
-
-
-                            // shift in at position currentEdgeIndex+1 both routes tracksToStation and trackBackToRoute
-                            routingPlan.trackEdges.addAll( currentEdgeIndex+1, trackEdgesToStation )
-                            routingPlan.trackEdges.addAll( currentEdgeIndex+1+routeToEnergy.size(), trackEdgesBack )
-
-                            // repair type of very last edge of track to target
-                            routingPlan.trackEdges.get( routingPlan.trackEdges.size() - 1 ).type = TrackEdgeType.target
-
-                        }
-
-                        // TODO: clacluate new kmToDrive from updated track-list
-
-                        log.error( "successfully appended routes to routplan in ${System.currentTimeMillis() - millis} ms" )
-
-                        log.debug( "size now is ${routingPlan.trackEdges.size()}" )
-
-
-                        // has to be reset to false after refill !!!
-                        routeSent = false
-
+                    double toSubstract = 0;
+                    // take out the km-values, which are not driven anymore due to new route to filling station
+                    for (  int k = currentEdgeIndex ; k < myIndex; k++ ) {
+                        toSubstract += routingPlan.trackEdges.get( k ).km
                     }
 
 
+                    // 4.) get currentEdge++ and append the track-edgeList (directed to the filling station) into simulationObjec.edges
+
+                    List<TrackEdge> trackEdgesToStation = routeService.convertToUnsavedTrackEdges( routeToEnergy )
+                    List<TrackEdge> trackEdgesBack = routeService.convertToUnsavedTrackEdges( routeToTarget )
+
+                    double lll = 0;
+                    for ( TrackEdge eee : trackEdgesToStation ) {
+                        lll += eee.km
+                    }
+                    log.debug( "${personalId} - need ${lll} km to energy" )
+
+                    // log.error( "back to: ${backEdge.toLat} ${backEdge.toLon}" )
+                    lll = 0;
+                    for ( TrackEdge be : trackEdgesBack ) {
+                        lll += be.km
+                    }
+                    log.debug( "${personalId} - need ${lll} km back to next target" )
+
+
+
+                    double sumToDriveToGasAndBack = 0;
+                    for ( TrackEdge trackEdge : trackEdgesToStation ) {
+                        sumToDriveToGasAndBack += trackEdge.km;
+                    }
+                    for ( TrackEdge trackEdge : trackEdgesBack ) {
+                        sumToDriveToGasAndBack += trackEdge.km;
+                    }
+
+                    log.error( "${personalId} : previously planned: ${carAgentResult.plannedDistance}  have to substract: ${toSubstract} km and to add: ${sumToDriveToGasAndBack} km" )
+
+                    kmToDrive += sumToDriveToGasAndBack;
+
+                    kmToDrive = kmToDrive - toSubstract;
+
+
+                    routeToGasolineStation = routeToEnergy
+                    routeBackToTarget = routeToTarget
+
+                    // have to remove old route from "currentEdgeIndex+1" to the next target or viaTarget
+                    if ( backEdge.type.toString().equals( TrackEdgeType.target.toString() ) || backEdge.type.toString().equals( TrackEdgeType.via_target.toString() )  ) {
+
+                        // remove from currentEdgeIndex+1 to next viaTarget/target
+                        int toRemovePosTo   = routingPlan.trackEdges.indexOf( backEdge )
+                        int toRemovePosFrom = currentEdgeIndex + 1
+
+                        for ( int i = toRemovePosTo; i >= toRemovePosFrom; i-- ) {
+                            routingPlan.trackEdges.remove( i )
+                        }
+
+                        // repair type of last trackEdgesBack to via_target
+                        if ( trackEdgesBack.size() > 0 ) {
+                            trackEdgesBack.get( trackEdgesBack.size() - 1 ).type = TrackEdgeType.via_target
+                        }
+
+
+                        // shift in at position currentEdgeIndex+1 both routes tracksToStation and trackBackToRoute
+                        routingPlan.trackEdges.addAll( currentEdgeIndex+1, trackEdgesToStation )
+                        routingPlan.trackEdges.addAll( currentEdgeIndex+1+routeToEnergy.size(), trackEdgesBack )
+
+                        // repair type of very last edge of track to target
+                        routingPlan.trackEdges.get( routingPlan.trackEdges.size() - 1 ).type = TrackEdgeType.target
+
+                    }
+
+                    // TODO: clacluate new kmToDrive from updated track-list
+
+                    log.debug( "size now is ${routingPlan.trackEdges.size()}" )
+
+
+                    // has to be reset to false after refill !!!
+                    routeSent = false
+                    currentFillingStationToRouteFor = eFillingStationAgent
 
                 }
 
-
-
-
-
             }
-
 
         }
 
+        log.error( "needed ${ System.currentTimeMillis() - millis } ms to get FS and to plan routes " )
 
     }
+
+
+
 
 
     def moveCar( long currentTimeStamp ) {
@@ -626,33 +525,13 @@ class CarAgent extends Agent {
 
     }
 
-    private void fillCar2( long currentTimeStamp ) {
 
-
-        if ( currentTimeStamp == timeStampForNextActionAllowed ) {
-
-            modelCar.currentEnergy = modelCar.maxEnergy
-
-        }
-
-
-    }
-
-    private void fillCar( double energyPortion ) {
-
-        lastTimeStamp = timeStampForNextActionAllowed
-        timeStampForNextActionAllowed += 1
-
-        modelCar.currentEnergy = modelCar.currentEnergy + energyPortion
-
-        gasolineStation = null
-    }
 
     boolean onStation() {
 
-        return ( gasolineStation && (
-                ( currentEdge.fromLat == gasolineStation.lat && currentEdge.fromLon == gasolineStation.lon ) ||
-                        ( currentEdge.toLat == gasolineStation.lat && currentEdge.toLon == gasolineStation.lon ) ) )
+        return ( currentFillingStationToRouteFor && (
+                ( currentEdge.fromLat == currentFillingStationToRouteFor.lat && currentEdge.fromLon == currentFillingStationToRouteFor.lon ) ||
+                        ( currentEdge.toLat == currentFillingStationToRouteFor.lat && currentEdge.toLon == currentFillingStationToRouteFor.lon ) ) )
     }
 
 
@@ -708,7 +587,7 @@ class CarAgent extends Agent {
 
         }
 
-        if ( gasolineStation && routeToGasolineStation && routeBackToTarget && !routeSent ) {
+        if ( currentFillingStationToRouteFor && routeToGasolineStation && routeBackToTarget && !routeSent ) {
 
             def routeToEnergy = [];
             def routeToTarget = [];

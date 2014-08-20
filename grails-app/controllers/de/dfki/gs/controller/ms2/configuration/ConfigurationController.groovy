@@ -1,6 +1,5 @@
 package de.dfki.gs.controller.ms2.configuration
 
-import de.dfki.gs.controller.commands.ShowInfoStationsCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.AddCarsToFleedCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.AddFleetToConfigurationCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.AddGroupToConfigurationCommandObject
@@ -20,7 +19,7 @@ import de.dfki.gs.controller.ms2.configuration.commands.EditFillingStationComman
 import de.dfki.gs.controller.ms2.configuration.commands.FinishConfigurationCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.ShowFleetRoutesCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.ShowGroupStationsCommandObject
-
+import de.dfki.gs.controller.ms2.configuration.commands.ShowInfoStationsCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.UpdateCarTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.UpdateFillingStationTypeCommandObject
 import de.dfki.gs.domain.GasolineStation
@@ -517,7 +516,9 @@ class ConfigurationController {
             m.configurationStubId = cmd.configurationStubId
 
             m.groupName = configurationService.getNameOfGroup( cmd.groupId )
-            m.groupNumber = configurationService.getNumberOfGroup(cmd.groupId)
+
+
+            m.fillingStationCount = configurationService.getCountOfGroupFillingStations( cmd.groupId )
             // put all cars from fleet
             // m.cars = configurationService.getCarsFromFleet( cmd.fleetId )
 
@@ -743,6 +744,7 @@ class ConfigurationController {
             render template: '/templates/configuration/routes/showRoutesOnMap', model: m
         }
     }
+
 
     def showGasolineInfo () {
 
@@ -1029,14 +1031,14 @@ class ConfigurationController {
             return
         }
 
-        CreateFleetForConfigurationViewCommandObject cmd = new CreateFleetForConfigurationViewCommandObject()
+        FinishConfigurationCommandObject cmd = new FinishConfigurationCommandObject()
         bindData( cmd, params )
 
         if ( !cmd.validate() && cmd.hasErrors() ) {
             log.error( "nothing to save, no coniguration stub found for ${cmd.configurationStubId} : ${cmd.errors}" )
         } else {
 
-            configurationService.saveFinishedConfigurationStub( cmd.configurationStubId )
+            configurationService.saveFinishedConfigurationStub( cmd.configurationStubId, cmd.configurationName, cmd.configurationDescription )
 
         }
 

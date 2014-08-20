@@ -15,6 +15,10 @@ class FillingStationGroup {
     Boolean stub
     Boolean groupsConfigured
 
+    Date dateCreated
+    Date lastUpdated
+
+
     static hasMany = [
             fillingStations : FillingStation
     ]

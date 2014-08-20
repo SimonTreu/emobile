@@ -347,6 +347,19 @@
 
                     </div>
                 </g:form>
+                <g:form controller="execution" action="executeExperiment">
+
+                    <div class="layoutButton">
+
+                        <span class="layoutButtonM"></span>
+
+                        <g:hiddenField name="relativeSearchLimit" value="20" />
+                        <g:hiddenField name="configurationId" value="${configurationStubId}"/>
+                        <span class="layoutButtonR"><g:submitButton name="send" value="Execute"/></span>
+
+                    </div>
+
+                </g:form>
         </fieldset>
         <div id="updateMe">
 

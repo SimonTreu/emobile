@@ -6,6 +6,8 @@ import de.dfki.gs.domain.simulation.Car
 import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
+import de.dfki.gs.domain.simulation.FillingStation
+import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.domain.simulation.Route
 import de.dfki.gs.domain.simulation.Simulation
@@ -91,6 +93,11 @@ class RouteService {
 
 
         Route route = new Route()
+        if ( !route.save( flush: true ) ) {
+
+            log.error( "failed to initially save route: ${route.errors}" )
+
+        }
 
         for ( List<BasicEdge> edges : multiTargetRoute ) {
 
@@ -127,6 +134,7 @@ class RouteService {
                 }
 
                 TrackEdge trackEdge = new TrackEdge(
+                        routeId: route.id,
                         type: edgeType,
                         fromLat: from.getY(),
                         fromLon: from.getX(),
@@ -912,6 +920,13 @@ class RouteService {
             int routeIdx = 0;
 
             Route route = new Route()
+            // save route to have id
+            if ( !route.save( flush: true ) ) {
+
+                log.error( "failed to initially save route: ${route.errors}" )
+
+            }
+
 
             for ( List<BasicEdge> partOfMultiTargetRoute : multiTargetRoute ) {
 
@@ -949,6 +964,7 @@ class RouteService {
                     }
 
                     TrackEdge trackEdge = new TrackEdge(
+                            routeId: route.id,
                             type: edgeType,
                             fromLat: from.getY(),
                             fromLon: from.getX(),
@@ -1524,6 +1540,37 @@ class RouteService {
         )
 
         return repairEdges( routeToTarget )
+    }
+
+
+    public List<FillingStation> findNClosestFillingStations( double lat, double lon, List<Long> fillingStationIds, int max ) {
+
+        if ( max > fillingStationIds.size() ) {
+            max = fillingStationIds.size()
+        }
+
+        List<Long> stationIds = new ArrayList<Long>();
+
+        GasolineStation station = findClosestGasolineStation( lat, lon, stations );
+        stationIds.add( station )
+
+        List<GasolineStation> currentList = new ArrayList<GasolineStation>( stations );
+
+        for ( int i = 0; i < (max-1); i++ ) {
+
+            currentList.remove( station )
+
+            currentList = new ArrayList<GasolineStation>( currentList )
+
+            station = findClosestGasolineStation( lat, lon, currentList )
+
+            stationIds.add( station )
+
+        }
+
+        return stationIds
+
+
     }
 
     public List<GasolineStation> findNClosestGasolineStations( double lat, double lon, List<GasolineStation> stations, int max ) {

@@ -1,4 +1,4 @@
-package de.dfki.gs.controller.commands
+package de.dfki.gs.controller.ms2.configuration.commands
 
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.simulation.Configuration

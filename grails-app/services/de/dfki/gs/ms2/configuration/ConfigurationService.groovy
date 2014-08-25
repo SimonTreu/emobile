@@ -15,7 +15,10 @@ import de.dfki.gs.domain.users.Person
 import de.dfki.gs.domain.utils.Distribution
 import de.dfki.gs.domain.utils.FleetStatus
 import de.dfki.gs.domain.utils.GroupStatus
+import grails.async.Promise
 import grails.transaction.Transactional
+
+import static grails.async.Promises.waitAll
 
 @Transactional
 class ConfigurationService {
@@ -463,7 +466,154 @@ class ConfigurationService {
 
     }
 
+
     def getFleetRoutesOfConfiguration( Long configurationId ) {
+
+        Configuration configuration = Configuration.get( configurationId )
+
+        List<Promise> proms = new ArrayList<Promise>()
+
+        List<Long> routeIds = new ArrayList<Long>()
+        List<Route> allRoutes = new ArrayList<Route>()
+        List<Car> allCars = new ArrayList<Car>()
+
+        // route id -> car
+        Map<Long,Car> routeCars = new HashMap<Long,Car>()
+
+
+        // route Id -> fleet id
+        Map<Long,Long> routeIdBelongsToFleetId = new HashMap<Long,Long>()
+        // route id -> car id
+        Map<Long,Long> routeIdBelongsToCarId = new HashMap<Long,Long>()
+
+
+        configuration.fleets.each { Fleet fleet ->
+
+            fleet = Fleet.get( fleet.id )
+
+            fleet.cars.each { Car car ->
+
+                car = Car.get( car.id )
+                routeIdBelongsToFleetId.put( car.route.id, fleet.id )
+                routeIdBelongsToCarId.put( car.route.id, car.id )
+
+                allCars.add( car )
+
+                Route route = Route.get( car.route.id )
+                allRoutes.add( route )
+
+
+                routeCars.put( car.route.id, car )
+
+
+                routeIds.add( car.route.id )
+            }
+
+        }
+
+        Map<Long,List<TrackEdge>> simRouteMap = new HashMap<Long,List<TrackEdge>>()
+
+        // split into portions of 90, which can be handled by 90 db connections
+        def portion = 90;
+
+        def idCounter = 0;
+        def toMax = routeIds.size() - 1;
+        def localTo = idCounter + ( portion - 1 );
+
+        def hua = []
+
+        while ( hua.size() != routeIds.size() ) {
+
+            if ( localTo > toMax ) {
+                localTo = toMax
+            }
+
+            log.error( "from ${idCounter} to ${localTo}" )
+
+            routeIds[ idCounter..localTo ].each { Long l ->
+                def promise = Route.async.task {
+
+                    log.error( "fetching for ${l}" )
+
+                    def tes = TrackEdge.withCriteria {
+                        eq( "routeId", l )
+                    }
+
+                }
+
+                proms.add( promise )
+            }
+
+            hua = waitAll( proms )
+
+            idCounter += portion;
+            localTo = idCounter + ( portion - 1 );
+
+        }
+
+        hua.flatten().each { TrackEdge te ->
+
+            List<TrackEdge> l = simRouteMap.get( te.routeId )
+
+            if ( l != null ) {
+                // if list of edges already exists, append found trackEdge
+
+                l.add( te )
+
+            } else {
+                // if list of edges not exist, create one and append found trackEdge
+
+                List<TrackEdge> newL = new ArrayList<TrackEdge>()
+                newL.add( te )
+                simRouteMap.put( te.routeId, newL )
+
+            }
+
+        }
+
+        def fleets = []
+
+        def uniqueFleetIds = []
+        routeIdBelongsToFleetId.values().each { Long fleetId ->
+            if ( !uniqueFleetIds.contains( fleetId ) ) {
+                uniqueFleetIds << fleetId
+            }
+        }
+
+        uniqueFleetIds.each { Long fleetId ->
+
+            def fleetModel = [ : ]
+            fleetModel.id = fleetId
+            fleetModel.name = Fleet.get( fleetId ).name
+            fleetModel.cars = []
+
+            fleets <<  fleetModel
+        }
+
+        // for each route id
+        simRouteMap.keySet().each { Long routeId ->
+
+            Car car = Car.get( routeIdBelongsToCarId.get( routeId ) )
+
+            def currentFleet = fleets.find { it.id = routeIdBelongsToFleetId.get( routeId ) }
+
+            currentFleet.'cars'.add( [ name: car.name, id: car.id, route: simRouteMap.get( routeId ) ] )
+
+
+        }
+
+
+
+        return fleets
+    }
+
+    /**
+     * TODO: speed up with algorithms used in init process of simulation
+     *
+     * @param configurationId
+     * @return
+     */
+    def getFleetRoutesOfConfiguration2( Long configurationId ) {
 
         Configuration configuration = Configuration.get( configurationId )
 

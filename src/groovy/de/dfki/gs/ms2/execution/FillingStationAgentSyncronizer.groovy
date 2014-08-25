@@ -78,7 +78,7 @@ class FillingStationAgentSyncronizer {
 
                     // set last found agent to FREE again!
                     if ( lastFreeAgent != null ) {
-                        log.error( "car ${reservedForAgentId} releases FS ${fsAgent.personalId} for distance reasons" )
+                        log.debug( "car ${reservedForAgentId} releases FS ${fsAgent.personalId} for distance reasons" )
                         lastFreeAgent.setFillingStationStatus( FillingStationStatus.FREE, -1 )
                     }
 
@@ -86,7 +86,7 @@ class FillingStationAgentSyncronizer {
                     fsAgent.setFillingStationStatus( FillingStationStatus.IN_USE, reservedForAgentId )
                     lastFreeAgent = fsAgent
 
-                    log.error( "Reserved ${fsAgent.personalId} for ${reservedForAgentId} -- dist: ${minDistance}" )
+                    log.debug( "Reserved fillingStation: ${fsAgent.personalId} for car: ${reservedForAgentId} -- dist: ${minDistance}" )
 
                 }
 
@@ -109,13 +109,13 @@ class FillingStationAgentSyncronizer {
         return lastFreeAgent
     }
 
-    public void updateFailedToRouteCount( EFillingStationAgent agent, long personalId ) {
+    public static void updateFailedToRouteCount( EFillingStationAgent agent, long personalId ) {
 
         agent.updateFailedToRouteCount( personalId )
 
     }
 
-    public void setFillingStationToFree( EFillingStationAgent agent ) {
+    public static void setFillingStationToFree( EFillingStationAgent agent ) {
 
         agent.setFillingStationStatus( FillingStationStatus.FREE, -1 )
 

@@ -254,7 +254,7 @@ class CarAgent extends Agent {
                         log.error( "Soc: ${batChargePercentage}" )
 
                         if ( currentFillingStationToRouteFor ) {
-                            syncronizer.setFillingStationToFree( currentFillingStationToRouteFor )
+                            FillingStationAgentSyncronizer.setFillingStationToFree( currentFillingStationToRouteFor )
                         }
 
                         carStatus = CarStatus.WAITING_EMPTY
@@ -281,7 +281,7 @@ class CarAgent extends Agent {
                     fillingStationsVisited++;
 
                     // free filling station
-                    syncronizer.setFillingStationToFree( currentFillingStationToRouteFor )
+                    FillingStationAgentSyncronizer.setFillingStationToFree( currentFillingStationToRouteFor )
 
                     currentFillingStationToRouteFor = null
                 }
@@ -319,7 +319,7 @@ class CarAgent extends Agent {
         )
 
         long millis2 = System.currentTimeMillis()
-        log.error( "needed ${ millis2 - millis } ms to find a close and free filling station" )
+        log.debug( "needed ${ millis2 - millis } ms to find a close and free filling station" )
 
         // only if we found a fillingStationAgent
         if ( eFillingStationAgent != null ) {
@@ -334,8 +334,8 @@ class CarAgent extends Agent {
             if ( routeToEnergy.size() == 0 ) {
 
                 // skip, no route found to efillingStationAgent
-                syncronizer.updateFailedToRouteCount( eFillingStationAgent, personalId )
-                syncronizer.setFillingStationToFree( eFillingStationAgent )
+                FillingStationAgentSyncronizer.updateFailedToRouteCount( eFillingStationAgent, personalId )
+                FillingStationAgentSyncronizer.setFillingStationToFree( eFillingStationAgent )
 
             } else {
 
@@ -366,8 +366,8 @@ class CarAgent extends Agent {
                 if ( routeToTarget.size() == 0 ) {
 
                     // skip, no route found back to next target
-                    syncronizer.updateFailedToRouteCount( eFillingStationAgent, personalId )
-                    syncronizer.setFillingStationToFree( eFillingStationAgent )
+                    FillingStationAgentSyncronizer.updateFailedToRouteCount( eFillingStationAgent, personalId )
+                    FillingStationAgentSyncronizer.setFillingStationToFree( eFillingStationAgent )
 
                 } else {
 
@@ -457,7 +457,7 @@ class CarAgent extends Agent {
 
         }
 
-        log.error( "needed ${ System.currentTimeMillis() - millis } ms to get FS and to plan routes " )
+        log.error( "needed ${ System.currentTimeMillis() - millis } ms for planning routes to FS and back" )
 
     }
 

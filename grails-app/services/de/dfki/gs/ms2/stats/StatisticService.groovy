@@ -2,6 +2,7 @@ package de.dfki.gs.ms2.stats
 
 import de.dfki.gs.domain.utils.Distribution
 import grails.transaction.Transactional
+import org.apache.commons.math3.distribution.NormalDistribution
 import org.apache.commons.math3.random.RandomDataGenerator
 
 @Transactional
@@ -69,7 +70,16 @@ class StatisticService {
                 break;
             case Distribution.NORMAL_DISTRIBUTION:
 
-                randomList = generateRandomUniformDistributedList( count, fromKm, toKm )
+                NormalDistribution normalDistribution = new NormalDistribution( (toKm-fromKm), 20 )
+                normalDistribution.reseedRandomGenerator( seed )
+
+                for ( int i = 0; i < count; i++ ) {
+                    randomList.add( normalDistribution.sample() + fromKm )
+                }
+
+
+
+                // randomList = generateRandomUniformDistributedList( count, fromKm, toKm )
                 break;
 
         }

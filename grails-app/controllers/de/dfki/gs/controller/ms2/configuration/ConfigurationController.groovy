@@ -1,6 +1,6 @@
 package de.dfki.gs.controller.ms2.configuration
 
-import de.dfki.gs.controller.commands.ShowInfoStationsCommandObject
+import de.dfki.gs.controller.ms2.configuration.commands.ShowInfoStationsCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.AddCarsToFleedCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.AddFleetToConfigurationCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.AddGroupToConfigurationCommandObject

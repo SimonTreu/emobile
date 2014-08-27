@@ -7,6 +7,7 @@ import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
 import de.dfki.gs.domain.simulation.FillingStation
+import de.dfki.gs.domain.simulation.FillingStationGroup
 import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.domain.simulation.Route
@@ -999,6 +1000,14 @@ class RouteService {
         return routes
     }
 
+    public FillingStationGroup createRandomPositionsForFillingStations( Long groupId ) {
+
+        FillingStationGroup group = FillingStationGroup.get( groupId )
+
+        // TODO: impl distribution conform positions
+
+        return group
+    }
 
     public Fleet createRandomDistanceRoutesForFleet( Long fleetId ) {
 

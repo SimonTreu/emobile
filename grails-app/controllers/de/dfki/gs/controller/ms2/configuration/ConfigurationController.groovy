@@ -13,6 +13,7 @@ import de.dfki.gs.controller.ms2.configuration.commands.CreateFleetForConfigurat
 import de.dfki.gs.controller.ms2.configuration.commands.CreateGroupSelectorCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.CreateRouteSelectorCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.DistributionForFleetCommandObject
+import de.dfki.gs.controller.ms2.configuration.commands.DistributionForGroupCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditCarTypeCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditConfigurationStubCommandObject
 import de.dfki.gs.controller.ms2.configuration.commands.EditFillingStationCommandObject
@@ -524,6 +525,7 @@ class ConfigurationController {
 
             m.groupTypes = configurationService.getFillingStationsFromGroupTypeOrdered( cmd.groupId )
 
+            m.distributions = Distribution.values() - Distribution.SELF_MADE_ROUTES
 
             render template: '/templates/configuration/group/distribution', model: m
 
@@ -599,6 +601,39 @@ class ConfigurationController {
         } else {
 
             configurationService.setDistributionForFleet( cmd.selectedDist, cmd.fleetId, cmd.fromKm, cmd.toKm )
+
+        }
+
+        redirect( controller: 'configuration', action: 'index', params: [ configurationStubId : cmd.configurationStubId ] )
+    }
+
+    /**
+     * TODO: adapt impl to filling station groups
+     *
+     * @return
+     */
+    def setDistributionForGroup() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        log.error( "params: ${params}" )
+
+        DistributionForGroupCommandObject cmd = new DistributionForGroupCommandObject()
+        bindData( cmd, params )
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to validate distribution for group: ${cmd.errors}" )
+
+        } else {
+
+            configurationService.setDistributionForGroup( cmd.selectedDist, cmd.groupId )
 
         }
 

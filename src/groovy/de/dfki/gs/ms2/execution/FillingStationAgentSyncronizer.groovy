@@ -5,6 +5,7 @@ import de.dfki.gs.model.elements.FillingStationStatus
 import de.dfki.gs.utils.Calculater
 import org.apache.commons.logging.LogFactory
 
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
 /**
@@ -22,14 +23,17 @@ class FillingStationAgentSyncronizer {
      */
     ConcurrentMap<Long, EFillingStationAgent> fillingStationAgentsMap;
 
-    Map<Long,EFillingStationAgent> unroutableStations
+    ConcurrentHashMap<Long,EFillingStationAgent> unroutableStations
+
+    ConcurrentHashMap<Long,List<Long>> unroutableStationByCars
 
     public FillingStationAgentSyncronizer(
                 ConcurrentMap<Long,EFillingStationAgent> fillingStationAgentsMap
     ) {
 
         this.fillingStationAgentsMap = fillingStationAgentsMap
-        unroutableStations = new HashMap<Long,EFillingStationAgent>()
+        unroutableStations = new ConcurrentHashMap<Long,EFillingStationAgent>()
+        unroutableStationByCars = new ConcurrentHashMap<Long,List<Long>>()
 
     }
 
@@ -92,20 +96,33 @@ class FillingStationAgentSyncronizer {
 
             } else {
 
-                log.error( "${failedToRouteCount} times failed to route to ${fsAgent.personalId} -- skipped" )
-                if ( fsAgent.getFillingStationStatus() == FillingStationStatus.FREE ) {
+                // log.error( "${failedToRouteCount} times failed to route to ${fsAgent.personalId} -- skipped" )
+
+                List<Long> failedCars = unroutableStationByCars.get( fsAgent.stationId )
+
+                if ( failedCars == null ) {
+                    unroutableStationByCars.put( fsAgent.stationId, new ArrayList<Long>() )
+                }
+
+                if ( !unroutableStationByCars.get( fsAgent.stationId ).contains( reservedForAgentId ) ) {
+                    unroutableStationByCars.get( fsAgent.stationId ).add( reservedForAgentId )
+                }
+
+                if ( fsAgent.geteFillingStationAgentResult() == FillingStationStatus.FREE
+                        && unroutableStationByCars.get( fsAgent ).size() > 10 ) {
 
                     fsAgent.finish()
                     unroutableStations.put( fsAgent.stationId, fsAgent )
                     fillingStationAgentsMap.remove( fsAgent.getStationId() )
 
+                    log.error( "FillingStations ${fsAgent.stationId} unroutable for 10 cars -> removed from sim" )
                 }
 
             }
 
 
         }
-
+        // log.error( unroutableStationByCars )
         return lastFreeAgent
     }
 

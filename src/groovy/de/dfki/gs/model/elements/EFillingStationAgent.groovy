@@ -153,6 +153,8 @@ class EFillingStationAgent extends Agent {
         synchronized ( getClass() ) {
             this.fillingStationStatus = fillingStationStatus
             this.reservedByAgentId = reservedByAgentId
+
+            log.debug( "fs ${personalId} set to ${fillingStationStatus}  from car ${reservedByAgentId}" )
         }
 
     }

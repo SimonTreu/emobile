@@ -21,14 +21,14 @@ class FillingStationAgentSyncronizer {
     /**
      * real filling stations ( fillingStation.id -> fillingStationAgent )
      */
-    ConcurrentMap<Long, EFillingStationAgent> fillingStationAgentsMap;
+    Map<Long, EFillingStationAgent> fillingStationAgentsMap;
 
     ConcurrentHashMap<Long,EFillingStationAgent> unroutableStations
 
     ConcurrentHashMap<Long,List<Long>> unroutableStationByCars
 
     public FillingStationAgentSyncronizer(
-                ConcurrentMap<Long,EFillingStationAgent> fillingStationAgentsMap
+                Map<Long,EFillingStationAgent> fillingStationAgentsMap
     ) {
 
         this.fillingStationAgentsMap = fillingStationAgentsMap
@@ -55,17 +55,19 @@ class FillingStationAgentSyncronizer {
                                     long reservedForAgentId,
                                     float currentLon,
                                     float currentLat,
-                                    float radius ) {
+                                    float radius,
+                                    List<Long> excludedStationIds ) {
 
 
         EFillingStationAgent lastFreeAgent = null
         float minDistance = Float.MAX_VALUE
 
+        // TODO: CHECK BREAKPOINT
         for ( EFillingStationAgent fsAgent : fillingStationAgentsMap.values() ) {
 
             int failedToRouteCount = fsAgent.getFailedToRouteCount()
 
-            if ( failedToRouteCount <= 1 ) {
+            if ( failedToRouteCount <= 1 && !excludedStationIds.contains( fsAgent.stationId ) ) {
 
                 // in [ km ]
                 float currentDistance = Calculater.haversine( currentLat, currentLon, fsAgent.lon, fsAgent.lat )
@@ -74,7 +76,7 @@ class FillingStationAgentSyncronizer {
 
 
                 if ( currentDistance <= radius && currentDistance <= minDistance
-                        && fsAgent.getFillingStationStatus() == FillingStationStatus.FREE
+                        && fsAgent.fillingStationStatus.equals( FillingStationStatus.FREE )
                 ) {
 
                     // set new minDistance

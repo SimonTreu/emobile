@@ -275,6 +275,7 @@ class BootStrap {
                 name: "Dfki-Group One",
                 stub: false,
                 groupsConfigured: false,
+                distribution: Distribution.SELF_MADE_ROUTES,
                 groupStatus: GroupStatus.NOT_CONFIGURED,
         )
 
@@ -322,6 +323,7 @@ class BootStrap {
                 name: "Dfki-Group Two",
                 stub: false,
                 groupsConfigured: false,
+                distribution: Distribution.SELF_MADE_ROUTES,
                 groupStatus: GroupStatus.NOT_CONFIGURED
         )
 

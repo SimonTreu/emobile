@@ -6,6 +6,9 @@ import de.dfki.gs.domain.simulation.Car
 import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
+import de.dfki.gs.domain.simulation.FillingStation
+import de.dfki.gs.domain.simulation.FillingStationGroup
+import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.domain.simulation.Route
 import de.dfki.gs.domain.simulation.Simulation
@@ -87,10 +90,15 @@ class RouteService {
 
     Car persistRouteToCar( Car car, List<List<BasicEdge>> multiTargetRoute, boolean flush = true ) {
 
-        int routeIdx = 0;
+        int listIdx = 0;
 
 
         Route route = new Route()
+        if ( !route.save( flush: true ) ) {
+
+            log.error( "failed to initially save route: ${route.errors}" )
+
+        }
 
         for ( List<BasicEdge> edges : multiTargetRoute ) {
 
@@ -116,17 +124,18 @@ class RouteService {
 
                 // default is "normal" edge
                 TrackEdgeType edgeType = TrackEdgeType.normal
-                if ( routeIdx == 0 && edgeIdx == 0 ) {
+                if ( listIdx == 0 && edgeIdx == 0 ) {
                     edgeType = TrackEdgeType.start
                 }
-                if ( routeIdx > 0 && edgeIdx == 0 ) {
+                if ( listIdx > 0 && edgeIdx == 0 ) {
                     edgeType = TrackEdgeType.via_target
                 }
-                if ( routeIdx == multiTargetRoute.size() - 1 && edgeIdx == edges.size() - 1 ) {
+                if ( listIdx == multiTargetRoute.size() - 1 && edgeIdx == edges.size() - 1 ) {
                     edgeType = TrackEdgeType.target
                 }
 
                 TrackEdge trackEdge = new TrackEdge(
+                        routeId: route.id,
                         type: edgeType,
                         fromLat: from.getY(),
                         fromLon: from.getX(),
@@ -146,7 +155,7 @@ class RouteService {
 
             log.debug( "need ${(System.currentTimeMillis()-millis)} ms to save list of edges for one part of sim Route" )
 
-            routeIdx++
+            listIdx++
         }
 
         if ( !route.save( flush: true ) ) {
@@ -789,7 +798,8 @@ class RouteService {
 
             }
         } catch (  Exception e  ) {
-            log.error( "failed to get path from astar algorithm", e )
+            log.error( "failed to get path from astar algorithm" )
+            log.debug( e )
         }
 
 
@@ -912,6 +922,13 @@ class RouteService {
             int routeIdx = 0;
 
             Route route = new Route()
+            // save route to have id
+            if ( !route.save( flush: true ) ) {
+
+                log.error( "failed to initially save route: ${route.errors}" )
+
+            }
+
 
             for ( List<BasicEdge> partOfMultiTargetRoute : multiTargetRoute ) {
 
@@ -949,6 +966,7 @@ class RouteService {
                     }
 
                     TrackEdge trackEdge = new TrackEdge(
+                            routeId: route.id,
                             type: edgeType,
                             fromLat: from.getY(),
                             fromLon: from.getX(),
@@ -983,6 +1001,92 @@ class RouteService {
         return routes
     }
 
+
+
+    public FillingStationGroup createGaussianDistributedFillingStations( FillingStationGroup group ) {
+
+        Graph graph = getFeatureGraph( "osmGraph" )
+
+        // TODO: impl distribution conform positions
+        Collection<org.geotools.graph.structure.Node> nodes = (Collection<org.geotools.graph.structure.Node>) graph.getNodes();
+        List<Coordinate> coordinates = new ArrayList<Coordinate>();
+
+
+        // determine center for mean
+        for ( org.geotools.graph.structure.Node node : nodes ) {
+            Point point = (Point) node.getObject();
+            coordinates.add( point.coordinate );
+        }
+        Coordinate center = Calculater.centerOfArea( coordinates );
+
+        int count = group.fillingStations.size();
+        double[][] samples = statisticService.generateRandomGaussianVectors( count, center.x, center.y, 0.04, 0.06 )
+
+        int cc = 0;
+        for ( FillingStation fillingStation : group.fillingStations ) {
+
+            fillingStation = FillingStation.get( fillingStation.id )
+
+            org.geotools.graph.structure.Node n = findClosestNode( new Coordinate( samples[ 0 ][ cc ], samples[ 1 ][ cc ] ), graph );
+
+            Point p = (Point) n.getObject()
+            fillingStation.lat = p.x
+            fillingStation.lon = p.y
+
+            fillingStation.groupsConfigured = true
+
+            if ( !fillingStation.save( flush: true ) ) {
+                log.error( "failed to update fillingStation: ${fillingStation.errors}" )
+            }
+
+            cc++;
+        }
+
+        group.groupsConfigured = true
+        group.groupStatus = GroupStatus.CONFIGURED
+
+        if ( !group.save( flush: true ) ) {
+            log.error( "failed to update fillingStationGroup: ${group.errors}" )
+        }
+
+        return group
+    }
+
+    public FillingStationGroup createEqualDistributedFillingStations( FillingStationGroup group ) {
+
+        Graph graph = getFeatureGraph( "osmGraph" )
+
+        // TODO: impl distribution conform positions
+        Collection<org.geotools.graph.structure.Node> nodes = (Collection<org.geotools.graph.structure.Node>) graph.getNodes();
+
+
+
+        return group
+    }
+
+    public FillingStationGroup createRandomPositionsForFillingStations( Long groupId ) {
+
+        FillingStationGroup group = FillingStationGroup.get( groupId )
+
+        if ( group.distribution == Distribution.NORMAL_DISTRIBUTION ) {
+
+            group = createGaussianDistributedFillingStations( group );
+
+        } else if ( group.distribution == Distribution.EQUAL_DISTRIBUTION ) {
+
+            // TODO: implement me!
+            group = createEqualDistributedFillingStations( group );
+
+        }
+
+
+
+
+
+        log.error( "hua!" )
+
+        return group
+    }
 
     public Fleet createRandomDistanceRoutesForFleet( Long fleetId ) {
 
@@ -1526,6 +1630,37 @@ class RouteService {
         return repairEdges( routeToTarget )
     }
 
+
+    public List<FillingStation> findNClosestFillingStations( double lat, double lon, List<Long> fillingStationIds, int max ) {
+
+        if ( max > fillingStationIds.size() ) {
+            max = fillingStationIds.size()
+        }
+
+        List<Long> stationIds = new ArrayList<Long>();
+
+        GasolineStation station = findClosestGasolineStation( lat, lon, stations );
+        stationIds.add( station )
+
+        List<GasolineStation> currentList = new ArrayList<GasolineStation>( stations );
+
+        for ( int i = 0; i < (max-1); i++ ) {
+
+            currentList.remove( station )
+
+            currentList = new ArrayList<GasolineStation>( currentList )
+
+            station = findClosestGasolineStation( lat, lon, currentList )
+
+            stationIds.add( station )
+
+        }
+
+        return stationIds
+
+
+    }
+
     public List<GasolineStation> findNClosestGasolineStations( double lat, double lon, List<GasolineStation> stations, int max ) {
 
         if ( max > stations.size() ) {
@@ -1704,7 +1839,8 @@ class RouteService {
 
             }
         } catch (  Exception e  ) {
-            log.error( "failed to get path from astar algorithm", e )
+            log.error( "failed to get path from astar algorithm" )
+            log.debug( e )
         }
 
 

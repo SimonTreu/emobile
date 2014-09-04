@@ -1,6 +1,8 @@
 package de.dfki.gs.domain.simulation
 
 import de.dfki.gs.domain.users.Company
+import de.dfki.gs.domain.utils.Distribution
+import de.dfki.gs.domain.utils.FleetStatus
 import de.dfki.gs.domain.utils.GroupStatus
 
 class FillingStationGroup {
@@ -14,6 +16,12 @@ class FillingStationGroup {
     GroupStatus groupStatus
     Boolean stub
     Boolean groupsConfigured
+
+    Date dateCreated
+    Date lastUpdated
+
+
+    Distribution distribution
 
     static hasMany = [
             fillingStations : FillingStation

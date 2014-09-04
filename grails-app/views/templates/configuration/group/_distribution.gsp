@@ -64,36 +64,45 @@
                         <div class="tab">
 
                             <div id="tab-1" class="tab-content">
-                                <br>
-                                <div class="contentLeft3">
-                                    <div class="rowUp">
-                                        <div class="leftbig">Electric stations settings:</div>
-                                    </div>
-                                    <div class="rowMiddle">
-                                        <div class="leftDistributionFile2">
-                                            <br>
-                                            <g:radio name="myGroup" value="1" label="Random Stations"/><span> Random Stations - ${groupNumber.value.size()} stations</span>
-                                            <br><br>
-                                            <g:radio name="myGroup" value="2" label="Random Stations"/><span> Public Stations - 142 stations</span>
-                                            <br><br>
-                                        </div>
-                                        <div class="rightDistribution">
 
-                                        </div>
+                                <g:form controller="configuration" action="setDistributionForGroup">
+                                    <div class="rowSpace">
                                         <div class="clear"></div>
                                     </div>
+                                    <div class="contentLeft1">
+                                        <div class="rowUp">
+                                            <div class="leftbig">Distribution settings:</div>
+                                        </div>
+                                        <div class="rowMiddle">
+                                            <div class="leftDistribution">
+                                                <g:message code="templates.configuration.fleet._distribution.selectdistribution"/>
+                                            </div>
+                                            <div class="rightDistribution">
+                                                <g:select name="selectedDist" from="${distributions}" optionKey="key" optionValue="${it}" />
+                                            </div>
+                                            <div class="clear"></div>
+                                        </div>
 
-                                    <div class="rowDown">
-                                        <div class="leftLongBold"></div>
-                                        <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
-                                        <g:hiddenField name="groupId" value="${groupId}"/>
-                                        <div class="right2-bottomed">
-                                            <g:submitButton name="setDistribution" value="Save stations"/>
+                                        <div class="rowMiddle">
+
+                                            <div class="clear"></div>
                                         </div>
 
                                         <div class="clear"></div>
+
+                                        <div class="rowDown">
+                                            <div class="leftLongBold"></div>
+                                            <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
+                                            <g:hiddenField name="groupId" value="${groupId}"/>
+                                            <div class="right2-bottomed">
+                                                <g:submitButton name="setDistribution" value="Save Distribution for Group"/>
+                                            </div>
+
+                                            <div class="clear"></div>
+                                        </div>
                                     </div>
-                                </div>
+                                </g:form>
+
                             </div>
 
                             <div id="tab-2" class="tab-content">

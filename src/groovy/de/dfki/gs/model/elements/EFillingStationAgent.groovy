@@ -2,6 +2,8 @@ package de.dfki.gs.model.elements
 
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
+import de.dfki.gs.domain.simulation.FillingStation
+import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.model.elements.results.EFillingStationAgentResult
 
 /**
@@ -26,11 +28,47 @@ class EFillingStationAgent extends Agent {
     // in kW per second
     Double fillingPortion
 
+    private long fillingStationId
+
+    private long reservedByAgentId
+
+
+    private float lon
+    private float lat
+
+    private int failedToRouteCount
 
     long timeInUse = 0;
 
+    private long stationId
 
     private EFillingStationAgent() {}
+
+    public static EFillingStationAgent createFillingStationAgentFromFillingStation(
+                    FillingStation fillingStation,
+                    FillingStationType stationType ) {
+
+
+        EFillingStationAgent agent = new EFillingStationAgent();
+
+
+        agent.stationId = fillingStation.id
+        agent.eFillingStationAgentResult = new EFillingStationAgentResult( gasolineStationType: stationType.power );
+
+        agent.gasolineStationType = stationType.power;
+        agent.fillingStationStatus = FillingStationStatus.FREE;
+
+        agent.lat = fillingStation.lat
+        agent.lon = fillingStation.lon
+
+        double fillingPortion = 0.0001
+        // calculate filling Portion
+        agent.fillingPortion = stationType.fillingPortion
+
+        agent.failedToRouteCount = 0
+
+        return agent;
+    }
 
     public static EFillingStationAgent createFillingStationAgent( GasolineStation station ) {
 
@@ -68,6 +106,7 @@ class EFillingStationAgent extends Agent {
         }
 
         agent.fillingPortion = fillingPortion
+        agent.reservedByAgentId = -1
 
         return agent;
     }
@@ -95,15 +134,48 @@ class EFillingStationAgent extends Agent {
         return fillingStationStatus
     }
 
-    void setFillingStationStatus(FillingStationStatus fillingStationStatus) {
+    synchronized int getFailedToRouteCount() {
+
+        return failedToRouteCount
+
+    }
+
+    void updateFailedToRouteCount( long byAgentId ) {
+
+        synchronized ( getClass() ) {
+            this.failedToRouteCount++
+        }
+
+    }
+
+    void setFillingStationStatus( FillingStationStatus fillingStationStatus, long reservedByAgentId ) {
 
         synchronized ( getClass() ) {
             this.fillingStationStatus = fillingStationStatus
+            this.reservedByAgentId = reservedByAgentId
+
+            log.debug( "fs ${personalId} set to ${fillingStationStatus}  from car ${reservedByAgentId}" )
         }
 
     }
 
     EFillingStationAgentResult geteFillingStationAgentResult() {
         return eFillingStationAgentResult
+    }
+
+    long getReservedByAgentId() {
+        return reservedByAgentId
+    }
+
+    float getLon() {
+        return lon
+    }
+
+    float getLat() {
+        return lat
+    }
+
+    long getStationId() {
+        return stationId
     }
 }

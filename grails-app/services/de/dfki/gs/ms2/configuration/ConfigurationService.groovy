@@ -565,6 +565,7 @@ class ConfigurationService {
                 company: company,
                 name: generatedFleetName,
                 groupStatus: GroupStatus.NOT_CONFIGURED,
+                distribution: Distribution.NOT_ASSIGNED,
                 groupsConfigured: false,
                 stub: true
         )
@@ -757,6 +758,16 @@ class ConfigurationService {
 
         }
 
+        configurationStubToSave.fillingStationGroups.each { FillingStationGroup group ->
+
+            group = FillingStationGroup.get( group.id )
+
+            if ( group.groupStatus == GroupStatus.SCHEDULED_FOR_CONFIGURING ) {
+                group = routeService.createRandomPositionsForFillingStations( group.id )
+            }
+
+        }
+
 
 
         if ( !configurationStubToSave.save( flush: true ) ) {
@@ -819,6 +830,26 @@ class ConfigurationService {
         }
 
         return cars
+    }
+
+
+    def setDistributionForGroup( Distribution distribution, Long groupId ) {
+
+        FillingStationGroup group = FillingStationGroup.get( groupId )
+
+        group.distribution = distribution
+        group.groupsConfigured = false
+
+
+        group.groupStatus = GroupStatus.SCHEDULED_FOR_CONFIGURING
+
+        if ( !group.save( flush: true ) ) {
+
+            log.error( "failed to save fleet: ${group.errors}" )
+
+        }
+
+
     }
 
     def setDistributionForFleet( Distribution distribution, Long fleetId, Integer fromKm, Integer toKm ) {

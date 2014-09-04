@@ -7,6 +7,7 @@ import de.dfki.gs.model.elements.results.CarAgentResult
 import de.dfki.gs.ms2.execution.FillingStationAgentSyncronizer
 import de.dfki.gs.service.RouteService
 import de.dfki.gs.simulation.CarStatus
+import de.dfki.gs.utils.Calculater
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
@@ -84,6 +85,8 @@ class CarAgent extends Agent {
     int fillingStationsVisited = 0;
     double energyLoaded = 0;
     double energyConsumed = 0;
+
+    List<Long> unroutableCurrentStations = new ArrayList<Long>()
 
 
     /**
@@ -215,9 +218,36 @@ class CarAgent extends Agent {
 
                 if ( currentFillingStationToRouteFor == null ) {
 
+
+                    // TODO: try to exclude unroutable filling stations for the current search process
                     configureRouteToFillingStationAndBack()
 
                 }
+
+                // debug
+                /*
+                if ( currentFillingStationToRouteFor != null ) {
+
+                    log.error( "FS: ${currentFillingStationToRouteFor.lat} ${currentFillingStationToRouteFor.lon}" )
+
+                    StringBuilder sb = new StringBuilder();
+                    int i = currentEdgeIndex;
+                    boolean ff = true;
+                    while ( ff ) {
+                        sb.append( " ( " )
+                        sb.append( routingPlan.trackEdges.get( i ).fromLon ).append( " " ).append( routingPlan.trackEdges.get( i ).fromLat )
+                        sb.append( " ) " )
+
+                        if ( routingPlan.trackEdges.get( i ).type.toString().equals( TrackEdgeType.via_target.toString() ) ) {
+                            ff = false
+                        }
+                        i++
+                    }
+
+                    log.error( "track to.. : ${sb.toString()}" )
+
+                }
+                */
 
                 moveCar( currentTimeStamp )
 
@@ -230,6 +260,11 @@ class CarAgent extends Agent {
                 } else {
 
                     double batChargePercentage = ( modelCar.getCurrentEnergy() / modelCar.getMaxEnergy() ) * 100
+                    // TODO: CHECK IF THAT COMES TRUE ??
+                    if ( currentFillingStationToRouteFor == null ) {
+                        log.error( "shit! that should never happen! (fs is null)" )
+                    }
+
 
                     if ( batChargePercentage >= 0 && currentFillingStationToRouteFor && onStation() ) {
 
@@ -251,7 +286,7 @@ class CarAgent extends Agent {
 
                     } else if ( batChargePercentage < 0 ) {
 
-                        log.error( "Soc: ${batChargePercentage}" )
+                        log.debug( "Soc: ${batChargePercentage}" )
 
                         if ( currentFillingStationToRouteFor ) {
                             FillingStationAgentSyncronizer.setFillingStationToFree( currentFillingStationToRouteFor )
@@ -276,6 +311,8 @@ class CarAgent extends Agent {
 
                     modelCar.currentEnergy = modelCar.maxEnergy
                     timeStampForNextActionAllowed = currentTimeStamp + 1
+
+                    log.error( "car ${personalId} (${modelCar.carName})  fully loaded SOC ( ${( modelCar.getCurrentEnergy() / modelCar.getMaxEnergy() ) * 100} )" )
 
                     carStatus = CarStatus.DRIVING_FULL
                     fillingStationsVisited++;
@@ -309,13 +346,16 @@ class CarAgent extends Agent {
      */
     private void configureRouteToFillingStationAndBack() {
 
+        log.error( "${personalId} tries to get a filling station" )
+
         long millis = System.currentTimeMillis()
 
         EFillingStationAgent eFillingStationAgent = syncronizer.reserveFreeFillingStationAgentInRadius(
                 this.personalId,
                 this.currentEdge.toLon,
                 this.currentEdge.toLat,
-                10                      // [ km ]
+                30,                      // [ km ]
+                this.unroutableCurrentStations
         )
 
         long millis2 = System.currentTimeMillis()
@@ -327,13 +367,16 @@ class CarAgent extends Agent {
             List<BasicEdge> routeToEnergy = routeService.routeToTarget(
                     currentEdge.toLat,
                     currentEdge.toLon,
-                    eFillingStationAgent.lat,
-                    eFillingStationAgent.lon
+                    eFillingStationAgent.lon,
+                    eFillingStationAgent.lat
             )
 
             if ( routeToEnergy.size() == 0 ) {
 
                 // skip, no route found to efillingStationAgent
+
+                unroutableCurrentStations.add( eFillingStationAgent.stationId )
+
                 FillingStationAgentSyncronizer.updateFailedToRouteCount( eFillingStationAgent, personalId )
                 FillingStationAgentSyncronizer.setFillingStationToFree( eFillingStationAgent )
 
@@ -357,13 +400,15 @@ class CarAgent extends Agent {
                 }
 
                 List<BasicEdge> routeToTarget = routeService.routeToTarget(
-                        eFillingStationAgent.lat,
                         eFillingStationAgent.lon,
+                        eFillingStationAgent.lat,
                         backEdge.toLat,
                         backEdge.toLon
                 )
 
                 if ( routeToTarget.size() == 0 ) {
+
+                    unroutableCurrentStations.add( eFillingStationAgent.stationId )
 
                     // skip, no route found back to next target
                     FillingStationAgentSyncronizer.updateFailedToRouteCount( eFillingStationAgent, personalId )
@@ -451,13 +496,14 @@ class CarAgent extends Agent {
                     routeSent = false
                     currentFillingStationToRouteFor = eFillingStationAgent
 
+                    unroutableCurrentStations = new ArrayList<Long>()
                 }
 
             }
 
         }
 
-        log.error( "needed ${ System.currentTimeMillis() - millis } ms for planning routes to FS and back" )
+        log.debug( "needed ${ System.currentTimeMillis() - millis } ms for planning routes to FS and back" )
 
     }
 
@@ -525,13 +571,36 @@ class CarAgent extends Agent {
 
     }
 
-
-
+    /**
+     *  close enough is defined by 30 m
+     *  after switching all double datatypes to float, no car reached a filling station anymore
+     *
+     * @return true if car is close enough to fillingStation ( 30m )
+     */
     boolean onStation() {
 
+        /*
+        log.error( "currentEdge x: ${currentEdge.fromLat}   y: ${currentEdge.fromLon}" )
+        log.error( "currentEdge x: ${currentEdge.toLat}   y: ${currentEdge.toLon}" )
+        log.error( "fs is:      x: ${currentFillingStationToRouteFor.lon}   y: ${currentFillingStationToRouteFor.lat}" )
+        */
+
+
         return ( currentFillingStationToRouteFor && (
-                ( currentEdge.fromLat == currentFillingStationToRouteFor.lat && currentEdge.fromLon == currentFillingStationToRouteFor.lon ) ||
-                        ( currentEdge.toLat == currentFillingStationToRouteFor.lat && currentEdge.toLon == currentFillingStationToRouteFor.lon ) ) )
+                    (Calculater.haversine(
+                        currentFillingStationToRouteFor.lat, currentFillingStationToRouteFor.lon,
+                        currentEdge.fromLon, currentEdge.fromLat
+                    ) < 0.03)||
+                    (Calculater.haversine(
+                            currentFillingStationToRouteFor.lat, currentFillingStationToRouteFor.lon,
+                            currentEdge.toLon, currentEdge.toLat
+                    ) < 0.03)
+        ) )
+        /*
+        return ( currentFillingStationToRouteFor && (
+                ( currentEdge.fromLat == currentFillingStationToRouteFor.lon && currentEdge.fromLon == currentFillingStationToRouteFor.lat ) ||
+                        ( currentEdge.toLat == currentFillingStationToRouteFor.lon && currentEdge.toLon == currentFillingStationToRouteFor.lat ) ) )
+        */
     }
 
 

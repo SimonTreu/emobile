@@ -1,4 +1,4 @@
-<%@ page import="org.jfree.data.time.*; de.dfki.gs.domain.GasolineStation; de.dfki.gs.domain.simulation.CarType;  java.util.Date;" contentType="text/html;charset=UTF-8" %>
+<%@ page import="org.jfree.data.time.*; de.dfki.gs.domain.CarSharingCars; de.dfki.gs.domain.simulation.CarType;  java.util.Date;" contentType="text/html;charset=UTF-8" %>
 
 <html>
 <head>
@@ -46,45 +46,7 @@
 
 <div id="gmap_div"></div>
 
-    <div id="gv_infobox" class="gv_infobox" style="font:11px Arial; border:solid #666666 1px; background:#ffffff; padding:4px; overflow:auto; display:none; float:right; ">
-        <div id="gv_legend_header" style="padding-bottom:2px;"><b>Loading Time in %</b></div>
-<g:each in="${legendGroups}" var="legendGroup">
-    <g:if test="${((legendGroup.count > 0) && (legendGroup.name=='0-10') )}" >
-        <div class="gv_legend_item"><span style="color: #00FF00;">&#9608; ${legendGroup.name}</span></div>
-    </g:if>
-    <g:if test="${((legendGroup.count > 0) && (legendGroup.name=='11-20') )}" >
-        <div class="gv_legend_item"><span style="color: #47FF00;">&#9608; ${legendGroup.name}</span></div>
-    </g:if>
-    <g:if test="${((legendGroup.count > 0) && (legendGroup.name=='21-30') )}" >
-        <div class="gv_legend_item"><span style="color: #B0FF00;">&#9608; ${legendGroup.name}</span></div>
-    </g:if>
-    <g:if test="${((legendGroup.count > 0) && (legendGroup.name=='31-40') )}" >
-        <div class="gv_legend_item"><span style="color: #E5FF00;">&#9608; ${legendGroup.name}</span></div>
-    </g:if>
-    <g:if test="${((legendGroup.count > 0) && (legendGroup.name=='41-50') )}" >
-        <div class="gv_legend_item"><span style="color: #FFE400;">&#9608; ${legendGroup.name}</span></div>
-    </g:if>
-    <g:if test="${((legendGroup.count > 0) && (legendGroup.name=='51-60') )}" >
-        <div class="gv_legend_item"><span style="color: #FFAF00;">&#9608; ${legendGroup.name}</span></div>
-    </g:if>
-    <g:if test="${((legendGroup.count > 0) && (legendGroup.name=='61-70') )}" >
-        <div class="gv_legend_item"><span style="color: #FF7B00;">&#9608; ${legendGroup.name}</span></div>
-    </g:if>
-    <g:if test="${((legendGroup.count > 0) && (legendGroup.name=='71-80') )}" >
-        <div class="gv_legend_item"><span style="color: #FF4600;">&#9608; ${legendGroup.name}</span></div>
-    </g:if>
-    <g:if test="${((legendGroup.count > 0) && (legendGroup.name=='81-90') )}" >
-        <div class="gv_legend_item"><span style="color: #FF1100;">&#9608; ${legendGroup.name}</span></div>
-    </g:if>
-    <g:if test="${((legendGroup.count > 0) && (legendGroup.name=='91-100') )}" >
-        <div class="gv_legend_item"><span style="color: #FF0000;">&#9608; ${legendGroup.name}</span></div>
-    </g:if>
 
-
-</g:each>
-
-
- </div>
 
 
 <div id="gv_marker_list" class="gv_marker_list" style="background:#ffffff; overflow:auto; display:none;"><!-- --></div>

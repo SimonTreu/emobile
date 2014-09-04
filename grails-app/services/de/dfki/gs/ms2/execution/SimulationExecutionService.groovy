@@ -13,6 +13,7 @@ import de.dfki.gs.model.elements.Agent
 import de.dfki.gs.model.elements.CarAgent
 import de.dfki.gs.model.elements.EFillingStationAgent
 import de.dfki.gs.model.elements.EnergyConsumptionModel
+import de.dfki.gs.model.elements.FillingStationStatus
 import de.dfki.gs.model.elements.ModelCar
 import de.dfki.gs.model.elements.RoutingPlan
 import de.dfki.gs.model.elements.results.CarAgentResult
@@ -109,11 +110,22 @@ class SimulationExecutionService {
             log.error( "no threads found for session: ${sessionId}" )
         }
 
-        log.error( "checker.." )
+        log.error( "init checker.." )
 
         boolean allRoutesFinished = false;
 
         while ( !allRoutesFinished ) {
+
+            int countP = 0;
+            for ( EFillingStationAgent fillingStationAgent : fillingStationsMap.values() ) {
+
+                if ( fillingStationAgent.fillingStationStatus == FillingStationStatus.IN_USE ) {
+                    countP++;
+                }
+
+            }
+
+            //log.error( "${countP} Filling Stations in use paralell" )
 
             for ( CarAgent agent : carAgentsMap.values() ) {
 
@@ -223,6 +235,16 @@ class SimulationExecutionService {
             }
         }
 
+        for ( CarAgent carAgent : carAgentMap.values() ) {
+
+            if ( carAgent.carStatus == CarStatus.MISSION_ACCOMBLISHED ) {
+                log.error( "car ${carAgent.personalId} (${carAgent.modelCar.carName}) reached target " )
+            } else {
+                log.error( "car ${carAgent.personalId} (${carAgent.modelCar.carName}) FAILED" )
+            }
+
+        }
+
         // TODO: implement with new sim model
         experimentRunResultId = experimentDataService.saveExperimentResult( carAgentResults, fillingResults, relativeSearchLimit, simTimeMillis )
 
@@ -277,7 +299,7 @@ class SimulationExecutionService {
 
         }
 
-        ConcurrentMap<Long, EFillingStationAgent> fillingStationMap = new ConcurrentHashMap<Long, EFillingStationAgent>()
+        Map<Long, EFillingStationAgent> fillingStationMap = new HashMap<Long, EFillingStationAgent>()
 
         long mmm = System.currentTimeMillis();
         for ( FillingStation station : fillingStations ) {

@@ -90,7 +90,7 @@ class RouteService {
 
     Car persistRouteToCar( Car car, List<List<BasicEdge>> multiTargetRoute, boolean flush = true ) {
 
-        int routeIdx = 0;
+        int listIdx = 0;
 
 
         Route route = new Route()
@@ -124,13 +124,13 @@ class RouteService {
 
                 // default is "normal" edge
                 TrackEdgeType edgeType = TrackEdgeType.normal
-                if ( routeIdx == 0 && edgeIdx == 0 ) {
+                if ( listIdx == 0 && edgeIdx == 0 ) {
                     edgeType = TrackEdgeType.start
                 }
-                if ( routeIdx > 0 && edgeIdx == 0 ) {
+                if ( listIdx > 0 && edgeIdx == 0 ) {
                     edgeType = TrackEdgeType.via_target
                 }
-                if ( routeIdx == multiTargetRoute.size() - 1 && edgeIdx == edges.size() - 1 ) {
+                if ( listIdx == multiTargetRoute.size() - 1 && edgeIdx == edges.size() - 1 ) {
                     edgeType = TrackEdgeType.target
                 }
 
@@ -155,7 +155,7 @@ class RouteService {
 
             log.debug( "need ${(System.currentTimeMillis()-millis)} ms to save list of edges for one part of sim Route" )
 
-            routeIdx++
+            listIdx++
         }
 
         if ( !route.save( flush: true ) ) {
@@ -798,7 +798,8 @@ class RouteService {
 
             }
         } catch (  Exception e  ) {
-            log.error( "failed to get path from astar algorithm", e )
+            log.error( "failed to get path from astar algorithm" )
+            log.debug( e )
         }
 
 
@@ -1000,11 +1001,89 @@ class RouteService {
         return routes
     }
 
+
+
+    public FillingStationGroup createGaussianDistributedFillingStations( FillingStationGroup group ) {
+
+        Graph graph = getFeatureGraph( "osmGraph" )
+
+        // TODO: impl distribution conform positions
+        Collection<org.geotools.graph.structure.Node> nodes = (Collection<org.geotools.graph.structure.Node>) graph.getNodes();
+        List<Coordinate> coordinates = new ArrayList<Coordinate>();
+
+
+        // determine center for mean
+        for ( org.geotools.graph.structure.Node node : nodes ) {
+            Point point = (Point) node.getObject();
+            coordinates.add( point.coordinate );
+        }
+        Coordinate center = Calculater.centerOfArea( coordinates );
+
+        int count = group.fillingStations.size();
+        double[][] samples = statisticService.generateRandomGaussianVectors( count, center.x, center.y, 0.04, 0.06 )
+
+        int cc = 0;
+        for ( FillingStation fillingStation : group.fillingStations ) {
+
+            fillingStation = FillingStation.get( fillingStation.id )
+
+            org.geotools.graph.structure.Node n = findClosestNode( new Coordinate( samples[ 0 ][ cc ], samples[ 1 ][ cc ] ), graph );
+
+            Point p = (Point) n.getObject()
+            fillingStation.lat = p.x
+            fillingStation.lon = p.y
+
+            fillingStation.groupsConfigured = true
+
+            if ( !fillingStation.save( flush: true ) ) {
+                log.error( "failed to update fillingStation: ${fillingStation.errors}" )
+            }
+
+            cc++;
+        }
+
+        group.groupsConfigured = true
+        group.groupStatus = GroupStatus.CONFIGURED
+
+        if ( !group.save( flush: true ) ) {
+            log.error( "failed to update fillingStationGroup: ${group.errors}" )
+        }
+
+        return group
+    }
+
+    public FillingStationGroup createEqualDistributedFillingStations( FillingStationGroup group ) {
+
+        Graph graph = getFeatureGraph( "osmGraph" )
+
+        // TODO: impl distribution conform positions
+        Collection<org.geotools.graph.structure.Node> nodes = (Collection<org.geotools.graph.structure.Node>) graph.getNodes();
+
+
+
+        return group
+    }
+
     public FillingStationGroup createRandomPositionsForFillingStations( Long groupId ) {
 
         FillingStationGroup group = FillingStationGroup.get( groupId )
 
-        // TODO: impl distribution conform positions
+        if ( group.distribution == Distribution.NORMAL_DISTRIBUTION ) {
+
+            group = createGaussianDistributedFillingStations( group );
+
+        } else if ( group.distribution == Distribution.EQUAL_DISTRIBUTION ) {
+
+            // TODO: implement me!
+            group = createEqualDistributedFillingStations( group );
+
+        }
+
+
+
+
+
+        log.error( "hua!" )
 
         return group
     }
@@ -1760,7 +1839,8 @@ class RouteService {
 
             }
         } catch (  Exception e  ) {
-            log.error( "failed to get path from astar algorithm", e )
+            log.error( "failed to get path from astar algorithm" )
+            log.debug( e )
         }
 
 

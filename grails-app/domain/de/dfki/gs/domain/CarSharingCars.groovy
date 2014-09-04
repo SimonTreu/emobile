@@ -1,0 +1,56 @@
+package de.dfki.gs.domain
+
+import de.dfki.gs.domain.simulation.Simulation
+
+class CarSharingCars {
+
+    String name
+    String type
+
+    // filling portion per second!
+    Double fillingPortion
+
+    /**
+     * Berlin: lat: 52, lon: 13
+     */
+    Double lat
+    Double lon
+
+    Simulation simulation
+
+    /**
+     * collecting real stations via web requests
+     */
+    String ownerId
+    String ownerName
+
+    String streetName
+    String houseNumber
+
+    /**
+     * indicates how long gasoline station is in use with a car
+     * this field never gets persisted, see transients
+     *
+     */
+    Date usedUntil
+
+    /**
+     * proposed: a schedule for gasoline station, in which the car can reserve a loading time span
+     */
+
+    static transients = [ 'usedUntil' ]
+
+    static constraints = {
+
+        name ( nullable: true, blank: false )
+        type( nullable: false, blank: false, inList: GasolineStationType.values()*.toString() )
+
+        simulation ( nullable: true )
+
+        ownerId( nullable: true )
+        ownerName( nullable: true )
+
+        streetName( nullable: true )
+        houseNumber( nullable: true )
+    }
+}

@@ -25,6 +25,7 @@ class MapViewController {
 
     def routeService
     def realStationsStatsService
+    def realCarSharingStatsService
     def simulationCollectDataService
     def grailsApplication
     def springSecurityService
@@ -181,6 +182,29 @@ class MapViewController {
         else {
             redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
         }
+    }
+
+    def listCarSharingCars () {
+
+        log.error( "date params: ${params}" )
+
+        CheckDateCommand cmd = new CheckDateCommand()
+        bindData( cmd, params )
+
+        Person loggedInPerson = (Person) springSecurityService.currentUser
+
+        if (loggedInPerson!=null) {
+            def m = [:]
+
+            log.error( "XAXA1!!!!!" )
+
+            m = realCarSharingStatsService.getUsages();
+            render( view: 'openLayersCarSharingMaps', model: m )
+
+        } else {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+        }
+
     }
 
     def showCoords() {

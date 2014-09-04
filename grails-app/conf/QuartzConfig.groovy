@@ -12,7 +12,7 @@ quartz {
 environments {
     development {
         quartz {
-            autoStartup = false
+            autoStartup = true
         }
     }
 }

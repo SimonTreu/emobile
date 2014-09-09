@@ -17,7 +17,7 @@ class CarSharingCars {
     static constraints = {
 
         vin ( nullable: true, blank: true )
-        name( nullable: false, blank: false )
+        name( nullable: true, blank: true )
         ownerName( nullable: false, blank: false,  inList: CarSharingOwners.values()*.toString() )
 
     }

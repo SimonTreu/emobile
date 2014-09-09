@@ -14,7 +14,6 @@ class Car2GoFetcherService {
 
         InputStream urlStreamCar2Go = null;
         URL urlCar2Go = null;
-        println "Car2Go job finished at"
         try {
             urlCar2Go = new URL( urlCar2GoString );
             urlStreamCar2Go = urlCar2Go.openStream();

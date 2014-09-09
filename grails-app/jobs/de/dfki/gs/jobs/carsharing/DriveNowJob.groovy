@@ -8,7 +8,7 @@ class DriveNowJob {
     def driveNowFetcherService
 
     static triggers = {
-        simple name:'DriveNowJobTest', startDelay:0,repeatInterval: ( 1 * 60 * 1000 )
+        simple name:'DriveNowJobTest', startDelay:0,repeatInterval: ( 5 * 60 * 1000 )
     }
     def group = "DriveNowGroup"
 

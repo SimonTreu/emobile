@@ -15,7 +15,6 @@ class DriveNowFetcherService {
 
         InputStream urlStreamDriveNow = null;
         URL urlDriveNow = null;
-        println "DriveNow job finished at"
         try {
             urlDriveNow = new URL( urlDriveNowString );
             urlStreamDriveNow = urlDriveNow.openStream();
@@ -35,7 +34,7 @@ class DriveNowFetcherService {
                     String longitude = (String) vehicleMap.'position'.'longitude'
                     String name = (String) vehicleMap.'licensePlate'
                     String fuel = (String) vehicleMap.'fuelState'
-
+                    String nameRepl = name.replaceAll("M  -", "M-")
                     try {
 
                         CarSharingCars carSharing = CarSharingCars.findByVin( vin )
@@ -52,7 +51,7 @@ class DriveNowFetcherService {
                             carSharing = new CarSharingCars(
 
                                     vin : vin,
-                                    name: name,
+                                    name: nameRepl,
                                     ownerName: owners
 
                             )
@@ -96,83 +95,6 @@ class DriveNowFetcherService {
 
                 //println vehicleMap.'model'
             }
-
-            /*
-            Map jsonResultDriveNow = (Map) resultDriveNow;
-
-            List vehicles = (List) jsonResultDriveNow
-
-
-            for (int i=0; i<vehicles.size(); i++ ) {
-
-                Map DriveNowCars = (Map) vehicles.get(i);
-
-                String fuelType =(String) DriveNowCars.get("fuelType")
-
-                if (fuelType=="ELE") {
-
-                    Integer fuel = (Integer) DriveNowCars.get("fuel")
-                    boolean charging = (Boolean) DriveNowCars.get("charging")
-
-                    try {
-                        CarSharingCars carSharing = CarSharingCars.findByVin( vin )
-                        // System.out.println("DriveNow: "+carSharing)
-                        if ( !carSharing ) {
-                            // carSharing not exist, create new one
-
-                            String owners = ( CarSharingOwners.DRIVENOW)
-
-                            if ( !owners ) {
-                                owners = CarSharingOwners.undefined
-                            }
-
-                            carSharing = new CarSharingCars(
-
-                                    vin : vin,
-                                    name: name,
-                                    ownerName: owners
-
-                            )
-
-                            if ( !carSharing.save() ) {
-                                log.error( "failed to save new carSharing: ${carSharing.errors}" )
-                            }
-
-                        }
-
-                        if ( carSharing ) {
-
-                            CarSharingTimeStatus status = new CarSharingTimeStatus(
-                                    carSharing: carSharing,
-                                    fuel: fuel,
-                                    lat: Double.parseDouble( latitude ),
-                                    lon: Double.parseDouble( longitude ),
-                                    address : address
-
-
-                            )
-
-                            if ( !status.save() ) {
-
-                                log.error( "failed to save time status: ${status.errors}" )
-
-                            } else {
-                                log.debug( "saved: ${status.properties}" )
-                            }
-
-                        }
-
-
-                    } catch ( NumberFormatException nfe ) {
-
-                        log.error( "cound't  convert String to number", nfe )
-
-                    }
-
-
-                }
-            }
-            */
 
         } catch (MalformedURLException mue) {
             log.error( "couldn't create url from ${urlDriveNowString}", mue )

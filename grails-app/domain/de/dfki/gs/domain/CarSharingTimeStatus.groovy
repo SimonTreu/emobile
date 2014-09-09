@@ -17,17 +17,17 @@ class CarSharingTimeStatus {
     String address
 
     //Car personal number
-    Integer fuel
+    String fuel
     Integer mileage
 
     Date dateCreated
     Date lastUpdated
 
     static constraints = {
-        lat ( nullable: true, blank: true )
-        lon ( nullable: true, blank: true )
-        address( nullable: true , blank: true )
-        fuel ( nullable: true, blank: true )
+        lat ( nullable: false, blank: false )
+        lon ( nullable: false, blank: false )
+        address( nullable: false , blank: false )
+        fuel ( nullable: false, blank: false )
         mileage ( nullable: true, blank: true )
     }
 

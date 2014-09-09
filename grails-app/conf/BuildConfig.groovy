@@ -93,6 +93,10 @@ grails.project.dependency.resolution = {
 
         runtime( "org.apache.commons:commons-math3:3.2" )
 
+        runtime( "org.ccil.cowan.tagsoup:tagsoup:1.2" )
+
+        runtime( "org.codehaus.gpars:gpars:0.11" )
+
         /*
         compile ('com.vividsolutions:jts:1.8') {
             excludes 'xercesImpl'
@@ -110,7 +114,7 @@ grails.project.dependency.resolution = {
 
         runtime ":jquery:1.11.0.2"
         //runtime ":resources:1.2.7"
-        compile ':asset-pipeline:1.8.3'
+        // compile ':asset-pipeline:1.8.3'
 
 
 

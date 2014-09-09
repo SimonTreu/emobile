@@ -1,8 +1,5 @@
 package de.dfki.gs.service.datafetching
 
-@Grab(group='org.ccil.cowan.tagsoup', module='tagsoup', version='1.2')
-@Grab(group='org.codehaus.gpars', module='gpars', version='0.11')
-
 import groovyx.gpars.GParsPool
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -54,7 +51,7 @@ class MulticityFetcherService {
 
                     try {
 
-                        CarSharingCars carSharing = CarSharingCars.findById( id )
+                        CarSharingCars carSharing = CarSharingCars.get( Long.parseLong( id ) )
                         // System.out.println("Multicity: "+carSharing)
                         if ( !carSharing ) {
                             // carSharing not exist, create new one
@@ -98,7 +95,7 @@ class MulticityFetcherService {
 
                         }
 
-                    }catch (NumberFormatException nfe ) {
+                    } catch (NumberFormatException nfe ) {
 
                         log.error( "cound't  convert String to number", nfe )
 

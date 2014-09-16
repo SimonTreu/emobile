@@ -72,7 +72,8 @@ class Car2GoFetcherService {
                                     fuel: fuel,
                                     lat: Double.parseDouble( latitude ),
                                     lon: Double.parseDouble( longitude ),
-                                    address : address
+                                    address : address,
+                                    charging : charging
 
 
                             )

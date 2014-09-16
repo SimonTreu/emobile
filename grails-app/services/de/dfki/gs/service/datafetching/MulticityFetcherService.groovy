@@ -40,9 +40,14 @@ class MulticityFetcherService {
                 def htmlParser = slurper.parse("https://kunden.multicity-carsharing.de/kundenbuchung/hal2ajax_process.php?infoConfig%5BinfoTyp%5D=HM_AUTO_INFO&infoConfig%5BobjectId%5D=$id&infoConfig%5Bobjecttyp%5D=carpos&ajxmod=hal2map&callee=markerinfo")
 
                 def address = htmlParser.children().children().children()[2].toString().replaceAll("Standort:","")
+
                 def fuel = htmlParser.children().children().children().children().children().children().toString().replaceAll(" %","")
 
-                    try {
+                def charging = htmlParser.children().children().children().children().children().childNodes()[1]
+
+                def ssss = charging.attributes.get( "class" )
+
+                try {
 
                         CarSharingCars carSharing = CarSharingCars.findByName(  nameNew )
                         // System.out.println("Multicity: "+carSharing)
@@ -75,7 +80,8 @@ class MulticityFetcherService {
                                     address: address,
                                     fuel: fuel,
                                     lat: Double.parseDouble( latitude ),
-                                    lon: Double.parseDouble( longitude )
+                                    lon: Double.parseDouble( longitude ),
+
                             )
 
                             if ( !status.save() ) {

@@ -4,9 +4,15 @@ import de.dfki.gs.domain.ElectricStationTimeStatus
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
 import de.dfki.gs.domain.Owners
+import de.dfki.gs.domain.SocketTimeStatus
 import de.dfki.gs.model.elements.FillingStationStatus
 import grails.transaction.Transactional
 import groovy.json.JsonSlurper
+import groovyx.gpars.GParsPool
+import org.codehaus.groovy.grails.web.json.JSONObject
+
+import java.util.concurrent.atomic.AtomicInteger
+import com.opensymphony.module.sitemesh.parser.HTMLPageParser
 
 @Transactional
 class RweFetcherService {
@@ -19,12 +25,19 @@ class RweFetcherService {
         InputStream urlStreamRWE = null;
         // String urlRweString = grailsApplication.config.fillingStations.rweUrl;
         URL urlRWE = null;
+        URL urlSpotId1 =null
+        URL urlSpotId2 =null
+
+        InputStream urlSpotStreamId1 = null;
+        InputStream urlSpotStreamId2 = null;
+
 
         try {
 
             urlRWE = new URL( urlRweString );
             //RWE JSON
             urlStreamRWE = urlRWE.openStream();
+
             BufferedReader readerRWE = new BufferedReader(new InputStreamReader(urlStreamRWE));
             JsonSlurper jsonSlurperRWE = new JsonSlurper();
             Object resultRWE = jsonSlurperRWE.parse(readerRWE);
@@ -42,6 +55,48 @@ class RweFetcherService {
                     String longitude = (String) electricstations.get("longitude")
                     String street = (String) electricstations.get("street")
                     String house_number = (String) electricstations.get("house_number")
+                    String spotIds = (String) electricstations.get("spotIds")
+                    String[] SpotId = spotIds.split(",");
+
+                    String spotId1 = SpotId[0]
+                    String spotId2 = SpotId[1].replaceAll(" ","")
+
+                    urlSpotId1 = new URL( "http://www.rwe-mobility.com/emobilityfrontend/rs/chargingstations/$spotId1" );
+                    urlSpotId2 = new URL( "http://www.rwe-mobility.com/emobilityfrontend/rs/chargingstations/$spotId2" );
+
+                    def tagsoupParser = new org.ccil.cowan.tagsoup.Parser();
+                    def slurper = new XmlSlurper(tagsoupParser)
+
+                    def powerParser1 = slurper.parse("https://www.rwe-mobility.com/vm/service/VirtualMeterServlet?ladepunkt=$spotId1")
+                    def idSpot1 = powerParser1.toString().replaceAll("ZählerZählerLadepunktStartLadepunktZählerstandUhrzeit","").substring(0,9)
+                    def powerSpot1 = powerParser1.toString().replaceAll("ZählerZählerLadepunktStartLadepunktZählerstandUhrzeit","").substring(9).split("kWh")[0]
+                    def timeSpot1 = powerParser1.toString().replaceAll("ZählerZählerLadepunktStartLadepunktZählerstandUhrzeit","").substring(9).split("kWh")[1]
+
+                    def powerParser2 = slurper.parse("https://www.rwe-mobility.com/vm/service/VirtualMeterServlet?ladepunkt=$spotId2")
+                    def idSpot2 = powerParser2.toString().replaceAll("ZählerZählerLadepunktStartLadepunktZählerstandUhrzeit","").substring(0,9)
+                    def powerSpot2 = powerParser2.toString().replaceAll("ZählerZählerLadepunktStartLadepunktZählerstandUhrzeit","").substring(9).split("kWh")[0]
+                    def timeSpot2 = powerParser2.toString().replaceAll("ZählerZählerLadepunktStartLadepunktZählerstandUhrzeit","").substring(9).split("kWh")[1]
+
+                    urlSpotStreamId1 = urlSpotId1.openStream();
+                    urlSpotStreamId2 = urlSpotId2.openStream();
+
+
+                    BufferedReader readerSpotId1 = new BufferedReader(new InputStreamReader(urlSpotStreamId1));
+                    BufferedReader readerSpotId2 = new BufferedReader(new InputStreamReader(urlSpotStreamId2));
+
+
+                    JsonSlurper jsonSlurperSpotId = new JsonSlurper();
+                    Object resultSpotId1 = jsonSlurperSpotId.parse(readerSpotId1);
+                    Object resultSpotId2 = jsonSlurperSpotId.parse(readerSpotId2);
+
+                    String spotsId1 = resultSpotId1."id"
+                    String statusId1 = resultSpotId1."status"
+                    String dateTime1 =  resultSpotId1."dateTime"
+
+                    String spotsId2 = resultSpotId1."id"
+                    String statusId2 = resultSpotId1."status"
+                    String dateTime2 =  resultSpotId1."dateTime"
+
                     boolean ac = (Boolean) electricstations.get("ac")
                     boolean dc = (Boolean) electricstations.get("dc")
                     boolean free = (Boolean) electricstations.get("free")
@@ -95,6 +150,20 @@ class RweFetcherService {
 
                             } else {
                                 log.debug( "saved: ${status.properties}" )
+                            }
+
+                            SocketTimeStatus socket = new SocketTimeStatus(
+                                    name: spotsId1,
+                                    power:statusId1,
+                                    date:dateTime1
+
+                            )
+                            if ( !socket.save() ) {
+
+                                log.error( "failed to save time status: ${socket.errors}" )
+
+                            } else {
+                                log.debug( "saved: ${socket.properties}" )
                             }
 
                         }

@@ -22,13 +22,14 @@ class CarSharingTimeStatus {
 
     Date dateCreated
     Date lastUpdated
-
+    Boolean charging
     static constraints = {
         lat ( nullable: false, blank: false )
         lon ( nullable: false, blank: false )
         address( nullable: true , blank: true )
         fuel ( nullable: true, blank: true )
         mileage ( nullable: true, blank: true )
+        charging (nullable: true, blank: true )
     }
 
     static mapping = {

@@ -23,8 +23,6 @@ class DriveNowFetcherService {
             def resultDriveNow = jsonSlurperDriveNow.parse(readerDriveNow);
             resultDriveNow.'rec'.'vehicles'.'vehicles'.each { vehicleMap ->
 
-
-
                 String fuelType =(String) vehicleMap.'fuelType'
                 if (fuelType=="ELE") {
                     String vin = (String) vehicleMap.'vin'
@@ -35,6 +33,13 @@ class DriveNowFetcherService {
                     String name = (String) vehicleMap.'licensePlate'
                     String fuel = (String) vehicleMap.'fuelState'
                     String nameRepl = name.replaceAll("M  -", "M-")
+                    String charging = (String) vehicleMap.'charging'
+                    if (charging != "") {
+                        charging = 1
+                    }
+                    else {
+                        charging = 0
+                    }
                     try {
 
                         CarSharingCars carSharing = CarSharingCars.findByVin( vin )
@@ -70,7 +75,8 @@ class DriveNowFetcherService {
                                     lat: Double.parseDouble( latitude ),
                                     lon: Double.parseDouble( longitude ),
                                     address : address,
-                                    mileage: mileage
+                                    mileage: mileage,
+                                    charging: charging
 
 
                             )

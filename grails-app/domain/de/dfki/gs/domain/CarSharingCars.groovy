@@ -14,6 +14,7 @@ class CarSharingCars {
     String name
     String ownerName
 
+
     static constraints = {
 
         vin ( nullable: true, blank: true )

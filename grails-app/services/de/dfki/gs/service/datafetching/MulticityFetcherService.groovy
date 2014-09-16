@@ -32,26 +32,19 @@ class MulticityFetcherService {
                 String longitude = (String) markerMap.'lng'
                 String id = (String) markerMap.'hal2option'.'id'
                 String name = (String) markerMap.'hal2option'.'tooltip'
-                String name1 = name.replaceAll("Citroën&nbsp;C-Zero&nbsp;&nbsp;","");
-                //'CitroënC-Zero(B-MC2439)'
-                String name2 = name1.replaceAll("&nbsp;",'');
+                String nameNew = name.replaceAll("Citroën&nbsp;C-Zero&nbsp;&nbsp;","").replaceAll("&nbsp;","").replaceAll("'","").replaceAll("\\(" ,"").replaceAll("\\)" ,"");
+
 
                 def tagsoupParser = new org.ccil.cowan.tagsoup.Parser();
                 def slurper = new XmlSlurper(tagsoupParser)
                 def htmlParser = slurper.parse("https://kunden.multicity-carsharing.de/kundenbuchung/hal2ajax_process.php?infoConfig%5BinfoTyp%5D=HM_AUTO_INFO&infoConfig%5BobjectId%5D=$id&infoConfig%5Bobjecttyp%5D=carpos&ajxmod=hal2map&callee=markerinfo")
 
-                def list3 = htmlParser.children().children().children()[2]
-                String address = list3
-                String newAdress = address.replaceAll("Standort:", "")
-
-                def list5 = htmlParser.children().children().children().children().children().children()
-                String fuel = list5
-                String fuelStr = fuel.replaceAll(" %","")
-
+                def address = htmlParser.children().children().children()[2].toString().replaceAll("Standort:","")
+                def fuel = htmlParser.children().children().children().children().children().children().toString().replaceAll(" %","")
 
                     try {
 
-                        CarSharingCars carSharing = CarSharingCars.get( Long.parseLong( id ) )
+                        CarSharingCars carSharing = CarSharingCars.findByName(  nameNew )
                         // System.out.println("Multicity: "+carSharing)
                         if ( !carSharing ) {
                             // carSharing not exist, create new one
@@ -64,7 +57,7 @@ class MulticityFetcherService {
 
                             carSharing = new CarSharingCars(
 
-                                    name: name2,
+                                    name: nameNew,
                                     ownerName: owners
 
                             )
@@ -79,8 +72,8 @@ class MulticityFetcherService {
 
                             CarSharingTimeStatus status = new CarSharingTimeStatus(
                                     carSharing: carSharing,
-                                    address: newAdress,
-                                    fuel: fuelStr,
+                                    address: address,
+                                    fuel: fuel,
                                     lat: Double.parseDouble( latitude ),
                                     lon: Double.parseDouble( longitude )
                             )

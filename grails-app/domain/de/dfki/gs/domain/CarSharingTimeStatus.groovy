@@ -26,8 +26,8 @@ class CarSharingTimeStatus {
     static constraints = {
         lat ( nullable: false, blank: false )
         lon ( nullable: false, blank: false )
-        address( nullable: false , blank: false )
-        fuel ( nullable: false, blank: false )
+        address( nullable: true , blank: true )
+        fuel ( nullable: true, blank: true )
         mileage ( nullable: true, blank: true )
     }
 

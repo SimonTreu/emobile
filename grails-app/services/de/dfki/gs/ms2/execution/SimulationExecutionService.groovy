@@ -162,6 +162,54 @@ class SimulationExecutionService {
 
     }
 
+    def panicStop( Long configurationId, String sessionId ) {
+
+        Map<Long, CarAgent> carAgentMap = carAgentsForSession.get( sessionId )
+        Map<Long, EFillingStationAgent> fillingStationMap = fillingStationAgentsForSession.get( sessionId )
+
+        if ( carAgentMap ) {
+
+            for (  CarAgent task : carAgentMap.values()  ) {
+
+                task.cancel()
+
+            }
+
+            statusForSession.put( sessionId, SchedulerStatus.stop )
+
+            log.debug( "simulation stopped for session: ${sessionId} and try to save results" )
+
+        } else {
+            log.error( "no threads found for session: ${sessionId}" )
+        }
+
+        if ( fillingStationMap ) {
+
+            for (  EFillingStationAgent task : fillingStationMap.values()  ) {
+
+                task.cancel()
+
+            }
+
+            statusForSession.put( sessionId, SchedulerStatus.stop )
+
+            log.debug( "simulation stopped for session: ${sessionId} and try to save results" )
+
+
+        } else {
+            log.error( "no threads found for session: ${sessionId}" )
+        }
+
+        carAgentMap.clear()
+        fillingStationMap.clear()
+
+        carAgentMap = new HashMap<Long,CarAgent>()
+        fillingStationMap = new HashMap<Long, EFillingStationAgent>()
+
+        carAgentsForSession.remove( sessionId )
+        fillingStationAgentsForSession.remove( sessionId )
+
+    }
 
     /**
      * should stop all running tasks and collect all results
@@ -219,37 +267,32 @@ class SimulationExecutionService {
         }
 
         /**
-         * FIXME: change this to have possibility to have different behaviour limits for the cars
+         * TODO: only for debug printing, can be removed ..
          */
-        Double relativeSearchLimit = null
-        for ( CarAgentResult result : carAgentResults ) {
-
-            if ( relativeSearchLimit == null ) {
-
-                relativeSearchLimit = result.relativeSearchLimit
-
-            } else {
-
-                break;
-
-            }
-        }
-
         for ( CarAgent carAgent : carAgentMap.values() ) {
 
             if ( carAgent.carStatus == CarStatus.MISSION_ACCOMBLISHED ) {
+
                 log.error( "car ${carAgent.personalId} (${carAgent.modelCar.carName}) reached target " )
+
             } else {
+
                 log.error( "car ${carAgent.personalId} (${carAgent.modelCar.carName}) FAILED" )
+
             }
 
         }
 
-        // TODO: implement with new sim model
-        experimentRunResultId = experimentDataService.saveExperimentResult( carAgentResults, fillingResults, relativeSearchLimit, simTimeMillis )
+
+        experimentRunResultId = experimentDataService.saveExperimentResult(
+                configurationId,
+                carAgentResults,
+                fillingResults,
+                simTimeMillis
+        )
 
         /**
-         * giving the garbage collector to clear out used space
+         * giving the garbage collector the chance to clear out used space
          */
         carAgentMap.clear()
         fillingStationMap.clear()

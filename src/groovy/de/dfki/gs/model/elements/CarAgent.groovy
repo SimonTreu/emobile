@@ -304,8 +304,7 @@ class CarAgent extends Agent {
             case CarStatus.WAITING_FILLING:
 
                 // wait for calculated time,
-                if ( currentTimeStamp == timeStampForNextActionAllowed ) {
-
+                if ( currentTimeStamp >= timeStampForNextActionAllowed ) {
 
                     energyLoaded += ( modelCar.maxEnergy - modelCar.currentEnergy )
 

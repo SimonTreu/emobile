@@ -2,6 +2,7 @@ package de.dfki.gs.controller.ms2.execution
 
 
 import de.dfki.gs.controller.ms2.execution.commands.ExperimentExecutionCommandObject
+import de.dfki.gs.controller.ms2.execution.commands.ExperimentPanicStopCommand
 import de.dfki.gs.domain.simulation.Configuration
 import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.simulation.SchedulerStatus
@@ -100,6 +101,28 @@ class ExecutionController {
         response.addHeader( "Content-Type", "application/json" );
 
         render "${(data as JSON).toString()}"
+
+    }
+
+    def stopExperiment() {
+
+        log.debug( "params: ${params}" )
+
+        def sessionId = WebUtils.retrieveGrailsWebRequest().session.id
+
+        ExperimentPanicStopCommand cmd = new ExperimentPanicStopCommand();
+        bindData( cmd, params )
+
+        if ( cmd.configurationId != null && !cmd.validate() ) {
+            log.error( "failed to get configuration by id: ${cmd.configurationId} -- ${cmd.errors}" )
+        } else {
+
+            simulationExecutionService.panicStop( cmd.configurationId, sessionId )
+
+        }
+
+        // go where we came from
+        redirect( controller: 'configuration', action: 'index', params: [ configurationStubId: cmd.configurationId ] )
 
     }
 

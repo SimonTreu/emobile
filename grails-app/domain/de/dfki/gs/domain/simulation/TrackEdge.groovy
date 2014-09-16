@@ -8,7 +8,7 @@ class TrackEdge {
      * maybe a dirty hack, at least an unproper design
      * but this is to collect trackedges faster by it's simulationId
      */
-    // Long simulationRouteId;
+    Long routeId;
 
     Long gisId;
 

@@ -108,17 +108,21 @@ class BootstrapHelper {
             FillingStationType type = FillingStationType.findByName( it.value.name )
 
             if ( !type ) {
-                type = new FillingStationType(
-                        name: it.value.name,
-                        power: it.value.power,
-                        company: findOrCreateCompany( it.value.company )
-                )
 
-                if ( !type.save( flush: true, failOnError: true ) ) {
 
-                    log.error( "failed to save fillingStationType: ${type.errors}" )
+                    type = new FillingStationType(
+                            name: it.value.name,
+                            power: it.value.power,
+                            fillingPortion: ( it.value.power / 3600 ),
+                            company: findOrCreateCompany(it.value.company)
+                    )
 
-                }
+                    if (!type.save(flush: true, failOnError: true)) {
+
+                        log.error("failed to save fillingStationType: ${type.errors}")
+
+                    }
+
             }
 
         }

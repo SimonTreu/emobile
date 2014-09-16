@@ -230,7 +230,7 @@ class ConfigurationService {
             return
         }
 
-        List<Fleet> fleets = Fleet.findAllByCompany( company )
+        List<Fleet> fleets = Fleet.findAllByCompany( company, [ sort: "dateCreated", order: "desc" ] )
 
         Configuration stub = Configuration.get( configurationStubId )
         List<Fleet> alreadyAddedFleets = new ArrayList<Fleet>()
@@ -260,7 +260,7 @@ class ConfigurationService {
             return
         }
 
-        List<FillingStationGroup> fillingStationGroups = FillingStationGroup.findAllByCompany( company )
+        List<FillingStationGroup> fillingStationGroups = FillingStationGroup.findAllByCompany( company, [ sort: "dateCreated", order: "desc" ] )
 
         Configuration stub = Configuration.get( configurationStubId )
         List<FillingStationGroup> alreadyAddedGroups = new ArrayList<FillingStationGroup>()

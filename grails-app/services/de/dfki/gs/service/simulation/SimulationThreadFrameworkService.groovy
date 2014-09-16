@@ -2,10 +2,8 @@ package de.dfki.gs.service.simulation
 
 import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.GasolineStation
-import de.dfki.gs.domain.GasolineStationType
 import de.dfki.gs.domain.simulation.Simulation
 import de.dfki.gs.domain.simulation.SimulationRoute
-import de.dfki.gs.domain.simulation.Track
 import de.dfki.gs.domain.simulation.TrackEdge
 import de.dfki.gs.model.elements.Agent
 import de.dfki.gs.model.elements.CarAgent
@@ -15,21 +13,12 @@ import de.dfki.gs.model.elements.ModelCar
 import de.dfki.gs.model.elements.RoutingPlan
 import de.dfki.gs.model.elements.results.CarAgentResult
 import de.dfki.gs.model.elements.results.EFillingStationAgentResult
-import de.dfki.gs.service.ExperimentDataService
-import de.dfki.gs.service.FetchTrackEdgeServiceTask
 import de.dfki.gs.simulation.CarStatus
 import de.dfki.gs.simulation.SchedulerStatus
 import de.dfki.gs.simulation.SimulationObject
 
 import de.dfki.gs.simulation.SimulationThreadTask
-import de.dfki.gs.threadutils.NotifyingBlockingThreadPoolExecutor
-import de.dfki.gs.threadutils.ThreadPoolExecutorUtils
 import grails.async.Promise
-import grails.gorm.DetachedCriteria
-import org.hibernate.FetchMode
-import org.hibernate.annotations.Fetch
-
-import javax.persistence.FetchType
 
 import static grails.async.Promises.*
 

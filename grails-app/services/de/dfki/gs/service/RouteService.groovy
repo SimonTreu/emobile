@@ -1092,6 +1092,10 @@ class RouteService {
 
         Fleet fleet = Fleet.get( fleetId )
 
+        if ( fleet.fleetStatus == FleetStatus.CONFIGURED ) {
+            return fleet
+        }
+
         /**
          * this may be done only once, otherwise it is not the valid distribution
          */

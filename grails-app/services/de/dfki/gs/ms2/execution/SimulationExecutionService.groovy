@@ -51,6 +51,7 @@ class SimulationExecutionService {
      */
     def runSimulation( String sessionId ) {
 
+        Long simExpId = null
 
         long startTimestamp = System.currentTimeMillis();
 
@@ -152,14 +153,14 @@ class SimulationExecutionService {
 
                 long simTimeMillis = ( System.currentTimeMillis() - startTimestamp )
 
-                long simExpId = stopSimulation( 2, sessionId, simTimeMillis )
+                simExpId = stopSimulation( 2, sessionId, simTimeMillis )
 
                 log.error( "saved sim results in experimentResult: ${simExpId}" )
 
             }
         }
 
-
+        return simExpId
     }
 
     def panicStop( Long configurationId, String sessionId ) {

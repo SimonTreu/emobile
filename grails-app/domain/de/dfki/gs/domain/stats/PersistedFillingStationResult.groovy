@@ -1,18 +1,18 @@
 package de.dfki.gs.domain.stats
 
-import de.dfki.gs.domain.GasolineStationType
+import de.dfki.gs.domain.simulation.FillingStationType
 
 class PersistedFillingStationResult {
 
-    String gasolineStationType
+    // String gasolineStationType
+
+    FillingStationType fillingStationType
 
     long timeLiving
     long timeInUse
 
 
     static constraints = {
-
-        gasolineStationType( nullable: false, blank: false, inList: GasolineStationType.values()*.toString() )
-
+        fillingStationType( nullable: false )
     }
 }

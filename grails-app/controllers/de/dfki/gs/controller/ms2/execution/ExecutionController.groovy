@@ -62,7 +62,7 @@ class ExecutionController {
             log.error( "failed to get simulation by id: ${cmd.configurationId} -- ${cmd.errors}" )
         } else {
 
-            simulationExecutionService.runSimulation( sessionId )
+            Long simExpResultId = simulationExecutionService.runSimulation( sessionId )
 
             log.error( "started or proceeded simulation" )
 

@@ -53,7 +53,7 @@ class EFillingStationAgent extends Agent {
 
 
         agent.stationId = fillingStation.id
-        agent.eFillingStationAgentResult = new EFillingStationAgentResult( gasolineStationType: stationType.power );
+        agent.eFillingStationAgentResult = new EFillingStationAgentResult( fillingStationType: stationType );
 
         agent.gasolineStationType = stationType.power;
         agent.fillingStationStatus = FillingStationStatus.FREE;

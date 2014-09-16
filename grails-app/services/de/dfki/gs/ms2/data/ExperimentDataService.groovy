@@ -51,7 +51,8 @@ class ExperimentDataService {
                     timeForLoading:         carAgentResult.timeForLoading,
                     timeForDetour:          carAgentResult.timeForDetour,
                     energyLoaded:           carAgentResult.energyLoaded,
-                    fillingStationsVisited: carAgentResult.fillingStationsVisited
+                    fillingStationsVisited: carAgentResult.fillingStationsVisited,
+                    relativeSearchLimit:    carAgentResult.relativeSearchLimit
             )
 
             if ( !persistedCarAgentResult.save( flush: true ) ) {
@@ -68,11 +69,10 @@ class ExperimentDataService {
 
         for ( EFillingStationAgentResult result : fillingAgentResults ) {
 
-
             PersistedFillingStationResult persistedFillingStationResult = new PersistedFillingStationResult(
                     timeInUse: result.timeInUse,
                     timeLiving: result.simulationTime,
-                    gasolineStationType: result.gasolineStationType
+                    fillingStationType: result.fillingStationType,
             )
 
             if ( !persistedFillingStationResult.save( flush: true ) ) {

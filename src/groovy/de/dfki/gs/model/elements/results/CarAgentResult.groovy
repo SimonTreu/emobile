@@ -8,15 +8,15 @@ import de.dfki.gs.domain.simulation.CarType
 class CarAgentResult {
 
 
-    double energyConsumed
+    float energyConsumed
 
 
     CarType carType
 
     String carAgentStatus
 
-    double plannedDistance
-    double realDistance
+    float plannedDistance
+    float realDistance
 
     int targets
 
@@ -25,13 +25,13 @@ class CarAgentResult {
     long timeForLoading
 
     long timeForDetour
-    double energyLoaded
+    float energyLoaded
 
     int fillingStationsVisited
 
-    long simulationId
+    long configurationId
 
-    double relativeSearchLimit
+    float relativeSearchLimit
 
 
 

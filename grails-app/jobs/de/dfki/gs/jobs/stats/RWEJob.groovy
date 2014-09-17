@@ -7,7 +7,7 @@ class RWEJob {
     def rweFetcherService
 
     static triggers = {
-        simple name:'RWEJobTest', startDelay:0,repeatInterval: ( 1 * 60 * 1000 )
+        simple name:'RWEJobTest', startDelay:0,repeatInterval: ( 15 * 60 * 1000 )
     }
     def group = "RWEGroup"
 

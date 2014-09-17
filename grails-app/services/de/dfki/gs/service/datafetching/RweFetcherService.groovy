@@ -56,6 +56,8 @@ class RweFetcherService {
                     String street = (String) electricstations.get("street")
                     String house_number = (String) electricstations.get("house_number")
                     String spotIds = (String) electricstations.get("spotIds")
+                    /*
+                    CODE FOR STORAGE SOCKET INFORMATION
                     String[] SpotId = spotIds.split(",");
 
                     String spotId1 = SpotId[0]
@@ -67,6 +69,8 @@ class RweFetcherService {
                     def tagsoupParser = new org.ccil.cowan.tagsoup.Parser();
                     def slurper = new XmlSlurper(tagsoupParser)
 
+
+
                     def powerParser1 = slurper.parse("https://www.rwe-mobility.com/vm/service/VirtualMeterServlet?ladepunkt=$spotId1")
                     def idSpot1 = powerParser1.toString().replaceAll("ZählerZählerLadepunktStartLadepunktZählerstandUhrzeit","").substring(0,9)
                     def powerSpot1 = powerParser1.toString().replaceAll("ZählerZählerLadepunktStartLadepunktZählerstandUhrzeit","").substring(9).split("kWh")[0]
@@ -76,6 +80,7 @@ class RweFetcherService {
                     def idSpot2 = powerParser2.toString().replaceAll("ZählerZählerLadepunktStartLadepunktZählerstandUhrzeit","").substring(0,9)
                     def powerSpot2 = powerParser2.toString().replaceAll("ZählerZählerLadepunktStartLadepunktZählerstandUhrzeit","").substring(9).split("kWh")[0]
                     def timeSpot2 = powerParser2.toString().replaceAll("ZählerZählerLadepunktStartLadepunktZählerstandUhrzeit","").substring(9).split("kWh")[1]
+
 
                     urlSpotStreamId1 = urlSpotId1.openStream();
                     urlSpotStreamId2 = urlSpotId2.openStream();
@@ -89,6 +94,7 @@ class RweFetcherService {
                     Object resultSpotId1 = jsonSlurperSpotId.parse(readerSpotId1);
                     Object resultSpotId2 = jsonSlurperSpotId.parse(readerSpotId2);
 
+
                     String spotsId1 = resultSpotId1."id"
                     String statusId1 = resultSpotId1."status"
                     String dateTime1 =  resultSpotId1."dateTime"
@@ -96,6 +102,7 @@ class RweFetcherService {
                     String spotsId2 = resultSpotId1."id"
                     String statusId2 = resultSpotId1."status"
                     String dateTime2 =  resultSpotId1."dateTime"
+                    */
 
                     boolean ac = (Boolean) electricstations.get("ac")
                     boolean dc = (Boolean) electricstations.get("dc")
@@ -152,10 +159,12 @@ class RweFetcherService {
                                 log.debug( "saved: ${status.properties}" )
                             }
 
+                            /*
+                            CODE FOR STORAGE SOCKET INFORMATION
                             SocketTimeStatus socket = new SocketTimeStatus(
                                     name: spotsId1,
-                                    power:statusId1,
-                                    date:dateTime1
+                                    power:powerSpot1
+
 
                             )
                             if ( !socket.save() ) {
@@ -165,6 +174,7 @@ class RweFetcherService {
                             } else {
                                 log.debug( "saved: ${socket.properties}" )
                             }
+                            */
 
                         }
 

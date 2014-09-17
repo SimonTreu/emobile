@@ -33,7 +33,10 @@ class MulticityFetcherService {
                 String id = (String) markerMap.'hal2option'.'id'
                 String name = (String) markerMap.'hal2option'.'tooltip'
                 String nameNew = name.replaceAll("Citroën&nbsp;C-Zero&nbsp;&nbsp;","").replaceAll("&nbsp;","").replaceAll("'","").replaceAll("\\(" ,"").replaceAll("\\)" ,"");
-
+                if (nameNew =="false")
+                {
+                    log.error("No Name")
+                }
 
                 def tagsoupParser = new org.ccil.cowan.tagsoup.Parser();
                 def slurper = new XmlSlurper(tagsoupParser)
@@ -44,61 +47,71 @@ class MulticityFetcherService {
                 def fuel = htmlParser.children().children().children().children().children().children().toString().replaceAll(" %","")
 
                 def charging = htmlParser.children().children().children().children().children().childNodes()[1]
+                if (!charging == null) {
+                    log.error( "Charging is - $charging" )
+                } else if (charging != null){
+                    charging = charging.attributes.get( "class" ).toString()
+                    if (charging =="chargestatus laedt_nicht") {
+                        charging = false
+                    } else if (charging =="chargestatus laedt") {
+                        charging = true
+                    } else if (charging =="chargestatus unbekannt") {
+                        charging = true
+                    }
+                }
 
-                def ssss = charging.attributes.get( "class" )
 
                 try {
+                    CarSharingCars carSharing = CarSharingCars.findByName(  nameNew )
+                    // System.out.println("Multicity: "+carSharing)
+                    if ( !carSharing ) {
+                        // carSharing not exist, create new one
 
-                        CarSharingCars carSharing = CarSharingCars.findByName(  nameNew )
-                        // System.out.println("Multicity: "+carSharing)
-                        if ( !carSharing ) {
-                            // carSharing not exist, create new one
+                        String owners = ( CarSharingOwners.MULTICITY)
 
-                            String owners = ( CarSharingOwners.MULTICITY)
-
-                            if ( !owners ) {
-                                owners = CarSharingOwners.undefined
-                            }
-
-                            carSharing = new CarSharingCars(
-
-                                    name: nameNew,
-                                    ownerName: owners
-
-                            )
-
-                            if ( !carSharing.save() ) {
-                                log.error( "failed to save new carSharing: ${carSharing.errors}" )
-                            }
-
+                        if ( !owners ) {
+                            owners = CarSharingOwners.undefined
                         }
 
-                        if ( carSharing ) {
+                        carSharing = new CarSharingCars(
 
-                            CarSharingTimeStatus status = new CarSharingTimeStatus(
-                                    carSharing: carSharing,
-                                    address: address,
-                                    fuel: fuel,
-                                    lat: Double.parseDouble( latitude ),
-                                    lon: Double.parseDouble( longitude ),
+                                name: nameNew,
+                                ownerName: owners
 
-                            )
+                        )
 
-                            if ( !status.save() ) {
-
-                                log.error( "failed to save time status: ${status.errors}" )
-
-                            } else {
-                                log.debug( "saved: ${status.properties}" )
-                            }
-
+                        if ( !carSharing.save() ) {
+                            log.error( "failed to save new carSharing: ${carSharing.errors}" )
                         }
-
-                    } catch (NumberFormatException nfe ) {
-
-                        log.error( "cound't  convert String to number", nfe )
 
                     }
+
+                    if ( carSharing ) {
+
+                        CarSharingTimeStatus status = new CarSharingTimeStatus(
+                                carSharing: carSharing,
+                                address: address,
+                                fuel: fuel,
+                                lat: Double.parseDouble( latitude ),
+                                lon: Double.parseDouble( longitude ),
+                                charging: charging
+                        )
+
+                        if ( !status.save() ) {
+
+                            log.error( "failed to save time status: ${status.errors}" )
+
+                        } else {
+                            log.debug( "saved: ${status.properties}" )
+                        }
+
+                    }
+
+                } catch (NumberFormatException nfe ) {
+
+                    log.error( "cound't  convert String to number", nfe )
+
+                }
 
                 //println vehicleMap.'model'
             }

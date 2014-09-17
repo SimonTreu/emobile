@@ -136,7 +136,7 @@ grails.project.dependency.resolution = {
         compile ":google-visualization:0.7"
         // compile ':cache-ehcache:1.0.0'
 
-        compile ':spring-security-core:2.0-RC3'
+        compile ':spring-security-core:2.0-RC4'
 
         compile ":mail:1.0.6"
 

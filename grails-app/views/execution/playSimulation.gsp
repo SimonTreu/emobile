@@ -376,36 +376,40 @@
     }
 
 </script>
+    <div class="pContainerConfigure">
+        <fieldset>
+            <legend> <g:message code="execution.playsimulation.playsimulation"/> </legend>
+            <div>
+                <br/>
+                <span class="infoBold"><g:message code="execution.playsimulation.info"/></span><br/>
+                <span class="infoBold">${routeCount}</span><span class="info"> <g:message code="execution.playsimulation.cars"/></span><br/>
+                <span class="infoBold">${stationCount}</span><span class="info"> <g:message code="execution.playsimulation.stations"/></span>
+                <div class="playButtons">
+                    <button class="playButton" id="button_play_pause" onClick="toggle_button_clicked()"><b>Play</b></button>
 
-<div>
-    ${routeCount} Cars are involved
-    <button id="button_play_pause" onClick="toggle_button_clicked()"><b>Play</b></button>
-    <br/>
-    <g:form name="hua" controller="execution" >
-        <g:actionSubmit value="Stop Experiment" action="stopExperiment" />
-    </g:form>
+                    <%--<g:form name="hua" controller="execution" >
+                        <g:actionSubmit value="Stop Experiment" action="stopExperiment" />
+                    </g:form>--%>
 
-    <button
-            id="button_stopp"
-            type="submit"
-            onclick="location.href='${createLink( controller: 'execution', action: 'stopExperiment', params: [ configurationId: configurationId ] ) }'"
-    >
-        <i class="icon icon-warning-sign"></i>Stop</button>
-</div>
-
-<br/>
-
-
-<canvas id="timeContainer" width="1200" height="40"></canvas>
-<canvas id="experimentContainer" width="1200" height="500"></canvas>
-<canvas id="nameContainer" width="1200" height="50"></canvas>
-<canvas id="stationsContainer" width="1200" height="40"></canvas>
+                    <button class="playButton"
+                            id="button_stopp"
+                            type="submit"
+                            onclick="location.href='${createLink( controller: 'execution', action: 'stopExperiment', params: [ configurationId: configurationId ] ) }'">
+                        <i class="icon icon-warning-sign"></i>Stop</button>
+                </div>
+            </div>
 
 
-<g:render template="/layouts/footer" />
+            <canvas id="timeContainer" width="1200" height="40"></canvas>
+            <canvas id="experimentContainer" width="1200" height="500"></canvas>
+            <canvas id="nameContainer" width="1200" height="50"></canvas>
+            <canvas id="stationsContainer" width="1200" height="40"></canvas>
 
+            <g:render template="/layouts/footer" />
 
-<r:layoutResources></r:layoutResources>
+            <r:layoutResources></r:layoutResources>
+        </fieldset>
+    </div>
 </body>
 </html>
 

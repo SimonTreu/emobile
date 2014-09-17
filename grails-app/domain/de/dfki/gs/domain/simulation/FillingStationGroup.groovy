@@ -7,7 +7,7 @@ import de.dfki.gs.domain.utils.GroupStatus
 
 class FillingStationGroup {
 
-    Set<FillingStation> fillingStations
+    Set<FillingStation> fillingStations = []
 
     // to title the group
     String name

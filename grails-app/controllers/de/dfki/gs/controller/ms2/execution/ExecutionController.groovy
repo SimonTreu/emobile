@@ -4,6 +4,8 @@ package de.dfki.gs.controller.ms2.execution
 import de.dfki.gs.controller.ms2.execution.commands.ExperimentExecutionCommandObject
 import de.dfki.gs.controller.ms2.execution.commands.ExperimentPanicStopCommand
 import de.dfki.gs.domain.simulation.Configuration
+import de.dfki.gs.domain.simulation.FillingStation
+import de.dfki.gs.domain.simulation.FillingStationGroup
 import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.simulation.SchedulerStatus
 import de.dfki.gs.utils.ResponseConstants
@@ -36,10 +38,17 @@ class ExecutionController {
                 fleet = Fleet.get( fleet.id )
                 routeCount += fleet.cars.size()
             }
+            int stationCount = 0
+
+            configuration.fillingStationGroups.each { FillingStationGroup fillingStation ->
+                    fillingStation = FillingStationGroup.get( fillingStation.id )
+                    stationCount += fillingStation.fillingStations.size()
+            }
+
             m.configurationId = cmd.configurationId
             m.sessionId = sessionId
             m.routeCount = routeCount
-
+            m.stationCount = stationCount
 
             Double relativeSearchLimit = ( cmd.relativeSearchLimit / 100 )
             simulationExecutionService.init( cmd.configurationId, null, sessionId, relativeSearchLimit )

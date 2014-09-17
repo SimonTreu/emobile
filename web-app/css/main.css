@@ -1454,6 +1454,22 @@ td img{
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
+.playButtons {
+    padding-top:15px;
+}
+
+.playButton {
+    text-decoration: none;
+    font-size: 13px;
+
+    -webkit-text-decoration: none;
+    background-color: #fcfcfc;
+    border: 1px solid #cccccc;
+    font-size: 1em;
+    padding: 0.2em 0.6em;
+    color: #000;
+}
+
 .addImage {
     position:relative;
     right:20px;
@@ -2592,4 +2608,13 @@ a.olControlZoomOut {
 
 .olControlNavigationItemActive {
     //display: none;
+}
+
+.info {
+    font-size:12px;
+}
+
+.infoBold {
+    font-size:12px;
+    font-weight: bold;
 }

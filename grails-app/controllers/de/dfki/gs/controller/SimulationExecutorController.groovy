@@ -2,6 +2,7 @@ package de.dfki.gs.controller
 
 import de.dfki.gs.controller.commands.SimulationCommand
 import de.dfki.gs.controller.commands.SimulationExcecutorCommand
+import de.dfki.gs.domain.simulation.FillingStation
 import de.dfki.gs.domain.simulation.Simulation
 import de.dfki.gs.domain.simulation.SimulationRoute
 import de.dfki.gs.simulation.SchedulerStatus

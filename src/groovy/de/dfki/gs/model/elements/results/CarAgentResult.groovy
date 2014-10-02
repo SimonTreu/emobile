@@ -33,6 +33,8 @@ class CarAgentResult {
 
     float relativeSearchLimit
 
+    long fleetId
+
 
 
 }

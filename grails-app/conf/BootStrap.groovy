@@ -91,7 +91,8 @@ class BootStrap {
                 carType: carType1,
                 name: "car no.${it}",
                 route: route,
-                routesConfigured: true
+                routesConfigured: true,
+                fleetId: dfki1Fleet.id
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )
@@ -128,7 +129,8 @@ class BootStrap {
                     carType: carType2,
                     name: "car no.${it}",
                     route: route,
-                    routesConfigured: true
+                    routesConfigured: true,
+                    fleetId: dfki1Fleet.id
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )
@@ -197,7 +199,8 @@ class BootStrap {
                     carType: carType3,
                     name: "car no.${it}",
                     route: route,
-                    routesConfigured: true
+                    routesConfigured: true,
+                    fleetId: dfki2Fleet.id
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )
@@ -234,7 +237,8 @@ class BootStrap {
                     carType: carType4,
                     name: "car no.${it}",
                     route: route,
-                    routesConfigured: true
+                    routesConfigured: true,
+                    fleetId: dfki2Fleet.id
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )

@@ -14,12 +14,14 @@ class Car {
 
     Boolean routesConfigured
 
+    Long fleetId
 
 
     static constraints = {
         name ( nullable: true, blank: true )
         route nullable: true
         routesConfigured nullable: false
+        fleetId nullable: false
     }
 
     static mapping = {

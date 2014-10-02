@@ -49,7 +49,7 @@ class SimulationExecutionService {
      *
      * @param sessionId
      */
-    def runSimulation( String sessionId ) {
+    def runSimulation( String sessionId, long configurationId ) {
 
         Long simExpId = null
 
@@ -153,7 +153,7 @@ class SimulationExecutionService {
 
                 long simTimeMillis = ( System.currentTimeMillis() - startTimestamp )
 
-                simExpId = stopSimulation( 2, sessionId, simTimeMillis )
+                simExpId = stopSimulation( configurationId, sessionId, simTimeMillis )
 
                 log.error( "saved sim results in experimentResult: ${simExpId}" )
 
@@ -486,7 +486,8 @@ class SimulationExecutionService {
                         runningStartTime,
                         (double) car.route.edges.sum { TrackEdge edge -> edge.km },
                         car.route.id,
-                        syncronizer
+                        syncronizer,
+                        car.fleetId
                 )
 
                 carAgentMap.put( car.route.id, carAgent )

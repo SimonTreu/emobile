@@ -15,6 +15,7 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 class ExecutionController {
 
     def simulationExecutionService
+    def statisticService
 
     def executeExperiment() {
 
@@ -64,19 +65,34 @@ class ExecutionController {
     def proceedExperiment() {
         def sessionId = WebUtils.retrieveGrailsWebRequest().session.id
 
+        def m = [ : ]
+
         ExperimentExecutionCommandObject cmd = new ExperimentExecutionCommandObject();
         bindData( cmd, params )
+
+        cmd.relativeSearchLimit = 50
+
+        Long simExpResultId = null
+
+        def stats = [ : ]
 
         if ( cmd.configurationId != null && !cmd.validate() ) {
             log.error( "failed to get simulation by id: ${cmd.configurationId} -- ${cmd.errors}" )
         } else {
 
-            Long simExpResultId = simulationExecutionService.runSimulation( sessionId )
+            simExpResultId = simulationExecutionService.runSimulation( sessionId, cmd.configurationId )
+
+            // all statistics from experiment
+            stats = statisticService.generateStatisticMapForExperiment( simExpResultId )
 
             log.error( "started or proceeded simulation" )
 
         }
 
+        m.stats = stats
+
+
+        redirect( controller: 'statistics', action: 'showStats', params: [ simulationExperimentResultId : simExpResultId ] )
     }
 
     def getInfo() {

@@ -52,7 +52,8 @@ class ExperimentDataService {
                     timeForDetour:          carAgentResult.timeForDetour,
                     energyLoaded:           carAgentResult.energyLoaded,
                     fillingStationsVisited: carAgentResult.fillingStationsVisited,
-                    relativeSearchLimit:    carAgentResult.relativeSearchLimit
+                    relativeSearchLimit:    carAgentResult.relativeSearchLimit,
+                    fleetId:                carAgentResult.fleetId
             )
 
             if ( !persistedCarAgentResult.save( flush: true ) ) {

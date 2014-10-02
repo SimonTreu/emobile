@@ -47,4 +47,22 @@ class Fleet {
         routesConfigured type: 'yes_no'
 
     }
+
+    transient Map dto( qualified = false ) {
+
+        def ret = [ : ]
+
+        ret.id            = id
+        ret.name          = name
+        ret.carsCount     = cars.size()
+        ret.distribution  = distribution.toString()
+
+        ret.plannedFromKm = plannedFromKm
+        ret.plannedToKm   = plannedToKm
+
+        // placeholder for cars
+        ret.cars = []
+
+        return ret
+    }
 }

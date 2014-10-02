@@ -364,7 +364,8 @@ class ConfigurationService {
             Car car = new Car(
                 carType: carType,
                 name: "${carType.name} - No.${it}",
-                routesConfigured: false
+                routesConfigured: false,
+                fleetId: fleetStubId
             )
 
             if ( !car.save( flush: true ) ) {

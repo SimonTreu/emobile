@@ -13,6 +13,8 @@ class PersistedCarAgentResult {
     Float     realDistance
     Integer   targets
 
+    Long      fleetId
+
     Long      timeForPlannedDistance
     Long      timeForRealDistance
     Long      timeForLoading

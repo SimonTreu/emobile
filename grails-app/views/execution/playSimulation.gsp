@@ -65,7 +65,7 @@
 
         // action to the controller:
         jQuery.ajax({
-            url: '${g.createLink( controller: 'execution', action: 'proceedExperiment' )}',
+            url: '${g.createLink( controller: 'execution', action: 'proceedExperiment', params: [ configurationId: configurationId ] )}',
             type: "POST",
             success: function( data ) {
 

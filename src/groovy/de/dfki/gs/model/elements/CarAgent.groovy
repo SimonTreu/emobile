@@ -86,6 +86,8 @@ class CarAgent extends Agent {
     double energyLoaded = 0;
     double energyConsumed = 0;
 
+    long fleetId;
+
     List<Long> unroutableCurrentStations = new ArrayList<Long>()
 
 
@@ -109,12 +111,15 @@ class CarAgent extends Agent {
             long startTime,
             Double plannedDistance,
             long routeId,
-            FillingStationAgentSyncronizer syncronizer ) {
+            FillingStationAgentSyncronizer syncronizer,
+            long fleetId ) {
 
 
         CarAgent carAgent = new CarAgent()
         carAgent.routingPlan = routingPlan;
         carAgent.modelCar = modelCar;
+
+        carAgent.fleetId = fleetId
 
         carAgent.syncronizer = syncronizer
 
@@ -155,11 +160,12 @@ class CarAgent extends Agent {
         log.error( "simRoute: ${simRouteId} has ${sumKm} planned km to drive in ${(secondsPlanned *  ( 1 / ( 60 * 60 ) ) )} h" )
 
         carAgent.carAgentResult = new CarAgentResult(
-                carType: modelCar.carType,
-                plannedDistance: plannedDistance,
+                carType:                modelCar.carType,
+                plannedDistance:        plannedDistance,
                 timeForPlannedDistance: Math.ceil( secondsPlanned ),
-                configurationId: configurationId,
-                relativeSearchLimit: modelCar.relativeSearchLimit
+                configurationId:        configurationId,
+                relativeSearchLimit:    modelCar.relativeSearchLimit,
+                fleetId:                fleetId
         );
 
         return carAgent;

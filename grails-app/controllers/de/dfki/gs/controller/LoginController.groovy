@@ -3,6 +3,7 @@ package de.dfki.gs.controller
 import de.dfki.gs.controller.commands.AllowPersonCommandObject
 import de.dfki.gs.controller.commands.ConfirmCommandObject
 import de.dfki.gs.controller.commands.SigninCommandObject
+import de.dfki.gs.domain.users.Company
 import de.dfki.gs.domain.users.Person
 import de.dfki.gs.domain.users.PersonRole
 import de.dfki.gs.domain.users.Role
@@ -73,6 +74,7 @@ class LoginController {
                 postUrl: postUrl,
                 rememberMeParameter: config.rememberMe.parameter,
                 savedUrl: savedUrl,
+                availableCompanies : Company.findAll(),
                 testLink : "${grailsLinkGenerator.serverBaseURL - "emobilesim"}"
         ]
     }
@@ -97,7 +99,7 @@ class LoginController {
 
         }
 
-        def m = personService.createSigninPerson( cmd.signinGivenName, cmd.signinFamilyName, cmd.signinUserName, cmd.password )
+        def m = personService.createSigninPerson(cmd.companyId, cmd.signinGivenName, cmd.signinFamilyName, cmd.signinUserName, cmd.password )
 
         if ( m.person != null ) {
 

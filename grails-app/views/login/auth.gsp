@@ -81,6 +81,16 @@
 
                                 <div class="rowMiddle">
                                     <div class="left">
+                                        <g:message code="login.auth.company"/>
+                                    </div>
+                                    <div class="right">
+                                        <g:select name="companyId" from="${availableCompanies}" optionKey="id" optionValue="${{it.name}}" />
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+
+                                <div class="rowMiddle">
+                                    <div class="left">
                                         <g:message code="login.auth.password"/>
                                     </div>
                                     <div class="right">

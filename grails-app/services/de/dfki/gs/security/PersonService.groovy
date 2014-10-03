@@ -1,6 +1,7 @@
 package de.dfki.gs.security
 
 import de.dfki.gs.domain.users.Person
+import de.dfki.gs.domain.users.Company
 import de.dfki.gs.domain.users.PersonRole
 import de.dfki.gs.domain.users.Role
 import grails.transaction.Transactional
@@ -11,9 +12,11 @@ class PersonService {
     def mailService
 
 
-    def createSigninPerson( String givenName, String familyName, String emailAddress, String password ) {
+    def createSigninPerson(  Long companyId, String givenName, String familyName, String emailAddress, String password ) {
 
         def m = [:]
+
+        Company company =Company.get(companyId)
 
 
         Person p = Person.findByUsername( emailAddress )
@@ -31,8 +34,9 @@ class PersonService {
                 familyName: familyName,
                 givenName: givenName,
                 username: emailAddress,
+                company: company,
                 password: password,
-                accountLocked: true,
+                accountLocked: false,
                 enabled: false,
                 confirmationCode: uuid.toString()
         )

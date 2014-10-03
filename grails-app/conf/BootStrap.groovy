@@ -91,8 +91,7 @@ class BootStrap {
                 carType: carType1,
                 name: "car no.${it}",
                 route: route,
-                routesConfigured: true,
-                fleetId: dfki1Fleet.id
+                routesConfigured: true
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )
@@ -129,8 +128,7 @@ class BootStrap {
                     carType: carType2,
                     name: "car no.${it}",
                     route: route,
-                    routesConfigured: true,
-                    fleetId: dfki1Fleet.id
+                    routesConfigured: true
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )
@@ -199,8 +197,7 @@ class BootStrap {
                     carType: carType3,
                     name: "car no.${it}",
                     route: route,
-                    routesConfigured: true,
-                    fleetId: dfki2Fleet.id
+                    routesConfigured: true
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )
@@ -237,8 +234,7 @@ class BootStrap {
                     carType: carType4,
                     name: "car no.${it}",
                     route: route,
-                    routesConfigured: true,
-                    fleetId: dfki2Fleet.id
+                    routesConfigured: true
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )
@@ -443,6 +439,9 @@ class BootStrap {
             dc.clazz.metaClass.static.getGrailsApplication = { -> grailsApplication }
         }
 
+        def helper = new BootstrapHelper()
+        helper.findOrCreateCompany("dfki")
+        log.error( "..created or found: ${ Company.name }" )
 
 
         log.error( "check security config.." )

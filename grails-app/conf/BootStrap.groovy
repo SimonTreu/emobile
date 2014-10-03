@@ -46,12 +46,12 @@ class BootStrap {
         }
 
         Fleet dfki1Fleet = new Fleet(
-            company: company,
-            name: "Dfki-Fleet One",
-            distribution: Distribution.SELF_MADE_ROUTES,
-            routesConfigured: false,
-            fleetStatus: FleetStatus.NOT_CONFIGURED,
-            stub: false
+                company: company,
+                name: "Dfki-Fleet One",
+                distribution: Distribution.SELF_MADE_ROUTES,
+                routesConfigured: false,
+                fleetStatus: FleetStatus.NOT_CONFIGURED,
+                stub: false
         )
 
         if ( !dfki1Fleet.save( flush: true, failOnError: true ) ) {
@@ -88,10 +88,11 @@ class BootStrap {
             Route route = routeList.get( 0 )
 
             Car car = new Car(
-                carType: carType1,
-                name: "car no.${it}",
-                route: route,
-                routesConfigured: true
+                    carType: carType1,
+                    name: "car no.${it}",
+                    route: route,
+                    routesConfigured: true,
+                    fleetId: dfki1Fleet.id
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )
@@ -128,7 +129,8 @@ class BootStrap {
                     carType: carType2,
                     name: "car no.${it}",
                     route: route,
-                    routesConfigured: true
+                    routesConfigured: true,
+                    fleetId: dfki1Fleet.id
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )
@@ -197,7 +199,8 @@ class BootStrap {
                     carType: carType3,
                     name: "car no.${it}",
                     route: route,
-                    routesConfigured: true
+                    routesConfigured: true,
+                    fleetId: dfki2Fleet.id
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )
@@ -234,7 +237,8 @@ class BootStrap {
                     carType: carType4,
                     name: "car no.${it}",
                     route: route,
-                    routesConfigured: true
+                    routesConfigured: true,
+                    fleetId: dfki2Fleet.id
             )
             if ( !car.save( flush: true, failOnError: true ) ) {
                 log.error( "failed to save car: ${car.errors}" )

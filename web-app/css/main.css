@@ -1417,21 +1417,25 @@ td img{
 
 .layoutButton {
     width: 100%;
+
 }
 .layoutButtonL {
     width: 5%;
     display: table-cell;
     border-radius: 6px;
     float:left;
+
 }
 .layoutButtonR {
-    width: 5%;
+    width: 9%;
     display: table-cell;
     border-radius: 6px;
     float:right;
+    position: relative;
+    bottom: 15px;
 }
 .layoutButtonM {
-    width: 90%;
+    width: 87%;
     display: table-cell;
 }
 
@@ -1444,11 +1448,14 @@ td img{
 }
 
 .addButtonCancel a{
+
     -webkit-text-decoration: none;
     background-color: #fcfcfc;
     border: 1px solid #cccccc;
     font-size: 1em;
     padding: 0.2em 0.4em;
+    position: relative;
+    bottom: 10px;
     color: #000;
     text-decoration: none;
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -2033,11 +2040,21 @@ fieldset {
 .contentLeftBigConfiguration{
     padding:0px;
     margin: 10px;
-    width:500px;
+    width:495px;
     border-radius: 6px;
     border: 1px solid  #ccc;
     font-size: 12px;
 }
+
+.contentRightBigConfiguration{
+    padding:0px;
+    margin: 10px;
+    width:510px;
+    border-radius: 6px;
+    border: 1px solid  #ccc;
+    font-size: 12px;
+}
+
 
 .leftConfiguration{
     width:130px;
@@ -2435,6 +2452,11 @@ fieldset {
     position: absolute;
     bottom: -3950px;
     left: 3950px;
+    z-index: 99999;
+}
+
+.gv_infobox {
+
     z-index: 99999;
 }
 

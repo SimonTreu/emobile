@@ -165,7 +165,7 @@
             </div>
 
             <div class="layoutRight">
-                <div class="contentLeftBigConfiguration">
+                <div class="contentRightBigConfiguration">
                     <div class="rowUp">
                         <div class="leftbig">
                             <g:message code="simulation.index.fillingconfiguration"/>
@@ -340,31 +340,29 @@
                             <span class="addButtonCancel"><g:link controller="sim" action="">CANCEL</g:link></span>
                             <%--<g:submitToRemote class="addButton" url="[action: '/front/startSimulation']" update="sim" name="submit" value="CANCEL" />--%>
                         </span>
+                        <g:if test="${configurationStubId}">
                         <span class="layoutButtonM"></span>
-
                             <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
                             <span class="layoutButtonR"><g:submitButton name="send" value="SAVE"/></span>
+                        </g:if>
 
                     </div>
                 </g:form>
+                <g:if test="${configurationStubId > 0 }">
                 <g:form controller="execution" action="executeExperiment">
-
                     <div class="layoutButton">
-
                         <span class="layoutButtonM"></span>
-
                         <g:hiddenField name="relativeSearchLimit" value="50" />
                         <g:hiddenField name="configurationId" value="${configurationStubId}"/>
-                        <span class="layoutButtonR"><g:submitButton name="send" value="Execute"/></span>
-
+                        <span class="layoutButtonR"><g:submitButton name="send" value="EXECUTE"/></span>
                     </div>
-
                 </g:form>
-        </fieldset>
-        <div id="updateMe">
+                </g:if>
+</fieldset>
+<div id="updateMe">
 
-        </div>
-    </div>
+</div>
+</div>
 
 </body>
 </html>

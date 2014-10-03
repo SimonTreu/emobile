@@ -75,7 +75,7 @@ environments {
         dataSource {
             dbCreate = "update" //"create-drop"
             driverClassName = "com.mysql.jdbc.Driver"
-            url = "jdbc:mysql://mysql.sb.dfki.de/efahrung"
+            url = "jdbc:mysql://mysql.sb.dfki.de/emobilsim"
             username = "efahrung_admin"
             password = "f498236e"
             pooled = true
@@ -88,6 +88,18 @@ environments {
                 testWhileIdle = true
                 testOnReturn = true
                 validationQuery = "SELECT 1"
+                maxWait = 30000
+                testOnBorrow = true
+                testOnReturn = false
+                testWhileIdle = false
+                timeBetweenEvictionRunsMillis =-1
+                numTestsPerEvictionRun =3
+                poolPreparedStatements=true
+                maxOpenPreparedStatements=25
+                accessToUnderlyingConnectionAllowed=false
+                removeAbandoned=false
+                removeAbandonedTimeout=300
+                logAbandoned=false
             }
         }
 

@@ -45,10 +45,10 @@ class Car2GoFetcherService {
                         if ( !carSharing ) {
                             // carSharing not exist, create new one
 
-                            String owners = ( CarSharingOwners.CAR2GO)
+                            String owners = ( CarSharingOwners.CAR2GO.toString() )
 
                             if ( !owners ) {
-                                owners = CarSharingOwners.undefined
+                                owners = CarSharingOwners.undefined.toString()
                             }
 
                             carSharing = new CarSharingCars(

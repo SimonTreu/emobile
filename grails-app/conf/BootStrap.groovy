@@ -11,10 +11,12 @@ import de.dfki.gs.domain.simulation.Route
 import de.dfki.gs.domain.simulation.Simulation
 import de.dfki.gs.domain.simulation.SimulationRoute
 import de.dfki.gs.domain.simulation.Track
+import de.dfki.gs.domain.simulation.TrackEdge
 import de.dfki.gs.domain.users.Company
 import de.dfki.gs.domain.utils.Distribution
 import de.dfki.gs.domain.utils.FleetStatus
 import de.dfki.gs.domain.utils.GroupStatus
+import de.dfki.gs.domain.utils.TrackEdgeType
 import de.dfki.gs.service.RouteService
 import de.dfki.gs.threadutils.NotifyingBlockingThreadPoolExecutor
 import de.dfki.gs.utils.LatLonPoint
@@ -80,6 +82,16 @@ class BootStrap {
                         routeList.get( 0 ) != null &&
                         routeList.get( 0 ).edges != null &&
                         routeList.get( 0 ).edges.size() > 0 ) {
+
+
+                    int trackEdgeSize = routeList.get( 0 ).edges.size()
+                    TrackEdge lastEdge = (TrackEdge) routeList.get( 0 ).edges.get( trackEdgeSize - 1 )
+                    lastEdge.type = TrackEdgeType.target.toString()
+
+                    if ( !lastEdge.save( flush: true ) ) {
+                        log.error( "failed to save last edge of route: ${lastEdge.errors}" )
+                    }
+
 
                     break;
                 }

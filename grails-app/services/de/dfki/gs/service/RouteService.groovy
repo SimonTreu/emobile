@@ -954,15 +954,15 @@ class RouteService {
                     Long fId = Long.parseLong( featureIdString.substring( f, t ) )
 
                     // default is "normal" edge
-                    TrackEdgeType edgeType = TrackEdgeType.normal
+                    String edgeType = TrackEdgeType.normal.toString()
                     if ( routeIdx == 0 && edgeIdx == 0 ) {
-                        edgeType = TrackEdgeType.start
+                        edgeType = TrackEdgeType.start.toString()
                     }
                     if ( routeIdx > 0 && edgeIdx == 0 ) {
-                        edgeType = TrackEdgeType.via_target
+                        edgeType = TrackEdgeType.via_target.toString()
                     }
                     if ( routeIdx == multiTargetRoute.size() - 1 && edgeIdx == partOfMultiTargetRoute.size() - 1 ) {
-                        edgeType = TrackEdgeType.target
+                        edgeType = TrackEdgeType.target.toString()
                     }
 
                     TrackEdge trackEdge = new TrackEdge(

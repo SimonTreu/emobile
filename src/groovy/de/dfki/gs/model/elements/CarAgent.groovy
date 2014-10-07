@@ -404,6 +404,10 @@ class CarAgent extends Agent {
                     }
                 }
 
+                if ( backEdge == null ) {
+                    backEdge = routingPlan.trackEdges.get( routingPlan.trackEdges.size() - 1 );
+                }
+
                 List<BasicEdge> routeToTarget = routeService.routeToTarget(
                         eFillingStationAgent.lon,
                         eFillingStationAgent.lat,

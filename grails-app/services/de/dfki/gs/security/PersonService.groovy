@@ -36,7 +36,7 @@ class PersonService {
                 username: emailAddress,
                 company: company,
                 password: password,
-                accountLocked: false,
+                accountLocked: true,
                 enabled: false,
                 confirmationCode: uuid.toString()
         )
@@ -71,6 +71,7 @@ class PersonService {
     def confirmPersonAsUser( Person p ) {
 
         p.enabled = true
+        p.accountLocked = false
 
         Role role = findOrCreateRole( "ROLE_USER" )
 

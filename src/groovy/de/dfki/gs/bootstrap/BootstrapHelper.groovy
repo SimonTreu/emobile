@@ -79,6 +79,8 @@ class BootstrapHelper {
                     givenName: givenName,
                     familyName: familyName,
                     password: newPassword,
+                    accountLocked: false,
+                    enabled: true,
                     confirmationCode: uuid.toString(),
                     company: company
             )

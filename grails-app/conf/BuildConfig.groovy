@@ -138,7 +138,7 @@ grails.project.dependency.resolution = {
 
         compile ':spring-security-core:2.0-RC4'
 
-        compile ":mail:1.0.6"
+        compile ":mail:1.0.7"
 
         compile ":modaldynamix:0.2"
     }

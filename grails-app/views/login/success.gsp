@@ -32,7 +32,7 @@
 
             <br><br>
 
-            You can login now: ${loginLink}
+            You can login now: <g:link uri="${loginLink}" url="${loginLink}"> <span class="loginName">login </span></g:link>
         </p>
 
     </span>

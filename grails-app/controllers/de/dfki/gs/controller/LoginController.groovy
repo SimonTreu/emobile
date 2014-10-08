@@ -154,8 +154,7 @@ class LoginController {
             def m = [ : ]
             m.givenName = p.givenName
             m.familyName = p.familyName
-
-            // m.loginLink = "${grailsLinkGenerator.serverBaseURL}" - "/emobilesim" + createLink( controller: "front", action: "init" )
+            m.loginLink = "${grailsLinkGenerator.serverBaseURL}" - "/emobilesim" + createLink( controller: "front", action: "init" )
 
             render view: "success", model: m
 

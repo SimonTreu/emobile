@@ -33,4 +33,10 @@ class StatisticsController {
         render view: 'showStats', model: m
 
     }
+
+    def showPicture() {
+
+        log.error( "params: ${params}" )
+
+    }
 }

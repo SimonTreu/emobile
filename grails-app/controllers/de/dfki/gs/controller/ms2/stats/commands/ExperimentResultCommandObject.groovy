@@ -10,11 +10,11 @@ import grails.validation.Validateable
 @Validateable
 class ExperimentResultCommandObject {
 
-    Long simulationExperimentResultId
+    Long experimentRunResultId
 
     static constraints = {
 
-        simulationExperimentResultId( nullable: false, validator: { val,obj ->
+        experimentRunResultId( nullable: false, validator: { val,obj ->
 
             ExperimentRunResult result = ExperimentRunResult.get( val )
 

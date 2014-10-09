@@ -65,7 +65,7 @@
 
         // action to the controller:
         jQuery.ajax({
-            url: '${g.createLink( controller: 'execution', action: 'proceedExperiment', params: [ configurationId: configurationId ] )}',
+            url: '${g.createLink( controller: 'execution', action: 'proceedExperiment', params: [ configurationId: configurationId, experimentRunResultId: experimentRunResultId ] )}',
             type: "POST",
             success: function( data ) {
 
@@ -79,6 +79,8 @@
 
     }
 
+
+
     function showInfoPane() {
 
         // get infos for one simulationRoutes
@@ -90,22 +92,37 @@
             type: "POST",
             success: function( data ) {
 
-                var info = data[ 'info' ];
+                if ( data[ 'info' ] ) {
+                    var info = data[ 'info' ];
 
-                var cars = info[ 'cars' ];
-                var stations = info[ 'stations' ];
+                    var cars = info[ 'cars' ];
+                    var stations = info[ 'stations' ];
 
-                var currentTime = info[ 'currentTime' ];
+                    var currentTime = info[ 'currentTime' ];
 
-                var simStatus = info[ 'finished' ];
+                    drawCarInfos( cars );
 
-                drawCarInfos( cars );
+                    drawStationInfos( stations );
 
-                drawStationInfos( stations );
+                    drawCurrentTime( currentTime );
 
-                drawCurrentTime( currentTime );
+                }
+
+                var simStatus = "false";
+                if ( data[ 'finished' ] ) {
+                    simStatus = data[ 'finished' ];
+                }
+
+                console.log( simStatus );
+
+                var experimentRunResultId = data[ 'experimentRunResultId' ];
+
 
                 recheckStopButton( simStatus );
+
+
+                enableShowStatsButtonIfFinished( simStatus )
+
 
                 // $( '#speedInfo').html( speed );
 
@@ -116,6 +133,41 @@
 
             }
         });
+
+    }
+
+    function drawShowStatsButton( runResultId ) {
+
+        <%--
+        var buttonsDiv = document.getElementById( 'the_buttons' )
+
+
+                   <button class="playButton"
+                           id="button_show_stats"
+                           type="submit"
+                           onclick="location.href='${createLink( controller: 'statistics', action: 'showStats', params: [ configurationId: configurationId ] )}'"
+                           value="disable"
+                           disabled
+                       ><i class="icon icon-warning-sign"></i>Show Stats</button>
+
+
+        var buttonnode= buttonsDiv.createElement('input');
+        buttonnode.setAttribute( 'class', 'button_show_stats' );
+        buttonnode.setAttribute( 'type', 'submit' );
+        buttonnode.setAttribute( 'value', 'Show Stats' );
+
+        buttonnode.setAttribute( 'onclick', "location.href='${createLink( controller: 'statistics', action: 'showStats', params: [ simulationExperimentResultId: runResultId ] )}'" );
+        --%>
+    }
+
+    function enableShowStatsButtonIfFinished( simStatus ) {
+
+        if ( simStatus == "finished" ) {
+            document.getElementById( 'button_show_stats' ).disabled = false;
+            document.getElementById( 'button_show_stats' ).value = "enabled";
+        }
+
+
 
     }
 
@@ -384,7 +436,7 @@
                 <span class="infoBold"><g:message code="execution.playsimulation.info"/></span><br/>
                 <span class="infoBold">${routeCount}</span><span class="info"> <g:message code="execution.playsimulation.cars"/></span><br/>
                 <span class="infoBold">${stationCount}</span><span class="info"> <g:message code="execution.playsimulation.stations"/></span>
-                <div class="playButtons">
+                <div class="playButtons" id="the_buttons">
                     <button class="playButton" id="button_play_pause" onClick="toggle_button_clicked()"><b>Play</b></button>
 
                     <%--<g:form name="hua" controller="execution" >
@@ -394,8 +446,26 @@
                     <button class="playButton"
                             id="button_stopp"
                             type="submit"
-                            onclick="location.href='${createLink( controller: 'execution', action: 'stopExperiment', params: [ configurationId: configurationId ] ) }'">
+                            onclick="location.href='${createLink( controller: 'execution', action: 'stopExperiment', params: [ configurationId: configurationId, experimentRunResultId: experimentRunResultId ] ) }'">
                         <i class="icon icon-warning-sign"></i>Stop</button>
+
+                    <button class="playButton"
+                            id="button_show_stats"
+                            type="submit"
+                            onclick="location.href='${createLink( controller: 'statistics', action: 'showStats', params: [ experimentRunResultId: experimentRunResultId ] )}'"
+                            value="disabled"
+                            disabled="true"
+                    ><i class="icon icon-warning-sign"></i>Show Stats</button>
+
+                    <%--
+                    <button class="playButton"
+                            id="button_show_stats"
+                            type="submit"
+                            onclick="location.href='${createLink( controller: 'statistics', action: 'showStats', params: [ configurationId: configurationId ] )}'"
+                            value="disable"
+                            disabled
+                        ><i class="icon icon-warning-sign"></i>Show Stats</button>
+                    --%>
                 </div>
             </div>
 

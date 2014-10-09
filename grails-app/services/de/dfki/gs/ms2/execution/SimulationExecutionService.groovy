@@ -9,6 +9,7 @@ import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.domain.simulation.Route
 import de.dfki.gs.domain.simulation.TrackEdge
+import de.dfki.gs.domain.stats.ExperimentRunResult
 import de.dfki.gs.model.elements.Agent
 import de.dfki.gs.model.elements.CarAgent
 import de.dfki.gs.model.elements.EFillingStationAgent
@@ -43,13 +44,14 @@ class SimulationExecutionService {
     ConcurrentHashMap<String, Map<Long, CarAgent>> carAgentsForSession = new ConcurrentHashMap<String, Map<Long, CarAgent>>()
     ConcurrentHashMap<String, Map<Long, EFillingStationAgent>> fillingStationAgentsForSession = new ConcurrentHashMap<String, Map<Long, EFillingStationAgent>>()
 
+    ConcurrentHashMap<String, Long> experimentRunResultIdForSession = new ConcurrentHashMap<String, Long>()
 
     /**
      * starts a simulation experiment
      *
      * @param sessionId
      */
-    def runSimulation( String sessionId, long configurationId ) {
+    def runSimulation( String sessionId, long configurationId, Long experimentRunResultId ) {
 
         Long simExpId = null
 
@@ -153,12 +155,23 @@ class SimulationExecutionService {
 
                 long simTimeMillis = ( System.currentTimeMillis() - startTimestamp )
 
-                simExpId = stopSimulation( configurationId, sessionId, simTimeMillis )
+                simExpId = stopSimulation( configurationId, sessionId, simTimeMillis, experimentRunResultId )
+
+                experimentRunResultIdForSession.put( sessionId, simExpId )
 
                 log.error( "saved sim results in experimentResult: ${simExpId}" )
 
             }
         }
+
+        return experimentRunResultId
+    }
+
+    def getExperimentRunResultId( String sessionId ) {
+
+        Long simExpId = 0
+
+        simExpId = experimentRunResultIdForSession.get( sessionId )
 
         return simExpId
     }
@@ -219,7 +232,7 @@ class SimulationExecutionService {
      * @param sessionId
      * @return
      */
-    def stopSimulation( Long configurationId, String sessionId, long simTimeMillis ) {
+    def stopSimulation( Long configurationId, String sessionId, long simTimeMillis, Long experimentRunResultId ) {
 
         Map<Long, CarAgent> carAgentMap = carAgentsForSession.get( sessionId )
         Map<Long, EFillingStationAgent> fillingStationMap = fillingStationAgentsForSession.get( sessionId )
@@ -227,7 +240,7 @@ class SimulationExecutionService {
         List<CarAgentResult> carAgentResults = new ArrayList<CarAgentResult>()
         List<EFillingStationAgentResult> fillingResults = new ArrayList<EFillingStationAgentResult>()
 
-        Long experimentRunResultId = null
+
 
         /**
          * collecting results for car agents
@@ -286,6 +299,7 @@ class SimulationExecutionService {
 
 
         experimentRunResultId = experimentDataService.saveExperimentResult(
+                experimentRunResultId,
                 configurationId,
                 carAgentResults,
                 fillingResults,
@@ -505,10 +519,24 @@ class SimulationExecutionService {
         fillingStationAgentsForSession.put( sessionId, fillingStationMap )
 
 
+
         statusForSession.put( sessionId, SchedulerStatus.init )
+
+        // stub object for results to be persisted
+        ExperimentRunResult experimentRunResult = new ExperimentRunResult(
+                configurationId: configurationId
+        )
+
+        if ( !experimentRunResult.save( flush: true ) ) {
+
+            log.error( "failed to save experimentRunResult stub: ${experimentRunResult.errors}" )
+
+        }
+
 
         log.debug( "simulation framework is initiated for session: ${sessionId}" )
 
+        return experimentRunResult.id
     }
 
 

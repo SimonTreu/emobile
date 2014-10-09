@@ -3,6 +3,7 @@ package de.dfki.gs.controller.ms2.execution
 
 import de.dfki.gs.controller.ms2.execution.commands.ExperimentExecutionCommandObject
 import de.dfki.gs.controller.ms2.execution.commands.ExperimentPanicStopCommand
+import de.dfki.gs.controller.ms2.execution.commands.ExperimentProceedCommandObject
 import de.dfki.gs.domain.simulation.Configuration
 import de.dfki.gs.domain.simulation.FillingStation
 import de.dfki.gs.domain.simulation.FillingStationGroup
@@ -52,7 +53,9 @@ class ExecutionController {
             m.stationCount = stationCount
 
             Double relativeSearchLimit = ( cmd.relativeSearchLimit / 100 )
-            simulationExecutionService.init( cmd.configurationId, null, sessionId, relativeSearchLimit )
+            Long experimentRunResultId = simulationExecutionService.init( cmd.configurationId, null, sessionId, relativeSearchLimit )
+
+            m.experimentRunResultId = experimentRunResultId
 
             log.error( "hua1" )
 
@@ -61,13 +64,20 @@ class ExecutionController {
         render view: 'playSimulation', model: m
     }
 
-
+    /**
+     * only takes the start of experiment from client side
+     * never gets back to somewhere!!
+     *
+     * a button is needed which is activated, when experiment is finished!!
+     *
+     * @return NOTHING!
+     */
     def proceedExperiment() {
         def sessionId = WebUtils.retrieveGrailsWebRequest().session.id
 
         def m = [ : ]
 
-        ExperimentExecutionCommandObject cmd = new ExperimentExecutionCommandObject();
+        ExperimentProceedCommandObject cmd = new ExperimentProceedCommandObject();
         bindData( cmd, params )
 
         cmd.relativeSearchLimit = 50
@@ -80,10 +90,10 @@ class ExecutionController {
             log.error( "failed to get simulation by id: ${cmd.configurationId} -- ${cmd.errors}" )
         } else {
 
-            simExpResultId = simulationExecutionService.runSimulation( sessionId, cmd.configurationId )
+            simExpResultId = simulationExecutionService.runSimulation( sessionId, cmd.configurationId, cmd.experimentRunResultId )
 
             // all statistics from experiment
-            stats = statisticService.generateStatisticMapForExperiment( simExpResultId )
+            //stats = statisticService.generateStatisticMapForExperiment( simExpResultId )
 
             log.error( "started or proceeded simulation" )
 
@@ -91,8 +101,9 @@ class ExecutionController {
 
         m.stats = stats
 
-
-        redirect( controller: 'statistics', action: 'showStats', params: [ simulationExperimentResultId : simExpResultId ] )
+        // FIXME: DON'T DO THAT!! just on javaScript side. no chance to get back
+        // TODO: solution: print button ( 'stats' ) which requests state from simulation process
+        // redirect( controller: 'statistics', action: 'showStats', params: [ simulationExperimentResultId : simExpResultId ] )
     }
 
     def getInfo() {
@@ -115,12 +126,18 @@ class ExecutionController {
 
             data.time = theTime
 
+            data.experimentRunResultId = simulationExecutionService.getExperimentRunResultId( sessionId )
+
             response.status = ResponseConstants.RESPONSE_STATUS_OK
         } else {
+
             def messages = []
-            messages << "error, scheduler status is ${simulationExecutionService.getSchedulerStatus( sessionId )}"
+            messages << "scheduler status is ${simulationExecutionService.getSchedulerStatus( sessionId )}"
             data.messages = messages
-            response.status = ResponseConstants.RESPONSE_STATUS_BAD_REQUEST
+
+            data.finished = "finished"
+
+            response.status = ResponseConstants.RESPONSE_STATUS_OK
         }
 
         response.addHeader( "Content-Type", "application/json" );

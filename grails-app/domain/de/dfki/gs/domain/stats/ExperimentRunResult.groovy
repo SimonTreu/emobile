@@ -26,5 +26,6 @@ class ExperimentRunResult {
 
 
     static constraints = {
+        simTimeMillis nullable: true
     }
 }

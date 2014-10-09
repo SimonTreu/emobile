@@ -24,17 +24,16 @@ class ExperimentDataService {
      * @return the id of the persisted experiment result
      */
     public long saveExperimentResult(
+            Long experimentRunResultId,
             Long configurationId,
             List<CarAgentResult> carAgentResults,
             List<EFillingStationAgentResult> fillingAgentResults,
             long simTimeMillis ) {
 
 
-        // stub object for results to be persisted
-        ExperimentRunResult experimentRunResult = new ExperimentRunResult(
-                simTimeMillis: simTimeMillis,
-                configurationId: configurationId
-        )
+        ExperimentRunResult experimentRunResult = ExperimentRunResult.get( experimentRunResultId );
+        experimentRunResult.simTimeMillis = simTimeMillis
+        experimentRunResult.configurationId = configurationId
 
 
         for ( CarAgentResult carAgentResult : carAgentResults ) {

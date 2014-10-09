@@ -1,5 +1,6 @@
 package de.dfki.gs.ms2.stats
 
+import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.simulation.Configuration
 import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.domain.stats.ExperimentRunResult
@@ -83,6 +84,7 @@ class StatisticService {
 
         }
 
+
         for ( Fleet fleet : configuration.fleets ) {
             fleet = Fleet.get( fleet.id )
 
@@ -92,11 +94,35 @@ class StatisticService {
             // stats per fleet
             def stats = calculateStatsForGroupOfCars( fleetCarsMap.get( fleet.id ) )
 
+
+            def carTypes = calculateStatsForCarTypes( fleetCarsMap.get( fleet.id ) )
+
+
+            fleetMap.carTypes = carTypes
+
             fleetMap.stats = stats
 
             fleets << fleetMap
 
         }
+
+        // all fleets together
+        def fleetMap = [ : ]
+
+        fleetMap.id            = 0
+        fleetMap.name          = "All cars of Experiment"
+        fleetMap.carsCount     = cars.size()
+        fleetMap.distribution  = "Mixed Distribution"
+
+        fleetMap.carResults = carAgents
+
+        fleetMap.plannedFromKm = 0
+        fleetMap.plannedToKm   = 0
+
+        def carTypes = calculateStatsForCarTypes( carAgents )
+        fleetMap.carTypes = carTypes
+
+        fleets << fleetMap
 
         m.fleets = fleets
 
@@ -139,7 +165,7 @@ class StatisticService {
 
         energyLoaded.mean       = StatsCalculator.meanEnergyLoaded( persistedCarAgentResults*.energyLoaded )
         energyLoaded.valuez     = persistedCarAgentResults*.energyLoaded
-        details.ernergyLoaded   = energyLoaded
+        details.energyLoaded    = energyLoaded
 
         energyDemanded.mean     = StatsCalculator.meanEnergyDemanded( persistedCarAgentResults*.energyConsumed )
         energyDemanded.valuez   = persistedCarAgentResults*.energyConsumed
@@ -157,6 +183,41 @@ class StatisticService {
         details.realDrivingTime = realDrivingTime
 
         return details
+    }
+
+    def calculateStatsForCarTypes( List<PersistedCarAgentResult> carResults ) {
+
+        def carTypeList = []
+        def carTypeIds = carResults.collect { it.carType.id }.unique()
+        for ( Long carTypeId : carTypeIds ) {
+
+            def carTypeMap = [ : ]
+            CarType carType = CarType.get( carTypeId )
+            carTypeMap.name = carType.name
+
+            carTypeMap.countSuccessful = carResults.count { it.carType.id == carType.id && it.carStatus.equals( CarStatus.MISSION_ACCOMBLISHED.toString() ) }
+            carTypeMap.countFails = carResults.count { it.carType.id == carType.id && it.carStatus.equals( CarStatus.WAITING_EMPTY.toString() ) }
+            carTypeMap.countAll = carResults.count { it.carType.id == carType.id }
+
+            carTypeMap.stats = calculateStatsForGroupOfCars( carResults.findAll { it.carType.id == carType.id } )
+
+            carTypeList << carTypeMap
+        }
+
+        def carTypeMap = [ : ]
+        carTypeMap.name = "All Cars"
+        carTypeMap.countSuccessful = carResults.count { it.carStatus.equals( CarStatus.MISSION_ACCOMBLISHED.toString() ) }
+        carTypeMap.countFails = carResults.count { it.carStatus.equals( CarStatus.WAITING_EMPTY.toString() ) }
+        carTypeMap.countAll = carResults.size()
+
+        carTypeMap.stats = calculateStatsForGroupOfCars( carResults )
+
+        carTypeList << carTypeMap
+
+
+
+
+        return carTypeList
     }
 
     def calculateStatsForGroupOfCars( List<PersistedCarAgentResult> carResults ) {

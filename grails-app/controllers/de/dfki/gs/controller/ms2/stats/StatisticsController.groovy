@@ -26,7 +26,7 @@ class StatisticsController {
 
         }
 
-        def stats = statisticService.generateStatisticMapForExperiment( cmd.simulationExperimentResultId )
+        def stats = statisticService.generateStatisticMapForExperiment( cmd.experimentRunResultId )
 
         m.stats = stats
 

@@ -2033,7 +2033,9 @@ fieldset {
     margin: 10px;
     width:98%;
     border-radius: 6px;
-    border: 1px solid  #ccc;
+    border-left: 1px solid  #ccc;
+    border-right: 1px solid  #ccc;
+    border-bottom: 1px solid  #ccc;
     font-size: 12px
 }
 
@@ -2658,7 +2660,8 @@ a.olControlZoomOut {
 }
 
 .table {
-    border: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
     padding: 1em;
     min-height: 20px;
     position: relative;

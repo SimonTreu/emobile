@@ -125,6 +125,11 @@
                 <g:each in="${fleetStat.carTypes}" var="carType" >
                     <g:form id="allCarTypes" controller="statistics" action="showPicture">
 
+                        <g:hiddenField name="carTypeName" value="${carType.name}" />
+                        <g:hiddenField name="fleetName" value="${fleetStat.name}" />
+                        <g:hiddenField name="experimentRunResultId" value="${experimentRunResultId}" />
+
+
                         <div style="text-align:left; padding:10px; border:thin solid #808080; margin:15px">
 
                             CarType: ${carType.name}
@@ -337,7 +342,7 @@
 
 
                             </div>
-                            <g:submitButton name="Show Picture" value="Show Picture" />
+                            <g:submitButton name="Show Picture" value="Show Picture" id="${fleetStat.name}::${carType.name}"/>
                         </div>
 
                     </g:form>

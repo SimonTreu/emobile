@@ -18,6 +18,140 @@ import java.awt.Font
 @Transactional
 class GenerateStatsPictureService {
 
+    public File createDataChartFileForStats(
+                    stats,
+                    List<String> successPartsToShow,
+                    List<String> featuresToShow,
+                    String fleetName,
+                    String carTypeName
+    ) {
+
+        def m = pickRelevantDataRowsFromStats( stats, successPartsToShow, featuresToShow, fleetName, carTypeName )
+
+        final BoxAndWhiskerCategoryDataset dataset = createDataSet( m, successPartsToShow, featuresToShow )
+
+
+        final CategoryAxis xAxis = new CategoryAxis("Success Category");
+        final NumberAxis yAxis = new NumberAxis("time in [ h ], distance in [ km ], energy in [ kWh ] ");
+        yAxis.setAutoRangeIncludesZero(false);
+        final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
+        renderer.setFillBox( true );
+        renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
+        final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
+
+        final JFreeChart chart = new JFreeChart(
+                "${fleetName} : ${carTypeName}",
+                new Font("SansSerif", Font.BOLD, 14),
+                plot,
+                true
+        );
+
+
+        final ChartRenderingInfo info = new ChartRenderingInfo( new StandardEntityCollection() );
+        UUID uuid = UUID.randomUUID();
+        final File file = new File( "/tmp/emobile-time-filling-stats-${uuid}.png" );
+        ChartUtilities.saveChartAsPNG( file, chart, 1300, 700, info );
+
+        return file;
+    }
+
+    private static BoxAndWhiskerCategoryDataset createDataSet( m, List<String> successParts, List<String> features ) {
+
+        final DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
+
+        for ( String successPart : successParts ) {
+
+            for ( String feature : features ) {
+
+                List<Long> valuez = new ArrayList<Long>()
+                if ( feature.contains( "Time" ) ) {
+
+                    m."${successPart}"."${feature}".each { Long l ->
+                        valuez.add( Math.round( ( l / ( 60 * 60 ) ) ) )
+                    }
+
+                } else {
+
+                    m."${successPart}"."${feature}".each { l ->
+                        valuez.add( (Long) Math.round( l ) )
+                    }
+
+                }
+
+                dataset.add( (List) valuez , "${feature}" , "${successPart}" )
+
+            }
+
+
+        }
+
+        return dataset;
+
+    }
+
+    private Map pickRelevantDataRowsFromStats(
+                    stats,
+                    List<String> successPartsToShow,
+                    List<String> featuresToShow,
+                    String fleetName,
+                    String carTypeName
+    ) {
+
+        def m = [ : ]
+
+        for ( String successPart : successPartsToShow ) {
+
+            m."${successPart}" = [ : ]
+
+        }
+
+        stats.fleets.each { a ->
+
+            if ( a.name.equals( fleetName ) ) {
+
+                a.carTypes.each { carType ->
+
+                    if ( carType.name.equals( carTypeName ) ) {
+
+                        if ( successPartsToShow.contains( "all" ) ) {
+
+                            for ( String feature : featuresToShow ) {
+
+                                m."all"."${feature}" = carType.stats.allCars."${feature}".valuez
+
+                            }
+
+                        }
+                        if ( successPartsToShow.contains( "successful" ) ) {
+
+                            for ( String feature : featuresToShow ) {
+
+                                m."successful"."${feature}" = carType.stats.succeededCars."${feature}".valuez
+
+                            }
+
+                        }
+                        if ( successPartsToShow.contains( "failed" ) ) {
+
+                            for ( String feature : featuresToShow ) {
+
+                                m."failed"."${feature}" = carType.stats.failedCars."${feature}".valuez
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return m
+    }
+
     public File createDataChartFileForFillingStationUsage( m ) {
 
         final BoxAndWhiskerCategoryDataset dataset = createTimeSampleFillingStationDataset( m );

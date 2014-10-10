@@ -121,7 +121,7 @@
                 recheckStopButton( simStatus );
 
 
-                enableShowStatsButtonIfFinished( simStatus )
+                enableShowStatsButtonIfFinished( simStatus );
 
 
                 // $( '#speedInfo').html( speed );
@@ -165,6 +165,8 @@
         if ( simStatus == "finished" ) {
             document.getElementById( 'button_show_stats' ).disabled = false;
             document.getElementById( 'button_show_stats' ).value = "enabled";
+
+            document.getElementById( 'button_show_stats' ).style.color = "#00AA00";
         }
 
 

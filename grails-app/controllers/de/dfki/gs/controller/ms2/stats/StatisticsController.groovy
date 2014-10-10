@@ -10,7 +10,7 @@ class StatisticsController {
     def generateStatsPictureService
 
     /**
-     * TODO: after sim run, javascript never get back to controller,
+     * FIXED: after sim run, javascript never get back to controller,
      * also, no chance to get simResultId.
      * better to show results on config side. !!
      *

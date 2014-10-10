@@ -396,45 +396,24 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
 
 table {
 	/*border-top: 1px solid #DFDFDF;*/
-	border-collapse: collapse;
-	width: 100%;
-	margin-bottom: 1em;
+    /*border-collapse: collapse;*/
+    width: 100%;
+    /*margin-bottom: 1em;*/
+    border:0px;
 }
 
 
 th {
-	background-color: #efefef;
-	background-image: -moz-linear-gradient(top, #ffffff, #eaeaea);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #eaeaea));
-	    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#ffffff', EndColorStr = '#eaeaea');
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#eaeaea')";
-	color: #666666;
 	font-weight: bold;
-	line-height: 1.7em;
 	padding: 0.2em 0.6em;
+    font-size: 12px;
 }
 
-thead th {
-	white-space: nowrap;
-}
+
 
 th a {
 	display: block;
 	text-decoration: none;
-}
-
-th a:link, th a:visited {
-	color: #666666;
-}
-
-th a:hover, th a:focus {
-	color: #333333;
-}
-
-th.sortable a {
-	background-position: right;
-	background-repeat: no-repeat;
-	padding-right: 1.1em;
 }
 
 th.asc a {
@@ -453,9 +432,7 @@ th.desc a {
 	background: #ffffff;
 }
 
-th:hover, tr:hover {
-	//background: #E1F2B6;
-}
+
 
 /* PAGINATION */
 
@@ -1355,6 +1332,9 @@ td img{
     background-color:none;
 }
 
+td {
+    font-size: 12px;
+}
 
 .layoutLeftLittle {
     width: 40%;
@@ -1495,7 +1475,7 @@ td img{
 }
 
 legend {
-
+    position: relative;
     font-weight: bold;
 }
 
@@ -1880,6 +1860,7 @@ a#login_pop:hover, a#join_pop1:hover {
 fieldset {
     border-radius: 6px;
     border: 1px solid #d4d4d1;
+    margin-bottom: 10px;
 
 }
 
@@ -1992,7 +1973,8 @@ fieldset {
 
 .pContainerConfigure {
     margin-left:5%;
-    margin-top:10px;
+    margin-top:20px;
+    margin-bottom:10px;
     margin-right:6%;
     min-height: 300px;
     min-width: 1000px;
@@ -2044,6 +2026,15 @@ fieldset {
     border-radius: 6px;
     border: 1px solid  #ccc;
     font-size: 12px;
+}
+
+.contentImage {
+    padding:0px;
+    margin: 10px;
+    width:98%;
+    border-radius: 6px;
+    border: 1px solid  #ccc;
+    font-size: 12px
 }
 
 .contentRightBigConfiguration{
@@ -2125,8 +2116,10 @@ fieldset {
 }
 
 .rowMiddleWithoutBorder2{
-    display:block;
-    min-height:32px;
+
+    min-height:28px;
+    position: relative;
+    padding:8px 0px 0px 6px;
 }
 
 
@@ -2144,6 +2137,14 @@ fieldset {
     min-height:24px;
     font-weight: bold;
 }
+
+.leftBoldBig {
+    width:400px;
+    float:left;
+    padding:10px 0px 0px 7px;
+    min-height:24px;
+}
+
 .left0PX{
     width:100px;
     float:left;
@@ -2645,4 +2646,33 @@ a.olControlZoomOut {
     font-size:12px;
     font-weight: bold;
 
+}
+
+.cartype {
+    font-size:12px;
+    margin-left: 10px;
+}
+
+.cartypeBold {
+    font-weight: bold;
+}
+
+.table {
+    border: 1px solid #ddd;
+    padding: 1em;
+    min-height: 20px;
+    position: relative;
+
+}
+
+.shieben {
+    position: relative;
+    left: 40px;
+    padding: 5px;
+}
+
+.shiebenTitle {
+    position: relative;
+    padding: 10px;
+    font-weight: bold;
 }

@@ -9,9 +9,23 @@
 <html>
 <head>
     <title></title>
+    <script type='text/javascript' src="${resource(dir: 'js', file: 'prefix-free.js')}"></script>
+    <script type='text/javascript' src="${resource(dir: 'js', file: 'jquery-1.9.0.js')}"></script>
+    <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
+    <link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile.css')}" type="text/css">
+
+
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+
+    <link rel='stylesheet' href="${resource(dir: 'css', file: 'style.css')}" type='text/css' />
+    <link rel='stylesheet' href="${resource(dir: 'css', file: 'iconic.css')}" type='text/css' />
 </head>
 
 <body>
+<g:render template="/login/topbar"/>
 <script type="text/javascript">
 
     function handleCheckBoxClick( cb ) {
@@ -109,111 +123,108 @@
         #e
     --%>
 
+
+<div class="pContainerConfigure">
     <g:each in="${stats.fleets}" var="fleetStat" >
+        <fieldset>
+            <legend>
+                <g:message code="templates.configuration.fleet._distribution.fleetname"/>: ${fleetStat.name}
+                <g:message code="templates.configuration.fleet._distribution.with"/> ${fleetStat.carResults.size()}
+                <g:message code="templates.configuration.fleet._distribution.car"/> |
+                <g:message code="templates.configuration.fleet._distribution.distribution"/>
+                ${fleetStat.distribution} from ${fleetStat.plannedFromKm} km to ${fleetStat.plannedToKm} km
+            </legend>
 
-        <div style="text-align:left; padding:10px; border:thin solid #808080; margin:15px">
+            <g:each in="${fleetStat.carTypes}" var="carType" >
+                <g:form id="allCarTypes" controller="statistics" action="showPicture">
 
-            Fleet Name: ${fleetStat.name} with ${fleetStat.carResults.size()} cars
-            <br/>
+                    <g:hiddenField name="carTypeName" value="${carType.name}" />
+                    <g:hiddenField name="fleetName" value="${fleetStat.name}" />
+                    <g:hiddenField name="experimentRunResultId" value="${experimentRunResultId}" />
 
-            Distribution: ${fleetStat.distribution} from ${fleetStat.plannedFromKm} km to ${fleetStat.plannedToKm} km
+                    <div class="contentImage">
+                        <div class="rowUp">
+                            <div class="leftBoldBig">
+                                <span class="cartype">CarType: <span class="cartypeBold"> ${carType.name} </span></span>
+                                <span class="cartype">Successful: <span class="cartypeBold">${carType.countSuccessful}</span> of <span class="cartypeBold">${carType.countAll}</span></span>
+                                <span class="cartype">Failed: <span class="cartypeBold">${carType.countFails}</span> of <span class="cartypeBold">${carType.countAll}</span></span>
+                            </div>
+                        </div>
 
-            <div style="text-align:left; padding:10px; border:thin solid #808080; margin:15px">
+                        </br></br>
 
-                Infos:
-
-                <g:each in="${fleetStat.carTypes}" var="carType" >
-                    <g:form id="allCarTypes" controller="statistics" action="showPicture">
-
-                        <g:hiddenField name="carTypeName" value="${carType.name}" />
-                        <g:hiddenField name="fleetName" value="${fleetStat.name}" />
-                        <g:hiddenField name="experimentRunResultId" value="${experimentRunResultId}" />
+                        <table class="table">
+                            <tr class="table" align="center">
+                                <td width="100px">
+                                    Success
+                                </td>
 
 
-                        <div style="text-align:left; padding:10px; border:thin solid #808080; margin:15px">
-
-                            CarType: ${carType.name}
-                            <br/>
-                            Successful: ${carType.countSuccessful} of ${carType.countAll}
-                            <br/>
-                            Failed: ${carType.countFails} of ${carType.countAll}
-
-                            <div style="text-align:left; padding:10px; border:thin solid #808080; margin:15px">
-
-                                <table border="1">
-                                    <tr>
-                                        <th width="100px">
-                                            Success
-                                        </th>
-                                        <th width="100px">
+                                        <td width="100px" class="shiebenTitle">
                                             <g:checkBox name="${fleetStat.name}::${carType.name}::plannedTime"
                                                         id="${fleetStat.name}::${carType.name}::plannedTime"
                                                         class="${fleetStat.name}::${carType.name}"
                                                         onclick="handleCheckBoxClick(this);" />
                                             Planned Time
-                                        </th>
-                                        <th width="100px">
+                                        </td>
+
+                                        <td width="100px" class="shiebenTitle">
                                             <g:checkBox name="${fleetStat.name}::${carType.name}::realDrivingTime"
                                                         class="${fleetStat.name}::${carType.name}"
                                                         onclick="handleCheckBoxClick(this);"
                                                         id="${fleetStat.name}::${carType.name}::realDrivingTime" />
                                             Real Driving Time
-                                        </th>
-                                        <th width="100px">
+                                        </td>
+                                        <td width="100px" class="shiebenTitle">
                                             <g:checkBox name="${fleetStat.name}::${carType.name}::realTime"
                                                         class="${fleetStat.name}::${carType.name}"
                                                         onclick="handleCheckBoxClick(this);"
                                                         id="${fleetStat.name}::${carType.name}::realTime" />
                                             Real Time
-                                        </th>
-                                        <th width="100px">
+                                        </td>
+                                        <td width="100px" class="shiebenTitle">
                                             <g:checkBox name="${fleetStat.name}::${carType.name}::loadingTime"
                                                         class="${fleetStat.name}::${carType.name}"
                                                         onclick="handleCheckBoxClick(this);"
                                                         id="${fleetStat.name}::${carType.name}::loadingTime" />
                                             Loading Time
-                                        </th>
+                                        </td>
 
-                                        <th width="100px">
+                                        <td width="100px" class="shiebenTitle">
                                             <g:checkBox name="${fleetStat.name}::${carType.name}::plannedDistance"
                                                         class="${fleetStat.name}::${carType.name}"
                                                         onclick="handleCheckBoxClick(this);"
                                                         id="${fleetStat.name}::${carType.name}::plannedDistance" />
                                             Planned Distance
-                                        </th>
-                                        <th width="100px">
+                                        </td>
+                                        <td width="100px" class="shiebenTitle">
                                             <g:checkBox name="${fleetStat.name}::${carType.name}::realDistance"
                                                         class="${fleetStat.name}::${carType.name}"
                                                         onclick="handleCheckBoxClick(this);"
                                                         id="${fleetStat.name}::${carType.name}::realDistance" />
                                             Real Distance
-                                        </th>
+                                        </td>
 
-                                        <th width="100px">
+                                        <td width="100px" class="shiebenTitle">
                                             <g:checkBox name="${fleetStat.name}::${carType.name}::energyLoaded"
                                                         class="${fleetStat.name}::${carType.name}"
                                                         onclick="handleCheckBoxClick(this);"
                                                         id="${fleetStat.name}::${carType.name}::energyLoaded" />
                                             Energy Loaded
-                                        </th>
-                                        <th width="100px">
+                                        </td>
+                                        <td width="100px" class="shiebenTitle">
                                             <g:checkBox name="${fleetStat.name}::${carType.name}::energyDemanded"
                                                         class="${fleetStat.name}::${carType.name}"
                                                         onclick="handleCheckBoxClick(this);"
                                                         id="${fleetStat.name}::${carType.name}::energyDemanded" />
                                             Energy Demanded
-                                        </th>
+                                        </td>
 
-                                    </tr>
-                                </table>
+                                        </tr>
 
+                                        <tr class="table">
 
-
-
-                                    <table border="1">
-
-                                        <tr>
-                                            <td width="100px">
+                                            <td width="100px" class="shieben">
                                                 <g:checkBox name="${fleetStat.name}::${carType.name}::all"
                                                             id="${fleetStat.name}::${carType.name}::all"
                                                             class="${fleetStat.name}::${carType.name}"
@@ -221,86 +232,76 @@
                                                 All
                                             </td>
 
-                                            <td width="100px" id="all::${fleetStat.name}::${carType.name}::plannedTime">
+                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::plannedTime">
                                                 ${TimeCalculator.readableTime( carType.stats.allCars.plannedTime.mean )}
                                             </td>
-                                            <td width="100px" id="all::${fleetStat.name}::${carType.name}::realDrivingTime">
+                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::realDrivingTime">
                                                 ${TimeCalculator.readableTime( carType.stats.allCars.realDrivingTime.mean )}
                                             </td>
-                                            <td width="100px" id="all::${fleetStat.name}::${carType.name}::realTime">
+                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::realTime">
                                                 ${TimeCalculator.readableTime( carType.stats.allCars.realTime.mean )}
                                             </td>
-                                            <td width="100px" id="all::${fleetStat.name}::${carType.name}::loadingTime">
+                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::loadingTime">
                                                 ${TimeCalculator.readableTime( carType.stats.allCars.loadingTime.mean )}
                                             </td>
 
-                                            <td width="100px" id="all::${fleetStat.name}::${carType.name}::plannedDistance">
+                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::plannedDistance">
                                                 ${carType.stats.allCars.plannedDistance.mean}
                                             </td>
-                                            <td width="100px" id="all::${fleetStat.name}::${carType.name}::realDistance">
+                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::realDistance">
                                                 ${carType.stats.allCars.realDistance.mean}
                                             </td>
 
-                                            <td width="100px" id="all::${fleetStat.name}::${carType.name}::energyLoaded">
+                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::energyLoaded">
                                                 ${carType.stats.allCars.energyLoaded.mean}
                                             </td>
-                                            <td width="100px" id="all::${fleetStat.name}::${carType.name}::energyDemanded">
+                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::energyDemanded">
                                                 ${carType.stats.allCars.energyDemanded.mean}
                                             </td>
 
                                         </tr>
-                                    </table>
 
+                                        <tr class="table">
 
-
-
-
-                                    <table border="1">
-
-                                        <tr>
-                                            <td width="100px">
+                                            <td width="100px" class="shieben">
                                                 <g:checkBox name="${fleetStat.name}::${carType.name}::successful"
                                                             id="${fleetStat.name}::${carType.name}::successful"
                                                             class="${fleetStat.name}::${carType.name}"
                                                             onclick="handleCheckBoxClick( this )" />
                                                 Successful
                                             </td>
-                                            <td width="100px" id="successful::${fleetStat.name}::${carType.name}::plannedTime">
+                                            <td class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::plannedTime">
                                                 ${TimeCalculator.readableTime( carType.stats.succeededCars.plannedTime.mean )}
                                             </td>
-                                            <td width="100px" id="successful::${fleetStat.name}::${carType.name}::realDrivingTime">
+                                            <td class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::realDrivingTime">
                                                 ${TimeCalculator.readableTime( carType.stats.succeededCars.realDrivingTime.mean )}
                                             </td>
-                                            <td width="100px" id="successful::${fleetStat.name}::${carType.name}::realTime">
+                                            <td class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::realTime">
                                                 ${TimeCalculator.readableTime( carType.stats.succeededCars.realTime.mean )}
                                             </td>
-                                            <td width="100px" id="successful::${fleetStat.name}::${carType.name}::loadingTime">
+                                            <td class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::loadingTime">
                                                 ${TimeCalculator.readableTime( carType.stats.succeededCars.loadingTime.mean )}
                                             </td>
 
-                                            <td width="100px" id="successful::${fleetStat.name}::${carType.name}::plannedDistance">
+                                            <td class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::plannedDistance">
                                                 ${carType.stats.succeededCars.plannedDistance.mean}
                                             </td>
-                                            <td width="100px" id="successful::${fleetStat.name}::${carType.name}::realDistance">
+                                            <td class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::realDistance">
                                                 ${carType.stats.succeededCars.realDistance.mean}
                                             </td>
 
-                                            <td width="100px" id="successful::${fleetStat.name}::${carType.name}::energyLoaded">
+                                            <td class="shieben" class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::energyLoaded">
                                                 ${carType.stats.succeededCars.energyLoaded.mean}
                                             </td>
-                                            <td width="100px" id="successful::${fleetStat.name}::${carType.name}::energyDemanded">
+                                            <td class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::energyDemanded">
                                                 ${carType.stats.succeededCars.energyDemanded.mean}
                                             </td>
 
                                         </tr>
-                                    </table>
 
+                                        <tr class="table">
 
-
-                                    <table border="1">
-
-                                        <tr>
-                                            <td width="100px">
+                                            <td width="100px" class="shieben">
                                                 <g:checkBox name="${fleetStat.name}::${carType.name}::failed"
                                                             id="${fleetStat.name}::${carType.name}::failed"
                                                             class="${fleetStat.name}::${carType.name}"
@@ -308,52 +309,55 @@
                                                 Failed
                                             </td>
 
-                                            <td width="100px" id="failed::${fleetStat.name}::${carType.name}::plannedTime">
+                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::plannedTime">
                                                 ${TimeCalculator.readableTime( carType.stats.failedCars.plannedTime.mean )}
                                             </td>
-                                            <td width="100px" id="failed::${fleetStat.name}::${carType.name}::realDrivingTime">
+                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::realDrivingTime">
                                                 ${TimeCalculator.readableTime( carType.stats.failedCars.realDrivingTime.mean )}
                                             </td>
-                                            <td width="100px" id="failed::${fleetStat.name}::${carType.name}::realTime">
+                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::realTime">
                                                 ${TimeCalculator.readableTime( carType.stats.failedCars.realTime.mean )}
                                             </td>
-                                            <td width="100px" id="failed::${fleetStat.name}::${carType.name}::loadingTime">
+                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::loadingTime">
                                                 ${TimeCalculator.readableTime( carType.stats.failedCars.loadingTime.mean )}
                                             </td>
 
-                                            <td width="100px" id="failed::${fleetStat.name}::${carType.name}::plannedDistance">
+                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::plannedDistance">
                                                 ${carType.stats.failedCars.plannedDistance.mean}
                                             </td>
-                                            <td width="100px" id="failed::${fleetStat.name}::${carType.name}::realDistance">
+                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::realDistance">
                                                 ${carType.stats.failedCars.realDistance.mean}
                                             </td>
 
-                                            <td width="100px" id="failed::${fleetStat.name}::${carType.name}::energyLoaded">
+                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::energyLoaded">
                                                 ${carType.stats.failedCars.energyLoaded.mean}
                                             </td>
-                                            <td width="100px" id="failed::${fleetStat.name}::${carType.name}::energyDemanded">
+                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::energyDemanded">
                                                 ${carType.stats.failedCars.energyDemanded.mean}
                                             </td>
 
                                         </tr>
-                                    </table>
+                                        <tr>
+                                            <td>
+                                            <div class="rowMiddleWithoutBorder2">
+                                                <g:submitButton name="Show Picture" value="Show Picture" id="${fleetStat.name}::${carType.name}"/>
+                                            </div>
+                                            </td>
+                                        </tr>
+                               </table>
 
 
-
-
-                            </div>
-                            <g:submitButton name="Show Picture" value="Show Picture" id="${fleetStat.name}::${carType.name}"/>
                         </div>
 
                     </g:form>
                 </g:each>
+    </fieldset>
+    </g:each>
+</div>
 
-
-
-            </div>
-
-
-            <br/>
+</body>
+</html>
+            <%--</div>--%>
 
             <%--
             Mean Results of All Cars In Fleet:
@@ -450,11 +454,3 @@
             </table>
             --%>
 
-
-        </div>
-
-    </g:each>
-
-
-</body>
-</html>

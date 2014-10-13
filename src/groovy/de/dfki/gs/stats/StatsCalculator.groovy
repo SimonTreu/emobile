@@ -6,6 +6,18 @@ package de.dfki.gs.stats
 class StatsCalculator {
 
 
+    public static float meanTimeInUse( List<Long> times ) {
+        return meanL( times )
+    }
+
+    public static float meanTimeLiving( List<Long> times ) {
+        return meanL( times )
+    }
+    public static float meanFailedToRoute( List<Long> times ) {
+        return meanL( times )
+    }
+
+
     public static float meanPlannedTime( List<Float> plannedTimes ) {
         return mean( plannedTimes )
     }
@@ -36,6 +48,22 @@ class StatsCalculator {
 
     public static float meanEnergyDemanded( List<Float> energyDemandeds ) {
         return mean( energyDemandeds )
+    }
+
+    private static float meanL( List<Long> longs ) {
+
+        if ( longs.size() == 0 ) {
+            return 0
+        }
+
+        float result = 0
+        for ( Long f : longs ) {
+            result += f
+        }
+
+        result = result / longs.size()
+
+        return result
     }
 
     private static float mean( List<Float> floats ) {

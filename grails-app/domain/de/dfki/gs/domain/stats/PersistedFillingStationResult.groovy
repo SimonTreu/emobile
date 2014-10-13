@@ -8,8 +8,12 @@ class PersistedFillingStationResult {
 
     FillingStationType fillingStationType
 
+    Long groupId
+
     long timeLiving
     long timeInUse
+
+    int failedToRouteCount
 
 
     static constraints = {

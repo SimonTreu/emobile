@@ -72,7 +72,9 @@ class ExperimentDataService {
             PersistedFillingStationResult persistedFillingStationResult = new PersistedFillingStationResult(
                     timeInUse: result.timeInUse,
                     timeLiving: result.simulationTime,
+                    failedToRouteCount: result.failedToRouteCount,
                     fillingStationType: result.fillingStationType,
+                    groupId: result.groupId
             )
 
             if ( !persistedFillingStationResult.save( flush: true ) ) {

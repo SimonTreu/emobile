@@ -355,6 +355,174 @@
     </g:each>
 </div>
 
+
+
+</br></br>
+</br></br>
+</br></br>
+<b>Filling Stations</b>
+
+<%-- HUA --%>
+<div class="pContainerConfigure">
+<g:each in="${stats.groups}" var="groupStat" >
+<fieldset>
+<legend>
+    Group name: ${groupStat.name}
+
+</legend>
+
+<g:each in="${groupStat.stationTypes}" var="stationType" >
+<g:form id="allCarTypes2" controller="statistics" action="showStationPicture">
+
+<g:hiddenField name="stationTypeName" value="${stationType.name}" />
+<g:hiddenField name="groupName" value="${groupStat.name}" />
+<g:hiddenField name="experimentRunResultId" value="${experimentRunResultId}" />
+
+<div class="contentImage">
+    <div class="rowUp">
+        <div class="leftBoldBig">
+            <span class="cartype">StationType: <span class="cartypeBold"> ${stationType.name} </span></span>
+<span class="cartype">Successful: <span class="cartypeBold">${stationType.stats.succeededStations.timeInUse.valuez.size()}</span> of <span class="cartypeBold">${stationType.stats.allStations.timeInUse.valuez.size()}</span></span>
+<span class="cartype">Failed: <span class="cartypeBold">${stationType.stats.failedStations.timeInUse.valuez.size()}</span> of <span class="cartypeBold">${stationType.stats.allStations.timeInUse.valuez.size()}</span></span>
+</div>
+</div>
+
+
+    </br></br>
+
+<table class="table">
+    <tr class="table" align="center">
+        <td width="100px">
+            Success
+        </td>
+
+
+        <td width="100px" class="shiebenTitle">
+            <g:checkBox name="${groupStat.name}::${stationType.name}::timeInUse"
+                        id="${groupStat.name}::${stationType.name}::timeInUse"
+                        class="${groupStat.name}::${stationType.name}"
+                        onclick="handleCheckBoxClick(this);" />
+            Time in Use Mean
+        </td>
+
+        <td width="100px" class="shiebenTitle">
+            <g:checkBox name="${groupStat.name}::${stationType.name}::timeInUseSum"
+                        id="${groupStat.name}::${stationType.name}::timeInUseSum"
+                        class="${groupStat.name}::${stationType.name}"
+                        onclick="handleCheckBoxClick(this);" />
+            Time in Use Sum
+        </td>
+
+        <td width="100px" class="shiebenTitle">
+            <g:checkBox name="${groupStat.name}::${stationType.name}::timeLiving"
+                        class="${groupStat.name}::${stationType.name}"
+                        onclick="handleCheckBoxClick(this);"
+                        id="${groupStat.name}::${stationType.name}::timeLiving" />
+            Time Living
+        </td>
+        <td width="100px" class="shiebenTitle">
+            <g:checkBox name="${groupStat.name}::${stationType.name}::failedToRoute"
+                        class="${groupStat.name}::${stationType.name}"
+                        onclick="handleCheckBoxClick(this);"
+                        id="${groupStat.name}::${stationType.name}::failedToRoute" />
+            Failed to Route
+        </td>
+
+    </tr>
+
+    <tr class="table">
+
+        <td width="100px" class="shieben">
+            <g:checkBox name="${groupStat.name}::${stationType.name}::all"
+                        id="${groupStat.name}::${stationType.name}::all"
+                        class="${groupStat.name}::${stationType.name}"
+                        onclick="handleCheckBoxClick( this )" />
+            All
+        </td>
+
+        <td class="shieben" width="100px" id="all::${groupStat.name}::${stationType.name}::timeInUse">
+            ${TimeCalculator.readableTime( stationType.stats.allStations.timeInUse.mean )}
+        </td>
+        <td class="shieben" width="100px" id="all::${groupStat.name}::${stationType.name}::timeInUseSum">
+            ${TimeCalculator.readableTime( stationType.stats.allStations.timeInUse.sum )}
+        </td>
+        <td class="shieben" width="100px" id="all::${groupStat.name}::${stationType.name}::timeLiving">
+            ${TimeCalculator.readableTime( stationType.stats.allStations.timeLiving.mean )}
+        </td>
+        <td class="shieben" width="100px" id="all::${groupStat.name}::${stationType.name}::failedToRoute">
+            ${( stationType.stats.allStations.failedToRoute.mean )}
+        </td>
+
+    </tr>
+
+    <tr class="table">
+
+        <td width="100px" class="shieben">
+            <g:checkBox name="${groupStat.name}::${stationType.name}::successful"
+                        id="${groupStat.name}::${stationType.name}::successful"
+                        class="${groupStat.name}::${stationType.name}"
+                        onclick="handleCheckBoxClick( this )" />
+            Successful
+        </td>
+
+        <td class="shieben" width="100px" id="successful::${groupStat.name}::${stationType.name}::timeInUse">
+            ${TimeCalculator.readableTime( stationType.stats.succeededStations.timeInUse.mean )}
+        </td>
+        <td class="shieben" width="100px" id="successful::${groupStat.name}::${stationType.name}::timeInUseSum">
+            ${TimeCalculator.readableTime( stationType.stats.succeededStations.timeInUse.sum )}
+        </td>
+        <td class="shieben" width="100px" id="successful::${groupStat.name}::${stationType.name}::timeLiving">
+            ${TimeCalculator.readableTime( stationType.stats.succeededStations.timeLiving.mean )}
+        </td>
+        <td class="shieben" width="100px" id="successful::${groupStat.name}::${stationType.name}::failedToRoute">
+            ${( stationType.stats.succeededStations.failedToRoute.mean )}
+        </td>
+
+    </tr>
+
+    <tr class="table">
+
+        <td width="100px" class="shieben">
+            <g:checkBox name="${groupStat.name}::${stationType.name}::failed"
+                        id="${groupStat.name}::${stationType.name}::failed"
+                        class="${groupStat.name}::${stationType.name}"
+                        onclick="handleCheckBoxClick( this )" />
+            Failed
+        </td>
+
+        <td class="shieben" width="100px" id="failed::${groupStat.name}::${stationType.name}::timeInUse">
+            ${TimeCalculator.readableTime( stationType.stats.failedStations.timeInUse.mean )}
+        </td>
+        <td class="shieben" width="100px" id="failed::${groupStat.name}::${stationType.name}::timeInUseSum">
+            ${TimeCalculator.readableTime( stationType.stats.failedStations.timeInUse.sum )}
+        </td>
+        <td class="shieben" width="100px" id="failed::${groupStat.name}::${stationType.name}::timeLiving">
+            ${TimeCalculator.readableTime( stationType.stats.failedStations.timeLiving.mean )}
+        </td>
+        <td class="shieben" width="100px" id="failed::${groupStat.name}::${stationType.name}::failedToRoute">
+            ${( stationType.stats.failedStations.failedToRoute.mean )}
+        </td>
+
+    </tr>
+    <tr>
+        <td>
+            <div class="rowMiddleWithoutBorder2">
+                <g:submitButton name="Show Picture" value="Show Picture" id="${groupStat.name}::${stationType.name}"/>
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+</div>
+
+</g:form>
+</g:each>
+</fieldset>
+</g:each>
+</div>
+
+
 </body>
 </html>
             <%--</div>--%>

@@ -9,6 +9,8 @@ class EFillingStationAgentResult {
 
     long timeInUse;
     long simulationTime;
+    long groupId
+    int failedToRouteCount
 
     FillingStationType fillingStationType
 

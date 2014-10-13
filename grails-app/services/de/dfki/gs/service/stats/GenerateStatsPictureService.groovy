@@ -55,6 +55,43 @@ class GenerateStatsPictureService {
         return file;
     }
 
+    public File createDataChartFileForStationStats(
+            stats,
+            List<String> successPartsToShow,
+            List<String> featuresToShow,
+            String groupName,
+            String stationTypeName
+    ) {
+
+        def m = pickRelevantDataRowsFromStationStats( stats, successPartsToShow, featuresToShow, groupName, stationTypeName )
+
+        final BoxAndWhiskerCategoryDataset dataset = createDataSet( m, successPartsToShow, featuresToShow )
+
+
+        final CategoryAxis xAxis = new CategoryAxis("Success Category");
+        final NumberAxis yAxis = new NumberAxis("time in [ h ], distance in [ km ], energy in [ kWh ] ");
+        yAxis.setAutoRangeIncludesZero(false);
+        final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
+        renderer.setFillBox( true );
+        renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
+        final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
+
+        final JFreeChart chart = new JFreeChart(
+                "${groupName} : ${stationTypeName}",
+                new Font("SansSerif", Font.BOLD, 14),
+                plot,
+                true
+        );
+
+
+        final ChartRenderingInfo info = new ChartRenderingInfo( new StandardEntityCollection() );
+        UUID uuid = UUID.randomUUID();
+        final File file = new File( "/tmp/emobile-time-filling-stats-${uuid}.png" );
+        ChartUtilities.saveChartAsPNG( file, chart, 1300, 700, info );
+
+        return file;
+    }
+
     private static BoxAndWhiskerCategoryDataset createDataSet( m, List<String> successParts, List<String> features ) {
 
         final DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
@@ -64,7 +101,7 @@ class GenerateStatsPictureService {
             for ( String feature : features ) {
 
                 List<Long> valuez = new ArrayList<Long>()
-                if ( feature.contains( "Time" ) ) {
+                if ( feature.contains( "Time" ) ||feature.contains( "time" ) ) {
 
                     m."${successPart}"."${feature}".each { Long l ->
                         valuez.add( Math.round( ( l / ( 60 * 60 ) ) ) )
@@ -87,6 +124,69 @@ class GenerateStatsPictureService {
 
         return dataset;
 
+    }
+
+    private Map pickRelevantDataRowsFromStationStats(
+            stats,
+            List<String> successPartsToShow,
+            List<String> featuresToShow,
+            String groupName,
+            String stationTypeName
+    ) {
+
+        def m = [ : ]
+
+        for ( String successPart : successPartsToShow ) {
+
+            m."${successPart}" = [ : ]
+
+        }
+
+        stats.groups.each { a ->
+
+            if ( a.name.equals( groupName ) ) {
+
+                a.stationTypes.each { stationType ->
+
+                    if ( stationType.name.equals( stationTypeName ) ) {
+
+                        if ( successPartsToShow.contains( "all" ) ) {
+
+                            for ( String feature : featuresToShow ) {
+
+                                m."all"."${feature}" = stationType.stats.allStations."${feature}".valuez
+
+                            }
+
+                        }
+                        if ( successPartsToShow.contains( "successful" ) ) {
+
+                            for ( String feature : featuresToShow ) {
+
+                                m."successful"."${feature}" = stationType.stats.succeededStations."${feature}".valuez
+
+                            }
+
+                        }
+                        if ( successPartsToShow.contains( "failed" ) ) {
+
+                            for ( String feature : featuresToShow ) {
+
+                                m."failed"."${feature}" = stationType.stats.failedStations."${feature}".valuez
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return m
     }
 
     private Map pickRelevantDataRowsFromStats(

@@ -46,14 +46,18 @@ class EFillingStationAgent extends Agent {
 
     public static EFillingStationAgent createFillingStationAgentFromFillingStation(
                     FillingStation fillingStation,
-                    FillingStationType stationType ) {
+                    FillingStationType stationType,
+                    Long groupId ) {
 
 
         EFillingStationAgent agent = new EFillingStationAgent();
 
 
         agent.stationId = fillingStation.id
-        agent.eFillingStationAgentResult = new EFillingStationAgentResult( fillingStationType: stationType );
+        agent.eFillingStationAgentResult = new EFillingStationAgentResult(
+                                                    fillingStationType: stationType,
+                                                    groupId: groupId
+        );
 
         agent.gasolineStationType = stationType.power;
         agent.fillingStationStatus = FillingStationStatus.FREE;
@@ -127,6 +131,7 @@ class EFillingStationAgent extends Agent {
 
         eFillingStationAgentResult.timeInUse = timeInUse
         eFillingStationAgentResult.simulationTime = currentTime
+        eFillingStationAgentResult.failedToRouteCount = failedToRouteCount
 
     }
 

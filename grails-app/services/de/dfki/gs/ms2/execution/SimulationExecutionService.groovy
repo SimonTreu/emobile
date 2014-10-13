@@ -345,29 +345,23 @@ class SimulationExecutionService {
         /**
          * getting all fillingStations from the groups
          */
-        List<FillingStation> fillingStations = new ArrayList<FillingStation>()
+        Map<Long, EFillingStationAgent> fillingStationMap = new HashMap<Long, EFillingStationAgent>()
+        long mmm = System.currentTimeMillis();
+
         configuration.fillingStationGroups.each { FillingStationGroup group ->
 
             group = FillingStationGroup.get( group.id )
+
             group.fillingStations.each { FillingStation station ->
 
-                fillingStations.add( FillingStation.get( station.id ) )
+                FillingStationType type = FillingStationType.get( station.fillingStationType.id )
+                fillingStationMap.put( station.id,
+                        EFillingStationAgent.createFillingStationAgentFromFillingStation( station, type, group.id ) )
 
             }
 
         }
 
-        Map<Long, EFillingStationAgent> fillingStationMap = new HashMap<Long, EFillingStationAgent>()
-
-        long mmm = System.currentTimeMillis();
-        for ( FillingStation station : fillingStations ) {
-
-            // TODO: getting the type is possibly much easier -> rethink
-            FillingStationType type = FillingStationType.get( station.fillingStationType.id )
-            fillingStationMap.put( station.id,
-                        EFillingStationAgent.createFillingStationAgentFromFillingStation( station, type ) )
-
-        }
         log.error( "filling station agents created in ${(System.currentTimeMillis()-mmm)} ms" )
 
         // initialize fillingStationSyncronizer:

@@ -2,12 +2,13 @@ package de.dfki.gs.ms2.stats
 
 import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.simulation.Configuration
+import de.dfki.gs.domain.simulation.FillingStationGroup
+import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.domain.stats.ExperimentRunResult
 import de.dfki.gs.domain.stats.PersistedCarAgentResult
 import de.dfki.gs.domain.stats.PersistedFillingStationResult
 import de.dfki.gs.domain.utils.Distribution
-import de.dfki.gs.ms2.stats.utils.ResultView
 import de.dfki.gs.simulation.CarStatus
 import de.dfki.gs.stats.StatsCalculator
 import grails.transaction.Transactional
@@ -43,6 +44,7 @@ class StatisticService {
             fillingStationResult = PersistedFillingStationResult.get( fillingStationResult.id )
         }
 
+
         def cars = [ : ]
 
         def successFullCars = []
@@ -66,6 +68,7 @@ class StatisticService {
 
 
         def fleets = []
+        def groups = []
 
         // split up carAgents results in a map fleet id -> list of cars
         def fleetCarsMap = [ : ]
@@ -83,6 +86,53 @@ class StatisticService {
             fleetList.add( pcar )
 
         }
+
+        // split up fillingAgents results in a map group id -> list of filling stations
+        def groupFillingsMap = [ : ]
+        fillingStations.each { PersistedFillingStationResult pfil ->
+
+            List<PersistedFillingStationResult> groupList = (List<PersistedFillingStationResult>) groupFillingsMap.get( pfil.groupId )
+
+            if ( groupList == null ) {
+
+                groupList = new ArrayList<PersistedFillingStationResult>()
+                groupFillingsMap.put( pfil.groupId, groupList )
+
+            }
+
+            groupList.add( pfil )
+
+        }
+
+
+        for ( FillingStationGroup group : configuration.fillingStationGroups ) {
+
+            group = FillingStationGroup.get( group.id )
+
+            def groupMap = [ : ]
+            groupMap.id = group.id
+            groupMap.name = group.name
+
+            def stats = calculateStatsForGroupOfFillingStations( groupFillingsMap.get( group.id ) )
+            def stationTypes = calculateStatForStationTypes( groupFillingsMap.get( group.id ) )
+
+            groupMap.stationTypes = stationTypes
+            groupMap.stats = stats
+
+            groups << groupMap
+
+        }
+
+        def groupMap = [ : ]
+        groupMap.id = 0
+        groupMap.name = "All Filling Stations of Experiment"
+
+        def stationTypes = calculateStatForStationTypes( fillingStations )
+
+        groupMap.stationTypes =  stationTypes
+
+        groups << groupMap
+
 
 
         for ( Fleet fleet : configuration.fleets ) {
@@ -125,10 +175,35 @@ class StatisticService {
         fleets << fleetMap
 
         m.fleets = fleets
+        m.groups = groups
 
         return m
     }
 
+
+    def detailsStatsForGroupOfStations( List<PersistedFillingStationResult> stationResults ) {
+
+        def details = [ : ]
+
+        def timeInUse = [ : ]
+        def timeLiving = [ : ]
+        def failedToRoute = [ : ]
+
+        timeInUse.mean = StatsCalculator.meanTimeInUse( stationResults*.timeInUse )
+        timeInUse.sum = stationResults.sum { it.timeInUse }
+        timeInUse.valuez = stationResults*.timeInUse
+        details.timeInUse = timeInUse
+
+        timeLiving.mean = StatsCalculator.meanTimeLiving( stationResults*.timeLiving )
+        timeLiving.valuez = stationResults*.timeLiving
+        details.timeLiving = timeLiving
+
+        failedToRoute.mean = StatsCalculator.meanFailedToRoute( stationResults*.failedToRouteCount )
+        failedToRoute.valuez = stationResults*.failedToRouteCount
+        details.failedToRoute = failedToRoute
+
+        return details
+    }
 
     def detailsStatsForGroupOfCars( List<PersistedCarAgentResult> persistedCarAgentResults ) {
 
@@ -185,6 +260,31 @@ class StatisticService {
         return details
     }
 
+    def calculateStatForStationTypes( List<PersistedFillingStationResult> fillingStationResults ) {
+
+        def stationTypeList = []
+        def stationTypeIds = fillingStationResults.collect { it.fillingStationType.id }.unique()
+        for ( Long stationTypeId : stationTypeIds ) {
+
+            def stationTypeMap = [ : ]
+            FillingStationType type = FillingStationType.get( stationTypeId )
+            stationTypeMap.name = type.name
+
+            stationTypeMap.stats = calculateStatsForGroupOfFillingStations( fillingStationResults.findAll { it.fillingStationType.id == type.id } )
+
+            stationTypeList << stationTypeMap
+        }
+
+        def stationTypeMap = [ : ]
+        stationTypeMap.name = "All Stations"
+
+        stationTypeMap.stats = calculateStatsForGroupOfFillingStations( fillingStationResults )
+
+        stationTypeList << stationTypeMap
+
+        return stationTypeList
+    }
+
     def calculateStatsForCarTypes( List<PersistedCarAgentResult> carResults ) {
 
         def carTypeList = []
@@ -218,6 +318,30 @@ class StatisticService {
 
 
         return carTypeList
+    }
+
+
+    def calculateStatsForGroupOfFillingStations( List<PersistedFillingStationResult> fillingStationResults ) {
+
+        def stats = [ : ]
+        List<PersistedFillingStationResult> failed = new ArrayList<PersistedFillingStationResult>()
+        List<PersistedFillingStationResult> succeeds = new ArrayList<PersistedFillingStationResult>()
+
+        fillingStationResults.each { PersistedFillingStationResult result ->
+
+            if ( result.failedToRouteCount > 0 ) {
+                failed << result
+            } else {
+                succeeds << result
+            }
+
+        }
+
+        stats.allStations = detailsStatsForGroupOfStations( fillingStationResults )
+        stats.failedStations = detailsStatsForGroupOfStations( failed )
+        stats.succeededStations = detailsStatsForGroupOfStations( succeeds )
+
+        return stats
     }
 
     def calculateStatsForGroupOfCars( List<PersistedCarAgentResult> carResults ) {

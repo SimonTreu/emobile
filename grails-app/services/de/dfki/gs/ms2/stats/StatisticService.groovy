@@ -553,7 +553,10 @@ class StatisticService {
                 break;
             case Distribution.NORMAL_DISTRIBUTION:
 
-                NormalDistribution normalDistribution = new NormalDistribution( (toKm-fromKm), 20 )
+                double mean = fromKm + ( ( toKm-fromKm ) / 2 )
+                double diff = toKm - mean
+
+                NormalDistribution normalDistribution = new NormalDistribution( mean , diff * 0.2  )
                 normalDistribution.reseedRandomGenerator( seed )
 
                 for ( int i = 0; i < count; i++ ) {

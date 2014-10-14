@@ -95,7 +95,7 @@ grails.project.dependency.resolution = {
 
         runtime( "org.ccil.cowan.tagsoup:tagsoup:1.2" )
 
-        runtime( "org.codehaus.gpars:gpars:0.11" )
+        //runtime( "org.codehaus.gpars:gpars:0.11" )
 
         /*
         compile ('com.vividsolutions:jts:1.8') {
@@ -124,7 +124,8 @@ grails.project.dependency.resolution = {
         //runtime ":yui-minify-resources:0.1.5"
 
         // build ":tomcat:$grailsVersion"
-        build ":tomcat:7.0.52.1"
+        //build ":tomcat:7.0.52.1"
+        build ":tomcat:7.0.54"
         // build ":tomcat:2.3.1"
 
         runtime ":database-migration:1.3.2"

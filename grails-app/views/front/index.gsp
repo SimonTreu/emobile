@@ -15,7 +15,7 @@
 <body>
 
 <div>
-    <p id="startSimulation">Welcome! ${welcome.familyName}</p>
+    <p id="startSimulation">Welcome - ${welcome.givenName} ${welcome.familyName}</p>
 </div>
 
 <div>

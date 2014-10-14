@@ -2,6 +2,7 @@ package de.dfki.gs.ms2.stats
 
 import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.simulation.Configuration
+import de.dfki.gs.domain.simulation.FillingStation
 import de.dfki.gs.domain.simulation.FillingStationGroup
 import de.dfki.gs.domain.simulation.FillingStationType
 import de.dfki.gs.domain.simulation.Fleet
@@ -19,6 +20,76 @@ import org.apache.commons.math3.random.RandomDataGenerator
 @Transactional
 class StatisticService {
 
+
+    def getStationsForMap( Long experimentRunResultId, List<String> successCategoriesToShow ) {
+
+        ExperimentRunResult result = ExperimentRunResult.get( experimentRunResultId )
+
+        List<PersistedFillingStationResult> fillingStations = result.persistedFillingStationResults
+        fillingStations.each { PersistedFillingStationResult fillingStationResult ->
+            fillingStationResult = PersistedFillingStationResult.get( fillingStationResult.id )
+        }
+
+        def groupFillingsMap = [ : ]
+        fillingStations.each { PersistedFillingStationResult pfil ->
+
+            List<PersistedFillingStationResult> groupList = (List<PersistedFillingStationResult>) groupFillingsMap.get( pfil.groupId )
+
+            if ( groupList == null ) {
+
+                groupList = new ArrayList<PersistedFillingStationResult>()
+                groupFillingsMap.put( pfil.groupId, groupList )
+
+            }
+
+            groupList.add( pfil )
+
+        }
+
+
+        def fillingStationGroups = []
+
+        groupFillingsMap.keySet().each { Long key ->
+
+            def fillingStationModel = [:]
+
+            FillingStationGroup fillingStationGroup = FillingStationGroup.get( key )
+
+            fillingStationModel.stations = []
+            fillingStationModel.name = fillingStationGroup.name
+
+            groupFillingsMap.get( key ).each { PersistedFillingStationResult fillingStation ->
+
+                def stationModel = [:]
+                stationModel.name = "station"
+                stationModel.power = "power"
+                stationModel.lat = fillingStation.lat
+                stationModel.lon = fillingStation.lon
+
+
+                if ( successCategoriesToShow.contains( "all" ) ) {
+
+                    fillingStationModel.stations << stationModel
+
+                } else if ( successCategoriesToShow.contains( "successful" ) && fillingStation.failedToRouteCount == 0 ) {
+
+                    fillingStationModel.stations << stationModel
+
+                } else if ( successCategoriesToShow.contains( "failed" ) && fillingStation.failedToRouteCount > 0 ) {
+
+                    fillingStationModel.stations << stationModel
+
+                }
+
+
+
+            }
+
+            fillingStationGroups << fillingStationModel
+        }
+
+        return fillingStationGroups
+    }
 
     def generateStatisticMapForExperiment( Long experimentResultId ) {
 

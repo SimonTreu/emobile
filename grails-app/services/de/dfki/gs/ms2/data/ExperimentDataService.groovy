@@ -74,7 +74,9 @@ class ExperimentDataService {
                     timeLiving: result.simulationTime,
                     failedToRouteCount: result.failedToRouteCount,
                     fillingStationType: result.fillingStationType,
-                    groupId: result.groupId
+                    groupId: result.groupId,
+                    lat: result.lat,
+                    lon: result.lon
             )
 
             if ( !persistedFillingStationResult.save( flush: true ) ) {

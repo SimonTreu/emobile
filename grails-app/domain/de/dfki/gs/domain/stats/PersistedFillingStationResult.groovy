@@ -15,6 +15,9 @@ class PersistedFillingStationResult {
 
     int failedToRouteCount
 
+    float lat
+    float lon
+
 
     static constraints = {
         fillingStationType( nullable: false )

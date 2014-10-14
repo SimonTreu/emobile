@@ -2,6 +2,7 @@ package de.dfki.gs.controller.ms2.stats
 
 import de.dfki.gs.controller.ms2.stats.commands.ExperimentResultCommandObject
 import de.dfki.gs.controller.ms2.stats.commands.ShowStationStatsCommandObject
+import de.dfki.gs.controller.ms2.stats.commands.ShowStationsCommandObject
 import de.dfki.gs.controller.ms2.stats.commands.ShowStatsCommandObject
 import org.apache.commons.io.FileUtils
 
@@ -218,6 +219,48 @@ class StatisticsController {
         out.close()
 
         FileUtils.deleteQuietly( distanceFile )
+
+    }
+
+    def showStationsOnMap() {
+
+        ShowStationsCommandObject cmd = new ShowStationsCommandObject()
+        bindData( cmd, params )
+
+
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+            log.error( "failed -- ${cmd.errors}" )
+        } else {
+            def m = [ : ]
+
+            List<String> successCategoriesToShow = new ArrayList<String>()
+            for ( Object key : params.keySet() ) {
+
+                String value = (String) params.get( key )
+                if ( value.equals( "on" ) ) {
+
+                    if ( ((String) key).endsWith( "all" ) ) {
+                        if ( !successCategoriesToShow.contains( "all" ) ) {
+                            successCategoriesToShow.add( "all" )
+                        }
+                    } else if ( ((String) key).endsWith( "successful" ) ) {
+                        if ( !successCategoriesToShow.contains( "successful" ) ) {
+                            successCategoriesToShow.add( "successful" )
+                        }
+                    } else if ( ((String) key).endsWith( "failed" ) ) {
+                        if ( !successCategoriesToShow.contains( "failed" ) ) {
+                            successCategoriesToShow.add( "failed" )
+                        }
+                    }
+
+                }
+
+            }
+
+            m.fillingStationGroups = statisticService.getStationsForMap( cmd.experimentRunResultId, successCategoriesToShow )
+            // configurationService.getGroupStationsOfConfiguration( cmd.configurationStubId )
+            render template: '/templates/configuration/stations/showStationsOnMap', model: m
+        }
 
     }
 

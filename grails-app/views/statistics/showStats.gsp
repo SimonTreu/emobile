@@ -22,6 +22,18 @@
 
     <link rel='stylesheet' href="${resource(dir: 'css', file: 'style.css')}" type='text/css' />
     <link rel='stylesheet' href="${resource(dir: 'css', file: 'iconic.css')}" type='text/css' />
+
+
+    <g:javascript library="jquery-1.9.0" />
+
+    <g:javascript src="application.js" />
+
+    <g:javascript src="ol/OpenLayers.js" />
+    <script type="text/javascript" src="http://openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+
+    <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
+    <script type="text/javascript" src="http://ol3js.org/en/master/examples/google-map.js"></script>
+
 </head>
 
 <body>
@@ -156,7 +168,7 @@
                         <table class="table">
                             <tr class="table" align="center">
                                 <td width="100px">
-                                    Success
+                                    Success Category
                                 </td>
 
 
@@ -393,7 +405,7 @@
 <table class="table">
     <tr class="table" align="center">
         <td width="100px">
-            Success
+            Success Category
         </td>
 
 
@@ -403,6 +415,10 @@
                         class="${groupStat.name}::${stationType.name}"
                         onclick="handleCheckBoxClick(this);" />
             Time in Use Mean
+        </td>
+
+        <td width="100px" class="shiebenTitle">
+            Average Utilization
         </td>
 
         <td width="100px" class="shiebenTitle">
@@ -443,9 +459,25 @@
         <td class="shieben" width="100px" id="all::${groupStat.name}::${stationType.name}::timeInUse">
             ${TimeCalculator.readableTime( stationType.stats.allStations.timeInUse.mean )}
         </td>
+
+        <g:if test="${stationType.stats.allStations.timeLiving.mean == 0 }">
+            <td class="shieben" width="100px" id="11122345::${groupStat.name}::${stationType.name}::3453467">
+                0 %
+            </td>
+        </g:if>
+        <g:else>
+            <td class="shieben" width="100px" id="11122345::${groupStat.name}::${stationType.name}::3453467">
+                ${ Math.round( ( stationType.stats.allStations.timeInUse.mean / stationType.stats.allStations.timeLiving.mean ) * 100 ) } %
+            </td>
+        </g:else>
+
+
         <td class="shieben" width="100px" id="all::${groupStat.name}::${stationType.name}::timeInUseSum">
             ${TimeCalculator.readableTime( stationType.stats.allStations.timeInUse.sum )}
         </td>
+
+
+
         <td class="shieben" width="100px" id="all::${groupStat.name}::${stationType.name}::timeLiving">
             ${TimeCalculator.readableTime( stationType.stats.allStations.timeLiving.mean )}
         </td>
@@ -468,6 +500,18 @@
         <td class="shieben" width="100px" id="successful::${groupStat.name}::${stationType.name}::timeInUse">
             ${TimeCalculator.readableTime( stationType.stats.succeededStations.timeInUse.mean )}
         </td>
+
+        <g:if test="${stationType.stats.succeededStations.timeLiving.mean == 0 }">
+            <td class="shieben" width="100px" id="1133122345::${groupStat.name}::${stationType.name}::345343467">
+                0 %
+            </td>
+        </g:if>
+        <g:else>
+            <td class="shieben" width="100px" id="1112232345::${groupStat.name}::${stationType.name}::344353467">
+                ${ Math.round( ( stationType.stats.succeededStations.timeInUse.mean / stationType.stats.succeededStations.timeLiving.mean ) * 100 ) } %
+            </td>
+        </g:else>
+
         <td class="shieben" width="100px" id="successful::${groupStat.name}::${stationType.name}::timeInUseSum">
             ${TimeCalculator.readableTime( stationType.stats.succeededStations.timeInUse.sum )}
         </td>
@@ -493,6 +537,18 @@
         <td class="shieben" width="100px" id="failed::${groupStat.name}::${stationType.name}::timeInUse">
             ${TimeCalculator.readableTime( stationType.stats.failedStations.timeInUse.mean )}
         </td>
+
+        <g:if test="${stationType.stats.failedStations.timeLiving.mean == 0 }">
+            <td class="shieben" width="100px" id="1112246345::${groupStat.name}::${stationType.name}::34534767">
+                0 %
+            </td>
+        </g:if>
+        <g:else>
+            <td class="shieben" width="100px" id="1112562345::${groupStat.name}::${stationType.name}::563453467">
+                ${ Math.round( ( stationType.stats.failedStations.timeInUse.mean / stationType.stats.failedStations.timeLiving.mean ) * 100 ) } %
+            </td>
+        </g:else>
+
         <td class="shieben" width="100px" id="failed::${groupStat.name}::${stationType.name}::timeInUseSum">
             ${TimeCalculator.readableTime( stationType.stats.failedStations.timeInUse.sum )}
         </td>
@@ -508,7 +564,15 @@
         <td>
             <div class="rowMiddleWithoutBorder2">
                 <g:submitButton name="Show Picture" value="Show Picture" id="${groupStat.name}::${stationType.name}"/>
+                <g:submitToRemote class="addButton"
+                                  url="[ action: 'showStationsOnMap' ]"
+                                  update="updateMe"
+                                  name="showGroups"
+                                  value="Show Stations" />
             </div>
+
+
+
         </td>
     </tr>
 </table>
@@ -517,11 +581,13 @@
 </div>
 
 </g:form>
+
 </g:each>
 </fieldset>
 </g:each>
 </div>
 
+<div id="updateMe"></div>
 
 </body>
 </html>

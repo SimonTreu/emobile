@@ -12,6 +12,9 @@ class EFillingStationAgentResult {
     long groupId
     int failedToRouteCount
 
+    float lat
+    float lon
+
     FillingStationType fillingStationType
 
 }

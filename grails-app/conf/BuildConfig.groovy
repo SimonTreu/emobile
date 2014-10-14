@@ -95,6 +95,7 @@ grails.project.dependency.resolution = {
 
         runtime( "org.ccil.cowan.tagsoup:tagsoup:1.2" )
 
+        // commented out! it seems, gpars is part of current groovy version, so it would cause errors during deployment
         //runtime( "org.codehaus.gpars:gpars:0.11" )
 
         /*

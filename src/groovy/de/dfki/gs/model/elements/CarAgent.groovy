@@ -298,6 +298,7 @@ class CarAgent extends Agent {
                             FillingStationAgentSyncronizer.setFillingStationToFree( currentFillingStationToRouteFor )
                         }
 
+                        carAgentResult.timeForRealDistance = currentTimeStamp - startTime
                         carStatus = CarStatus.WAITING_EMPTY
 
                     }

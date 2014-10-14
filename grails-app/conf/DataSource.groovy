@@ -88,7 +88,7 @@ environments {
                 testWhileIdle = true
                 testOnReturn = true
                 validationQuery = "SELECT 1"
-                maxWait = 30000
+                maxWait = 1000000
                 testOnBorrow = true
                 testOnReturn = false
                 testWhileIdle = false

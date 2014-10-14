@@ -87,13 +87,13 @@
                                                         <g:message code="templates.configuration.fleet._distribution.from"/>
                                                     </div>
                                                     <div class="leftDistributionButton">
-                                                        <g:select name="fromKm" from="${(10..550).step(10)}" />
+                                                        <g:select name="fromKm" from="${(20..95).step( 5 ) + ( 100..500 ).step( 20 )}" />
                                                     </div>
                                                     <div class="right50PX">
                                                         <g:message code="templates.configuration.fleet._distribution.to"/>
                                                     </div>
                                                     <div class="right60">
-                                                        <g:select name="toKm" from="${(10..550).step( 10 )}" />
+                                                        <g:select name="toKm" from="${(20..95).step( 5 ) + ( 100..500 ).step( 20 )}" />
                                                     </div>
 
                                                     <div class="clear"></div>

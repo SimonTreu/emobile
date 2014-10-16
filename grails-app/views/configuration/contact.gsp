@@ -1,0 +1,18 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: anbu02
+  Date: 15.10.14
+  Time: 10:09
+--%>
+
+<%@ page contentType="text/html;charset=UTF-8" %>
+<html>
+<head>
+    <title>Contact</title>
+    <meta name="layout" content="main" />
+</head>
+
+<body>
+<span class="construction">This page is under construction</span>
+</body>
+</html>

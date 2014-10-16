@@ -34,6 +34,7 @@ import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.domain.users.Person
 import de.dfki.gs.domain.utils.Distribution
 import grails.plugin.springsecurity.SpringSecurityUtils
+import de.dfki.gs.domain.users.Person
 
 
 /**
@@ -51,7 +52,7 @@ class ConfigurationController {
 
     def springSecurityService
     def configurationService
-
+    def grailsLinkGenerator
 
 
 
@@ -1084,6 +1085,7 @@ class ConfigurationController {
         def m = [ : ]
         m.configurations = [  ]
 
+
         List<Configuration> configurations = configurationService.getRecentlyEditedConfigurationsOfCompany( person )
 
         configurations.each { Configuration configuration ->
@@ -1096,6 +1098,48 @@ class ConfigurationController {
         }
 
         render view: 'recentConfigurations', model: m
+    }
+
+    def help() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        def m = [ : ]
+
+        render view: 'help', model: m
+    }
+
+    def contact() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        def m = [ : ]
+
+        render view: 'contact', model: m
+    }
+
+    def loadFromFile() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        def m = [ : ]
+
+        render view: 'loadFromFile', model: m
     }
 
     def checkPerson() {

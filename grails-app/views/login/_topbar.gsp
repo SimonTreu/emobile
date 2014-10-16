@@ -11,7 +11,7 @@
                             <ul>
                                 <li><a><g:message code="layouts._topbar.new"/> </a></li>
                                 <li><a><g:message code="layouts._topbar.open"/></a></li>
-                                <li><a><g:message code="layouts._topbar.openresent"/></a></li>
+                                <%--<li><a><g:message code="layouts._topbar.openresent"/></a></li>--%>
                                 <li><a><g:message code="layouts._topbar.loadfromfile"/></a></li>
                                 <li><a><g:message code="layouts._topbar.logout"/></a></li>
                             </ul>
@@ -20,8 +20,8 @@
                         </li>
                         <li><a><span class=""></span><g:message code="layouts._topbar.view"/></a>
                             <ul>
-                                <li><a><g:message code="layouts._topbar.viewresults"/></a></li>
-                                <li><a><g:message code="layouts._topbar.exportinfile"/></a></li>
+                                <%--<li><a><g:message code="layouts._topbar.viewresults"/></a></li>
+                                <li><a><g:message code="layouts._topbar.exportinfile"/></a></li>--%>
                             </ul>
                         </li>
                         <li><a></span><g:message code="layouts._topbar.extras"/></a>

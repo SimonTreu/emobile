@@ -973,10 +973,15 @@ body.lightBoxBody{
     align: right;
     font-size: 11px;
     margin-left: 10px;
-
+    z-index: 1000;
 
 }
 
+ .wrap {
+     position: relative;
+     z-index: 1000;
+
+ }
 
  .registration1 {
      position: absolute;
@@ -1964,7 +1969,7 @@ fieldset {
 
 .pContainerResent {
     position: relative;
-    z-index: -1000;
+    /*z-index: -1000;*/
     margin-left:100px;
     margin-top:30px;
     min-height: 300px;
@@ -2121,12 +2126,17 @@ fieldset {
 }
 
 .rowMiddleWithoutBorder2{
-
     min-height:28px;
     position: relative;
     padding:8px 0px 0px 6px;
 }
 
+.rowMiddleWithoutBorder3{
+    min-height:28px;
+    position: relative;
+    padding:8px 0px 0px 6px;
+    width: 300px;
+}
 
 .left{
     width:160px;
@@ -2144,7 +2154,7 @@ fieldset {
 }
 
 .leftBoldBig {
-    width:400px;
+    /*width:400px;*/
     float:left;
     padding:10px 0px 0px 7px;
     min-height:24px;
@@ -2663,24 +2673,56 @@ a.olControlZoomOut {
 }
 
 .table {
-    border-bottom: 1px solid #ddd;
-    border-top: 1px solid #ddd;
+    /*border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;*/
     padding: 1em;
     min-height: 20px;
     position: relative;
 
 }
 
+
 .shieben {
     position: relative;
-    left: 40px;
+    right: 10px;
     padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.shieben1 {
+    position: relative;
+    left: 15px;
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
 }
 
 .shiebenTitle {
     position: relative;
     padding: 10px;
     font-weight: bold;
+    border-bottom: 1px solid #ddd;
+}
+
+.shiebenStations {
+    position: relative;
+    left: 15px;
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+
+.shiebenStations1 {
+    position: relative;
+    left: 25px;
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.shiebenTitleStations {
+    position: relative;
+    padding: 10px;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
 }
 
 .construction{

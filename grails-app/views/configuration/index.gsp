@@ -339,7 +339,10 @@
         </span>
                     <g:if test="${(savedGroups >= 1 && savedFleets >= 1) ||
                                   ( configuredGroups >= 1 &&  savedFleets >= 1 ) ||
-                                  (configuredFleets >= 1 && savedGroups >= 1)
+                                  (configuredFleets >= 1 && savedGroups >= 1) ||
+                                  ( savedGroups >= 1 && savedFleets >= 1 && configuredGroups >= 1) ||
+                                  (savedGroups >= 1 && savedFleets >= 1 && configuredFleets >= 1 ) ||
+                                  (savedGroups >= 1 && savedFleets >= 1 && configuredFleets >= 1 && configuredGroups >= 1)
                     }">
                             <span class="layoutButtonM"></span>
                             <g:hiddenField name="configurationStubId" value="${configurationStubId}"/>
@@ -349,7 +352,7 @@
 </g:form>
 
 <g:form controller="execution" action="executeExperiment">
-    <g:if test="${configuredGroups >= 1 && configuredFleets >= 1}">
+    <g:if test="${configuredGroups >= 1 && configuredFleets >= 1 && savedGroups == 0 && savedFleets == 0}">
                     <div class="layoutButton">
                         <span class="layoutButtonM"></span>
                         <g:hiddenField name="relativeSearchLimit" value="50" />

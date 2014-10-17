@@ -192,6 +192,102 @@ class ConfigurationService {
     }
 
     /**
+     * is this experiment executable for currentUser's company
+     *
+     *
+     * @param currentUser
+     * @return
+     */
+    def getConfiguredGroups (Long configurationStubId) {
+        Configuration stub = Configuration.get( configurationStubId )
+        int groupExecutable = 0
+        List<FillingStationGroup> configuredGroups = new ArrayList<FillingStationGroup>()
+        stub.fillingStationGroups.each { FillingStationGroup group ->
+
+            configuredGroups.add( FillingStationGroup.get( group.id ).groupStatus )
+            if (group.groupStatus==GroupStatus.CONFIGURED){
+                groupExecutable = 1
+            } else {
+                groupExecutable = 0
+            }
+        }
+        return groupExecutable
+    }
+
+    /**
+     * is this experiment executable for currentUser's company
+     *
+     *
+     * @param currentUser
+     * @return
+     */
+    def getConfiguredFleets (Long configurationStubId) {
+        Configuration stub = Configuration.get( configurationStubId )
+        int fleetExecutable = 0
+
+        List<Fleet> addedFleets = new ArrayList<Fleet>()
+        stub.fleets.each { Fleet fleet ->
+
+            addedFleets.add( Fleet.get( fleet.id ).fleetStatus )
+            if (fleet.fleetStatus == FleetStatus.CONFIGURED) {
+                fleetExecutable = 1
+            }else {
+                fleetExecutable = 0
+            }
+        }
+        return fleetExecutable
+    }
+
+    /**
+     * is this experiment saveable for currentUser's company
+     *
+     *
+     * @param currentUser
+     * @return
+     */
+    def getGroupsToBeSaved (Long configurationStubId) {
+
+        Configuration stub = Configuration.get( configurationStubId )
+        int groupSaveable = 0
+        List<FillingStationGroup> configuredGroups = new ArrayList<FillingStationGroup>()
+        stub.fillingStationGroups.each { FillingStationGroup group ->
+
+            configuredGroups.add( FillingStationGroup.get( group.id ).groupStatus )
+            if (group.groupStatus==GroupStatus.SCHEDULED_FOR_CONFIGURING){
+                groupSaveable = 1
+            } else {
+                groupSaveable = 0
+            }
+        }
+        return groupSaveable
+
+    }
+
+    /**
+     * is this experiment saveable for currentUser's company
+     *
+     *
+     * @param currentUser
+     * @return
+     */
+    def getFleetsToBeSaved (Long configurationStubId) {
+        Configuration stub = Configuration.get( configurationStubId )
+        int fleetExecutable = 0
+
+        List<Fleet> addedFleets = new ArrayList<Fleet>()
+        stub.fleets.each { Fleet fleet ->
+
+            addedFleets.add( Fleet.get( fleet.id ).fleetStatus )
+            if (fleet.fleetStatus == FleetStatus.SCHEDULED_FOR_CONFIGURING) {
+                fleetExecutable = 1
+            }else {
+                fleetExecutable = 0
+            }
+        }
+        return fleetExecutable
+    }
+
+    /**
      * collect all available fillingStationGroups for currentUser's company
      *
      *

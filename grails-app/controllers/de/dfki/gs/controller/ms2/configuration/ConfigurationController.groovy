@@ -353,6 +353,19 @@ class ConfigurationController {
         // groups already added to configuration stub
         m.addedGroups = configurationService.getAddedGroups( configurationStubId )
 
+        // groups that allready configured
+        m.configuredGroups = configurationService.getConfiguredGroups( configurationStubId )
+
+        // fleets that allready configured
+        m.configuredFleets = configurationService.getConfiguredFleets( configurationStubId )
+
+        // groups that need to be saveble
+        m.savedGroups = configurationService.getGroupsToBeSaved( configurationStubId )
+
+        // fleets that need to be saveble
+        m.savedFleets = configurationService.getFleetsToBeSaved( configurationStubId )
+
+
         render view: 'index', model: m
     }
 
@@ -1082,9 +1095,24 @@ class ConfigurationController {
             return
         }
 
+        EditConfigurationStubCommandObject cmd = new EditConfigurationStubCommandObject()
+        bindData( cmd, params )
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to validate configuration stub: ${cmd.errors}" )
+
+        }
+
+        Long configurationStubId = null
+
+        if ( cmd.configurationStubId == null ) {
+            configurationStubId = configurationService.createConfigurationStub( person ).id;
+        } else {
+            configurationStubId = cmd.configurationStubId
+        }
+
         def m = [ : ]
         m.configurations = [  ]
-
 
         List<Configuration> configurations = configurationService.getRecentlyEditedConfigurationsOfCompany( person )
 
@@ -1140,6 +1168,36 @@ class ConfigurationController {
         def m = [ : ]
 
         render view: 'loadFromFile', model: m
+    }
+
+
+    def viewSimulations() {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        def m = [ : ]
+
+        render view: 'viewSimulations', model: m
+
+    }
+
+    def executeSimulations () {
+
+        Person person = (Person) springSecurityService.currentUser
+
+        if ( !person ) {
+            redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
+            return
+        }
+
+        def m = [ : ]
+
+        render view: 'executeSimulations', model: m
     }
 
     def checkPerson() {

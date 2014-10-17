@@ -25,6 +25,7 @@ import de.dfki.gs.controller.ms2.configuration.commands.UpdateCarTypeCommandObje
 import de.dfki.gs.controller.ms2.configuration.commands.UpdateFillingStationTypeCommandObject
 import de.dfki.gs.domain.GasolineStation
 import de.dfki.gs.domain.GasolineStationType
+import de.dfki.gs.domain.simulation.Car
 import de.dfki.gs.domain.simulation.CarType
 import de.dfki.gs.domain.simulation.Configuration
 import de.dfki.gs.domain.simulation.FillingStationGroup
@@ -33,6 +34,7 @@ import de.dfki.gs.domain.simulation.FillingStation
 import de.dfki.gs.domain.simulation.Fleet
 import de.dfki.gs.domain.users.Person
 import de.dfki.gs.domain.utils.Distribution
+import de.dfki.gs.domain.utils.FleetStatus
 import grails.plugin.springsecurity.SpringSecurityUtils
 import de.dfki.gs.domain.users.Person
 
@@ -53,7 +55,6 @@ class ConfigurationController {
     def springSecurityService
     def configurationService
     def grailsLinkGenerator
-
 
 
     /**
@@ -1111,6 +1112,7 @@ class ConfigurationController {
             configurationStubId = cmd.configurationStubId
         }
 
+
         def m = [ : ]
         m.configurations = [  ]
 
@@ -1119,10 +1121,28 @@ class ConfigurationController {
         configurations.each { Configuration configuration ->
 
             def conf = [ : ]
-            conf.configurationId = configuration.id
 
+            List<Fleet> existedFleets = new ArrayList<Fleet>()
+                configuration.fleets.each { Fleet fleet ->
+                    existedFleets.add( Fleet.get( fleet.id ) )
 
-            m.configurations << conf
+            }
+
+            List<FillingStationGroup> existedStations = new ArrayList<FillingStationGroup>()
+            configuration.fillingStationGroups.each { FillingStationGroup fillingStationGroup ->
+                existedStations.add( FillingStationGroup.get( fillingStationGroup.id ) )
+
+            }
+
+            if (configuration.fleets.size() > 0 && configuration.fillingStationGroups.size() > 0 ) {
+
+                conf.configurationId = configuration.id
+                conf.fleetInfo = existedFleets.cars[0].size()
+                conf.stationsInfo = existedStations.fillingStations[0].size()
+
+                        m.configurations << conf
+            }
+
         }
 
         render view: 'recentConfigurations', model: m
@@ -1180,7 +1200,57 @@ class ConfigurationController {
             return
         }
 
+        EditConfigurationStubCommandObject cmd = new EditConfigurationStubCommandObject()
+
+        bindData( cmd, params )
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to validate configuration stub: ${cmd.errors}" )
+
+        }
+
+        Long configurationStubId = null
+
+        if ( cmd.configurationStubId == null ) {
+            configurationStubId = configurationService.createConfigurationStub( person ).id;
+        } else {
+            configurationStubId = cmd.configurationStubId
+        }
+
+
         def m = [ : ]
+        m.configurations = [  ]
+
+        List<Configuration> configurations = configurationService.getRecentlyEditedConfigurationsOfCompany( person )
+
+        configurations.each { Configuration configuration ->
+
+            def conf = [ : ]
+
+            List<Fleet> existedFleets = new ArrayList<Fleet>()
+            configuration.fleets.each { Fleet fleet ->
+                existedFleets.add( Fleet.get( fleet.id ) )
+
+            }
+
+            List<FillingStationGroup> existedStations = new ArrayList<FillingStationGroup>()
+            configuration.fillingStationGroups.each { FillingStationGroup fillingStationGroup ->
+                existedStations.add( FillingStationGroup.get( fillingStationGroup.id ) )
+
+            }
+
+            if (configuration.fleets.size() > 0 && configuration.fillingStationGroups.size() > 0 ) {
+
+                conf.configurationId = configuration.id
+                conf.fleetInfo = existedFleets.cars[0].size()
+                conf.stationsInfo = existedStations.fillingStations[0].size()
+
+                conf.experimentRunResultId = cmd.experimentRunResultId
+
+                m.configurations << conf
+            }
+
+        }
 
         render view: 'viewSimulations', model: m
 
@@ -1195,7 +1265,55 @@ class ConfigurationController {
             return
         }
 
+        EditConfigurationStubCommandObject cmd = new EditConfigurationStubCommandObject()
+        bindData( cmd, params )
+        if ( !cmd.validate() && cmd.hasErrors() ) {
+
+            log.error( "failed to validate configuration stub: ${cmd.errors}" )
+
+        }
+
+        Long configurationStubId = null
+
+        if ( cmd.configurationStubId == null ) {
+            configurationStubId = configurationService.createConfigurationStub( person ).id;
+        } else {
+            configurationStubId = cmd.configurationStubId
+        }
+
+
         def m = [ : ]
+        m.configurations = [  ]
+
+        List<Configuration> configurations = configurationService.getRecentlyEditedConfigurationsOfCompany( person )
+
+        configurations.each { Configuration configuration ->
+
+            def conf = [ : ]
+
+            List<Fleet> existedFleets = new ArrayList<Fleet>()
+            configuration.fleets.each { Fleet fleet ->
+                existedFleets.add( Fleet.get( fleet.id ) )
+
+            }
+
+            List<FillingStationGroup> existedStations = new ArrayList<FillingStationGroup>()
+            configuration.fillingStationGroups.each { FillingStationGroup fillingStationGroup ->
+                existedStations.add( FillingStationGroup.get( fillingStationGroup.id ) )
+
+            }
+
+            if (configuration.fleets.size() > 0 && configuration.fillingStationGroups.size() > 0 ) {
+
+                conf.configurationId = configuration.id
+                conf.fleetInfo = existedFleets.cars[0].size()
+                conf.stationsInfo = existedStations.fillingStations[0].size()
+
+
+                m.configurations << conf
+            }
+
+        }
 
         render view: 'executeSimulations', model: m
     }

@@ -20,26 +20,27 @@
         <fieldset>
             <legend> Open resent </legend>
             <div class="layoutResent">
-                <g:if test="${ configurations.size() > 0}">
                 <table>
-                    <tr>
-                        <th>Number</th>
-                        <th>Description</th>
-                        <th>Link</th>
-                    </tr>
+                    <g:if test="${ configurations.size() > 0}">
+
+                                <tr>
+                                    <th>Number</th>
+                                    <th>Description</th>
+                                    <th>Link</th>
+                                </tr>
 
                         <g:each in="${configurations}" var="conf">
-                            <tr>
-                                <td>${conf.configurationId}</td>
-                                <td></td>
-                                <td><a href="http://localhost:8080/emobilesim/configuration/index?configurationStubId=${conf.configurationId}">xaxa</a></td>
+                                <tr>
+                                    <td>${conf.configurationId} Simulation</td>
+                                    <td>${conf.fleetInfo} Cars and  ${conf.stationsInfo} Filling Stations</td>
+                                    <td> <g:link uri="/configuration/index?configurationStubId=${conf.configurationId}" url="/configuration/index?configurationStubId=${conf.configurationId}">link</g:link></td>
 
-                            </tr>
+                                </tr>
                         </g:each>
                     </g:if>
-                <g:if test="${configurations.size() == null}">
-                    <span class="simDesc">There is no avauble simulations</span>
-                </g:if>
+                    <g:if test="${configurations.size() == null}">
+                        <span class="simDesc">There is no available simulations</span>
+                    </g:if>
                 </table>
 
             </div>

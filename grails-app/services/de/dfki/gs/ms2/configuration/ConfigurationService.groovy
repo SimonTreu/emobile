@@ -205,12 +205,13 @@ class ConfigurationService {
         stub.fillingStationGroups.each { FillingStationGroup group ->
 
             configuredGroups.add( FillingStationGroup.get( group.id ).groupStatus )
-            if (group.groupStatus==GroupStatus.CONFIGURED){
+            if (group.groupStatus==GroupStatus.CONFIGURED ){
                 groupExecutable = 1
             } else {
                 groupExecutable = 0
             }
         }
+
         return groupExecutable
     }
 
@@ -229,7 +230,7 @@ class ConfigurationService {
         stub.fleets.each { Fleet fleet ->
 
             addedFleets.add( Fleet.get( fleet.id ).fleetStatus )
-            if (fleet.fleetStatus == FleetStatus.CONFIGURED) {
+            if (fleet.fleetStatus == FleetStatus.CONFIGURED ) {
                 fleetExecutable = 1
             }else {
                 fleetExecutable = 0
@@ -255,7 +256,10 @@ class ConfigurationService {
             configuredGroups.add( FillingStationGroup.get( group.id ).groupStatus )
             if (group.groupStatus==GroupStatus.SCHEDULED_FOR_CONFIGURING){
                 groupSaveable = 1
-            } else {
+            } else if (group.groupStatus==GroupStatus.NOT_CONFIGURED) {
+                groupSaveable = 0
+            }
+            else {
                 groupSaveable = 0
             }
         }
@@ -280,7 +284,9 @@ class ConfigurationService {
             addedFleets.add( Fleet.get( fleet.id ).fleetStatus )
             if (fleet.fleetStatus == FleetStatus.SCHEDULED_FOR_CONFIGURING) {
                 fleetExecutable = 1
-            }else {
+            }else  if (fleet.fleetStatus == FleetStatus.NOT_CONFIGURED){
+                fleetExecutable = 0
+            } else {
                 fleetExecutable = 0
             }
         }

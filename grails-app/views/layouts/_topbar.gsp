@@ -52,9 +52,9 @@
                                 <li><a href="<g:createLink controller="login" action="logout" />"><g:message code="layouts._topbar.logout"/></a></li>
                             </ul>
                         </li>
-                        <li><a href="#"><span class=""></span> <g:message code="layouts._topbar.execute"/></a>
+                        <li><g:link controller="configuration" action="executeSimulations"><span class=""></span> <g:message code="layouts._topbar.execute"/></g:link>
                         </li>
-                        <li><a href="#"><span class=""></span><g:message code="layouts._topbar.view"/></a>
+                        <li><g:link controller="configuration" action="viewSimulations"><span class=""></span><g:message code="layouts._topbar.view"/></g:link>
                             <%--<<ul>
                                 li><a href="#"><g:message code="layouts._topbar.viewresults"/></a></li>
                                 <li><a href="#"><g:message code="layouts._topbar.exportinfile"/></a></li>

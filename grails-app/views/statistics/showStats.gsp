@@ -406,10 +406,12 @@
                 Success Category
             </td>
             <td width="100px" class="shiebenTitle">
+
                 <g:checkBox name="${groupStat.name}::${stationType.name}::timeInUse"
                             id="${groupStat.name}::${stationType.name}::timeInUse"
                             class="${groupStat.name}::${stationType.name}"
                             onclick="handleCheckBoxClick(this);" />
+
                 Time in Use Mean
             </td>
 
@@ -418,10 +420,12 @@
             </td>
 
             <td width="100px" class="shiebenTitle">
+                <%--
                 <g:checkBox name="${groupStat.name}::${stationType.name}::timeInUseSum"
                             id="${groupStat.name}::${stationType.name}::timeInUseSum"
                             class="${groupStat.name}::${stationType.name}"
                             onclick="handleCheckBoxClick(this);" />
+                --%>
                 Time in Use Sum
             </td>
 

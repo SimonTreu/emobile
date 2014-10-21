@@ -163,15 +163,13 @@
                             </div>
                         </div>
 
-                        </br></br>
+
 
                         <table class="table">
                             <tr class="table" align="center">
-                                <td width="100px">
-                                    Success Category
-                                </td>
-
-
+                                        <td width="100px" class="shiebenTitle">
+                                            Success Category
+                                        </td>
                                         <td width="100px" class="shiebenTitle">
                                             <g:checkBox name="${fleetStat.name}::${carType.name}::plannedTime"
                                                         id="${fleetStat.name}::${carType.name}::plannedTime"
@@ -236,7 +234,7 @@
 
                                         <tr class="table">
 
-                                            <td width="100px" class="shieben">
+                                            <td width="100px" class="shieben1">
                                                 <g:checkBox name="${fleetStat.name}::${carType.name}::all"
                                                             id="${fleetStat.name}::${carType.name}::all"
                                                             class="${fleetStat.name}::${carType.name}"
@@ -244,30 +242,30 @@
                                                 All
                                             </td>
 
-                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::plannedTime">
+                                            <td  align="center" class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::plannedTime">
                                                 ${TimeCalculator.readableTime( carType.stats.allCars.plannedTime.mean )}
                                             </td>
-                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::realDrivingTime">
+                                            <td  align="center" class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::realDrivingTime">
                                                 ${TimeCalculator.readableTime( carType.stats.allCars.realDrivingTime.mean )}
                                             </td>
-                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::realTime">
+                                            <td  align="center" class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::realTime">
                                                 ${TimeCalculator.readableTime( carType.stats.allCars.realTime.mean )}
                                             </td>
-                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::loadingTime">
+                                            <td align="center" class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::loadingTime">
                                                 ${TimeCalculator.readableTime( carType.stats.allCars.loadingTime.mean )}
                                             </td>
 
-                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::plannedDistance">
+                                            <td align="center" class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::plannedDistance">
                                                 ${carType.stats.allCars.plannedDistance.mean}
                                             </td>
-                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::realDistance">
+                                            <td align="center" class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::realDistance">
                                                 ${carType.stats.allCars.realDistance.mean}
                                             </td>
 
-                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::energyLoaded">
+                                            <td align="center" class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::energyLoaded">
                                                 ${carType.stats.allCars.energyLoaded.mean}
                                             </td>
-                                            <td class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::energyDemanded">
+                                            <td align="center" class="shieben" width="100px" id="all::${fleetStat.name}::${carType.name}::energyDemanded">
                                                 ${carType.stats.allCars.energyDemanded.mean}
                                             </td>
 
@@ -275,37 +273,37 @@
 
                                         <tr class="table">
 
-                                            <td width="100px" class="shieben">
+                                            <td width="100px" class="shieben1">
                                                 <g:checkBox name="${fleetStat.name}::${carType.name}::successful"
                                                             id="${fleetStat.name}::${carType.name}::successful"
                                                             class="${fleetStat.name}::${carType.name}"
                                                             onclick="handleCheckBoxClick( this )" />
                                                 Successful
                                             </td>
-                                            <td class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::plannedTime">
+                                            <td align="center" class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::plannedTime">
                                                 ${TimeCalculator.readableTime( carType.stats.succeededCars.plannedTime.mean )}
                                             </td>
-                                            <td class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::realDrivingTime">
+                                            <td align="center" class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::realDrivingTime">
                                                 ${TimeCalculator.readableTime( carType.stats.succeededCars.realDrivingTime.mean )}
                                             </td>
-                                            <td class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::realTime">
+                                            <td align="center" class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::realTime">
                                                 ${TimeCalculator.readableTime( carType.stats.succeededCars.realTime.mean )}
                                             </td>
-                                            <td class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::loadingTime">
+                                            <td align="center" class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::loadingTime">
                                                 ${TimeCalculator.readableTime( carType.stats.succeededCars.loadingTime.mean )}
                                             </td>
 
-                                            <td class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::plannedDistance">
+                                            <td align="center" class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::plannedDistance">
                                                 ${carType.stats.succeededCars.plannedDistance.mean}
                                             </td>
-                                            <td class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::realDistance">
+                                            <td align="center" class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::realDistance">
                                                 ${carType.stats.succeededCars.realDistance.mean}
                                             </td>
 
-                                            <td class="shieben" class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::energyLoaded">
+                                            <td align="center" class="shieben" class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::energyLoaded">
                                                 ${carType.stats.succeededCars.energyLoaded.mean}
                                             </td>
-                                            <td class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::energyDemanded">
+                                            <td align="center" class="shieben" width="100px" id="successful::${fleetStat.name}::${carType.name}::energyDemanded">
                                                 ${carType.stats.succeededCars.energyDemanded.mean}
                                             </td>
 
@@ -313,7 +311,7 @@
 
                                         <tr class="table">
 
-                                            <td width="100px" class="shieben">
+                                            <td width="100px" class="shieben1">
                                                 <g:checkBox name="${fleetStat.name}::${carType.name}::failed"
                                                             id="${fleetStat.name}::${carType.name}::failed"
                                                             class="${fleetStat.name}::${carType.name}"
@@ -321,30 +319,30 @@
                                                 Failed
                                             </td>
 
-                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::plannedTime">
+                                            <td align="center" class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::plannedTime">
                                                 ${TimeCalculator.readableTime( carType.stats.failedCars.plannedTime.mean )}
                                             </td>
-                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::realDrivingTime">
+                                            <td align="center" class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::realDrivingTime">
                                                 ${TimeCalculator.readableTime( carType.stats.failedCars.realDrivingTime.mean )}
                                             </td>
-                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::realTime">
+                                            <td  align="center" class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::realTime">
                                                 ${TimeCalculator.readableTime( carType.stats.failedCars.realTime.mean )}
                                             </td>
-                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::loadingTime">
+                                            <td align="center" class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::loadingTime">
                                                 ${TimeCalculator.readableTime( carType.stats.failedCars.loadingTime.mean )}
                                             </td>
 
-                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::plannedDistance">
+                                            <td align="center" class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::plannedDistance">
                                                 ${carType.stats.failedCars.plannedDistance.mean}
                                             </td>
-                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::realDistance">
+                                            <td align="center" class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::realDistance">
                                                 ${carType.stats.failedCars.realDistance.mean}
                                             </td>
 
-                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::energyLoaded">
+                                            <td align="center" class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::energyLoaded">
                                                 ${carType.stats.failedCars.energyLoaded.mean}
                                             </td>
-                                            <td class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::energyDemanded">
+                                            <td align="center" class="shieben" width="100px" id="failed::${fleetStat.name}::${carType.name}::energyDemanded">
                                                 ${carType.stats.failedCars.energyDemanded.mean}
                                             </td>
 
@@ -370,9 +368,6 @@
 
 
 </br></br>
-</br></br>
-</br></br>
-<b>Filling Stations</b>
 
 <%-- HUA --%>
 <div class="pContainerConfigure">
@@ -380,7 +375,6 @@
 <fieldset>
 <legend>
     Group name: ${groupStat.name}
-
 </legend>
 
 <g:each in="${groupStat.stationTypes}" var="stationType" >
@@ -393,192 +387,192 @@
 <div class="contentImage">
     <div class="rowUp">
         <div class="leftBoldBig">
-            <span class="cartype">StationType: <span class="cartypeBold"> ${stationType.name} </span></span>
-<span class="cartype">Successful: <span class="cartypeBold">${stationType.stats.succeededStations.timeInUse.valuez.size()}</span> of <span class="cartypeBold">${stationType.stats.allStations.timeInUse.valuez.size()}</span></span>
-<span class="cartype">Failed: <span class="cartypeBold">${stationType.stats.failedStations.timeInUse.valuez.size()}</span> of <span class="cartypeBold">${stationType.stats.allStations.timeInUse.valuez.size()}</span></span>
-</div>
-</div>
+            <span class="cartype">StationType: <span class="cartypeBold"> ${stationType.name} </span>
+            </span>
+            <span class="cartype">Successful: <span class="cartypeBold">${stationType.stats.succeededStations.timeInUse.valuez.size()}</span> of
+            <span class="cartypeBold">${stationType.stats.allStations.timeInUse.valuez.size()}</span>
+            </span>
+            <span class="cartype">Failed: <span class="cartypeBold">${stationType.stats.failedStations.timeInUse.valuez.size()}</span> of
+            <span class="cartypeBold">${stationType.stats.allStations.timeInUse.valuez.size()}</span>
+            </span>
+        </div>
+    </div>
 
 
-    </br></br>
 
-<table class="table">
-    <tr class="table" align="center">
-        <td width="100px">
-            Success Category
-        </td>
-
-
-        <td width="100px" class="shiebenTitle">
-            <g:checkBox name="${groupStat.name}::${stationType.name}::timeInUse"
-                        id="${groupStat.name}::${stationType.name}::timeInUse"
-                        class="${groupStat.name}::${stationType.name}"
-                        onclick="handleCheckBoxClick(this);" />
-            Time in Use Mean
-        </td>
-
-        <td width="100px" class="shiebenTitle">
-            Average Utilization
-        </td>
-
-        <td width="100px" class="shiebenTitle">
-            <g:checkBox name="${groupStat.name}::${stationType.name}::timeInUseSum"
-                        id="${groupStat.name}::${stationType.name}::timeInUseSum"
-                        class="${groupStat.name}::${stationType.name}"
-                        onclick="handleCheckBoxClick(this);" />
-            Time in Use Sum
-        </td>
-
-        <td width="100px" class="shiebenTitle">
-            <g:checkBox name="${groupStat.name}::${stationType.name}::timeLiving"
-                        class="${groupStat.name}::${stationType.name}"
-                        onclick="handleCheckBoxClick(this);"
-                        id="${groupStat.name}::${stationType.name}::timeLiving" />
-            Time Living
-        </td>
-        <td width="100px" class="shiebenTitle">
-            <g:checkBox name="${groupStat.name}::${stationType.name}::failedToRoute"
-                        class="${groupStat.name}::${stationType.name}"
-                        onclick="handleCheckBoxClick(this);"
-                        id="${groupStat.name}::${stationType.name}::failedToRoute" />
-            Failed to Route
-        </td>
-
-    </tr>
-
-    <tr class="table">
-
-        <td width="100px" class="shieben">
-            <g:checkBox name="${groupStat.name}::${stationType.name}::all"
-                        id="${groupStat.name}::${stationType.name}::all"
-                        class="${groupStat.name}::${stationType.name}"
-                        onclick="handleCheckBoxClick( this )" />
-            All
-        </td>
-
-        <td class="shieben" width="100px" id="all::${groupStat.name}::${stationType.name}::timeInUse">
-            ${TimeCalculator.readableTime( stationType.stats.allStations.timeInUse.mean )}
-        </td>
-
-        <g:if test="${stationType.stats.allStations.timeLiving.mean == 0 }">
-            <td class="shieben" width="100px" id="11122345::${groupStat.name}::${stationType.name}::3453467">
-                0 %
+    <table class="table">
+        <tr class="table" align="center">
+            <td width="100px" class="shiebenTitle">
+                Success Category
             </td>
-        </g:if>
-        <g:else>
-            <td class="shieben" width="100px" id="11122345::${groupStat.name}::${stationType.name}::3453467">
-                ${ Math.round( ( stationType.stats.allStations.timeInUse.mean / stationType.stats.allStations.timeLiving.mean ) * 100 ) } %
+            <td width="100px" class="shiebenTitle">
+                <g:checkBox name="${groupStat.name}::${stationType.name}::timeInUse"
+                            id="${groupStat.name}::${stationType.name}::timeInUse"
+                            class="${groupStat.name}::${stationType.name}"
+                            onclick="handleCheckBoxClick(this);" />
+                Time in Use Mean
             </td>
-        </g:else>
 
-
-        <td class="shieben" width="100px" id="all::${groupStat.name}::${stationType.name}::timeInUseSum">
-            ${TimeCalculator.readableTime( stationType.stats.allStations.timeInUse.sum )}
-        </td>
-
-
-
-        <td class="shieben" width="100px" id="all::${groupStat.name}::${stationType.name}::timeLiving">
-            ${TimeCalculator.readableTime( stationType.stats.allStations.timeLiving.mean )}
-        </td>
-        <td class="shieben" width="100px" id="all::${groupStat.name}::${stationType.name}::failedToRoute">
-            ${( stationType.stats.allStations.failedToRoute.mean )}
-        </td>
-
-    </tr>
-
-    <tr class="table">
-
-        <td width="100px" class="shieben">
-            <g:checkBox name="${groupStat.name}::${stationType.name}::successful"
-                        id="${groupStat.name}::${stationType.name}::successful"
-                        class="${groupStat.name}::${stationType.name}"
-                        onclick="handleCheckBoxClick( this )" />
-            Successful
-        </td>
-
-        <td class="shieben" width="100px" id="successful::${groupStat.name}::${stationType.name}::timeInUse">
-            ${TimeCalculator.readableTime( stationType.stats.succeededStations.timeInUse.mean )}
-        </td>
-
-        <g:if test="${stationType.stats.succeededStations.timeLiving.mean == 0 }">
-            <td class="shieben" width="100px" id="1133122345::${groupStat.name}::${stationType.name}::345343467">
-                0 %
+            <td width="100px" class="shiebenTitle">
+                Average Utilization
             </td>
-        </g:if>
-        <g:else>
-            <td class="shieben" width="100px" id="1112232345::${groupStat.name}::${stationType.name}::344353467">
-                ${ Math.round( ( stationType.stats.succeededStations.timeInUse.mean / stationType.stats.succeededStations.timeLiving.mean ) * 100 ) } %
+
+            <td width="100px" class="shiebenTitle">
+                <g:checkBox name="${groupStat.name}::${stationType.name}::timeInUseSum"
+                            id="${groupStat.name}::${stationType.name}::timeInUseSum"
+                            class="${groupStat.name}::${stationType.name}"
+                            onclick="handleCheckBoxClick(this);" />
+                Time in Use Sum
             </td>
-        </g:else>
 
-        <td class="shieben" width="100px" id="successful::${groupStat.name}::${stationType.name}::timeInUseSum">
-            ${TimeCalculator.readableTime( stationType.stats.succeededStations.timeInUse.sum )}
-        </td>
-        <td class="shieben" width="100px" id="successful::${groupStat.name}::${stationType.name}::timeLiving">
-            ${TimeCalculator.readableTime( stationType.stats.succeededStations.timeLiving.mean )}
-        </td>
-        <td class="shieben" width="100px" id="successful::${groupStat.name}::${stationType.name}::failedToRoute">
-            ${( stationType.stats.succeededStations.failedToRoute.mean )}
-        </td>
-
-    </tr>
-
-    <tr class="table">
-
-        <td width="100px" class="shieben">
-            <g:checkBox name="${groupStat.name}::${stationType.name}::failed"
-                        id="${groupStat.name}::${stationType.name}::failed"
-                        class="${groupStat.name}::${stationType.name}"
-                        onclick="handleCheckBoxClick( this )" />
-            Failed
-        </td>
-
-        <td class="shieben" width="100px" id="failed::${groupStat.name}::${stationType.name}::timeInUse">
-            ${TimeCalculator.readableTime( stationType.stats.failedStations.timeInUse.mean )}
-        </td>
-
-        <g:if test="${stationType.stats.failedStations.timeLiving.mean == 0 }">
-            <td class="shieben" width="100px" id="1112246345::${groupStat.name}::${stationType.name}::34534767">
-                0 %
+            <td width="100px" class="shiebenTitle">
+                <g:checkBox name="${groupStat.name}::${stationType.name}::timeLiving"
+                            class="${groupStat.name}::${stationType.name}"
+                            onclick="handleCheckBoxClick(this);"
+                            id="${groupStat.name}::${stationType.name}::timeLiving" />
+                Time Living
             </td>
-        </g:if>
-        <g:else>
-            <td class="shieben" width="100px" id="1112562345::${groupStat.name}::${stationType.name}::563453467">
-                ${ Math.round( ( stationType.stats.failedStations.timeInUse.mean / stationType.stats.failedStations.timeLiving.mean ) * 100 ) } %
+            <td width="100px" class="shiebenTitle">
+                <g:checkBox name="${groupStat.name}::${stationType.name}::failedToRoute"
+                            class="${groupStat.name}::${stationType.name}"
+                            onclick="handleCheckBoxClick(this);"
+                            id="${groupStat.name}::${stationType.name}::failedToRoute" />
+                Failed to Route
             </td>
-        </g:else>
 
-        <td class="shieben" width="100px" id="failed::${groupStat.name}::${stationType.name}::timeInUseSum">
-            ${TimeCalculator.readableTime( stationType.stats.failedStations.timeInUse.sum )}
-        </td>
-        <td class="shieben" width="100px" id="failed::${groupStat.name}::${stationType.name}::timeLiving">
-            ${TimeCalculator.readableTime( stationType.stats.failedStations.timeLiving.mean )}
-        </td>
-        <td class="shieben" width="100px" id="failed::${groupStat.name}::${stationType.name}::failedToRoute">
-            ${( stationType.stats.failedStations.failedToRoute.mean )}
-        </td>
+        </tr>
 
-    </tr>
-    <tr>
-        <td>
-            <div class="rowMiddleWithoutBorder2">
-                <g:submitButton name="Show Picture" value="Show Picture" id="${groupStat.name}::${stationType.name}"/>
-                <g:submitToRemote class="addButton"
-                                  url="[ action: 'showStationsOnMap' ]"
-                                  update="updateMe"
-                                  name="showGroups"
-                                  value="Show Stations" />
-            </div>
+        <tr class="table">
 
+            <td width="100px" class="shiebenStations1">
+                <g:checkBox name="${groupStat.name}::${stationType.name}::all"
+                            id="${groupStat.name}::${stationType.name}::all"
+                            class="${groupStat.name}::${stationType.name}"
+                            onclick="handleCheckBoxClick( this )" />
+                All
+            </td>
 
+            <td class="shiebenStations" align="center" width="100px" id="all::${groupStat.name}::${stationType.name}::timeInUse">
+                ${TimeCalculator.readableTime( stationType.stats.allStations.timeInUse.mean )}
+            </td>
 
-        </td>
-    </tr>
-</table>
+            <g:if test="${stationType.stats.allStations.timeLiving.mean == 0 }">
+                <td class="shiebenStations" align="center" width="100px" id="11122345::${groupStat.name}::${stationType.name}::3453467">
+                    0 %
+                </td>
+            </g:if>
+            <g:else>
+                <td class="shiebenStations" align="center"  width="100px" id="11122345::${groupStat.name}::${stationType.name}::3453467">
+                    ${ Math.round( ( stationType.stats.allStations.timeInUse.mean / stationType.stats.allStations.timeLiving.mean ) * 100 ) } %
+                </td>
+            </g:else>
 
 
-</div>
+            <td class="shiebenStations" align="center" width="100px" id="all::${groupStat.name}::${stationType.name}::timeInUseSum">
+                ${TimeCalculator.readableTime( stationType.stats.allStations.timeInUse.sum )}
+            </td>
+
+
+
+            <td class="shiebenStations" align="center" width="100px" id="all::${groupStat.name}::${stationType.name}::timeLiving">
+                ${TimeCalculator.readableTime( stationType.stats.allStations.timeLiving.mean )}
+            </td>
+            <td class="shiebenStations"  align="center" width="100px" id="all::${groupStat.name}::${stationType.name}::failedToRoute">
+                ${( stationType.stats.allStations.failedToRoute.mean )}
+            </td>
+
+        </tr>
+
+        <tr class="table">
+
+            <td width="100px" class="shiebenStations1">
+                <g:checkBox name="${groupStat.name}::${stationType.name}::successful"
+                            id="${groupStat.name}::${stationType.name}::successful"
+                            class="${groupStat.name}::${stationType.name}"
+                            onclick="handleCheckBoxClick( this )" />
+                Successful
+            </td>
+
+            <td class="shiebenStations" align="center" width="100px" id="successful::${groupStat.name}::${stationType.name}::timeInUse">
+                ${TimeCalculator.readableTime( stationType.stats.succeededStations.timeInUse.mean )}
+            </td>
+
+            <g:if test="${stationType.stats.succeededStations.timeLiving.mean == 0 }">
+                <td class="shiebenStations"  align="center" width="100px" id="1133122345::${groupStat.name}::${stationType.name}::345343467">
+                    0 %
+                </td>
+            </g:if>
+            <g:else>
+                <td class="shiebenStations" align="center" width="100px" id="1112232345::${groupStat.name}::${stationType.name}::344353467">
+                    ${ Math.round( ( stationType.stats.succeededStations.timeInUse.mean / stationType.stats.succeededStations.timeLiving.mean ) * 100 ) } %
+                </td>
+            </g:else>
+
+            <td class="shiebenStations" align="center" width="100px" id="successful::${groupStat.name}::${stationType.name}::timeInUseSum">
+                ${TimeCalculator.readableTime( stationType.stats.succeededStations.timeInUse.sum )}
+            </td>
+            <td class="shiebenStations" align="center" width="100px" id="successful::${groupStat.name}::${stationType.name}::timeLiving">
+                ${TimeCalculator.readableTime( stationType.stats.succeededStations.timeLiving.mean )}
+            </td>
+            <td class="shiebenStations" align="center" width="100px" id="successful::${groupStat.name}::${stationType.name}::failedToRoute">
+                ${( stationType.stats.succeededStations.failedToRoute.mean )}
+            </td>
+
+        </tr>
+
+        <tr class="table" >
+
+            <td width="100px" class="shiebenStations1">
+                <g:checkBox name="${groupStat.name}::${stationType.name}::failed"
+                            id="${groupStat.name}::${stationType.name}::failed"
+                            class="${groupStat.name}::${stationType.name}"
+                            onclick="handleCheckBoxClick( this )" />
+                Failed
+            </td>
+
+            <td class="shiebenStations" align="center" width="100px" id="failed::${groupStat.name}::${stationType.name}::timeInUse">
+                ${TimeCalculator.readableTime( stationType.stats.failedStations.timeInUse.mean )}
+            </td>
+
+            <g:if test="${stationType.stats.failedStations.timeLiving.mean == 0 }">
+                <td class="shiebenStations" align="center" width="100px" id="1112246345::${groupStat.name}::${stationType.name}::34534767">
+                    0 %
+                </td>
+            </g:if>
+            <g:else>
+                <td class="shiebenStations" align="center" width="100px" id="1112562345::${groupStat.name}::${stationType.name}::563453467">
+                    ${ Math.round( ( stationType.stats.failedStations.timeInUse.mean / stationType.stats.failedStations.timeLiving.mean ) * 100 ) } %
+                </td>
+            </g:else>
+
+            <td class="shiebenStations" align="center" width="100px" id="failed::${groupStat.name}::${stationType.name}::timeInUseSum">
+                ${TimeCalculator.readableTime( stationType.stats.failedStations.timeInUse.sum )}
+            </td>
+            <td class="shiebenStations" align="center" width="100px" id="failed::${groupStat.name}::${stationType.name}::timeLiving">
+                ${TimeCalculator.readableTime( stationType.stats.failedStations.timeLiving.mean )}
+            </td>
+            <td class="shiebenStations" align="center" width="100px" id="failed::${groupStat.name}::${stationType.name}::failedToRoute">
+                ${( stationType.stats.failedStations.failedToRoute.mean )}
+            </td>
+
+        </tr>
+        <tr>
+            <td COLSPAN=4>
+                <div class="rowMiddleWithoutBorder2">
+                    <g:submitButton name="Show Picture" value="Show Picture" id="${groupStat.name}::${stationType.name}"/>
+                    <g:submitToRemote class="addButton"
+                                      url="[ action: 'showStationsOnMap' ]"
+                                      update="updateMe"
+                                      name="showGroups"
+                                      value="Show Stations" />
+                </div>
+
+
+
+            </td>
+        </tr>
+    </table>
+ </div>
 
 </g:form>
 

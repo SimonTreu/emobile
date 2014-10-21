@@ -46,19 +46,19 @@
                         <li><a href="#"><span></span> <g:message code="layouts._topbar.simulate"/></a>
                             <ul>
                                 <li><g:link controller="configuration" action="index"><g:message code="layouts._topbar.new"/> </g:link></li>
-                                <li><g:link controller="simulation" action="open"><g:message code="layouts._topbar.open"/></g:link></li>
-                                <li><g:link controller="configuration" action="showRecentlyEditedConfiguration"><g:message code="layouts._topbar.openresent"/></g:link> </li>
-                                <li><g:link controller="simulation" action="load"><g:message code="layouts._topbar.loadfromfile"/></g:link></li>
+                                <li><g:link controller="configuration" action="showRecentlyEditedConfiguration"><g:message code="layouts._topbar.open"/></g:link></li>
+                                <%--<li><g:link controller="configuration" action="showRecentlyEditedConfiguration"><g:message code="layouts._topbar.openresent"/></g:link> </li>--%>
+                                <li><g:link controller="configuration" action="loadFromFile"><g:message code="layouts._topbar.loadfromfile"/></g:link></li>
                                 <li><a href="<g:createLink controller="login" action="logout" />"><g:message code="layouts._topbar.logout"/></a></li>
                             </ul>
                         </li>
-                        <li><a href="#"><span class=""></span> <g:message code="layouts._topbar.execute"/></a>
+                        <li><g:link controller="configuration" action="executeSimulations"><span class=""></span> <g:message code="layouts._topbar.execute"/></g:link>
                         </li>
-                        <li><a href="#"><span class=""></span><g:message code="layouts._topbar.view"/></a>
-                            <ul>
-                                <li><a href="#"><g:message code="layouts._topbar.viewresults"/></a></li>
+                        <li><g:link controller="configuration" action="viewSimulations"><span class=""></span><g:message code="layouts._topbar.view"/></g:link>
+                            <%--<<ul>
+                                li><a href="#"><g:message code="layouts._topbar.viewresults"/></a></li>
                                 <li><a href="#"><g:message code="layouts._topbar.exportinfile"/></a></li>
-                            </ul>
+                            </ul>--%>
                         </li>
                         <li><g:link controller="extras" action="index"><span class=""></span><g:message code="layouts._topbar.extras"/></g:link>
                             <ul>
@@ -70,8 +70,8 @@
                         </li>
                         <li><a href="#"><span class=""></span><g:message code="layouts._topbar.help"/></a>
                             <ul>
-                                <li><a href="#"><g:message code="layouts._topbar.help"/></a></li>
-                                <li><a href="#"><g:message code="layouts._topbar.contact"/></a></li>
+                                <li><g:link controller="configuration" action="help"><g:message code="layouts._topbar.help"/></g:link></li>
+                                <li><g:link controller="configuration" action="contact"><g:message code="layouts._topbar.contact"/></g:link></li>
                             </ul>
                         </li>
                         <span id="signup">

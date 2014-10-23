@@ -167,6 +167,7 @@
             document.getElementById( 'button_show_stats' ).value = "enabled";
 
             document.getElementById( 'button_show_stats' ).style.color = "#00AA00";
+            document.getElementById('button_show_stats').style.display='inline';
         }
 
 
@@ -451,7 +452,7 @@
                             onclick="location.href='${createLink( controller: 'execution', action: 'stopExperiment', params: [ configurationId: configurationId, experimentRunResultId: experimentRunResultId ] ) }'">
                         <i class="icon icon-warning-sign"></i>Stop</button>
 
-                    <button class="playButton"
+                    <button class="playButtonStats"
                             id="button_show_stats"
                             type="submit"
                             onclick="location.href='${createLink( controller: 'statistics', action: 'showStats', params: [ experimentRunResultId: experimentRunResultId ] )}'"

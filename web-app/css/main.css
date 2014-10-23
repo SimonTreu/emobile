@@ -1453,13 +1453,24 @@ td {
 .playButton {
     text-decoration: none;
     font-size: 13px;
-
     -webkit-text-decoration: none;
     background-color: #fcfcfc;
     border: 1px solid #cccccc;
     font-size: 1em;
     padding: 0.2em 0.6em;
     color: #000;
+}
+
+.playButtonStats {
+    text-decoration: none;
+    font-size: 13px;
+    -webkit-text-decoration: none;
+    background-color: #fcfcfc;
+    border: 1px solid #cccccc;
+    font-size: 1em;
+    padding: 0.2em 0.6em;
+    color: #000;
+    display:none;
 }
 
 .addImage {

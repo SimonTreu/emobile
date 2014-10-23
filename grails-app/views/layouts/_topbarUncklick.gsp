@@ -8,28 +8,16 @@
             <div class="wrap">
                 <nav>
                     <ul id="menu">
-                        <li><g:link><g:message code="layouts._topbar.simulate"/></g:link>
-                            <ul>
+                        <li><g:link controller="sim" action=""><g:message code="simulation.index.quit"/></g:link>
 
-                            </ul>
                         </li>
-                        <li><g:link><g:message code="layouts._topbar.execute"/></g:link>
-                        </li>
-                        <li><g:link><g:message code="layouts._topbar.view"/></g:link>
-                            <ul>
+                        <%--<li><g:link><g:message code="layouts._topbar.execute"/></g:link></li>
+                        <li><g:link><g:message code="layouts._topbar.view"/></g:link></li>
+                        <li><g:link><g:message code="layouts._topbar.extras"/></g:link></li>
+                        <li><g:link><g:message code="layouts._topbar.help"/></g:link></li>
 
-                            </ul>
-                        </li>
-                        <li><g:link><g:message code="layouts._topbar.extras"/></g:link>
-                            <ul>
-
-                            </ul>
-                        </li>
-                        <li><g:link><g:message code="layouts._topbar.help"/></g:link>
-                            <ul>
-
-                            </ul>
-                        </li>
+                        <li><g:link><g:message code="layouts._topbar.contact"/></g:link></li>
+                        --%>
                         <span id="signup">
                             <g:if test="${errors != null}" >
 

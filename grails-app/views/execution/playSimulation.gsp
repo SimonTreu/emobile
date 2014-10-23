@@ -204,51 +204,106 @@
         var stationCount = info.length;
 
         var spaceForStation = 1200 / stationCount;
+        if (stationCount>50) {
+            if (canvas.getContext) {
+                var ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, 400, 500);
 
-        if ( canvas.getContext ) {
-            var ctx = canvas.getContext('2d');
-            ctx.clearRect ( 0 , 0 , 400 , 500 );
+                for (var dp = 0; dp < stationCount; dp++) {
 
-            for ( var dp = 0; dp < stationCount; dp++ ) {
-
-                var station = info[ dp ];
+                    var station = info[ dp ];
 
 
-                if ( station[ 'status' ] == "IN_USE" ) {
-                    // red
-                    ctx.fillStyle="rgba(255, 0, 0, 1.0)";
-                } else {
-                    ctx.fillStyle="rgba(0,255,0,1.0)";
-                }
+                    if (station[ 'status' ] == "IN_USE") {
+                        // red
+                        ctx.fillStyle = "rgba(255, 0, 0, 1.0)";
 
-                // upperLeft.x, upperLeft.y, width, height
-                ctx.fillRect( dp * spaceForStation, 0, spaceForStation, 40 );
+                    } else {
+                        ctx.fillStyle = "rgba(0,255,0,1.0)";
+                    }
 
-                ctx.stroke();
+                    // upperLeft.x, upperLeft.y, width, height
+                    ctx.fillRect(dp * spaceForStation, 0, spaceForStation, 40);
 
-            }
-
-            for ( var dp = 0; dp < stationCount; dp++ ) {
-
-                ctx.beginPath();
-                ctx.font = "12px sans-serif ";
-                ctx.fillStyle = "black";
-                for (var tx = 0; tx < stationCount; tx++) {
-
-                    var station = info[ tx ];
-
-                    var personalId = station[ 'personalId' ]
-
-                    ctx.fillText( personalId, tx * spaceForStation, 10 );
+                    ctx.stroke();
 
                 }
-                ctx.stroke();
-            }
 
+                for (var dp = 0; dp < stationCount; dp++) {
+
+                    ctx.beginPath();
+                    //ctx.font = "10px arial ";
+                    //ctx.fillStyle = "black";
+                    for (var tx = 0; tx < stationCount; tx++) {
+
+                        var station = info[ tx ];
+
+                        var personalId = station[ 'personalId' ]
+                        if (station[ 'status' ] == "IN_USE") {
+                            ctx.font = "12px sans-serif";
+                            ctx.fillStyle = "black";
+
+                        } else {
+                            ctx.font = "0px arial";
+                            ctx.fillStyle = "green";
+                        }
+
+                        ctx.fillText(personalId, tx * spaceForStation, 20);
+
+                    }
+                    ctx.stroke();
+                }
+
+
+            }
 
         }
 
+        else {
+            if (canvas.getContext) {
+                var ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, 400, 500);
 
+                for (var dp = 0; dp < stationCount; dp++) {
+
+                    var station = info[ dp ];
+
+
+                    if (station[ 'status' ] == "IN_USE") {
+                        // red
+                        ctx.fillStyle = "rgba(255, 0, 0, 1.0)";
+                    } else {
+                        ctx.fillStyle = "rgba(0,255,0,1.0)";
+                    }
+
+                    // upperLeft.x, upperLeft.y, width, height
+                    ctx.fillRect(dp * spaceForStation, 0, spaceForStation, 40);
+
+                    ctx.stroke();
+
+                }
+
+                for (var dp = 0; dp < stationCount; dp++) {
+
+                    ctx.beginPath();
+                    ctx.font = "10px sans-serif ";
+                    ctx.fillStyle = "black";
+                    for (var tx = 0; tx < stationCount; tx++) {
+
+                        var station = info[ tx ];
+
+                        var personalId = station[ 'personalId' ]
+
+                        ctx.fillText(personalId, tx * spaceForStation, 10);
+
+                    }
+                    ctx.stroke();
+                }
+
+
+            }
+
+        }
 
     }
 
@@ -472,12 +527,24 @@
                 </div>
             </div>
 
-
-            <canvas id="timeContainer" width="1200" height="40"></canvas>
-            <canvas id="experimentContainer" width="1200" height="500"></canvas>
-            <canvas id="nameContainer" width="1200" height="50"></canvas>
-            <canvas id="stationsContainer" width="1200" height="40"></canvas>
-
+            <table>
+                <tr>
+                    <td width="1250px"><canvas id="timeContainer" width="1200" height="40"></canvas></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td width="1250px"><canvas id="experimentContainer" width="1200" height="500"></canvas></td>
+                    <td width="100px"><span class="decSimu">Simulation</span></td>
+                </tr>
+                <tr>
+                    <td width="1250px"><canvas id="nameContainer" width="1200" height="50"></canvas></td>
+                    <td width="100px"><span class="decSimu">Cars</span></td>
+                </tr>
+                <tr>
+                    <td width="1250px"><canvas id="stationsContainer" width="1200" height="40"><span class="decSimu">Electric stations</span></canvas></td>
+                    <td width="100px"><span class="decSimu">Electric stations</span></td>
+                </tr>
+            </table>
             <g:render template="/layouts/footer" />
 
             <r:layoutResources></r:layoutResources>
